@@ -1,0 +1,99 @@
+<form [formGroup]="form">
+    <div class="grid">
+
+        <div class="col-12 form-title-section">
+            <h3>
+                {{l('CatalogsCustom')}}
+                <p-button type="button" styleClass="p-button-text algoria-button-help" icon="pi pi-info-circle"
+                          (onClick)="helpOnScreenService.show('CATALOGSCUSTOM.VIEW', true)"></p-button>
+            </h3>
+            <div class="form-toolbar">
+                <p-button *ngIf="permissions.create" type="button" label="{{l('Create')}}" (onClick)="create()"></p-button>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+
+                <p-table #dt1 [columns]="cols" [value]="data" [(selection)]="selectedItem" [lazy]="true"
+                         (onLazyLoad)="loadData($event)" [paginator]="true" [rows]="10"
+                         [totalRecords]="pagedTableSummary.totalRecords" [rowsPerPageOptions]="[10,20,30,50,100]" dataKey="id"
+                         selectionMode="single" sortField="nameSingular" stateStorage="local" [stateKey]="browserStorageTableKey"
+                         styleClass="p-datatable-striped p-datatable-sm" class="p-datatable-responsive">
+
+                    <ng-template pTemplate="caption">
+                        <div class="grid p-fluid">
+                            <div class="col-12 sm:col-7 md:col-8 lg:col-9">
+                                <h5>{{l('CatalogsCustom')}}</h5>
+                            </div>
+                            <div class="col-12 sm:col-5 md:col-4 lg:col-3">
+                                <span class="p-input-icon-left">
+                                    <i class="pi pi-search"></i>
+                                    <input type="text" pInputText placeholder="{{l('SearchDots')}}" formControlName="filterText" (keydown.enter)="filterSearch($event)" />
+                                </span>
+                            </div>
+                        </div>
+                    </ng-template>
+
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th scope="col" style="width:140px;">{{l('Actions')}}</th>
+                            <th scope="col" *ngFor="let col of columns" [pSortableColumn]="col.field"
+                                [style.width]="col.width">
+                                {{col.header}}
+                                <p-sortIcon [field]="col.field"></p-sortIcon>
+                            </th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <tr [pSelectableRow]="rowData">
+                            <td>
+                                <div>
+                                    <button pButton pRipple [disabled]="!permissions.edit" icon="pi pi-pencil" class="p-button-sm mr-2" (click)="edit(rowData.id)" pTooltip="{{l('Edit')}}" tooltipPosition="top"></button>
+                                    <button pButton pRipple [disabled]="!permissions.delete" icon="pi pi-trash" class="p-button-sm p-button-danger mr-2" (click)="delete(rowData.id)" pTooltip="{{l('Delete')}}" tooltipPosition="top"></button>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'nameSingular')}}</span>
+                                <div class="p-column-content">{{rowData.nameSingular}}</div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'userCreator')}}</span>
+                                <div class="p-column-content">{{rowData.userCreator}}</div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'creationDateTime')}}</span>
+                                <div class="p-column-content">{{dateTimeService.getDateTimeToDisplay(rowData.creationDateTime)}}</div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'isCollectionGeneratedDesc')}}</span>
+                                <div class="p-column-content p-text-center">
+                                    <span *ngIf="rowData.isCollectionGenerated" class="p-false-button p-false-button-sm-size">{{rowData.isCollectionGeneratedDesc}}</span>
+                                    <span *ngIf="!rowData.isCollectionGenerated" class="p-false-button p-false-button-sm-size">{{rowData.isCollectionGeneratedDesc}}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'isActiveDesc')}}</span>
+                                <div class="p-column-content p-text-center">
+                                    <span *ngIf="rowData.isActive" class="p-false-button p-false-button-sm-size">{{rowData.isActiveDesc}}</span>
+                                    <span *ngIf="!rowData.isActive" class="p-false-button p-false-button-sm-size">{{rowData.isActiveDesc}}</span>
+                                </div>
+                            </td>
+
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="paginatorleft"></ng-template>
+                    <ng-template pTemplate="paginatorright">
+                        <div *ngIf="pagedTableSummary.totalRecords > 0" class="p-text-bold">
+                            {{l('ShowingRecordsRange', pagedTableSummary.firstRecordInPage, pagedTableSummary.lastRecordInPage, pagedTableSummary.totalRecords)}}
+                        </div>
+                        <div *ngIf="pagedTableSummary.totalRecords == 0" class="p-text-bold">{{l('RecordsNotFound')}}</div>
+                    </ng-template>
+                </p-table>
+
+            </div>
+        </div>
+
+    </div>
+</form>

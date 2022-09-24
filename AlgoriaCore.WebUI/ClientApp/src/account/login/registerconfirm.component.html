@@ -1,0 +1,31 @@
+<form [formGroup]="form" class="login">
+    <div class="grid p-ai-stretch vertical-container" style="height: 100vh; margin: 0 !important;">
+        <div class="col-12 md:col-6 lg:col-5 p-ai-stretch vertical-container" id="sectionForm">
+            <div class="col-12 grid p-ai-stretch vertical-container">
+                <div class="col-1 sm:col-2 md:col-2 lg:col-2"></div>
+                <div class="col-10 sm:col-8 md:col-8 lg:col-8">
+                    <img src="assets/layout/images/logo-algoria.svg" class="logo" />
+                    <h3 class="title">{{l("Register.User.Registry")}}</h3>
+
+                    <h4 *ngIf="!confirmated">{{l('Register.Confirm.ActivatingAccount')}}</h4>
+                    <h4 *ngIf="confirmated">{{l('Register.Confirm.AccountCreatedSuccessfully')}}</h4>
+
+                    <div class="formgrid grid">
+                        <div class="col-12 p-mb-6">
+                            <p-button type="button" label="{{l('Return')}}" (onClick)="return()" styleClass="p-button-secondary"></p-button>
+                        </div>
+                        <div class="col-12">
+                            <p>{{l('Copyright', currentDateTime.getFullYear())}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-1 sm:col-2 md:col-2 lg:col-2"></div>
+            </div>
+        </div>
+        <div class="col-12 md:col-6 lg:col-7 tile tileForgotPassword" id="sectionImages">
+
+        </div>
+    </div>
+</form>
+
+

@@ -1,0 +1,188 @@
+<form [formGroup]="form">
+    <div class="grid">
+
+        <div class="col-12 form-title-section">
+            <h3>
+                {{l('MailServiceMails.MailServiceMail')}}
+                <p-button type="button" styleClass="p-button-text algoria-button-help" icon="pi pi-info-circle"
+                          (onClick)="helpOnScreenService.show('MAILSERVICEMAIL.MAILSERVICEMAIL.VIEW', true)"></p-button>
+            </h3>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+
+                <div class="grid p-fluid">
+
+                    <div class="col-6">
+                        <div class="field grid">
+                            <label for="rangeDates" class="col-12 md:col-4 lg:col-4"
+                                   *ngIf="advancedFiltersAreShown">
+                                {{l("MailServiceMails.MailServiceMail.DateRange")}}
+                            </label>
+
+                            <div class="col-12 md:col-8 lg:col-8" *ngIf="advancedFiltersAreShown">
+                                <p-calendar formControlName="rangeDates" id="rangeDates" selectionMode="range"
+                                            [readonlyInput]="true" dateFormat="dd/mm/yy" [locale]="appDatetimeControlsLocale">
+                                </p-calendar>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="field grid">
+                            <label for="input6" class="col-12 md:col-4 lg:col-4"
+                                   *ngIf="advancedFiltersAreShown && isHost">
+                                {{l("MailServiceMails.MailServiceMail.Tenant")}}
+                            </label>
+
+                            <div class="col-12 md:col-8 lg:col-8" *ngIf="advancedFiltersAreShown && isHost">
+                                <p-autoComplete id="acTenant" formControlName="filteredTenant"
+                                                [suggestions]="filteredTenants" (completeMethod)="filterTenant($event)"
+                                                [forceSelection]="true" field="largeName" [size]="30" [minLength]="3"
+                                                [style]="{'margin-bottom':'10px'}" emptyMessage="{{l('RecordsNotFound')}}">
+                                </p-autoComplete>
+
+
+                            </div>
+                        </div>
+                        <div class="field grid">
+                            <label for="input6" class="col-12 md:col-4 lg:col-4"
+                                   *ngIf="advancedFiltersAreShown && isHost">
+                            </label>
+
+                            <div class="col-12 md:col-8 lg:col-8" *ngIf="advancedFiltersAreShown && isHost">
+                                <p-checkbox id="onlyHost" name="onlyHost" formControlName="onlyHost" value="true"
+                                            binary="true" label="{{l('MailServiceMails.MailServiceMail.OnlyHost')}}"
+                                            (click)="onClickOnlyHost()">
+                                </p-checkbox>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="grid">
+                    <div class="col-12 form-title-section">
+                        <div>
+                            <a>
+                                <span *ngIf="!advancedFiltersAreShown"
+                                      (click)="advancedFiltersAreShown=!advancedFiltersAreShown">
+                                    <em class="fa fa-angle-down"></em> {{l("ShowAdvancedFilters")}}
+                                </span>
+                                <span *ngIf="advancedFiltersAreShown"
+                                      (click)="advancedFiltersAreShown=!advancedFiltersAreShown">
+                                    <em class="fa fa-angle-up"></em> {{l("HideAdvancedFilters")}}
+                                </span>
+                            </a>
+                        </div>
+                        <div class="form-toolbar">
+                            <p-button type="button" label="{{l('Refresh')}}" (onClick)="filterSearch($event)"
+                                      [style.margin-left.px]="10" icon="pi pi-refresh"></p-button>
+                        </div>
+                    </div>
+                </div>
+
+                <p-table #dt1 [columns]="cols" [value]="data" [(selection)]="selectedItem" [lazy]="true"
+                         (onLazyLoad)="loadData($event)" [paginator]="true" [rows]="10"
+                         [totalRecords]="pagedTableSummary.totalRecords" [rowsPerPageOptions]="[10,20,30,50,100]" dataKey="id"
+                         selectionMode="single" sortField="mailServiceRequestDate" sortOrder="-1" stateStorage="local" [stateKey]="browserStorageTableKey"
+                         styleClass="p-datatable-striped p-datatable-sm" class="p-datatable-responsive">
+
+                    <ng-template pTemplate="caption">
+                        <div class="grid p-fluid">
+                            <div class="col-12 sm:col-7 md:col-8 lg:col-9">
+                                <h5>{{l('MailServiceMails.MailServiceMail')}}</h5>
+                            </div>
+                            <div class="col-12 sm:col-5 md:col-4 lg:col-3">
+                                <span class="p-input-icon-left">
+                                    <i class="pi pi-search"></i>
+                                    <input type="text" pInputText placeholder="{{l('SearchDots')}}" formControlName="filterText" (keydown.enter)="filterSearch($event)" />
+                                </span>
+                            </div>
+                        </div>
+                    </ng-template>
+
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th scope="col" style="width: 140px;">{{l('Actions')}}</th>
+                            <th scope="col" *ngFor="let col of columns" [pSortableColumn]="col.field"
+                                [style.width]="col.width">
+                                {{col.header}}
+                                <p-sortIcon [field]="col.field"></p-sortIcon>
+                            </th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <tr [pSelectableRow]="rowData">
+                            <td>
+                                <div>
+                                    <button pButton pRipple [disabled]="!permissions.consult" icon="pi pi-pencil" class="p-button-sm p-button-warning mr-2" (click)="consult(rowData.id)" pTooltip="{{l('Consult')}}" tooltipPosition="top"></button>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns,'status')}}</span>
+                                <div class="p-column-content">
+                                    <div class="text-center">
+                                        <span *ngIf="rowData['status']==0">
+                                            <em class="pi pi-exclamation-triangle log-color-warning"></em>
+                                        </span>
+                                        <span *ngIf="rowData['status']==2">
+                                            <em class="pi pi-check-circle log-color-info"></em>
+                                        </span>
+                                        <span *ngIf="rowData['status']==3">
+                                            <em class="pi pi-times-circle log-color-error"></em>
+                                        </span>
+                                        <span *ngIf="rowData['status']==4">
+                                            <em class="pi pi-ban log-color-critical"></em>
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns,'mailServiceRequestDate')}}</span>
+                                <div class="p-column-content">
+                                    {{dateTimeService.getDateTimeToDisplayLocal(rowData['mailServiceRequestDate'])}}
+                                </div>
+                            </td>
+
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'isLocalConfigDesc')}}</span>
+                                <div class="p-column-content">{{rowData.isLocalConfigDesc}}</div>
+                            </td>
+
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'sendto')}}</span>
+                                <div class="p-column-content">{{rowData.sendto}}</div>
+                            </td>
+
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'copyTo')}}</span>
+                                <div class="p-column-content">{{rowData.copyTo}}</div>
+                            </td>
+
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'subject')}}</span>
+                                <div class="p-column-content">{{rowData.subject}}</div>
+                            </td>
+
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="paginatorleft"></ng-template>
+                    <ng-template pTemplate="paginatorright">
+                        <div *ngIf="pagedTableSummary.totalRecords > 0" class="p-text-bold">
+                            {{l('ShowingRecordsRange', pagedTableSummary.firstRecordInPage, pagedTableSummary.lastRecordInPage, pagedTableSummary.totalRecords)}}
+                        </div>
+                        <div *ngIf="pagedTableSummary.totalRecords == 0" class="p-text-bold">{{l('RecordsNotFound')}}</div>
+                    </ng-template>
+                </p-table>
+
+            </div>
+        </div>
+
+    </div>
+</form>
+
+<p-confirmDialog></p-confirmDialog>

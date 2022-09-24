@@ -1,0 +1,263 @@
+<form [formGroup]="form">
+    <div class="grid">
+
+        <div class="col-12 form-title-section">
+            <h3>
+                {{l('Templates.Template')}}
+                <p-button type="button" styleClass="p-button-text algoria-button-help" icon="pi pi-info-circle"
+                          (onClick)="helpOnScreenService.show('PROCESSES.TEMPLATE.FORM', true)"></p-button>
+            </h3>
+            <div class="form-toolbar">
+                <p-button type="button" icon="pi pi-clock" styleClass="p-button-warning" (onClick)="showChangeHistory()" pTooltip="{{l('ShowChangeHistory')}}" tooltipPosition="top" *ngIf="id"></p-button>
+                <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+                <p-button type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
+                <p-button *ngIf="id && (permissions.create || permissions.edit)" type="button" label="{{model.isTableGenerated ? l('Templates.Template.RegenerateTable') : l('Templates.Template.GenerateTable')}}" (onClick)="generate()"></p-button>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+                <h5>{{l('GeneralData')}}</h5>
+
+                <p-message *ngIf="isRegenerateTable" severity="warn" text="Existen cambios que requieren 'Regenerar tabla'"></p-message>
+
+                <div class="p-fluid grid">
+                    <div class="col-12 md:col-7 lg:col-7">
+                        <div class="field grid">
+                            <label for="nameSingular" class="col-12 md:col-4 lg:col-3">
+                                {{fieldLabels["nameSingular"]}}<span class="required">*</span>
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                <input type="text" formControlName="nameSingular" [maxlength]="20" autocomplete="off" pInputText />
+                            </div>
+                        </div>
+                        <div *ngIf="id" class="field grid">
+                            <label for="tableName" class="col-12 md:col-4 lg:col-3">{{fieldLabels["tableName"]}}</label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                {{model.tableName}}
+                            </div>
+                        </div>
+                        <div class="field grid">
+                            <label for="namePlural" class="col-12 md:col-4 lg:col-3">
+                                {{fieldLabels["namePlural"]}}<span class="required">*</span>
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                <input type="text" formControlName="namePlural" [maxlength]="22" autocomplete="off" pInputText />
+                            </div>
+                        </div>
+                        <div class="field grid">
+                            <label for="description" class="col-12 md:col-4 lg:col-3">
+                                {{fieldLabels["description"]}}<span class="required">*</span>
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                <textarea formControlName="description" rows="5" maxlength="1000" pInputTextarea></textarea>
+                            </div>
+                        </div>
+                        <div class="field grid">
+                            <label for="hasChatRoom" class="col-12 md:col-4 lg:col-3">{{fieldLabels["hasChatRoom"]}}</label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                <p-checkbox id="hasChatRoom" name="hasChatRoom" [formControl]="form.controls['hasChatRoom']" value="true" binary="true"></p-checkbox>
+                            </div>
+                        </div>
+                        <div class="field grid">
+                            <label for="isActivity" class="col-12 md:col-4 lg:col-3">{{fieldLabels["isActivity"]}}</label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                <p-checkbox id="isActivity" name="isActivity" [formControl]="form.controls['isActivity']" value="true" binary="true"></p-checkbox>
+                            </div>
+                        </div>
+                        <div class="field grid">
+                            <label for="hasSecurity" class="col-12 md:col-4 lg:col-3">{{fieldLabels["hasSecurity"]}}</label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                <p-checkbox id="hasSecurity" name="hasSecutiry" [formControl]="form.controls['hasSecurity']" value="true" binary="true"></p-checkbox>
+                                <p-button *ngIf="id && f.hasSecurity.value" type="button" [style.margin-left.px]="10" icon="pi pi-lock" (onClick)="configSecurity()"></p-button>
+                            </div>
+                        </div>
+                        <div class="field grid">
+                            <label for="isActivity" class="col-12 md:col-4 lg:col-3">{{l('IsActive')}}</label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                <p-checkbox id="isActive" name="isActive" [formControl]="form.controls['isActive']" value="true" binary="true"></p-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-5 lg:col-5">
+                        <div class="field grid">
+                            <label for="name" class="col-12 md:col-4 lg:col-3">{{fieldLabels["color"]}}</label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                <p-colorPicker formControlName="color"></p-colorPicker>
+                            </div>
+                        </div>
+                        <div class="field grid">
+                            <label for="name" class="col-12 md:col-4 lg:col-3">{{fieldLabels["icon"]}}</label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                <div style="margin-bottom: 10px;">
+                                    <p-fileUpload #fileUpload
+                                                  accept="image/*"
+                                                  maxFileSize="52428800"
+                                                  customUpload="true"
+                                                  auto="true"
+                                                  mode="basic"
+                                                  chooseLabel="Seleccionar imagen"
+                                                  invalidFileSizeMessageSummary="El tamaño del archivo es demasiado grande"
+                                                  invalidFileSizeMessageDetail="El tamaño máximo permitido es de 50Mb"
+                                                  invalidFileTypeMessageSummary="{0} no es un archivo válido"
+                                                  (uploadHandler)="myUploader($event)">
+                                    </p-fileUpload>
+                                </div>
+                                <div *ngIf="urlIcon">
+                                    <div class="avatar-logo">
+                                        <img src="{{urlIcon}}" alt="" style="max-width:100%; margin:auto;" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="id && f.isActivity.value" class="card">
+                <h5>{{l('TemplateToDoStatus')}}</h5>
+
+                <div class="grid">
+                    <div *ngIf="permissions.edit" class="col-12 form-title-section">
+                        <div class="form-toolbar">
+                            <p-button type="button" label="{{l('TemplateToDoStatus.TemplateToDoStatus.Add')}}" icon="fa fa-plus" (onClick)="createToDoStatus()"></p-button>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+
+                <p-table #dtToDoStatus [columns]="colsToDoStatus" [value]="toDoStatusList" [(selection)]="selectedItemToDoStatus" [lazy]="true" (onLazyLoad)="loadDataToDoStatus($event)" [paginator]="true"
+                         [rows]="10" [totalRecords]="pagedTableSummaryToDoStatus.totalRecords" [rowsPerPageOptions]="[10,20,30,50,100]" dataKey="id" selectionMode="single"
+                         sortField="type" [sortOrder]="1" styleClass="p-datatable-striped p-datatable-sm" class="p-datatable-responsive">
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th scope="col" style="width:140px;">{{l('Actions')}}</th>
+                            <th scope="col" *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+                                {{col.header}}
+                                <p-sortIcon [field]="col.field"></p-sortIcon>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <tr [pSelectableRow]="rowData">
+                            <td>
+                                <button *ngIf="createMenuItemsToDoStatus(rowData).length > 0" type="button" pButton icon="fa fa-cog" label="{{l('Actions')}}" (click)="createAndShowMenuToDoStatus($event, rowData);"></button>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'typeDesc')}}</span>
+                                <div class="p-column-content">{{rowData.typeDesc}}</div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'name')}}</span>
+                                <div class="p-column-content">{{rowData.name}}</div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'isDefaultDesc')}}</span>
+                                <div class="p-column-content">{{rowData.isDefaultDesc}}</div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'isActiveDesc')}}</span>
+                                <div class="p-column-content">
+                                    <p-tag *ngIf="rowData.isActive" styleClass="p-tag-active" value="{{rowData.isActiveDesc}}"></p-tag>
+                                    <p-tag *ngIf="!rowData.isActive" styleClass="p-tag-inactive" value="{{rowData.isActiveDesc}}"></p-tag>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="summary">
+                        <div *ngIf="pagedTableSummaryToDoStatus.totalRecords > 0">{{l('ShowingRecordsRange', pagedTableSummaryToDoStatus.firstRecordInPage, pagedTableSummaryToDoStatus.lastRecordInPage, pagedTableSummaryToDoStatus.totalRecords)}}</div>
+                        <div *ngIf="pagedTableSummaryToDoStatus.totalRecords == 0">{{l('RecordsNotFound')}}</div>
+                    </ng-template>
+                </p-table>
+            </div>
+
+            <div *ngIf="id" class="card">
+                <h5>{{l('TemplateFields')}}</h5>
+
+                <div class="grid">
+                    <div *ngIf="permissions.edit" class="col-12 form-title-section">
+                        <div class="form-toolbar">
+                            <p-button type="button" label="{{l('TemplateSections.AddSection')}}" icon="fa fa-plus" (onClick)="sectionCreate()"></p-button>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+
+                <p-table [columns]="templateFieldsCols" [value]="templateFieldsData" dataKey="templateSection" styleClass="p-datatable-striped p-datatable-sm" class="p-datatable-responsive">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th scope="col" *ngFor="let col of templateFieldsCols">
+                                {{col.header}}
+                            </th>
+                            <th scope="col" style="width:140px;">{{l('Actions')}}</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex" let-expanded="expanded">
+                        <tr class="ui-widget-header" *ngIf="templateFieldsDataGrouped[rowData.templateSection].index === rowIndex">
+                            <td colspan="7">
+                                <a *ngIf="rowData.id" href="#" [pRowToggler]="rowData">
+                                    <em [ngClass]="expanded ? 'fa fa-fw fa-chevron-circle-down' : 'fa fa-fw fa-chevron-circle-right'"></em>
+                                    <span><em *ngIf="rowData.templateSectionIconAF" [ngClass]="rowData.templateSectionIconAF"></em>&nbsp;&nbsp;{{rowData.templateSectionOrder + ' ' + rowData.templateSectionDesc}}</span>
+                                </a>
+                                <span *ngIf="!rowData.id"><em *ngIf="rowData.templateSectionIconAF" [ngClass]="rowData.templateSectionIconAF"></em>&nbsp;&nbsp;{{rowData.templateSectionOrder + ' ' + rowData.templateSectionDesc}}</span>
+                            </td>
+                            <td>
+                                <button type="button" pButton icon="fa fa-cog" label="{{l('Actions')}}" (click)="sectionCreateAndShowMenu($event,rowData);"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="rowexpansion" let-rowData let-rowIndex="rowIndex" let-columns="columns">
+                        <tr>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'name')}}</span>
+                                <div class="p-column-content">{{rowData['order'] +  ' ' + rowData['name']}}</div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'fieldName')}}</span>
+                                <div class="p-column-content">{{rowData['fieldName']}}</div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'fieldTypeDesc')}}</span>
+                                <div class="p-column-content">{{rowData['fieldTypeDesc'] + (rowData['fieldSize'] ? '(' + rowData['fieldSize'] + ')': '')}}</div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'fieldControlDesc')}}</span>
+                                <div class="p-column-content">{{rowData['fieldControlDesc']}}</div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'inputMask')}}</span>
+                                <div class="p-column-content">{{rowData['keyFilter']}}</div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'isRequiredDesc')}}</span>
+                                <div class="p-column-content">{{rowData['isRequiredDesc'] + ' / ' + rowData['showOnGridDesc']}}</div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'statusDesc')}}</span>
+                                <div class="p-column-content" [style]="{ color: rowData['status'] === 2 ? '#1CA261': '#000' }">{{rowData['statusDesc']}}</div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{l('Actions')}}</span>
+                                <div class="p-column-content">
+                                    <button type="button" pButton icon="fa fa-cog" label="{{l('Actions')}}" (click)="fieldCreateAndShowMenu($event,rowData);"></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="summary">
+                        <div *ngIf="templateFieldsData.length > 0">{{l('ShowingRecordsRange', 1, templateFieldsData.length, templateFieldsData.length)}}</div>
+                        <div *ngIf="templateFieldsData.length == 0">{{l('RecordsNotFound')}}</div>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+<p-menu #menuToDoStatus popup="popup" [model]="itemsToDoStatus" [style]="{'width':'200px'}"></p-menu>
+<p-menu #sectionMenu popup="popup" [model]="sectionItems" [style]="{'width':'200px'}"></p-menu>
+<p-menu #fieldMenu popup="popup" [model]="fieldItems" [style]="{'width':'200px'}"></p-menu>

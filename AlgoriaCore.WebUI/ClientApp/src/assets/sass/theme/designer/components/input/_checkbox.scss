@@ -1,0 +1,82 @@
+.p-checkbox {
+    width: $checkboxWidth;
+    height: $checkboxHeight;
+
+    .p-checkbox-box {
+        border: $checkboxBorder;
+        background: $inputBg;
+        width: $checkboxWidth;
+        height: $checkboxHeight;
+        color: $textColor;
+        border-radius: $borderRadius;
+        transition: $formElementTransition;
+
+        .p-checkbox-icon {
+            transition-duration: $transitionDuration;
+            color: $checkboxIconActiveColor;
+            font-size: $checkboxIconFontSize;
+        }
+
+        &:not(.p-disabled):hover {
+            border-color: $inputHoverBorderColor;
+        }
+
+        &:not(.p-disabled).p-focus {
+            @include focused-input();
+        }
+
+        &.p-highlight {
+            border-color: $checkboxActiveBorderColor;
+            background: $checkboxActiveBg;
+
+            &:not(.p-disabled):hover {
+                border-color: $checkboxActiveHoverBorderColor;
+                background: $checkboxActiveHoverBg;
+                color: $checkboxIconActiveHoverColor;
+            }
+        }
+    }
+
+    &.p-error > .p-checkbox-box,
+    &.p-invalid > .p-checkbox-box {
+        @include invalid-input();
+    }
+}
+
+p-checkbox.ng-dirty.ng-invalid > .p-checkbox > .p-checkbox-box {
+    @include invalid-input();
+}
+
+.p-input-filled {
+    .p-checkbox {
+        .p-checkbox-box {
+            background-color: $inputFilledBg;
+
+            &:not(.p-disabled):hover {
+                background-color: $inputFilledHoverBg;
+            }
+
+            &.p-highlight {
+                background: $checkboxActiveBg;
+    
+                &:not(.p-disabled):hover {
+                    background: $checkboxActiveHoverBg;
+                }
+            }
+        }
+    }
+}
+
+.p-checkbox-label {
+    margin-left: $inlineSpacing;
+}
+
+@if ($highlightBg == $checkboxActiveBg) {
+    .p-highlight {
+        .p-checkbox {
+            .p-checkbox-box {
+                border-color: $checkboxIconActiveColor;
+            }
+        }
+    }
+} 

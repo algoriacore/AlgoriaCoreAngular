@@ -1,0 +1,36 @@
+<div class="grid">
+
+    <div class="col-12 form-title-section">
+        <div></div>
+        <div class="form-toolbar">
+            <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+            <p-button type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
+            <p-button type="button" styleClass="p-button-rounded p-button-warning" icon="pi pi-question" (onClick)="helpOnScreenService.show('QUESTIONNAIRES.SECTION.FORM', true)"></p-button>
+        </div>
+    </div>
+
+    <div class="col-12">
+
+        <form [formGroup]="form">
+
+            <div class="p-fluid formgrid grid">
+                <div class="field col-12">
+                    <label for="name">{{fieldLabels["name"]}}<span class="required"> *</span></label>
+                    <input type="text" formControlName="name" autocomplete="off" pattern="^.{3,50}$" pInputText />
+                </div>
+                <div class="field col-12">
+                    <label for="order">{{fieldLabels["order"]}}<span class="required"> *</span>
+                    </label>
+                    <p-inputNumber [showButtons]="true" formControlName="order" [min]="1" [max]="255" [maxlength]="3" [step]="1"></p-inputNumber>
+                </div>
+                <div class="field col-12">
+                    <label for="iconAF">{{fieldLabels["iconAF"]}}</label>
+                    <input type="text" formControlName="iconAF" autocomplete="off" pInputText />
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<app-preloader [blocked]="blockedDocument"></app-preloader>

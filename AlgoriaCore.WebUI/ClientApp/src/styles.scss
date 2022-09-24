@@ -1,0 +1,178 @@
+/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/primeng/resources/primeng.min.css";
+@import "../node_modules/primeflex/primeflex.scss";
+@import "../node_modules/primeicons/primeicons.css";
+@import "../node_modules/prismjs/themes/prism-coy.css";
+@import "../node_modules/fullcalendar/main.min.css";
+@import "../node_modules/@fullcalendar/daygrid/main.min.css";
+@import "../node_modules/@fullcalendar/timegrid/main.min.css";
+
+// FORMULARIOS/PANTALLAS
+.form-title-section {
+    h3 {
+        margin-bottom: 0.1rem;
+    }
+
+    .form-toolbar {
+        p-button {
+            margin-right: 1rem;
+        }
+
+        p-button:last-of-type {
+            margin-right: 0;
+        }
+    }
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.p-field > .bold-checkbox {
+    font-weight: 600;
+}
+
+@media screen and (max-width: $sm) {
+    .p-field.p-grid > label {
+        margin-bottom: 0.5rem !important;
+    }
+}
+
+@media screen and (min-width: $md) {
+    .p-field.p-grid > label {
+        margin-bottom: 0 !important;
+    }
+}
+
+    // DIALOGS/MODALES/MENSAJES ALERT
+@media screen and (max-width: $md - 1) {
+    .d-sm {
+        width: 95% !important;
+    }
+}
+
+@media screen and (min-width: $md) and (max-width: $lg - 1) {
+    .d-md {
+        width: 90% !important;
+    }
+
+    .d-md-75 {
+        width: 75% !important;
+    }
+}
+
+@media screen and (min-width: $lg) and (max-width: $xl - 1) {
+    .d-lg-70 {
+        width: 70% !important;
+    }
+    .d-lg-90 {
+        width: 90% !important;
+    }
+}
+
+@media screen and (min-width: $xl) {
+    .d-xl-40 {
+        width: 40% !important;
+    }
+    .d-xl-50 {
+        width: 50% !important;
+    }
+    .d-xl-70 {
+        width: 70% !important;
+    }
+}
+
+/*    .p-dialog .p-dialog-content {
+        padding: 2rem 1.5rem 2rem 1.5rem !important;
+    }
+
+    .p-dialog .p-dialog-header + .p-dialog-content {
+        padding: 0.5rem 1.5rem 2rem 1.5rem !important;
+    }*/
+
+    // SECCIÓN PARÁMETROS DE CORREOS
+    .aoptions-title {
+        font-weight: 700;
+        margin-bottom: 6px;
+        border-bottom: 1px solid #eaeaea;
+        padding-bottom: 16px;
+    }
+
+    .aoptions .opt {
+        padding: 3px 10px;
+    }
+
+    .aoptions .opt > .alnk {
+        float: right;
+        cursor: pointer;
+    }
+
+    .aoptions .opt:hover {
+        background-color: #eee;
+    }
+
+// CHAT
+.circuloChat {
+    border-radius: 36px;
+    width: 36px;
+    height: 36px;
+    overflow: hidden;
+}
+
+/*.layout-dashboard .chat div.message-own {
+    float: right;
+}*/
+
+.layout-dashboard .chat div.message-own span.span-chat-time {
+    border: inherit;
+    background-color: inherit;
+    margin: 4px 0;
+    padding: 6px 6px;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.layout-dashboard .chat div.message-from span.span-chat-time {
+    border: inherit;
+    background-color: inherit;
+    margin: 4px 0;
+    padding: 6px 6px;
+    font-size: 12px;
+    font-style: italic;
+}
+
+
+.contactChatStatusOffline {
+    color: #bfcad1;
+}
+
+.contactChatStatusOnline {
+    color: #26c281;
+}
+
+.bottom-separator {
+    border-bottom: 1px solid #eaeaea;
+}
+
+.p-tag.p-tag-active {
+    background-color: #2196F3;
+    color: #ffffff;
+}
+
+.p-tag.p-tag-inactive {
+    background-color: #E4E4E4;
+    color: #495057;
+}
+
+.pac-container {
+    z-index: 1100 !important;
+}
+
+app-text-number.ng-dirty.ng-invalid input {
+    border-color: red;
+}
+
+/*input.form-control-error, app-text-number.form-control-error input, p-inputnumber.form-control-error input, p-calendar.form-control-error input {
+    border-color: red;
+}*/

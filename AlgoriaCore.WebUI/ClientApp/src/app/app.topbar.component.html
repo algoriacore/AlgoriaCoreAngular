@@ -1,0 +1,75 @@
+<div class="layout-topbar">
+    <a href="#/app/main/dashboard" class="layout-topbar-logo">
+        <img alt="Logo" id="topbar-logo" src="assets/layout/images/logo-algoria.svg">
+    </a>
+    <a href="#" class="layout-menu-button" (click)="app.onMenuButtonClick($event)">
+        <i class="pi pi-bars"></i>
+    </a>
+
+    <span [ngClass]="{ 'layout-topbar-text-light': app.topbarColor == 'layout-topbar-dark', 'layout-topbar-text-dark': app.topbarColor != 'layout-topbar-dark'}" *ngIf="app.currentUser.isImpersonalized">({{l('Impersonalized')}})</span>
+
+    <a href="#" class="layout-topbar-user" (click)="app.onTopbarMenuButtonClick($event)">
+        <p-avatar image="{{urlPictureProfile}}" size="large" shape="circle"></p-avatar>
+    </a>
+
+    <ul class="layout-topbar-usermenu" [ngClass]="{'layout-topbar-usermenu-active fadeInDown': app.topbarMenuActive}" style="z-index: 1000 !important;">
+        <li class="layout-topbar-usermenu-header">
+            <div class="layout-topbar-usermenu-info" style="vertical-align: top !important;">
+                <div class="layout-topbar-usermenu-tenant" *ngIf="multiTenancy">{{app.currentUser.tenancyName ? app.currentUser.tenancyName: '&nbsp;'}}</div>
+                <div class="layout-topbar-usermenu-name">{{app.currentUser.firstName}}</div>
+                <div class="layout-topbar-usermenu-role">{{app.currentUser.lastName  + (app.currentUser.secondLastName ? ' ' + app.currentUser.secondLastName: '')}}</div>
+                <div class="layout-topbar-usermenu-role" *ngIf="app.currentUser.isImpersonalized">({{l('Impersonalized')}})</div>
+            </div>
+        </li>
+        <li>
+            <a href="#" (click)="app.onTopbarSubItemClick($event)">
+                <em class="pi pi-user"></em>
+                <span class="topbar-item-name">{{l('App.TopBar.Profile')}}</span>
+            </a>
+        </li>
+        <li *ngIf="app.currentUser.isImpersonalized">
+            <a href="#" (click)="app.logoutImpersonalization($event)">
+                <em class="fa fa-fw fa-undo"></em>
+                <span class="topbar-item-name">{{l('App.TopBar.LogoutImpersonalization')}}</span>
+            </a>
+        </li>
+        <li>
+            <a href="#" (click)="app.logout($event)">
+                <em class="pi pi-sign-out"></em>
+                <span class="topbar-item-name">{{l('App.TopBar.Logout')}}</span>
+            </a>
+        </li>
+    </ul>
+
+    <ul class="layout-topbar-usermenu" [ngClass]="{'layout-topbar-usermenu-active fadeInDown': app.notificationsMenuActive}" style="z-index: 1000 !important; right: 90px !important; width: 270px !important;">
+        <li class="layout-topbar-usermenu-header">
+            <span class="title">{{l('App.TopBar.Notifications')}}</span>
+            <button pButton pRipple icon="pi pi-trash" (click)="deleteNotifications()" *ngIf="notificationsList.length > 0"></button>
+        </li>
+    <li class="collection-notifications">
+        <p-scrollPanel [style]="{height: '350px'}" *ngIf="notificationsList.length > 0">
+            <div *ngFor="let item of notificationsList; index as i;" class="item-notification">
+                <p class="content">{{item.text}}</p>
+                <div class="datetime">{{item.dateTime.fromNow()}}</div>
+            </div>
+        </p-scrollPanel>
+        <div *ngIf="!(notificationsList.length > 0)" style="margin-bottom: 14px;">
+            {{l('App.TopBar.Notifications.Empty')}}
+        </div>
+    </li>
+    </ul>
+
+    <ul class="layout-topbar-icons">
+        <li>
+            <a href="#" (click)="app.onNotificationsClick($event)">
+                <i class="pi pi-bell"></i>
+            </a>
+        </li>
+
+        <li *ngIf="versionChanged" pTooltip="{{l('App.TopBar.ClickUpdateApp')}}" tooltipPosition="left">
+            <a href="#" class="layout-topbar-icon-green" (click)="updateAppVersion()">
+                <em class="fa fa-refresh"></em>
+            </a>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,77 @@
+<form [formGroup]="form">
+    <div class="grid">
+
+        <div class="col-12 form-title-section">
+            <h3>
+                {{l('Helps.Help')}}
+                <p-button type="button" styleClass="p-button-text algoria-button-help" icon="pi pi-info-circle"
+                          (onClick)="helpOnScreenService.show('ADMINISTRATION.HELP.FORM', true)"></p-button>
+            </h3>
+            <div class="form-toolbar">
+                <p-button type="button" icon="pi pi-clock" styleClass="p-button-warning" (onClick)="showChangeHistory()" pTooltip="{{l('ShowChangeHistory')}}" tooltipPosition="top" *ngIf="id"></p-button>
+                <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+                <p-button type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+                <h5>{{l('GeneralData')}}</h5>
+
+                <div class="p-fluid">
+
+
+                    <div class="field grid">
+                        <label for="language" class="col-12 md:col-4 lg:col-2">{{fieldLabels["language"]}}<span class="required"> *</span></label>
+                        <div class="col-12 md:col-8 lg:col-10">
+                            <p-dropdown [options]="languageCombo" formControlName="language"
+                                        placeholder="{{l('Select')}}">
+                            </p-dropdown>
+                        </div>
+                    </div>
+
+                    <div class="field grid">
+
+                        <label class="col-12 md:col-4 lg:col-2" for="key">{{fieldLabels["key"]}}<span class="required"> *</span></label>
+                        <div class="col-12 md:col-8 lg:col-10">
+                            <p-dropdown [options]="keyCombo" formControlName="key" filter="true"
+                                        placeholder="{{l('Select')}}">
+                            </p-dropdown>
+                        </div>
+                    </div>
+                    <div class="field grid">
+
+                        <label class="col-12 md:col-4 lg:col-2" for="displayName">
+                            {{fieldLabels["displayName"]}}<span class="required">
+                                *
+                            </span>
+                        </label>
+                        <div class="col-12 md:col-8 lg:col-10">
+                            <input type="text" formControlName="displayName" id="displayName" autocomplete="off"
+                                   maxlength="100" pInputText />
+                        </div>
+                    </div>
+                    <div class="field grid">
+
+                        <label class="col-12 md:col-4 lg:col-2" for="name">{{l('IsActive')}}</label>
+                        <div class="col-12 md:col-8 lg:col-10">
+                            <p-checkbox id="isActive" name="isActive" [formControl]="form.controls['isActive']"
+                                        value="true" binary="true"></p-checkbox>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            <div class="card">
+                <h5>{{l('Body')}}</h5>
+                <div>
+                    <app-editor [formControl]="form.controls['body']" id="body"></app-editor>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>

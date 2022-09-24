@@ -1,0 +1,71 @@
+<form [formGroup]="form">
+    <div class="grid">
+
+        <div class="col-12 form-title-section">
+            <h3>
+                {{l('Tenants')}}
+                <p-button type="button" styleClass="p-button-text algoria-button-help" icon="pi pi-info-circle"
+                          (onClick)="helpOnScreenService.show('INSTANCE.FORM', true)"></p-button>
+            </h3>
+            <div class="form-toolbar">
+                <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+                <p-button type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+                <h5>{{l('GeneralData')}}</h5>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-4">
+                        <label for="tenancyname">{{l('Tenants.Tenant.Instance')}}<span class="required"> *</span></label>
+                        <input type="text" autocomplete="off" formControlName="tenancyname" id="tenancyname" class="ui-inputtext ui-corner-all ui-state-default ui-widget" [ngClass]="{ 'is-invalid': f.tenancyname.errors }" maxlength="50" pInputText>
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <label for="tenantName">{{l('Tenants.Tenant.InstanceName')}}<span class="required"> *</span></label>
+                        <input type="text" autocomplete="off" formControlName="tenantName" id="tenantName" class="ui-inputtext ui-corner-all ui-state-default ui-widget" [ngClass]="{ 'is-invalid': f.tenantName.errors }" maxlength="150" pInputText>
+                    </div>
+                </div>
+
+                <h5>{{l('Tenants.Tenant.AdminUser')}}</h5>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-4">
+                        <label for="name">{{l('Register.User.Name')}}<span class="required"> *</span></label>
+                        <input type="text" autocomplete="off" formControlName="name" id="name" class="ui-inputtext ui-corner-all ui-state-default ui-widget" [ngClass]="{ 'is-invalid': f.name.errors }" maxlength="32" pInputText>
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <label for="lastName">{{l('Tenants.Tenant.LastName')}}<span class="required"> *</span></label>
+                        <input type="text" autocomplete="off" formControlName="lastName" id="lastName" class="ui-inputtext ui-corner-all ui-state-default ui-widget" [ngClass]="{ 'is-invalid': f.lastName.errors }" maxlength="50" pInputText>
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <label for="secondLastName">{{l('Tenants.Tenant.SecondLastName')}}</label>
+                        <input type="text" autocomplete="off" formControlName="secondLastName" id="secondLastName" class="ui-inputtext ui-corner-all ui-state-default ui-widget" [ngClass]="{ 'is-invalid': f.secondLastName.errors }" maxlength="50" pInputText>
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <label for="emailAddress">{{l('Tenants.Tenant.Email')}}<span class="required"> *</span></label>
+                        <input type="text" autocomplete="off" formControlName="emailAddress" id="emailAddress" class="ui-inputtext ui-corner-all ui-state-default ui-widget" [ngClass]="{ 'is-invalid': f.emailAddress.errors }" maxlength="250" pInputText>
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <label for="password">{{l('Tenants.Tenant.Password')}}<span class="required"> *</span></label>
+                        <app-password-field formControlName="password" style="width: 100%;"></app-password-field>
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <label for="passwordConfirm">{{l('Tenants.Tenant.ConfirmPassword')}}<span class="required"> *</span></label>
+                        <app-password-field formControlName="passwordConfirm" style="width: 100%;" [feedback]="false"></app-password-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+

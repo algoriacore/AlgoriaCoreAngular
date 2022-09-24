@@ -1,0 +1,101 @@
+<form [formGroup]="form">
+    <div class="grid">
+
+        <div class="col-12 form-title-section">
+            <h3>
+                {{id ? l('Users.User.Edit') : l('Users.User.Create')}}
+                <p-button type="button" styleClass="p-button-text algoria-button-help" icon="pi pi-info-circle"
+                          (onClick)="helpOnScreenService.show('ADMINISTRATION.USER.FORM', true)"></p-button>
+            </h3>
+            <div class="form-toolbar">
+                <p-button type="button" icon="pi pi-clock" styleClass="p-button-warning" (onClick)="showChangeHistory()" pTooltip="{{l('ShowChangeHistory')}}" tooltipPosition="top" *ngIf="id"></p-button>
+                <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+                <p-button type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+                <h5>{{l('Users.UserInfoForm')}}</h5>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-4">
+                        <label for="name">{{l('Users.NameForm')}}<span class="required"> *</span></label>
+                        <input type="text" #name formControlName="name" id="name" autocomplete="off" maxlength="50" pInputText />
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <label for="lastname">{{l('Users.LastNameForm')}}<span class="required"> *</span></label>
+                        <input type="text" formControlName="lastname" id="lastname" autocomplete="off" maxlength="50" pInputText />
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <label for="secondlastname">{{l('Users.SecondLastNameForm')}}</label>
+                        <input type="text" formControlName="secondlastname" id="secondlastname"
+                               autocomplete="off" maxlength="50" pInputText />
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <label for="username">{{l('Users.UserNameForm')}}<span class="required"> *</span></label>
+                        <input type="text" formControlName="username" id="username" autocomplete="off" maxlength="32" pInputText />
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <label for="emailaddress">{{l('Users.EmailAddressForm')}}<span class="required"> *</span></label>
+                        <input type="text" formControlName="emailaddress" id="emailaddress" autocomplete="off" maxlength="250" pInputText />
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <label for="phonenumber">{{l('Users.PhoneNumberForm')}}</label>
+                        <input type="text" formControlName="phonenumber" id="phonenumber" autocomplete="off" maxlength="20" pInputText />
+                    </div>
+
+                    <div class="field col-12">
+                        <p-checkbox name="setrandompassword" label="{{l('Users.SetRandomPasswordForm')}}"
+                                    [formControl]="form.controls['setrandompassword']" id="setrandompassword"
+                                    value="true" binary="true" (click)="onClickSetRandomPassword()"></p-checkbox>
+                    </div>
+                </div>
+
+                <div class="p-fluid formgrid grid" *ngIf="!f.setrandompassword.value">
+                    <div class="field col-12 md:col-4">
+                        <label for="password">{{l('Users.PasswordForm')}}</label>
+                        <app-password-field formControlName="password"></app-password-field>
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <label for="passwordrepeat">{{l('Users.PasswordRepeatForm')}}</label>
+                        <app-password-field formControlName="passwordrepeat"></app-password-field>
+                    </div>
+                </div>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12">
+                        <p-checkbox name="shouldchangepasswordonnextlogin" label="{{l('Users.ShouldChangePasswordOnNextLoginForm')}}"
+                                    [formControl]="form.controls['shouldchangepasswordonnextlogin']"
+                                    id="shouldchangepasswordonnextlogin" value="true" binary="true"></p-checkbox>
+                    </div>
+
+                    <div class="field col-12">
+                        <p-checkbox name="isactive" [formControl]="form.controls['isactive']" id="isactive" label="{{l('IsActive')}}"
+                                    value="true" binary="true"></p-checkbox>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5>{{l('Roles')}}</h5>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12">
+                        <div *ngFor="let rol of roleList" class="field-checkbox">
+                            <p-checkbox name="rol" [formControl]="form.controls['roles']" [value]="rol.name"
+                                        [label]="rol.displayName"></p-checkbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>

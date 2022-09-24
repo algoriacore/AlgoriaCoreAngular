@@ -1,0 +1,346 @@
+.landing-body {
+    padding: 0;
+
+    .landing-wrapper {
+        .landing-header {
+            background: url("../../layout/images/landing/landing-header.jpg");
+            background-size: cover;
+            height: 540px;
+            position: relative;
+
+            .landing-topbar {
+                height: 60px;
+                padding: 15px 150px 15px 150px;
+                background-color: #3a3e45;
+                position: fixed;
+                z-index: 100;
+                width: 100%;
+                @include clearfix();
+                @include shadow(0 2px 6px 0 rgba(0, 0, 0, 0.24));
+
+                img {
+                    height: 30px;
+                    vertical-align: middle;
+                }
+        
+                .app-title {
+                    color: #ffffff;
+                    font-size: 24px;
+                    vertical-align: middle;
+                    margin-left: 24px;
+                }
+
+                #landing-menu-button {
+                    display: none;
+                    color: #ffffff;
+                    font-size: 24px;
+                }
+
+                ul {
+                    list-style: none;
+                    float: right;
+                    margin: 6px 0 0 0;
+
+                    li {
+                        display: inline-block;
+                        margin-left: 36px;
+
+                        a {
+                            color: #dadada;
+                            @include transition(color $transitionDuration);
+
+                            &:hover {
+                                color: #ffb900;
+                            }
+                        }
+
+                        &:first-child {
+                            margin-left: 0;
+                        }
+                    }
+                }
+            }
+
+            .landing-header-content {
+                padding: 235px 0 0 150px;
+
+                h1 {
+                    font-size: 28px;
+                    font-weight: 700;
+                    color: #ffffff;
+                    margin: 0;
+                }
+
+                p {
+                    font-size: 17px;
+                    color: #ffffff;
+                    margin: 16px 0 32px 0;
+                }
+            }
+
+            button {
+                padding: 0.5rem 1rem;
+            }
+        }
+
+        .landing-features {
+            padding: 48px 200px;
+
+            .feature-box {
+                padding: 24px;
+                position: relative;
+                border: 1px solid rgba(218, 218, 218, 0.5);
+                @include clearfix();
+                @include shadow(0 2px 16px 0 rgba(0, 0, 0, 0.08));
+
+                img {
+                    width: 32px;
+                    top: 50%;
+                    left: 24px;
+                    margin-top: -16px;
+                    position: absolute;
+                }
+    
+                > div {
+                    margin-left: 48px;
+
+                    h5 {
+                        color: #a6a6a6;
+                        margin: 0 0 8px 0;
+                    }
+
+                    p {
+                        margin: 0;
+                    }
+                }
+            }
+        }
+
+        .landing-news {
+            background-color: #2e353a;
+            padding: 48px 24px;
+            text-align: center;
+
+            h5 {
+                font-size: 28px;
+                color: #f8f8f8;
+                font-weight: 400;
+                margin: 0;
+            }
+
+            p {
+                font-size: 17px;
+                color: #dadada;
+                margin: 16px 0 32px 0;
+            }
+
+            button {
+                padding: 0.5rem 1rem;
+            }
+        }
+
+        .landing-pricing {
+            background-color: #ffffff;
+            padding: 48px 200px;
+            
+            .pricing-box {
+                @include shadow(0 2px 16px 0 rgba(0, 0, 0, 0.08));
+                background-color: #ffffff;
+                border: 1px solid rgba(218, 218, 218, 0.5);
+
+                .pricing-box-header {
+                    padding: 12px;
+                    background-color: #feedbc;
+                    text-align: center;
+
+                    h5 {
+                        font-size: 21px;
+                        color: #cd9c03;
+                        margin: 0 0 4px 0;
+                    }
+
+                    span {
+                        font-weight: 700;
+                    }
+                }
+
+                .pricing-box-content {
+                    padding: 32px;
+                    position: relative;
+                    min-height: 300px;
+
+                    ul {
+                        list-style-type: none;
+                        margin: 0;
+                        padding: 0;
+
+                        li {
+                            padding: 4px;
+
+                            i {
+                                margin-right: 8px;
+                                color: #61b5a1;
+                            }
+                        }
+                    }
+                    
+                    button {
+                        width: 100px;
+                        position: absolute;
+                        bottom: 32px;
+                        left: 50%;
+                        margin-left: -50px;
+                    }
+                }
+            }
+        }
+
+        .landing-multimedia {
+            background-color: #2e353a;
+            padding: 48px 24px;
+            text-align: center;
+
+            h5 {
+                font-size: 28px;
+                color: #f8f8f8;
+                font-weight: 400;
+                margin: 0;
+            }
+
+            p {
+                font-size: 17px;
+                color: #dadada;
+                margin: 16px 0 32px 0;
+            }
+
+            .video-container {
+                iframe {
+                    width: 560px;
+                    height: 315px;
+                }
+            }
+        }
+
+        .landing-footer {
+            background-color: #1e1f20;
+            padding: 48px 150px;
+            color: #c8c8c8;
+
+            a {
+                color: #c8c8c8;
+                @include transition(color $transitionDuration);
+
+                &:hover {
+                    color: #ffffff;
+                }
+            }
+
+            img {
+                height: 30px;
+            }
+
+            h6 {
+                margin: 0 0 12px 0;
+                font-size: 16px;
+            }
+
+            ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+
+                li {
+                    padding: 4px 0;
+                }
+            }
+
+            i {
+                font-size: 24px;
+                margin-right: 8px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 64em) {
+    .landing-body {
+        .landing-wrapper {
+            .landing-header {
+                height: auto;
+
+                .landing-topbar {
+                    height: 60px;
+                    padding: 15px 24px;
+
+                    #landing-menu-button {
+                        display: block;
+                        float: right;
+
+
+                    }
+            
+                    ul {
+                        display: none;
+                        -webkit-animation-duration: $transitionDuration;
+                        animation-duration: $transitionDuration;
+                        position: fixed;
+                        margin: 0;
+                        padding: 16px 24px;
+                        top: 61px;
+                        left: 0;
+                        width: 100%;
+                        z-index: 100;
+                        background-color: #3a3e45;
+                        @include shadow(0 2px 10px 0 rgba(0, 0, 0, 0.16));
+
+                        li {
+                            display: block;
+                            padding: 8px 0;
+                            margin: 0;
+                            font-size: 16px;
+                        }
+
+                        &.landing-menu-active {
+                            display: block;
+                        }
+                    }
+                }
+    
+                .landing-header-content {
+                    padding: 108px 24px;
+                    text-align: center;
+                }
+            }
+
+            .landing-features {
+                padding: 48px 24px;
+            }
+
+            .landing-pricing {
+                padding: 48px 24px;
+            }
+
+            .landing-multimedia {    
+                .video-container {
+                    iframe {
+                        width: auto;
+                        height: auto;
+                    }
+                }
+            }
+
+            .landing-footer {
+                text-align: center;
+                padding: 48px 0;
+    
+                h6 {
+                    margin-top: 12px;
+                }
+            }
+        }
+
+        &.landing-body-block-scroll {
+            overflow: hidden;
+        }
+    }
+}

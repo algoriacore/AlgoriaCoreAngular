@@ -1,0 +1,69 @@
+<app-blockable-div #pblockableDiv>
+
+    <div class="grid" [style.display]="isReady && !isSeeAttachments ? 'block': 'none'">
+        <div class="col-12" style="border: solid 1px #c8c8c8; border-bottom: 0px;">
+            <div style="float: left; display: inline;">
+                <h5><i class="fa fa-fw fa-commenting" (mouseenter)="op.show($event)"></i>&nbsp;{{chatRoom.name}}</h5>
+            </div>
+            <div style="float: right; display: inline;">
+                <p-button type="button" label="{{l('Files')}}" (onClick)="openAttachmentWindow(attachmentWindow, $event)"></p-button>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="col-12" style="padding: 0px;">
+            <div style="width: 100%;">
+                <ck-editor #ckeContentArea skin="moono-lisa"
+                           language="es-MX"
+                           [config]="configContentAreaObject">
+                </ck-editor>
+            </div>
+        </div>
+        <div class="col-12" style="border: solid 1px #c8c8c8; border-bottom: 0px; border-top: 0px;">
+
+            <p-fileUpload #fileUpload
+                          name="fileUpload[]"
+                          multiple="multiple"
+                          customUpload="true"
+                          maxFileSize="10000000"
+                          chooseLabel="{{l('AttachFile')}}"
+                          cancelLabel="{{l('Cancel')}}"
+                          [showUploadButton]="false">
+            </p-fileUpload>
+
+        </div>
+        <div class="col-12" style="padding: 0px;">
+            <div class="p-inputgroup">
+                <div style="width: 100%;">
+                    <ck-editor #ckeInputMessage skin="moono-lisa"
+                               language="es-MX"
+                               [config]="configInputMessageObject">
+                    </ck-editor>
+                </div>
+                <button pButton pRipple type="button" icon="fa fa-paper-plane" style="max-width: 80px; min-width: 60px;" (click)="sendMessage()"></button>
+            </div>
+        </div>
+    </div>
+
+</app-blockable-div>
+
+<p-blockUI [target]="pblockableDiv" [blocked]="blocked">
+    <i class="fa fa-circle-o-notch" style="position:absolute;top:50%;left:50%;font-size: 60px;font-weight: bold"></i>
+</p-blockUI>
+
+<p-overlayPanel #op [showCloseIcon]="true" [dismissable]="true">
+    {{chatRoom.description}}
+    <br />
+    {{chatRoom.userCreatorDesc}}
+    <br />
+    {{dateTimeService.getDateTimeToDisplay(chatRoom.creationTime)}}
+</p-overlayPanel>
+
+<p-overlayPanel #attachmentWindow [showCloseIcon]="true" [dismissable]="true" (onShow)="isAttachmentWindowOpen = true" (onHide)="isAttachmentWindowOpen = false">
+    <app-blockable-div #attachmentWindowBlockable>
+        <div #attachmentWindowList style="width: 350px; max-height: 500px; overflow-y: auto;" (scroll)="onScrollAttachmentWindow($event);"></div>
+    </app-blockable-div>
+</p-overlayPanel>
+
+<p-blockUI [target]="attachmentWindowBlockable" [blocked]="attachmentWindowBlocked">
+    <i class="fa fa-circle-o-notch" style="position:absolute;top:50%;left:50%;font-size: 60px;font-weight: bold"></i>
+</p-blockUI>

@@ -1,0 +1,92 @@
+<div class="grid">
+
+    <div class="col-12">
+        <form [formGroup]="form">
+            <div class="card">
+
+                <div class="p-fluid">
+
+                    <div class="field grid">
+
+                        <label class="col-12 md:col-4 lg:col-2" for="user">{{l('OrgUnits.OrgUnit.User')}}</label>
+                        <div class="col-12 md:col-8 lg:col-10">
+                            <p-autoComplete #acUser [(ngModel)]="acUserSelected" [ngModelOptions]="{standalone: true}"
+                                            [suggestions]="usersCombo" (completeMethod)="fillUsersAutocompleteDynamic($event)"
+                                            field="label" [forceSelection]="true" [minLength]="3"
+                                            placeholder="{{l('TypeToSelect')}}" emptyMessage="{{l('RecordsNotFound')}}">
+                            </p-autoComplete>
+                        </div>
+                    </div>
+
+                    <div class="grid">
+                        <div class="col-12 form-title-section">
+                            <div class="form-toolbar">
+                                <button [disabled]="!acUserSelected" pButton type="button" icon="fa fa-plus"
+                                        (click)="add()" label="{{l('Add')}}"></button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="grid p-fluid">
+                    <div class="col-12">
+                        <div class="p-inputgroup">
+                            <input type="text" [(ngModel)]="filterText" [ngModelOptions]="{standalone: true}"
+                                   (keyup.enter)="filterSearch()" placeholder="{{l('SearchDots')}}" id="filterText"
+                                   pInputText style="border-right:0" />
+                            <p-button type="button" icon="fa fa-search" (onClick)="filterSearch()"></p-button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <p-table #dt [value]="data" [lazy]="true" (onLazyLoad)="loadData($event)" [paginator]="true" [rows]="10"
+                         [totalRecords]="pagedTableSummary.totalRecords" [rowsPerPageOptions]="[10,20,30,50,100]"
+                         dataKey="id" selectionMode="single" [(selection)]="selectedItem"
+                         sortField="userDesc" [sortOrder]="1" styleClass="p-datatable-striped p-datatable-sm"
+                         class="p-datatable-responsive">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th scope="col" style="width:140px;">{{l('Actions')}}</th>
+                            <th scope="col" [pSortableColumn]="'userDesc'">
+                                {{l('OrgUnits.OrgUnit.Users.User')}}
+                                <p-sortIcon [field]="'userDesc'"></p-sortIcon>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData>
+                        <tr [pSelectableRow]="rowData">
+                            <td>
+                                <button type="button" pButton icon="fa fa-times" label="{{l('Delete')}}"
+                                        (click)="delete(rowData.id);"></button>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{l('OrgUnits.OrgUnit.Users.User')}}</span>
+                                <div class="p-column-content">{{rowData.userDesc}}</div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="summary">
+                        <div *ngIf="pagedTableSummary.totalRecords > 0">
+                            {{
+l('ShowingRecordsRange',
+                            pagedTableSummary.firstRecordInPage, pagedTableSummary.lastRecordInPage,
+                            pagedTableSummary.totalRecords)
+                            }}
+                        </div>
+                        <div *ngIf="pagedTableSummary.totalRecords == 0">{{l('RecordsNotFound')}}</div>
+                    </ng-template>
+                </p-table>
+
+            </div>
+        </form>
+    </div>
+    <div class="col-12 form-title-section">
+        <div class="form-toolbar">
+            <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+        </div>
+    </div>
+</div>
+
+<app-preloader [blocked]="blockedDocument"></app-preloader>

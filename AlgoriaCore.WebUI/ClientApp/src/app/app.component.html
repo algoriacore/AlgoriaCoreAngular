@@ -1,0 +1,30 @@
+<div class="layout-wrapper" [ngClass]="{'layout-horizontal': menuMode === 'horizontal',
+    'layout-overlay': menuMode === 'overlay',
+    'layout-static': menuMode === 'static',
+    'layout-slim': menuMode === 'slim',
+    'layout-menu-light': lightMenu === true,
+    'layout-menu-dark': lightMenu === false,
+    'layout-overlay-active': overlayMenuActive,
+    'layout-mobile-active': staticMenuMobileActive,
+    'layout-static-inactive': staticMenuDesktopInactive}" [class]="topbarColor" (click)="onLayoutClick()">
+    <app-topbar></app-topbar>
+
+    <app-menu [reset]="resetMenu"></app-menu>
+    <app-chatbar #chatBar></app-chatbar>
+
+    <div class="layout-main">
+        <div class="layout-content">
+            <app-alert></app-alert>
+            <app-message></app-message>
+            <router-outlet></router-outlet>
+            <app-help-on-screen></app-help-on-screen>
+        </div>
+    </div>
+    <div class="layout-footer">
+        <app-footer></app-footer>
+    </div>
+
+    <p-confirmDialog></p-confirmDialog>
+    <app-preloader [blocked]="blocked"></app-preloader>
+</div>
+

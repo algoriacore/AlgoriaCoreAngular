@@ -1,0 +1,44 @@
+<form [formGroup]="form">
+    <div class="grid">
+
+        <div class="col-12 form-title-section">
+            <h3>
+                {{l('EmailGroups')}}
+                <p-button type="button" styleClass="p-button-text algoria-button-help" icon="pi pi-info-circle"
+                          (onClick)="helpOnScreenService.show('ADMINISTRATION.EMAILGROUP.FORM', true)"></p-button>
+            </h3>
+            <div class="form-toolbar">
+                <p-button type="button" icon="pi pi-clock" styleClass="p-button-warning" (onClick)="showChangeHistory()" pTooltip="{{l('ShowChangeHistory')}}" tooltipPosition="top" *ngIf="id"></p-button>
+                <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+                <p-button type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+
+                <h5>{{l('GeneralData')}}</h5>
+
+                <p-message severity="info" text="{{l('EmailGroups.InfoForm')}}"></p-message>
+                <br /><br />
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 sm:col-12 md:col-8">
+                        <label for="displayname">{{l('EmailGroups.DisplayNameForm')}}<span class="required"> *</span></label>
+                        <input type="text" #name formControlName="displayname" id="displayname" autocomplete="off" maxlength="100" pInputText />
+                    </div>
+                    <div class="field col-12">
+                        <label for="header">{{l('EmailGroups.HeaderForm')}}</label>
+                        <app-editor [formControl]="f['header']" id="header" [style]="{'height':'320px'}"></app-editor>
+                    </div>
+                    <div class="field col-12">
+                        <label for="header">{{l('EmailGroups.FootForm')}}</label>
+                        <app-editor [formControl]="f['footer']" id="footer" [style]="{'height':'320px'}"></app-editor>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</form>

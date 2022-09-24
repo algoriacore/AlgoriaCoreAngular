@@ -1,0 +1,405 @@
+.overview-box {
+    border: solid 1px #dcdcdc;
+    padding: 28px;
+    text-align: right;
+    position: relative;
+    margin: 14px 0;
+    @include border-radius($borderRadius);
+
+    .overview-box-content {
+        .overview-box-title {
+            font-size: 16px;
+            letter-spacing: 2.3px;
+        }
+
+        .overview-box-details {
+            font-size: 24px;
+        }
+    }
+
+    img {
+        position: absolute;
+        width: 98px;
+        height: 78px;
+        left: -1px;
+        top: 50%;
+        margin-top: -39px;
+    }
+    
+    &.overview-box-sales {
+        background-color: #f8ebcb;
+    }
+
+    &.overview-box-views {
+        background-color: #ffe5dc;
+    }
+
+    &.overview-box-users {
+        background-color: #EEE9FA;
+    }
+
+    &.overview-box-checkins {
+        background-color: #e3f8f1;
+    }
+}
+
+.section-title {
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+.payments {
+    .payment {
+        .payment-title {
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .payment-time {
+            color: $textSecondaryColor;
+        }
+
+        .payment-amount {
+            display: inline-block;
+            margin: 12px 0;
+            padding: 12px;
+            background-color: #eaeaea;
+            @include border-radius($borderRadius);   
+        }
+
+        .payment-sender {
+            border-top: 1px solid #eaeaea;
+            padding-top: 16px;
+
+            img {
+                width: 32px;
+                height: 32px;
+                vertical-align: middle;
+            }
+
+            span {
+                font-weight: 700;
+                margin-left: 11px;
+                font-size: 12px;
+            }
+        }
+    }
+}
+
+.projects {
+    .project {
+        p {
+            color: $textSecondaryColor;
+            margin: 16px 0 24px 0;
+        }
+
+        .project-badge {
+            font-size: 12px;
+            display: inline-block;
+            padding: 5px;
+            color: #cd9c03;
+            background-color: #feedbc;
+            margin-right: 2.7px;
+            @include border-radius($borderRadius);
+
+            &.project-badge-alt {
+                color: #917fbb;
+                background-color: #eae1ff;
+            } 
+        }
+
+        .project-progress {
+            height: 24px;
+            margin-top: 14px;
+            text-align: right;
+            background-color: #eaeaea;
+            @include border-radius($borderRadius);
+            
+            .project-progress-value {
+                height: 24px;
+                line-height: 24px;
+                background-color: #61b5a1;
+                color: #ffffff;
+            }
+
+            &.project-progress-1 {
+                .project-progress-value {
+                    width: 33%;
+                }
+            }
+
+            &.project-progress-2 {
+                .project-progress-value {
+                    width: 18%;
+                }
+            }
+
+            &.project-progress-3 {
+                .project-progress-value {
+                    width: 64%;
+                }
+            }
+        }
+    }
+}
+
+.timeline {        
+    > .p-grid {
+        .p-col-3 {
+            font-size: 14px;
+            position: relative;
+            color: $textSecondaryColor;
+            border-right: 2px solid #f4f4f4;
+            
+            i {
+                background-color: transparent;
+                font-size: 24px;
+                position: absolute;
+                top: 6px;
+                right: -13px;
+            }
+        }
+        
+        .p-col-9 {
+            padding-left: 1.5em;
+            .event-owner {
+                font-weight: bold;
+            }
+            
+            .event-text {
+                color: $textSecondaryColor;
+                font-size: 14px;
+                display: block;
+                padding-bottom: 20px;
+            }
+            
+            .event-content {
+                img {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+.accounting {
+    text-align: center;
+
+    .accounting-title {
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .accounting-value {
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    img {
+        width: 75%;
+        margin: 24px 0;
+    }
+
+    .accounting-progress {
+        background-color: #d8efe9;
+        height: 8px;
+
+        .accounting-progress-value {
+            background-color: #4b9584; 
+        }
+        
+        .accounting-progress-1 {
+            .accounting-progress-value {
+                width: 19%;
+            }
+        }
+
+        .accounting-progress-2 {
+            .accounting-progress-value {
+                width: 22%;
+            }
+        }
+    }
+
+    .accounting-footer {
+        padding: 8px 16px;
+        background-color: #f4f4f4;
+        font-size: 12px;
+        color: $textSecondaryColor;
+        @include border-radius-bottom($borderRadius); 
+    }
+}
+
+.inbox {
+    margin-bottom: 16px;
+
+    .inbox-header {
+        padding: 15px 18px;
+        background-color: #f4f4f4;
+        border: 1px solid #dadada;
+        @include clearfix();
+        @include border-radius-top($borderRadius);
+
+        a {
+            float: right;
+            color: $textSecondaryColor;
+            @include transition(color $transitionDuration);
+
+            &:hover {
+                color: $textColor;
+            }
+        }
+    }
+
+    .inbox-content {
+        background-color: #ffffff;
+        border: 1px solid #dadada;
+        border-top: 0 none;
+        @include border-radius-bottom($borderRadius);
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+
+            li {
+                @include clearfix();
+                padding: 12px 18px;
+                border-bottom: 1px solid #eaeaea;
+
+                &:last-child {
+                    border-bottom: 0 none;
+                }
+
+                img {
+                    width: 32px;
+                    height: 32px;
+                    float: left;
+                }
+
+                .inbox-sender {
+                    font-weight: 700;
+                    margin-left: 50px;
+                }
+
+                .inbox-message {
+                    color: $textSecondaryColor;
+                    margin-left: 50px;
+                }
+            }
+        }
+    }
+}
+
+.chat {
+    ul {
+        padding: 12px;
+        margin: 0;
+        list-style-type: none;
+        
+        li {
+            padding: 6px 0;
+
+            img {
+                width: 36px;
+                display: inline-block;
+                vertical-align: middle;
+            }
+            
+            span {
+                padding: 6px 12px;
+                display: inline-block;
+                @include border-radius($borderRadius);
+            }
+            
+            &.message-from {                    
+                img {
+                    margin-right: 8px;
+                }
+                
+                span {
+                    margin: 4px 0;
+                    background-color: #f8f8f8;
+                    border: solid 1px #eaeaea;
+                    color: $textSecondaryColor;
+                }
+            }
+            
+            &.message-own {
+                text-align: right;
+                
+                img {
+                    margin-left: 8px;
+                }
+                
+                span {
+                    border: solid 1px #eaeaea;
+                    background: #ffffff;
+                    color: $textSecondaryColor;
+                }
+            }
+        }
+    }
+    
+    .new-message {
+        background-color: #ffffff;
+        border: 1px solid #dadada;
+        @include border-radius-top($borderRadius);
+
+        textarea {
+            border: 0 none;
+            font-size: $fontSize;
+            font-family: $fontFamily;
+            resize: none;
+            height: 60px;
+            width: 100%;
+            padding: 12px;
+            color: $textColor;
+
+            &:focus {
+                outline: 0 none;
+            }
+        }
+
+        .new-message-footer {
+            background-color: #f4f4f4;
+            @include clearfix();
+            @include border-radius-bottom($borderRadius); 
+
+            .new-message-icon {
+                display: inline-block;
+                color: $textSecondaryColor;
+                width: 33px;
+                height: 33px;
+                text-align: center;
+                cursor: pointer;
+                line-height: 33px;
+                background-color: transparent;
+                @include transition(background-color $transitionDuration);
+
+                i {
+                    line-height: inherit;
+                }
+
+                &:hover {
+                    background-color: #ffffff;
+                }
+            }
+
+            .new-message-send {
+                height: 33px;
+                cursor: pointer;
+                display: block;
+                float: right;
+                padding: 8px 12px;
+                background: $primaryColor;
+                color: $primaryTextColor;
+
+                &:hover {
+                    background-color: darken($primaryColor, 10%);
+                }
+            }
+        }
+    }
+}

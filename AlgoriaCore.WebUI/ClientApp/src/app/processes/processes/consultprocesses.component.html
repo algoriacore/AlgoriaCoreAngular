@@ -1,0 +1,209 @@
+    <div class="grid" *ngIf="model">
+
+        <div class="col-12 form-title-section">
+            <h3>
+                {{model.template.nameSingular}}
+            </h3>
+            <div class="form-toolbar">
+                <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+                <p-button type="button" label="{{l('ShowChangeHistory')}}" (onClick)="showChangeHistory()" *ngIf="id"></p-button>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card" *ngIf="model.template.isActivity">
+                <h5>{{l('Processes.Process.Activity')}}</h5>
+
+                <div class="p-fluid formgrid grid" *ngIf="id">
+                    <div class="col-12 md:col-6">
+                        <div class="field grid">
+                            <label class="col-12 md:col-4 lg:col-3">{{fieldLabels['ACT_CreationTime']}}</label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                {{model.activity.creationTimeDesc}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-6">
+                        <div class="field grid">
+                            <label class="col-12 md:col-4 lg:col-3">{{fieldLabels['ACT_UserCreator']}}</label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                {{model.activity.userCreatorDesc}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-6">
+                        <div class="field grid">
+                            <label for="ACT_Description" class="col-12 md:col-4 lg:col-3">
+                                {{fieldLabels['ACT_Description']}}
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                {{model.activity.description}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-6">
+                        <div class="field grid">
+                            <label for="ACT_Status" class="col-12 md:col-4 lg:col-3">
+                                {{fieldLabels['ACT_Status']}}
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                {{model.activity.statusDesc}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-6">
+                        <div class="field grid">
+                            <label for="ACT_InitialPlannedDate" class="col-12 md:col-4 lg:col-3">
+                                {{fieldLabels['ACT_InitialPlannedDate']}}
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                {{model.activity.initialPlannedDateDesc}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-6">
+                        <div class="field grid">
+                            <label for="ACT_FinalPlannedDate" class="col-12 md:col-4 lg:col-3">
+                                {{fieldLabels['ACT_FinalPlannedDate']}}<span class="required"> *</span>
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                {{model.activity.finalPlannedDateDesc}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-6">
+                        <div class="field grid">
+                            <label for="ACT_InitialRealDate" class="col-12 md:col-4 lg:col-3">
+                                {{fieldLabels['ACT_InitialRealDate']}}
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                {{model.activity.initialRealDateDesc}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-6">
+                        <div class="field grid">
+                            <label for="ACT_FinalRealDate" class="col-12 md:col-4 lg:col-3">
+                                {{fieldLabels['ACT_FinalRealDate']}}
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                {{model.activity.finalRealDateDesc}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-6">
+                        <div class="field grid">
+                            <label class="col-12 md:col-4 lg:col-3">
+                                {{fieldLabels['ACT_IsOnTime']}}
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                {{model.activity.isOnTimeDesc}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-6"></div>
+                    <div class="col-12 md:col-6">
+                        <div class="field grid">
+                            <label for="ACT_Executor" class="col-12 md:col-4 lg:col-3">
+                                {{fieldLabels['ACT_Executor']}}
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                {{model.activity.executorDesc}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-6">
+                        <div class="field grid">
+                            <label for="ACT_Evaluator" class="col-12 md:col-4 lg:col-3">
+                                {{fieldLabels['ACT_Evaluator']}}
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                {{model.activity.evaluatorDesc}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" *ngFor="let templateSection of templateSections">
+                <h5><span [ngClass]="templateSection.iconAF" style="margin-right: 10px;"></span>{{templateSection.name}}</h5>
+
+                <div class="p-fluid">
+                    <div class="field grid" *ngFor="let field of templateSection.fields">
+                        <label for="{{field.fieldName}}" class="col-12 md:col-4 lg:col-2">
+                            {{field.name}}
+                        </label>
+                        <div class="col-12 md:col-8">
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.InputText">
+                                {{model.data[field.fieldName]}}
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.DropDown">
+                                {{model.data[field.fieldName + '_DESC']}}
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.Listbox">
+                                {{model.data[field.fieldName + '_DESC']}}
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.RadioButton">
+                                {{model.data[field.fieldName + '_DESC']}}
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.InputSwitch">
+                                {{model.data[field.fieldName + '_DESC']}}
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.InputMask">
+                                {{model.data[field.fieldName]}}
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.InputTextArea">
+                                {{model.data[field.fieldName]}}
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.ListboxMultivalue">
+                                {{model.data[field.fieldName + '_DESC']}}
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.Checkbox">
+                                {{model.data[field.fieldName + '_DESC']}}
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.Multiselect">
+                                {{model.data[field.fieldName + '_DESC']}}
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.CalendarBasic">
+                                {{model.data[field.fieldName + '_DESC']}}
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.CalendarTime">
+                                {{model.data[field.fieldName + '_DESC']}}
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.CalendarTimeOnly">
+                                {{model.data[field.fieldName]}}
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.Spinner">
+                                {{model.data[field.fieldName]}}
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.SpinnerFormatInput">
+                                {{model.data[field.fieldName] | number:'1.0-31' }}
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.TextNumber">
+                                <div *ngIf="field.fieldType === TemplateFieldType.Integer">
+                                    {{model.data[field.fieldName] | number:'1.0-0'}}
+                                </div>
+                                <div *ngIf="field.fieldType === TemplateFieldType.Decimal">
+                                    {{model.data[field.fieldName] | number:'1.2-29'}}
+                                </div>
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.GoogleAddress">
+                                {{model.data[field.fieldName]}}
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.Autocomplete">
+                                {{model.data[field.fieldName + '_DESC']}}
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.AutocompleteDynamic">
+                                {{model.data[field.fieldName + '_DESC']}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="id && model && model.template.hasChatRoom">
+                <app-chatlog chatRoomId="{{'table-process_' + model.template.id + '_' + id}}" name="Chat" description="{{model.template.description}}"></app-chatlog>
+            </div>
+        </div>
+
+    </div>

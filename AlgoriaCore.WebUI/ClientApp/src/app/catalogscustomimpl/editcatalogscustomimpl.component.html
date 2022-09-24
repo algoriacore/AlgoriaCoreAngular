@@ -1,0 +1,17 @@
+<div class="grid" *ngIf="model">
+
+    <div class="col-12 form-title-section">
+        <h3>
+            {{model.catalogCustom.nameSingular}}
+        </h3>
+        <div class="form-toolbar">
+            <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+            <p-button *ngIf="!id && permissions.create" type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
+            <p-button *ngIf="id && permissions.edit" type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <app-questionnaire #questionnaireComponent [questionnaire]="model.questionnaire" [value]="model.data"></app-questionnaire>
+    </div>
+</div>

@@ -1,0 +1,72 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <form [formGroup]="form">
+                <div class="grid p-fluid">
+                    <div class="col-12">
+                        <div class="p-inputgroup">
+                            <input type="text" pInputText placeholder="{{l('SearchDots')}}"
+                                formControlName="filterText">
+                            <button type="submit" pButton pRipple icon="fa fa-search" (click)="filterSearch()"></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <p-table #dt1 [columns]="cols" [value]="data" [(selection)]="selectedItem" [lazy]="true"
+                (onLazyLoad)="loadData($event)" [paginator]="true" [rows]="10"
+                [totalRecords]="pagedTableSummary.totalRecords" [rowsPerPageOptions]="[10,20,30,50,100]" dataKey="id"
+                selectionMode="single" sortField="id" stateStorage="local" [stateKey]="browserStorageTableKey"
+                styleClass="p-datatable-striped p-datatable-sm" class="p-datatable-responsive">
+                <ng-template pTemplate="caption">
+                    <div class="table-header">
+                        {{l('MailServiceMailAttachs.MailServiceMailAttach')}}
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th scope="col" style="width:140px;">{{l('Actions')}}</th>
+                        <th scope="col" *ngFor="let col of columns" [pSortableColumn]="col.field"
+                            [style.width]="col.width">
+                            {{col.header}}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr [pSelectableRow]="rowData">
+                        <td>
+                            <button *ngIf="createMenuItems(rowData).length > 0" type="button" pButton icon="fa fa-cog"
+                                label="{{l('Actions')}}" (click)="createAndShowMenu($event,rowData);"></button>
+                        </td>
+
+                        <td>
+                            <span class="p-column-title">{{getHeaderTitleColumn(columns, 'contenType')}}</span>
+                            <div class="p-column-content">{{rowData.contenType}}</div>
+                        </td>
+
+                        <td>
+                            <span class="p-column-title">{{getHeaderTitleColumn(columns, 'fileName')}}</span>
+                            <div class="p-column-content">{{rowData.fileName}}</div>
+                        </td>
+
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div *ngIf="pagedTableSummary.totalRecords > 0">{{l('ShowingRecordsRange',
+                        pagedTableSummary.firstRecordInPage, pagedTableSummary.lastRecordInPage,
+                        pagedTableSummary.totalRecords)}}</div>
+                    <div *ngIf="pagedTableSummary.totalRecords == 0">{{l('RecordsNotFound')}}</div>
+                </ng-template>
+            </p-table>
+
+
+        </div>
+    </div>
+</div>
+
+<p-menu #menu popup="popup" [model]="items" [style]="{'width':'200px'}"></p-menu>
+<p-confirmDialog></p-confirmDialog>

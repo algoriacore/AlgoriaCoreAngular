@@ -1,0 +1,123 @@
+<form [formGroup]="form">
+    <div class="grid">
+
+        <div class="col-12 form-title-section">
+            <h3>
+                {{l('OrgUnits.OrgUnit')}}
+                <p-button type="button" styleClass="p-button-text algoria-button-help" icon="pi pi-info-circle"
+                          (onClick)="helpOnScreenService.show('ADMINISTRATION.ORGUNIT.FORM', true)"></p-button>
+            </h3>
+            <div class="form-toolbar">
+                <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+                <p-button type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
+                <p-button type="button" label="{{l('ShowChangeHistory')}}" (onClick)="showChangeHistory()" *ngIf="id"></p-button>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+
+                <h5>{{l('GeneralData')}}</h5>
+                <div class="p-fluid">
+
+                    <div class="field grid">
+                        <label class="col-12 md:col-4 lg:col-2" for="name">{{fieldLabels["name"]}}</label>
+                        <div class="col-12 md:col-8 lg:col-10">
+                            <input type="text" formControlName="name" id="name" autocomplete="off" maxlength="100"
+                                   pInputText />
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div *ngIf="id" class="card">
+                <h5>{{l('OrgUnits.OrgUnit.Users')}}</h5>
+
+                <div class="p-fluid">
+
+                    <div class="field grid">
+
+                        <label class="col-12 md:col-4 lg:col-2" for="user">{{l('OrgUnits.OrgUnit.User')}}</label>
+                        <div class="col-12 md:col-8 lg:col-10">
+                            <p-autoComplete #acUser [(ngModel)]="acUserSelected" [ngModelOptions]="{standalone: true}"
+                                            [suggestions]="usersCombo" (completeMethod)="fillUsersAutocompleteDynamic($event)"
+                                            field="label" [forceSelection]="true" [minLength]="3"
+                                            placeholder="{{l('TypeToSelect')}}" emptyMessage="{{l('RecordsNotFound')}}">
+                            </p-autoComplete>
+                        </div>
+                    </div>
+
+                    <div class="grid">
+                        <div class="col-12 form-title-section">
+                            <div class="form-toolbar">
+                                <button [disabled]="!acUserSelected" pButton type="button" icon="fa fa-plus"
+                                        (click)="addUser()" label="{{l('Add')}}"></button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <p-table #dtUsers [value]="users" [lazy]="true" (onLazyLoad)="loadDataUser($event)" [paginator]="true"
+                         [rows]="10" [totalRecords]="pagedTableSummaryUser.totalRecords"
+                         [rowsPerPageOptions]="[10,20,30,50,100]" dataKey="id" selectionMode="single"
+                         [(selection)]="selectedItemUser" sortField="userDesc" [sortOrder]="1"
+                         styleClass="p-datatable-striped p-datatable-sm" class="p-datatable-responsive">
+
+                    <ng-template pTemplate="caption">
+                        <div class="grid p-fluid">
+                            <div class="col-12 sm:col-7 md:col-8 lg:col-9">
+                                <h5>{{l('OrgUnits.OrgUnit.Users')}}</h5>
+                            </div>
+                            <div class="col-12 sm:col-5 md:col-4 lg:col-3">
+                                <span class="p-input-icon-left">
+                                    <i class="pi pi-search"></i>
+                                    <input type="text" pInputText placeholder="{{l('SearchDots')}}" [(ngModel)]="filterTextUser"
+                                        [ngModelOptions]="{standalone: true}" (keydown.enter)="filterSearchUser($event)" id="filterTextUser" />
+                                </span>
+                            </div>
+                        </div>
+                    </ng-template>
+
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th scope="col" style="width:140px;">{{l('Actions')}}</th>
+                            <th scope="col" [pSortableColumn]="'userDesc'">
+                                {{l('OrgUnits.OrgUnit.Users.User')}}
+                                <p-sortIcon [field]="'userDesc'"></p-sortIcon>
+                            </th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-rowData>
+                        <tr [pSelectableRow]="rowData">
+                            <td>
+                                <div>
+                                    <button pButton pRipple icon="pi pi-trash" class="p-button-danger mr-2" (click)="deleteUser(rowData.id)" pTooltip="{{l('Delete')}}" tooltipPosition="top"></button>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{l('OrgUnits.OrgUnit.Users.User')}}</span>
+                                <div class="p-column-content">{{rowData.userDesc}}</div>
+                            </td>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="paginatorleft"></ng-template>
+                    <ng-template pTemplate="paginatorright">
+                        <div *ngIf="pagedTableSummaryUser.totalRecords > 0" class="p-text-bold">
+                            {{l('ShowingRecordsRange', pagedTableSummaryUser.firstRecordInPage, pagedTableSummaryUser.lastRecordInPage, pagedTableSummaryUser.totalRecords)}}
+                        </div>
+                        <div *ngIf="pagedTableSummaryUser.totalRecords == 0" class="p-text-bold">{{l('RecordsNotFound')}}</div>
+                    </ng-template>
+
+                </p-table>
+
+            </div>
+
+        </div>
+
+    </div>
+</form>

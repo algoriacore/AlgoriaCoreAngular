@@ -1,0 +1,37 @@
+.squareF {
+    float: left;
+    width: 210px;
+    height: 210px;
+    margin: 30px;
+    margin-bottom: 50px;
+    box-shadow: 7px 7px 5px 5px #888888;
+    padding: 10px;
+}
+
+.squareF .titleSection {
+    text-align: center;
+}
+
+.titulo {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: #616A6B;
+    margin-top: 5px;
+}
+
+.descripcion {
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+}
+
+#plus {
+    font-size: 40px;
+    font-weight: bold;
+    color: #616A6B;
+}

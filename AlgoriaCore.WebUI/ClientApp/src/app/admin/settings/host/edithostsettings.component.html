@@ -1,0 +1,336 @@
+<form [formGroup]="form" (ngSubmit)="save()">
+    <div class="grid">
+
+        <div class="col-12 form-title-section">
+            <h3>
+                {{l('Host.Settings')}}
+                <p-button type="button" styleClass="p-button-text algoria-button-help" icon="pi pi-info-circle"
+                          (onClick)="helpOnScreenService.show('ADMINISTRATION.SETTING.FORM', true)"></p-button>
+            </h3>
+            <div class="form-toolbar">
+                <p-button type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <h4>{{l('Host.Settings.General')}}</h4>
+
+            <div class="grid">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="p-fluid formgrid grid">
+                            <div class="field col-12">
+                                <label for="webSiteRootAddress">
+                                    {{fieldLabels["webSiteRootAddress"]}}<span class="required"> *</span>
+                                </label>
+                                <input type="text" #name formControlName="webSiteRootAddress"
+                                       id="webSiteRootAddress" autocomplete="off" maxlength="128" pInputText />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4>{{l('Host.Settings.Security')}}</h4>
+
+            <div class="grid">
+                <div class="col-12 md:col-6">
+                    <div class="card">
+                        <h5>{{l('Host.Settings.Security.PasswordComplexity')}}</h5>
+
+                        <div class="p-fluid formgrid grid">
+                            <div class="field col-12">
+                                <p-checkbox id="passwordUseDefaultConfiguration"
+                                            name="passwordUseDefaultConfiguration"
+                                            [formControl]="form.controls['passwordUseDefaultConfiguration']"
+                                            value="true" binary="true"
+                                            label="{{l('Host.Settings.Security.PasswordUseDefaultConfiguration')}}">
+                                </p-checkbox>
+                            </div>
+                        </div>
+
+                        <h6>{{l('Host.Settings.Security.PasswordSecurity')}}</h6>
+
+                        <div class="p-fluid formgrid grid" *ngIf="f.passwordUseDefaultConfiguration.value">
+                            <div class="field col-12 md:col-6">
+                                <label for="passwordMinimumLengthDefault">
+                                    {{fieldLabels["passwordMinimumLengthDefault"]}}<span class="required"> *</span>
+                                </label>
+
+                                <p-inputNumber id="passwordMinimumLengthDefault"
+                                               formControlName="passwordMinimumLengthDefault" mode="decimal"
+                                               [showButtons]="true" [min]="1" [max]="255">
+                                </p-inputNumber>
+                            </div>
+                            <div class="field col-12 md:col-6">
+                                <label for="passwordMaximumLengthDefault">
+                                    {{fieldLabels["passwordMaximumLengthDefault"]}}<span class="required"> *</span>
+                                </label>
+                                <p-inputNumber id="passwordMaximumLengthDefault"
+                                               formControlName="passwordMaximumLengthDefault" mode="decimal"
+                                               [showButtons]="true" [min]="1" [max]="255">
+                                </p-inputNumber>
+                            </div>
+                            <div class="field col-12">
+                                <div class="field-checkbox">
+                                    <p-checkbox id="passwordUseNumbersDefault"
+                                                name="passwordUseNumbersDefault"
+                                                [formControl]="form.controls['passwordUseNumbersDefault']"
+                                                value="true" binary="true"
+                                                label="{{l('Host.Settings.Security.PasswordUseNumbers')}}">
+                                    </p-checkbox>
+                                </div>
+                                <div class="field-checkbox">
+                                    <p-checkbox id="passwordUseUppercaseDefault"
+                                                name="passwordUseUppercaseDefault"
+                                                [formControl]="form.controls['passwordUseUppercaseDefault']"
+                                                value="true" binary="true"
+                                                label="{{l('Host.Settings.Security.PasswordUseUppercase')}}">
+                                    </p-checkbox>
+                                </div>
+                                <div class="field-checkbox">
+                                    <p-checkbox id="passwordUseLowercaseDefault"
+                                                name="passwordUseLowercaseDefault"
+                                                [formControl]="form.controls['passwordUseLowercaseDefault']"
+                                                value="true" binary="true"
+                                                label="{{l('Host.Settings.Security.PasswordUseLowercase')}}">
+                                    </p-checkbox>
+                                </div>
+                                <div class="field-checkbox">
+                                    <p-checkbox id="passwordUsePunctuationSymbolsDefault"
+                                                name="passwordUsePunctuationSymbolsDefault"
+                                                [formControl]="form.controls['passwordUsePunctuationSymbolsDefault']"
+                                                value="true" binary="true"
+                                                label="{{l('Host.Settings.Security.PasswordUsePunctuationSymbols')}}">
+                                    </p-checkbox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-fluid formgrid grid" *ngIf="!f.passwordUseDefaultConfiguration.value">
+                            <div class="field col-12 md:col-6">
+                                <label for="passwordMinimumLength">
+                                    {{fieldLabels["passwordMinimumLength"]}}<span class="required"> *</span>
+                                </label>
+                                <p-inputNumber id="passwordMinimumLength"
+                                               formControlName="passwordMinimumLength" mode="decimal"
+                                               [showButtons]="true" [min]="1" [max]="255">
+                                </p-inputNumber>
+                            </div>
+                            <div class="field col-12 md:col-6">
+                                <label for="passwordMaximumLength">
+                                    {{fieldLabels["passwordMaximumLength"]}}<span class="required"> *</span>
+                                </label>
+                                <p-inputNumber id="passwordMaximumLength"
+                                               formControlName="passwordMaximumLength" mode="decimal"
+                                               [showButtons]="true" [min]="1" [max]="255">
+                                </p-inputNumber>
+                            </div>
+                            <div class="field col-12">
+                                <div class="field-checkbox">
+                                    <p-checkbox id="passwordUseNumbers" name="passwordUseNumbers"
+                                                [formControl]="form.controls['passwordUseNumbers']" value="true"
+                                                binary="true"
+                                                label="{{l('Host.Settings.Security.PasswordUseNumbers')}}">
+                                    </p-checkbox>
+                                </div>
+                                <div class="field-checkbox">
+                                    <p-checkbox id="passwordUseUppercase" name="passwordUseUppercase"
+                                                [formControl]="form.controls['passwordUseUppercase']" value="true"
+                                                binary="true"
+                                                label="{{l('Host.Settings.Security.PasswordUseUppercase')}}">
+                                    </p-checkbox>
+                                </div>
+                                <div class="field-checkbox">
+                                    <p-checkbox id="passwordUseLowercase" name="passwordUseLowercase"
+                                                [formControl]="form.controls['passwordUseLowercase']" value="true"
+                                                binary="true"
+                                                label="{{l('Host.Settings.Security.PasswordUseLowercase')}}">
+                                    </p-checkbox>
+                                </div>
+                                <div class="field-checkbox">
+                                    <p-checkbox id="passwordUsePunctuationSymbols"
+                                                name="passwordUsePunctuationSymbols"
+                                                [formControl]="form.controls['passwordUsePunctuationSymbols']"
+                                                value="true" binary="true"
+                                                label="{{l('Host.Settings.Security.PasswordUsePunctuationSymbols')}}">
+                                    </p-checkbox>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-12 md:col-6">
+                    <div class="card">
+                        <h5>{{l('Host.Settings.Security.UserBlocked')}}</h5>
+
+                        <div class="p-fluid formgrid grid">
+                            <div class="field col-12">
+                                <p-checkbox id="enableUserBlocking" name="enableUserBlocking"
+                                            [formControl]="form.controls['enableUserBlocking']" value="true"
+                                            binary="true" label="{{l('Host.Settings.Security.EnableUserBlocking')}}"
+                                            (click)="onClickEnableUserBlocking()"></p-checkbox>
+                            </div>
+                            <div class="field col-12 md:col-6">
+                                <label for="failedAttemptsToBlockUser">
+                                    {{fieldLabels["failedAttemptsToBlockUser"]}}<span class="required"> *</span>
+                                </label>
+                                <p-inputNumber [showButtons]="true" id="failedAttemptsToBlockUser"
+                                               formControlName="failedAttemptsToBlockUser" [min]="1" [max]="255"
+                                               [maxlength]="3"></p-inputNumber>
+                            </div>
+                            <div class="field col-12 md:col-6">
+                                <label for="userBlockingDuration">
+                                    {{fieldLabels["userBlockingDuration"]}}<span class="required"> *</span>
+                                </label>
+                                <p-inputNumber [showButtons]="true" id="userBlockingDuration"
+                                               formControlName="userBlockingDuration" [min]="1" [step]="30">
+                                </p-inputNumber>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h5>{{l('Host.Settings.Security.TwoFactorLogin')}}</h5>
+
+                        <div class="p-fluid formgrid grid">
+                            <div class="field col-12">
+                                <div class="field-checkbox">
+                                    <p-checkbox id="enableTwoFactorLogin" name="enableTwoFactorLogin"
+                                                [formControl]="form.controls['enableTwoFactorLogin']" value="true"
+                                                binary="true" label="{{l('Host.Settings.Security.EnableTwoFactorLogin')}}"
+                                                (click)="onClickEnableTwoFactorLogin()"></p-checkbox>
+                                </div>
+                                <div class="field-checkbox">
+                                    <p-checkbox id="enableMailVerification" name="enableMailVerification"
+                                                [formControl]="form.controls['enableMailVerification']" value="true"
+                                                binary="true"
+                                                label="{{l('Host.Settings.Security.EnableMailVerification')}}">
+                                    </p-checkbox>
+                                </div>
+                                <div class="field-checkbox">
+                                    <p-checkbox id="enableSMSVerification" name="enableSMSVerification"
+                                                [formControl]="form.controls['enableSMSVerification']" value="true"
+                                                binary="true" label="{{l('Host.Settings.Security.EnableSMSVerification')}}">
+                                    </p-checkbox>
+                                </div>
+                                <div class="field-checkbox">
+                                    <p-checkbox id="enableBrowserRemenberMe" name="enableBrowserRemenberMe"
+                                                [formControl]="form.controls['enableBrowserRemenberMe']" value="true"
+                                                binary="true"
+                                                label="{{l('Host.Settings.Security.EnableBrowserRemenberMe')}}">
+                                    </p-checkbox>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4>{{l('Host.Settings.Mail')}}</h4>
+
+            <div class="grid">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="p-fluid formgrid grid">
+                            <div class="field col-12 md:col-6">
+                                <label for="mailSMTPSenderDefault">{{fieldLabels["mailSMTPSenderDefault"]}}</label>
+                                <input type="text" formControlName="mailSMTPSenderDefault"
+                                       id="mailSMTPSenderDefault" autocomplete="off" maxlength="256" pInputText />
+                            </div>
+                            <div class="field col-12 md:col-6">
+                                <label for="mailSMTPSenderDefaultDisplayName">{{fieldLabels["mailSMTPSenderDefaultDisplayName"]}}</label>
+                                <input type="text" formControlName="mailSMTPSenderDefaultDisplayName"
+                                       id="mailSMTPSenderDefaultDisplayName" autocomplete="off" maxlength="128"
+                                       pInputText />
+                            </div>
+                            <div class="field col-12 md:col-6">
+                                <label for="mailSMTPHost">{{fieldLabels["mailSMTPHost"]}}</label>
+                                <input type="text" formControlName="mailSMTPHost" id="mailSMTPHost"
+                                       autocomplete="off" maxlength="64" pInputText />
+                            </div>
+                            <div class="field col-12 md:col-6">
+                                <label for="mailSMTPPort">{{fieldLabels["mailSMTPPort"]}}</label>
+                                <p-inputNumber [showButtons]="true" [format]="false" id="mailSMTPPort"
+                                               formControlName="mailSMTPPort" [maxlength]="5">
+                                </p-inputNumber>
+                            </div>
+                            <div class="field col-12">
+                                <p-checkbox id="mailEnableSSL" name="mailEnableSSL"
+                                            [formControl]="form.controls['mailEnableSSL']" value="true"
+                                            binary="true" label="{{l('Host.Settings.Mail.EnableSSL')}}">
+                                </p-checkbox>
+                            </div>
+                        </div>
+
+                        <h6>{{l('Host.Settings.Mail.Security')}}</h6>
+
+                        <div class="p-fluid formgrid grid">
+                            <div class="field col-12">
+                                <p-checkbox id="mailUseDefaultCredentials" name="mailUseDefaultCredentials"
+                                            [formControl]="form.controls['mailUseDefaultCredentials']" value="true"
+                                            binary="true" label="{{l('Host.Settings.Mail.UseDefaultCredentials')}}"
+                                            (click)="onClickMailUseDefaultCredentials()"></p-checkbox>
+                            </div>
+                            <div class="field col-12 md:col-6" *ngIf="!f.mailUseDefaultCredentials.value">
+                                <label for="mailDomainName">{{fieldLabels["mailDomainName"]}}</label>
+                                <input type="text" formControlName="mailDomainName" id="mailDomainName"
+                                       autocomplete="off" maxlength="128" pInputText />
+                            </div>
+                            <div class="field col-12 md:col-6" *ngIf="!f.mailUseDefaultCredentials.value">
+                                <label for="mailUserName">
+                                    {{fieldLabels["mailUserName"]}}<span class="required">
+                                        *
+                                    </span>
+                                </label>
+                                <input type="text" formControlName="mailUserName" id="mailUserName"
+                                       autocomplete="off" pInputText />
+                            </div>
+                            <div class="field col-12 md:col-6" *ngIf="!f.mailUseDefaultCredentials.value">
+                                <label for="mailUserPassword">
+                                    {{fieldLabels["mailUserPassword"]}}<span class="required"> *</span>
+                                </label>
+                                <input type="text" formControlName="mailUserPassword" id="mailUserPassword"
+                                       autocomplete="off" pInputText />
+                            </div>
+                        </div>
+
+                        <h6 *ngIf="model.emailSendMethod === 1 && !model.grpcEmail.sendConfiguration">{{l('Tenant.Settings.Mail.GrpcMail')}}</h6>
+
+                        <div class="p-fluid formgrid grid" *ngIf="model.emailSendMethod === 1 && !model.grpcEmail.sendConfiguration">
+                            <div class="field col-12 md:col-6">
+                                <label for="grpcMailTenancyName">{{fieldLabels["grpcMailTenancyName"]}}<span class="required"> *</span></label>
+                                <input type="text" formControlName="grpcMailTenancyName" id="grpcMailTenancyName" autocomplete="off" maxlength="128" pInputText required />
+                            </div>
+                            <div class="field col-12 md:col-6">
+                                <label for="grpcMailTenancyName">{{fieldLabels["grpcMailUserName"]}}<span class="required"> *</span></label>
+                                <input type="text" formControlName="grpcMailUserName" id="grpcMailUserName" autocomplete="off" maxlength="128" pInputText required />
+                            </div>
+                            <div class="field col-12 md:col-6">
+                                <label for="grpcMailTenancyName">{{fieldLabels["grpcMailPassword"]}}<span class="required"> *</span></label>
+                                <input type="text" formControlName="grpcMailPassword" id="grpcMailPassword" autocomplete="off" maxlength="128" pInputText required />
+                            </div>
+                        </div>
+
+                        <h6>{{l('Host.Settings.Mail.Try')}}</h6>
+
+                        <div class="p-fluid formgrid grid">
+                            <div class="field col-12 md:col-6">
+                                <label for="trySentTo">{{l('Host.Settings.Mail.TrySentTo')}}</label>
+                                <div class="p-inputgroup">
+                                    <span class="p-inputgroup-addon"><em class="fa fa-envelope"></em></span>
+                                    <input type="text" formControlName="trySentTo" id="trySentTo" pInputText>
+                                    <button pButton type="button"
+                                            label="{{l('Host.Settings.Mail.SendTestMail')}}"
+                                            (click)="sendTestMail()" [disabled]="!f.trySentTo.value"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>

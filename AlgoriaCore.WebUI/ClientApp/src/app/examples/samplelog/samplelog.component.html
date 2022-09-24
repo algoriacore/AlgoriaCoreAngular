@@ -1,0 +1,44 @@
+<form [formGroup]="form">
+    <div class="grid">
+
+        <div class="col-12 form-title-section">
+            <h3>
+                {{l('Examples.Log')}}
+                <p-button type="button" styleClass="p-button-text algoria-button-help" icon="pi pi-info-circle"
+                          (onClick)="helpOnScreenService.show('EXAMPLES.LOG.FORM', true)"></p-button>
+            </h3>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-6">
+                        <label for="name">{{l('Examples.Log.Message')}}<span class="required"> *</span></label>
+                        <input type="text" formControlName="message" id="message" autocomplete="off" maxlength="100" pInputText />
+                    </div>
+
+                    <div class="field col-12 md:col-6">
+                        <label for="displayName">{{l('Examples.Log.CriticalEmail')}}</label>
+                        <input type="text" formControlName="criticalemail" id="criticalemail" autocomplete="off" maxlength="100" pInputText />
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="col-12 form-title-section">
+                        <div></div>
+                        <div class="form-toolbar">
+                            <p-button type="button" label="{{l('LogLevelTrace')}}" (onClick)="sendTrace()"></p-button>
+                            <p-button type="button" label="{{l('LogLevelDebug')}}" (onClick)="sendDebug()"></p-button>
+                            <p-button type="button" label="{{l('LogLevelInformation')}}" (onClick)="sendInformation()"></p-button>
+                            <p-button type="button" label="{{l('LogLevelWarning')}}" (onClick)="sendWarning()"></p-button>
+                            <p-button type="button" label="{{l('LogLevelError')}}" (onClick)="sendError()"></p-button>
+                            <p-button type="button" label="{{l('LogLevelCritical')}}" (onClick)="sendCritical()"></p-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>

@@ -1,0 +1,16 @@
+<!--<p-sidebar *ngIf="message" [(visible)]="visible" position="{{position}}" [showCloseIcon]="false" styleClass="ui-sidebar-md" (onHide)="onHide()" [blockScroll]="true" [style]="{ 'overflow-y': 'auto', 'padding-top': '0px' }">
+    <div style="position: -webkit-sticky; position: sticky; top: 0px; background: inherit; padding-top: 10px;">
+        <p-checkbox id="isNoShowAnymore" name="isNoShowAnymore" value="true" binary="true" label="No volver a mostrar" [(ngModel)]="isNoShowAnymore"></p-checkbox>
+        <button pButton type="button" (click)="hide()" label="Cerrar" class="p-button-secondary" icon="pi pi-times" iconPos="right" style="float: right;"></button>
+        <br /><br /><hr /><br />
+    </div>
+    <div #dvContent></div>
+</p-sidebar>-->
+
+<p-sidebar #navSideBar *ngIf="message" [(visible)]="visible" position="{{position}}" [showCloseIcon]="false" styleClass="help-on-screen" (onHide)="onHide()" [blockScroll]="true" [style]="{ 'overflow-y': 'auto', 'padding-top': '0px' }">
+    <div class="header">
+        <span class="title">{{l('Help')}}</span>
+        <button pButton pRipple icon="pi pi-times" (click)="hide()" class="close-icon"></button>
+    </div>
+    <div #dvContent class="content"></div>
+</p-sidebar>

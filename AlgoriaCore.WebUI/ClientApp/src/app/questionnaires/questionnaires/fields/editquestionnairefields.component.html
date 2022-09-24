@@ -1,0 +1,186 @@
+<div class="grid">
+
+    <div class="col-12 form-title-section">
+        <div></div>
+        <div class="form-toolbar">
+            <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+            <p-button type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
+            <p-button type="button" styleClass="p-button-rounded p-button-warning" icon="pi pi-question" (onClick)="helpOnScreenService.show('QUESTIONNAIRES.FIELD.FORM', true)"></p-button>
+        </div>
+    </div>
+
+    <div class="col-12">
+
+        <form [formGroup]="form">
+            <h5>{{l('GeneralData')}}</h5>
+
+            <div class="p-fluid formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label>{{fieldLabels["questionnaireSection"]}}<span class="required"> *</span></label>
+                    <p>{{questionnaireSectionDesc}}</p>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label for="name">{{fieldLabels["name"]}}<span class="required"> *</span></label>
+                    <input type="text" formControlName="name" autocomplete="off" pattern="^.{3,50}$" pInputText />
+                </div>
+                <div class="field col-12 md:col-4" *ngIf="model.fieldName">
+                    <label for="fieldName">{{fieldLabels["fieldName"]}}</label>
+                    <p>{{model.fieldName}}</p>
+                </div>
+            </div>
+
+            <div class="p-fluid formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label for="fieldType">{{fieldLabels["fieldType"]}}<span class="required"> *</span></label>
+                    <p-dropdown [options]="fieldTypeCombo" formControlName="fieldType" placeholder="{{l('Select')}}" (onChange)="onChangeFieldType()" appendTo="body" [filter]="true"></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4" *ngIf="f.fieldType.value === QuestionnaireFieldType.Text.toString()">
+                    <label for="fieldSize">{{fieldLabels["fieldSize"]}}<span class="required"> *</span></label>
+                    <p-inputNumber [showButtons]="true" formControlName="fieldSize" [min]="1" [max]="32000" [maxlength]="5" [step]="1"></p-inputNumber>
+                </div>
+            </div>
+
+            <div class="p-fluid formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label for="fieldControl">{{fieldLabels["fieldControl"]}}<span class="required"> *</span></label>
+                    <p-dropdown [options]="fieldControlComboFiltered" formControlName="fieldControl" placeholder="{{l('Select')}}" (onChange)="onChangeFieldControl()" appendTo="body"></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4" *ngIf="f.fieldControl.value === QuestionnaireFieldControl.InputMask.toString()">
+                    <label for="inputMask">{{fieldLabels["inputMask"]}}<span class="required"> *</span></label>
+                    <input type="text" formControlName="inputMask" autocomplete="off" pInputText />
+                </div>
+                <div class="field col-12 md:col-4" *ngIf="f.fieldControl.value === QuestionnaireFieldControl.InputText.toString()
+                    || f.fieldControl.value === QuestionnaireFieldControl.InputMask.toString()">
+                    <label for="hasKeyFilter">{{fieldLabels["hasKeyFilter"]}}</label>
+                    <div>
+                        <p-checkbox id="hasKeyFilter" name="hasKeyFilter" [formControl]="form.controls['hasKeyFilter']" value="true" binary="true" (onChange)="onChangeHasKeyFilter()"></p-checkbox>
+                    </div>
+                </div>
+                <div class="field col-12 md:col-4" *ngIf="(f.fieldControl.value === QuestionnaireFieldControl.InputText.toString()
+                    || f.fieldControl.value === QuestionnaireFieldControl.InputMask.toString()) && f.hasKeyFilter.value">
+                    <label for="keyFilter">{{fieldLabels["keyFilter"]}}<span class="required"> *</span></label>
+                    <input type="text" formControlName="keyFilter" autocomplete="off" pInputText />
+                </div>
+            </div>
+
+            <div class="p-fluid formgrid grid" *ngIf="f.fieldType.value === QuestionnaireFieldType.CatalogCustom.toString()">
+                <div class="field col-12 md:col-4">
+                    <label for="questionnaireFieldRelationQuestionnaire">
+                        {{fieldLabels["catalogCustomFieldRelationQuestionnaire"]}}<span class="required"> *</span>
+                    </label>
+                    <p-dropdown [options]="catalogCustomCombo" formControlName="catalogCustomFieldRelationCatalogCustom" placeholder="{{l('Select')}}" (onChange)="onChangeCatalogCustom()" appendTo="body" [filter]="true"></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label for="questionnaireFieldRelationQuestionnaireField">
+                        {{fieldLabels["catalogCustomFieldRelationQuestionnaireField"]}}<span class="required"> *</span>
+                    </label>
+                    <p-dropdown [options]="catalogCustomFieldCombo" formControlName="catalogCustomFieldRelationCatalogCustomField" placeholder="{{l('Select')}}" appendTo="body" [filter]="true"></p-dropdown>
+                </div>
+            </div>
+
+            <div class="p-fluid formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label for="order">{{fieldLabels["order"]}}<span class="required"> *</span></label>
+                    <p-inputNumber [showButtons]="true" formControlName="order" [min]="1" [max]="32000" [maxlength]="3" [step]="1"></p-inputNumber>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label for="isRequired">{{fieldLabels["isRequired"]}}</label>
+                    <div>
+                        <p-checkbox id="isRequired" name="isRequired" [formControl]="form.controls['isRequired']" value="true" binary="true"></p-checkbox>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+            <div *ngIf="f.fieldType.value === QuestionnaireFieldType.Integer.toString()
+                || f.fieldType.value === QuestionnaireFieldType.Decimal.toString() || f.fieldType.value === QuestionnaireFieldType.Currency.toString()">
+                <h5>{{l('QuestionnaireFields.QuestionnaireField.Format')}}</h5>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-4" *ngIf="f.fieldType.value === QuestionnaireFieldType.Currency.toString() && f.fieldControl.value === QuestionnaireFieldControl.Spinner.toString()">
+                        <label for="currency">{{fieldLabels["currency"]}}</label>
+                        <input type="text" formControlName="currency" autocomplete="off" pInputText />
+                    </div>
+                    <div class="field col-12 md:col-4" *ngIf="f.fieldType.value === QuestionnaireFieldType.Currency.toString() && f.fieldControl.value === QuestionnaireFieldControl.Spinner.toString()">
+                        <label for="locale">{{fieldLabels["locale"]}}</label>
+                        <input type="text" formControlName="locale" autocomplete="off" pInputText />
+                    </div>
+                    <div class="field col-12 md:col-4" *ngIf="f.fieldType.value === QuestionnaireFieldType.Decimal.toString() || f.fieldType.value === QuestionnaireFieldType.Currency.toString()">
+                        <label for="fieldSize">{{fieldLabels["decimalPartSize"]}}<span class="required"> *</span></label>
+                        <p-inputNumber [showButtons]="true" formControlName="fieldSize" [min]="1" [max]="32000" [maxlength]="5" [step]="1"></p-inputNumber>
+                    </div>
+                </div>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-4">
+                        <label for="minValue">{{fieldLabels["minValue"]}}</label>
+                        <p-inputNumber [showButtons]="true" formControlName="minValue" [step]="1"></p-inputNumber>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="maxValue">{{fieldLabels["maxValue"]}}</label>
+                        <p-inputNumber [showButtons]="true" formControlName="maxValue" [step]="1"></p-inputNumber>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="useGrouping">{{fieldLabels["useGrouping"]}}</label>
+                        <div>
+                            <p-checkbox name="useGrouping" [formControl]="form.controls['useGrouping']" value="true" binary="true"></p-checkbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+            <div *ngIf="mustFieldControlHaveOptions(f.fieldControl.value)">
+                <h5>{{fieldLabels['options']}}</h5>
+
+                <div class="grid">
+                    <div class="col-12 form-title-section">
+                        <div class="form-toolbar">
+                            <p-button type="button" label="{{l('Add')}}" icon="fa fa-plus" (onClick)="optionCreate()"></p-button>
+                        </div>
+                    </div>
+                </div>
+
+                <p-table [value]="options" dataKey="value" styleClass="p-datatable-striped p-datatable-sm">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>{{optionFieldLabels['description']}}</th>
+                            <th>{{optionFieldLabels['value']}}</th>
+                            <th style="width:8em">{{l('Actions')}}</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-ri="rowIndex">
+                        <tr>
+                            <td>
+                                <div *ngIf="rowData['isEditable']" class="p-fluid">
+                                    <input pInputText id="{{'description' + ri}}" type="text" [(ngModel)]="rowData.description" [ngModelOptions]="{standalone: true}" maxlength="100">
+                                </div>
+                                <div *ngIf="!rowData['isEditable']">
+                                    {{rowData.description}}
+                                </div>
+                            </td>
+                            <td>
+                                <div *ngIf="rowData['isEditable']" class="p-fluid">
+                                    <app-text-number min="0" [(ngModel)]="rowData.value" [ngModelOptions]="{standalone: true}" allowEmpty="true"></app-text-number>
+                                </div>
+                                <div *ngIf="!rowData['isEditable']">
+                                    {{rowData.value}}
+                                </div>
+                            </td>
+                            <td style="text-align:center">
+                                <button *ngIf="!rowData['isEditable']" pButton type="button" icon="pi pi-pencil" class="ui-button-info" (click)="onRowEditInit(rowData, ri)"></button>
+                                <button *ngIf="!rowData['isEditable']" pButton type="button" icon="fa fa-trash" class="ui-button-danger" style="margin-left: .5em" (click)="onRowEditDelete(ri)"></button>
+                                <button *ngIf="rowData['isEditable']" pButton type="button" icon="pi pi-check" class="ui-button-success" (click)="onRowEditSave(rowData)"></button>
+                                <button *ngIf="rowData['isEditable']" pButton type="button" icon="pi pi-times" class="ui-button-danger" style="margin-left: .5em" (click)="onRowEditCancel(rowData, ri)"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </form>
+    </div>
+</div>
+
+<app-preloader [blocked]="blockedDocument"></app-preloader>

@@ -1,0 +1,74 @@
+<form [formGroup]="form">
+   <div class="grid">
+      <div class="col-6 md:col-6 sm:col-12">
+         <div class="p-fluid">
+
+
+            <div class="field">
+               <label for="sender">{{fieldLabels["sender"]}}</label>
+               <input type="text" formControlName="sender" id="sender" autocomplete="off" maxlength="0" pInputText />
+            </div>
+
+            <div class="field">
+               <label for="senderDisplay">{{fieldLabels["senderDisplay"]}}</label>
+               <input type="text" formControlName="senderDisplay" id="senderDisplay" autocomplete="off" maxlength="0"
+                  pInputText />
+            </div>
+
+
+            <div class="field">
+               <label for="smpthost">{{fieldLabels["smpthost"]}}</label>
+               <input type="text" formControlName="smpthost" id="smpthost" autocomplete="off" maxlength="0"
+                  pInputText />
+            </div>
+
+
+            <div class="field">
+               <label for="smptport">{{fieldLabels["smptport"]}}</label>
+               <input type="text" formControlName="smptport" id="smptport" autocomplete="off" maxlength="50"
+                  pInputText />
+            </div>
+
+         </div>
+      </div>
+      <div class="col-6 md:col-6 sm:col-12">
+         <div class="p-fluid">
+
+            <div class="field grid">
+               <label for="isSsl" class="col-12 md:col-12 lg:col-4">{{fieldLabels["isSsl"]}}</label>
+               <div class="col-12 md:col-12 lg:col-8">
+                  <p-checkbox disabled="true" id="isSsl" name="isSsl" [formControl]="form.controls['isSsl']"
+                     value="true" binary="true">
+                  </p-checkbox>
+               </div>
+            </div>
+
+            <div class="field grid">
+               <label for="useDefaultCredential"
+                  class="col-12 md:col-12 lg:col-4">{{fieldLabels["useDefaultCredential"]}}</label>
+               <div class="col-12 md:col-12 lg:col-8">
+                  <p-checkbox disabled="true" id="useDefaultCredential" name="useDefaultCredential"
+                     [formControl]="form.controls['useDefaultCredential']" value="true" binary="true"></p-checkbox>
+               </div>
+            </div>
+            <div class="field">
+               <label for="domain">{{fieldLabels["domain"]}}</label>
+               <input type="text" formControlName="domain" id="domain" autocomplete="off" maxlength="0" pInputText />
+            </div>
+
+            <div class="field">
+               <label for="mailUser">{{fieldLabels["mailUser"]}}</label>
+               <input type="text" formControlName="mailUser" id="mailUser" autocomplete="off" maxlength="0"
+                  pInputText />
+            </div>
+
+            <div class="field">
+               <label for="mailPassword">{{fieldLabels["mailPassword"]}}</label>
+               <input type="text" formControlName="mailPassword" id="mailPassword" autocomplete="off" maxlength="0"
+                  pInputText />
+            </div>
+
+         </div>
+      </div>
+   </div>
+</form>

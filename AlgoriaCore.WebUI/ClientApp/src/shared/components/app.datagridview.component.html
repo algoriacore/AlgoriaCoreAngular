@@ -1,0 +1,7 @@
+<div class="ui-g">
+    <div class="ui-g-12" style="text-align:right">
+        <button pButton type="button" title="{{l('Component.DataGridView.TableDesign.Table')}}" icon="pi pi-table" (click)="changeTableDesign(1)" [ngClass]="{ 'ui-state-active': tableDesign === 1 }"></button>
+        <button pButton type="button" title="{{l('Component.DataGridView.TableDesign.List')}}" icon="pi pi-bars" (click)="changeTableDesign(2)" [ngClass]="{ 'ui-state-active': tableDesign === 2 }"></button>
+        <button pButton type="button" title="{{l('Component.DataGridView.TableDesign.Card')}}" icon="pi pi-th-large" (click)="changeTableDesign(3)" [ngClass]="{ 'ui-state-active': tableDesign === 3 }"></button>
+    </div>
+</div>

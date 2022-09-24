@@ -1,0 +1,228 @@
+.layout-dashboard {
+
+    .badge-green {
+        padding: 2px;
+        background-color: #e3f8f3;
+        color: #4b9584;
+        @include border-radius($borderRadius); 
+    }
+
+    .intro-box-detail-container {
+        text-align: right;
+    }
+    
+    .intro-box {
+        display: inline-block;
+        vertical-align: top;
+        margin-right: 2em;
+        @include border-radius($borderRadius); 
+    
+        .intro-box-name {
+            margin-bottom: 8px;
+        }
+    
+        .intro-box-greeting {
+            font-size: 24px;
+        }
+        
+        .intro-box-detail {
+            color: $textSecondaryColor;
+        }
+    }
+
+    .service-box {
+        @include clearfix();
+
+        > div {
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 11px;
+        }
+        
+        i {
+            font-size: 24px;
+            vertical-align: middle;
+            color: $textSecondaryColor;
+            width: 32px;
+            text-align: center;
+        }
+
+        .service-name {
+            display: block;
+        }
+
+        .service-status {
+            display: block;
+            font-size: 12px;
+            color: $textSecondaryColor;
+        }
+
+        button {
+            float: right;
+            min-width: 84px;
+        }
+    }
+
+    .usercard {
+        margin-bottom: 16px;
+
+        .usercard-header {
+            background: url("../../layout/images/dashboard/usercard.png");
+            background-size: cover;
+            height: 100px;
+            position: relative;
+            @include border-radius-top($borderRadius); 
+
+            .usercard-name {
+                color: #ffffff;
+                position: absolute;
+                bottom: 2px;
+                left: 72px;
+            }
+
+            img {
+                position: absolute;
+                bottom: -24px;
+                left: 12px;
+                width: 48px;
+                height: 48px;
+            }
+        }
+
+        .usercard-content {
+            margin-bottom: 0;
+            @include border-radius(0); 
+            
+            p {
+                color: $textSecondaryColor;
+                margin: 0 0 0 56px;
+                font-size: 12px;
+            }
+
+            ul {
+                list-style-type: none;
+                padding: 0;
+                margin-left: 56px;
+
+                a {
+                    color: $textColor;
+                    display: block;
+                    padding: 6px 0;
+                    border-bottom: 1px solid #eaeaea;
+                    @include clearfix();
+
+                    i {
+                        font-display: 16px;
+
+                        &:last-child {
+                            float: right;
+                            margin-top: 4px;
+                            color: $textSecondaryColor;
+                            @include transition(color $transitionDuration);
+                        }
+                    }
+
+                    .usercard-number {
+                        color: $primaryTextColor;
+                        margin: 0 3px 0 15px;
+                    }
+
+                    &:hover {
+                        i:last-child {
+                            color: $textColor;
+                        }
+                    }
+                }
+            }
+        }
+
+        .usercard-footer {
+            padding: 8px 16px;
+            background-color: #f4f4f4;
+            border: solid 1px #dadada;
+            border-top: 0 none;
+            text-align: right;
+            @include border-radius-bottom($borderRadius); 
+
+            a {
+                color: $textSecondaryColor;
+                @include transition(color $transitionDuration);
+
+                &:hover {
+                    color: $textColor;
+                }
+            }
+        }
+    }
+
+    .transactions {
+        background-color: #ffffff;
+        border: 1px solid #dadada;
+        text-align: center;
+        @include border-radius($borderRadius);
+
+        .transaction-graph {
+            display: inline-block;
+            width: 64px;
+            height: 64px;
+            margin-bottom: 14px;
+            line-height: 52px;
+            @include border-radius(50%);
+        }
+
+        .transaction-type {
+            color: $textSecondaryColor;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .transaction-value {
+            font-size: 16px;
+        }
+
+        .transaction-success {
+            padding: 18px;
+            border-right: 1px solid #dadada;
+
+            .transaction-graph {
+                background-color: #feedbc;
+                border: 6px solid #fec820;
+                color: #cd9c03;
+                border-left-color: transparent;
+                border-bottom-color: transparent;
+                border-top-color: transparent;
+            }
+
+            .transaction-value {
+                color: #fec820;
+            }
+        }
+
+        .transaction-failed {
+            padding: 18px;
+
+            .transaction-graph {
+                background-color: #f0bebe;
+                border: 6px solid #d91818;
+                color: #d91818;
+                border-left-color: transparent;
+                border-bottom-color: transparent;
+                border-top-color: transparent;
+            }
+            
+            .transaction-value {
+                color: #d91818;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 40em) {
+    .layout-wrapper {
+        .intro-box {
+            text-align: center;
+            display: block;
+            padding-bottom: 14px;
+        }
+    }
+}

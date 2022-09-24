@@ -1,0 +1,173 @@
+<form [formGroup]="form">
+    <div class="grid">
+
+        <div class="col-12 form-title-section">
+            <div>
+                <h3>
+                    {{l('AuditLogs')}}
+                    <p-button type="button" styleClass="p-button-text algoria-button-help" icon="pi pi-info-circle"
+                              (onClick)="helpOnScreenService.show('ADMINISTRATION.AUDITLOG.VIEW', true)"></p-button>
+                </h3>
+                <small><span class="p-text-bold">{{l('AuditLogs.Subtitle1')}}</span>{{l('AuditLogs.Subtitle2')}}</small>
+            </div>
+            <div class="form-toolbar">
+                <p-button type="button" label="{{l('AuditLogs.ExportToExcel')}}" (onClick)="exportToExcel()" icon="pi pi-file-excel"></p-button>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-4">
+                        <label for="rangeDates">{{l("AuditLogs.DateRange")}}</label>
+                        <p-calendar formControlName="rangeDates" id="rangeDates" selectionMode="range" showIcon="true"
+                                    [readonlyInput]="true" dateFormat="dd/mm/yy" [locale]="appDatetimeControlsLocale">
+                        </p-calendar>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="userName">{{l("AuditLogs.UserName")}}</label>
+                        <input type="text" id="userName" formControlName="userName" pInputText />
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="input6">{{l("AuditLogs.ErrorState")}}</label>
+                        <p-dropdown [options]="errorStateList" formControlName="severity" id="severity"
+                                    [showClear]="false" placeholder="{{l('Select')}}"></p-dropdown>
+                    </div>
+                </div>
+
+                <div class="p-fluid formgrid grid" *ngIf="advancedFiltersAreShown">
+                    <div class="field col-12 md:col-4">
+                        <label for="input4">{{l("AuditLogs.Duration")}}</label>
+                        <div class="p-fluid formgrid grid">
+                            <div class="col-12 md:col-6 p-mb-2">
+                                <p-inputNumber [showButtons]="true" id="minExecutionDuration"
+                                               formControlName="minExecutionDuration" [min]="0" [max]="86400000" [maxlength]="8">
+                                </p-inputNumber>
+                            </div>
+                            <div class="col-12 md:col-6">
+                                <p-inputNumber [showButtons]="true" id="maxExecutionDuration"
+                                               formControlName="maxExecutionDuration" [min]="0" [max]="86400000" [maxlength]="8">
+                                </p-inputNumber>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="serviceName">{{l("AuditLogs.Service")}}</label>
+                        <input type="text" id="serviceName" formControlName="serviceName" pInputText />
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="methodName">{{l("AuditLogs.Action")}}</label>
+                        <input type="text" id="methodName" formControlName="methodName" pInputText />
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="browser">{{l("AuditLogs.Browser")}}</label>
+                        <input type="text" id="browser" formControlName="browser" pInputText />
+                    </div>
+                    <div class="field col-12 md:col-4" *ngIf="isHost">
+                        <label for="tenant">{{l("AuditLogs.Tenant")}}</label>
+                        <p-autoComplete id="acTenant" formControlName="filteredTenant"
+                                        [suggestions]="filteredTenants" (completeMethod)="filterTenant($event)"
+                                        [forceSelection]="true" field="largeName" [size]="30" [minLength]="3"
+                                        [style]="{'margin-bottom':'10px'}" emptyMessage="{{l('RecordsNotFound')}}">
+                        </p-autoComplete>
+                    </div>
+                    <div class="field col-12 md:col-4" *ngIf="isHost">
+                        <label>&nbsp;</label>
+                        <div>
+                            <p-checkbox id="onlyHost" name="onlyHost" formControlName="onlyHost" value="true"
+                                        binary="true" label="{{l('AuditLogs.OnlyHost')}}" (click)="onClickOnlyHost()">
+                            </p-checkbox>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid p-mb-3">
+                    <div class="col-12 form-title-section">
+                        <div>
+                            <a class="p-link-text">
+                                <span *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown">
+                                    {{l("ShowAdvancedFilters")}}
+                                </span>
+                                <span *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown">
+                                    {{l("HideAdvancedFilters")}}
+                                </span>
+                            </a>
+                        </div>
+                        <div class="form-toolbar">
+                            <p-button type="button" label="{{l('Refresh')}}" (onClick)="filterSearch()"
+                                      icon="pi pi-refresh" styleClass="p-button-secondary"></p-button>
+                        </div>
+                    </div>
+                </div>
+
+            <p-table [value]="data" [columns]="cols" [(selection)]="selectedItem" [lazy]="true" (onLazyLoad)="loadData($event)" [paginator]="true" [rows]="10"
+                     [totalRecords]="pagedTableSummary.totalRecords" [rowsPerPageOptions]="[10,20,30,50,100]" dataKey="id"
+                     selectionMode="single" sortField="executionTime" [sortOrder]="-1" [scrollable]="true" scrollDirection="both"
+                     styleClass="p-datatable-striped p-datatable-sm" class="p-datatable-responsive">
+                <ng-template pTemplate="caption">
+                    <h5>{{l('AuditLogs')}}</h5>
+                </ng-template>
+
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th scope="col" style="width:70px;"></th>
+                        <ng-container scope="col" *ngFor="let col of columns">
+                            <th [pSortableColumn]="col.field" [style.width]="col.width" *ngIf="col.visible !== false"
+                                [pSortableColumnDisabled]="!col.sorting">
+                                {{col.header}}
+                                <p-sortIcon [field]="col.field" *ngIf="col.sorting"></p-sortIcon>
+                            </th>
+                        </ng-container>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr [pSelectableRow]="rowData">
+                        <td style="width:70px;">
+                            <div>
+                                <button pButton pRipple icon="pi pi-eye" class="p-button-sm mr-2" (click)="showDetails(rowData)" pTooltip="{{l('AuditLogDetail')}}" tooltipPosition="top"></button>
+                                <div style="display: inline-block;">
+                                    <p *ngIf="rowData.severity == 0">
+                                        <em class="pi pi-eye log-color-trace"></em>
+                                    </p>
+                                    <p *ngIf="rowData.severity == 1">
+                                        <em class="pi pi-info-circle log-color-debug"></em>
+                                    </p>
+                                    <p *ngIf="rowData.severity == 2">
+                                        <em class="pi pi-check-circle log-color-info"></em>
+                                    </p>
+                                    <p *ngIf="rowData.severity == 3">
+                                        <em class="pi pi-exclamation-triangle log-color-warning"></em>
+                                    </p>
+                                    <p *ngIf="rowData.severity == 4">
+                                        <em class="pi pi-times-circle log-color-error"></em>
+                                    </p>
+                                    <p *ngIf="rowData.severity == 5">
+                                        <em class="pi pi-ban log-color-critical"></em>
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+                        <ng-container *ngFor="let col of columns">
+                            <td [style.width]="col.width" *ngIf="col.visible !== false">
+                                <span class="p-column-title">{{col.header}}</span>
+                                <div class="p-column-content">
+                                    {{col.getDataValue ? col.getDataValue(rowData) : rowData[col.field]}}
+                                </div>
+                            </td>
+                        </ng-container>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="paginatorleft"></ng-template>
+                <ng-template pTemplate="paginatorright">
+                    <div *ngIf="pagedTableSummary.totalRecords > 0" class="p-text-bold">
+                        {{l('ShowingRecordsRange', pagedTableSummary.firstRecordInPage, pagedTableSummary.lastRecordInPage, pagedTableSummary.totalRecords)}}
+                    </div>
+                    <div *ngIf="pagedTableSummary.totalRecords == 0" class="p-text-bold">{{l('RecordsNotFound')}}</div>
+                </ng-template>
+            </p-table>
+
+            </div>
+        </div>
+    </div>
+</form>

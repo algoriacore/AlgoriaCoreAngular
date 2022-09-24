@@ -1,0 +1,73 @@
+<form [formGroup]="form">
+    <div class="grid">
+
+        <div class="col-12 form-title-section">
+            <h3>
+                {{l('CatalogsCustom.CatalogCustom')}}
+                <p-button type="button" styleClass="p-button-text algoria-button-help" icon="pi pi-info-circle"
+                          (onClick)="helpOnScreenService.show('CATALOGSCUSTOM.FORM', true)"></p-button>
+            </h3>
+            <div class="form-toolbar">
+                <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+                <p-button type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
+                <!--<p-button *ngIf="id && (permissions.create || permissions.edit)" type="button" label="{{model.isTableGenerated ? l('CatalogsCustom.CatalogCustom.RegenerateCollection') : l('CatalogsCustom.CatalogCustom.GenerateCollection')}}" (onClick)="generate()"></p-button>-->
+            </div>
+        </div>
+
+        <div class="col-12">
+
+            <div class="card">
+                <h5>{{l('GeneralData')}}</h5>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-4">
+                        <label for="nameSingular">{{fieldLabels["nameSingular"]}}<span class="required">*</span></label>
+                        <input type="text" formControlName="nameSingular" pattern="^.{3,50}$" autocomplete="off" pInputText />
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="namePlural">{{fieldLabels["namePlural"]}}<span class="required">*</span></label>
+                        <input type="text" formControlName="namePlural" pattern="^.{3,55}$" autocomplete="off" pInputText />
+                    </div>
+                </div>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12">
+                        <label for="description">{{fieldLabels["description"]}}<span class="required">*</span></label>
+                        <textarea formControlName="description" rows="5" maxlength="500" pattern="^.{3,500}$" pInputTextarea></textarea>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="questionnaire">{{fieldLabels["questionnaire"]}}<span class="required">*</span></label>
+                        <p-dropdown [options]="questionnaireCombo" formControlName="questionnaire" placeholder="{{l('Select')}}" (onChange)="onChangeQuestionnaire()" [filter]="true"></p-dropdown>
+                    </div>
+                    <div class="field col-12 md:col-4" *ngIf="model.id">
+                        <label for="userCreator">{{l('CatalogsCustom.CatalogCustom.UserCreator')}}</label>
+                        <p id="userCreator">{{model.userCreator}}</p>
+                    </div>
+                    <div class="field col-12 md:col-4" *ngIf="model.id">
+                        <label for="creationDateTime">{{l('CatalogsCustom.CatalogCustom.CreationDateTime')}}</label>
+                        <p id="creationDateTime">{{dateTimeService.getDateTimeToDisplay(model.creationDateTime)}}</p>
+                    </div>
+                    <div class="field col-12">
+                        <p-checkbox name="isActive" [formControl]="form.controls['isActive']" label="{{l('IsActive')}}" value="true" binary="true"></p-checkbox>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h5>{{l('CatalogsCustom.CatalogCustom.Fields')}}</h5>
+
+                <p-message severity="info" text="{{l('CatalogsCustom.CatalogCustom.FieldsInfo')}}"></p-message>
+                <br /><br />
+
+                <div class="p-fluid">
+                    <p-tree #tree [value]="treeNodes" selectionMode="checkbox" [(selection)]="selectedNodes"
+                            [style]="{width: '100%'}" emptyMessage="{{l('RecordsNotFound')}}"
+                            [propagateSelectionUp]="true" [propagateSelectionDown]="true"></p-tree>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</form>

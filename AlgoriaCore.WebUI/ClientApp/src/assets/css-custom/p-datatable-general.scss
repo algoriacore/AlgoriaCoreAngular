@@ -1,0 +1,79 @@
+:host ::ng-deep {
+    .table-header {
+        display: flex;
+        justify-content: space-between;
+        font-size: 16px;
+        align-items: center;
+    }
+
+    .p-datatable {
+        .p-datatable-tbody > tr > td {
+            word-wrap: break-word;
+
+            .p-column-content {
+                word-wrap: break-word;
+            }
+        }
+    }
+
+    .p-datatable.p-datatable-responsive:not(.p-datatable-gridlines) {
+        .p-datatable-tbody > tr > td {
+            cursor: auto;
+        }
+    }
+    /* Responsive */
+    .p-datatable-responsive .p-datatable-tbody > tr > td .p-column-title {
+        display: none;
+    }
+
+    .p-datatable-scrollable .p-datatable-table[style] {
+        width: fit-content !important;
+    }
+}
+
+@media screen and (max-width: 960px) {
+    :host ::ng-deep {
+        .p-datatable-responsive {
+            .p-datatable-thead > tr > th,
+            colgroup > col,
+            .p-datatable-tfoot > tr > td {
+                display: none !important;
+            }
+
+            .p-datatable-tbody > tr {
+                border-bottom: 1px solid #E9ECEF;
+
+                > td {
+                    text-align: left;
+                    display: block;
+                    border: 0 none !important;
+                    width: 100% !important;
+                    float: left;
+                    clear: left;
+                    border: 0 none !important;
+                    padding: 0.2rem 0.2rem;
+
+                    .p-column-title {
+                        padding: .4rem;
+                        width: 30%;
+                        display: inline-block;
+                        font-weight: bold;
+                        vertical-align: top;
+                    }
+
+                    .p-column-content {
+                        padding: .4rem;
+                        width: 70%;
+                        display: inline-block;
+                        vertical-align: top;
+                        text-align: left !important;
+                    }
+                }
+            }
+
+            .p-datatable-scrollable .p-datatable-tbody > tr {
+                display: table-row !important;
+            }
+        }
+    }
+}

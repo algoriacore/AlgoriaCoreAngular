@@ -1,0 +1,44 @@
+<div class="grid">
+
+    <div class="col-12 form-title-section">
+        <div></div>
+        <div class="form-toolbar">
+            <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+            <p-button type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
+            <p-button type="button" label="{{l('ShowChangeHistory')}}" (onClick)="showChangeHistory()" *ngIf="id"></p-button>
+            <p-button type="button" styleClass="p-button-rounded p-button-warning" icon="pi pi-question" (onClick)="helpOnScreenService.show('PROCESSES.TEMPLATESECTION.FORM', true)"></p-button>
+        </div>
+    </div>
+
+    <div class="col-12">
+
+        <form [formGroup]="form">
+            <div class="p-fluid">
+                <div class="field grid">
+                    <label for="name" class="col-12 md:col-4 lg:col-3">
+                        {{fieldLabels["name"]}}<span class="required"> *</span>
+                    </label>
+                    <div class="col-12 md:col-8 lg:col-9">
+                        <input type="text" formControlName="name" id="name" autocomplete="off" maxlength="50" pInputText />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label for="order" class="col-12 md:col-4 lg:col-3">
+                        {{fieldLabels["order"]}}<span class="required"> *</span>
+                    </label>
+                    <div class="col-12 md:col-5 lg:col-3">
+                        <p-inputNumber [showButtons]="true" formControlName="order" [min]="1" [max]="255" [maxlength]="3" [step]="1"></p-inputNumber>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label for="iconAF" class="col-12 md:col-4 lg:col-3">{{fieldLabels["iconAF"]}}</label>
+                    <div class="col-12 md:col-8 lg:col-9">
+                        <input type="text" formControlName="iconAF" id="iconAF" autocomplete="off" maxlength="20" pInputText />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<app-preloader [blocked]="blockedDocument"></app-preloader>

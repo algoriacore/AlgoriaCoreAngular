@@ -1,0 +1,61 @@
+<form [formGroup]="form">
+    <div class="grid">
+
+        <div class="col-12 form-title-section">
+            <h3>
+                {{l('Examples.Numbers')}}
+            </h3>
+            <div class="form-toolbar">
+                <p-button type="button" label="Verificar" (onClick)="verify()"></p-button>
+                <p-button type="button" label="Setear" (onClick)="setear()"></p-button>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-4">
+                        <label for="name">{{l('Examples.Numbers.Simple')}}</label>
+                        <app-text-number formControlName="simpleNumber" simpleNumber="true"></app-text-number>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="name">{{l('Examples.Numbers.AllowEmpty')}}</label>
+                        <app-text-number formControlName="allowEmpty" allowEmpty="true"></app-text-number>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="name">{{l('Examples.Numbers.SimpleAndAllowEmpty')}}</label>
+                        <app-text-number formControlName="simpleAndAllowEmpty" simpleNumber="true" allowEmpty="true"></app-text-number>
+                    </div>
+                </div>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-4">
+                        <label for="name">{{l('Examples.Numbers.Integer')}}</label>
+                        <app-text-number formControlName="integer"></app-text-number>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="name">{{l('Examples.Numbers.Decimals')}}</label>
+                        <app-text-number formControlName="decimals" decimals="5"></app-text-number>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="name">{{l('Examples.Numbers.Miles')}}</label>
+                        <app-text-number formControlName="miles" decimals="2" useMilesSep="true"></app-text-number>
+                    </div>
+                </div>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-4">
+                        <label for="name">{{l('Examples.Numbers.Currency')}}</label>
+                        <app-text-number formControlName="currency" prefix="$" decimals="2" useMilesSep="true"></app-text-number>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="name">{{l('Examples.Numbers.Percentage')}}</label>
+                        <app-text-number formControlName="percentage" min="0" max="100" sufix="%" decimals="2"></app-text-number>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>

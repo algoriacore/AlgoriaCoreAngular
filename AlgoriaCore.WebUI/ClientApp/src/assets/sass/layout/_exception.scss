@@ -1,0 +1,71 @@
+.exception-body {
+    padding: 0;
+    height: 100vh;
+    $borderColor: transparent;
+    background-size: cover;
+
+    &.error {
+        background: url("../../layout/images/pages/error-bg.jpg");
+    }
+
+    &.notfound {
+        background: url("../../layout/images/pages/notfound-bg.jpg");
+    }
+
+    &.accessdenied {
+        background: url("../../layout/images/pages/accessdenied-bg.jpg");
+    }
+
+    .exception-topbar {
+        height: 60px;
+        padding: 15px 150px 15px 150px;
+        background-color: #3a3e45;
+        @include shadow(0 2px 6px 0 rgba(0, 0, 0, 0.24));
+
+        img {
+            height: 30px;
+            vertical-align: middle;
+        }
+
+        .app-title {
+            color: #ffffff;
+            font-size: 24px;
+            vertical-align: middle;
+            margin-left: 24px;
+        }
+    }
+
+    .exception-panel {
+        position: fixed;
+        left: 150px;
+        top: 25%;
+
+        h1 {
+            font-size: 24px;
+            padding: 6px 12px;
+            background-color: #feedbc;
+            @include border-radius($borderRadius);
+            color: #666666;
+            margin: 0;
+        }
+
+        p {
+            margin: 24px 0 96px 0;
+            color: #ffffff;
+        }
+    }
+}
+
+@media screen and (max-width: 40em) {
+
+    .exception-body {
+        .exception-topbar {
+            padding: 15px 70px 15px 70px;
+        }
+        
+        .exception-panel {
+            left: 70px;
+        }
+    }
+    
+}

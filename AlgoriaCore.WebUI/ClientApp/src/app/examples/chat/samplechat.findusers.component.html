@@ -1,0 +1,76 @@
+<form [formGroup]="form">
+    <div class="grid">
+
+        <div class="col-12">
+            <div class="card">
+
+                <p-table #dt1 [columns]="cols" [value]="data" [lazy]="true" (onLazyLoad)="loadData($event)"
+                         [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [rowsPerPageOptions]="[10,20,30,50,100]"
+                         dataKey="id" [reorderableColumns]="true" selectionMode="single" [(selection)]="selectedItem" stateStorage="local"
+                         styleClass="p-datatable-striped p-datatable-sm" class="p-datatable-responsive">
+
+                    <ng-template pTemplate="caption">
+                        <div class="grid p-fluid">
+                            <div class="col-12 sm:col-7 md:col-8 lg:col-9">
+                                {{l('Users')}}
+                            </div>
+                            <div class="col-12 sm:col-5 md:col-4 lg:col-3">
+                                <span class="p-input-icon-left">
+                                    <i class="pi pi-search"></i>
+                                    <input type="text" pInputText placeholder="{{l('SearchDots')}}" formControlName="filterText" (keydown.enter)="filterSearch($event)" />
+                                </span>
+                            </div>
+                        </div>
+                    </ng-template>
+
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th scope="col" style="width:140px;">{{l('Actions')}}</th>
+                            <th scope="col" *ngFor="let col of columns" [pSortableColumn]="col.field"
+                                [style.width]="col.width">
+                                {{col.header}}
+                                <p-sortIcon [field]="col.field"></p-sortIcon>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <tr [pSelectableRow]="rowData">
+                            <td>
+                                <button type="button" pButton icon="fa fa-check" label="{{l('Select')}}"
+                                        (click)="selectUser($event,rowData);"></button>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'login')}}</span>
+                                <div class="p-column-content">{{rowData.login}}</div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'fullName')}}</span>
+                                <div class="p-column-content">{{rowData.fullName}}</div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'emailAddress')}}</span>
+                                <div class="p-column-content">{{rowData.emailAddress}}</div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="summary">
+                        <div *ngIf="totalRecords > 0">{{l('ShowingRecordsRange', 1, totalRecords, totalRecords)}}</div>
+                        <div *ngIf="totalRecords == 0">{{l('RecordsNotFound')}}</div>
+                    </ng-template>
+                </p-table>
+
+            </div>
+        </div>
+
+        <div class="col-12 form-title-section">
+            <div></div>
+            <div class="form-toolbar">
+                <p-button type="button" label="{{l('Close')}}" (onClick)="return()" [style.margin-left.px]="10"
+                          styleClass="ui-button-secondary"></p-button>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+<app-preloader [blocked]="blockedDocument"></app-preloader>

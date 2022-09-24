@@ -1,0 +1,223 @@
+<div class="grid">
+
+    <div class="col-12 form-title-section">
+        <div></div>
+        <div class="form-toolbar">
+            <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+            <p-button type="button" styleClass="p-button-rounded p-button-warning" icon="pi pi-question" (onClick)="helpOnScreenService.show('PROCESSES.RPOCESSSECURITY.VIEW', true)"></p-button>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <p-tabView>
+            <p-tabPanel header="{{l('Users')}}">
+                <form [formGroup]="userForm">
+                    <div class="mb-4">
+                        <a href="#" (click)="clickAddUserIsShow($event)">
+                            <span [hidden]="addUserIsShown"><em class="fa fa-angle-down"></em> {{l("ProcessSecurity.AddUser")}}</span>
+                            <span [hidden]="!addUserIsShown"><em class="fa fa-angle-up"></em> {{l("Hide")}}</span>
+                        </a>
+                    </div>
+
+                    <div *ngIf="addUserIsShown" class="p-fluid mb-4">
+                        <div class="field grid">
+                            <label for="user" class="col-12 md:col-4 lg:col-2">
+                                {{fieldLabels["user"]}}<span class="required"> *</span>
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-10">
+                                <p-autoComplete formControlName="user" [suggestions]="userCombo" (completeMethod)="fillAutocompleteDynamicUser($event)" field="label" [forceSelection]="true" [minLength]="3" placeholder="{{l('TypeToSelect')}}" emptyMessage="{{l('RecordsNotFound')}}"></p-autoComplete>
+                            </div>
+                        </div>
+                        <div class="field grid">
+                            <label for="userLevel" class="col-12 md:col-4 lg:col-2">
+                                {{fieldLabels["userLevel"]}}<span class="required"> *</span>
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-10">
+                                <p-radioButton name="userLevel" [value]="SecurityMemberLevel.Reader.toString()" label="{{l('ProcessSecurity.Level.Reader')}}" formControlName="userLevel"></p-radioButton>
+                                <p-radioButton [style.margin-left.px]="10" name="userLevel" [value]="SecurityMemberLevel.Editor.toString()" label="{{l('ProcessSecurity.Level.Editor')}}" formControlName="userLevel"></p-radioButton>
+                            </div>
+                        </div>
+                        <div class="field grid" *ngIf="userF.userLevel.value == SecurityMemberLevel.Editor.toString()">
+                            <label for="userIsExecutor" class="col-12 md:col-4 lg:col-2">
+                                {{fieldLabels["userIsExecutor"]}}<span class="required"> *</span>
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-10">
+                                <p-checkbox id="userIsExecutor" name="userIsExecutor" [formControl]="userForm.controls['userIsExecutor']" value="true" binary="true"></p-checkbox>
+                            </div>
+                        </div>
+                        <div class="grid">
+                            <div class="col-12 form-title-section">
+                                <div class="form-toolbar">
+                                    <p-button type="button" label="{{l('ProcessSecurity.AddUser')}}" icon="pi pi-plus" (onClick)="createUser()"></p-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid p-fluid">
+                        <div class="col-12">
+                            <div class="p-inputgroup">
+                                <input type="text" pInputText placeholder="{{l('SearchDots')}}" [(ngModel)]="userFilterText"
+                                       [ngModelOptions]="{standalone: true}" (keyup.enter)="filterSearchUser()">
+                                <button type="submit" pButton pRipple icon="fa fa-search" (click)="filterSearchUser()"></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p-table #dtUser [columns]="userCols" [value]="userList" [(selection)]="userSelectedItem" [lazy]="true" (onLazyLoad)="loadDataUser($event)" [paginator]="true"
+                             [rows]="10" [totalRecords]="userPagedTableSummary.totalRecords" [rowsPerPageOptions]="[10,20,30,50,100]" dataKey="id" selectionMode="single"
+                             sortField="typeDesc" [sortOrder]="1" styleClass="p-datatable-striped p-datatable-sm" class="p-datatable-responsive">
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th scope="col" style="width:140px;">{{l('Actions')}}</th>
+                                <th scope="col" *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+                                    {{col.header}}
+                                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-columns="columns">
+                            <tr [pSelectableRow]="rowData">
+                                <td>
+                                    <button type="button" pButton icon="fa fa-times" label="{{l('Delete')}}" (click)="delete($event, rowData);"></button>
+                                </td>
+                                <td>
+                                    <span class="p-column-title">{{getHeaderTitleColumn(columns, 'memberDesc')}}</span>
+                                    <div class="p-column-content">
+                                        <em class="fa fa-fw fa-user"></em>
+                                        {{rowData['memberDesc']}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="p-column-title">{{getHeaderTitleColumn(columns, 'levelDesc')}}</span>
+                                    <div class="p-column-content">
+                                        <em *ngIf="rowData.level === SecurityMemberLevel.Reader" class="fa fa-fw fa-eye"></em>
+                                        <em *ngIf="rowData.level === SecurityMemberLevel.Editor" class="fa fa-fw fa-edit"></em>
+                                        {{rowData['levelDesc']}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="p-column-title">{{getHeaderTitleColumn(columns, 'isExecutorDesc')}}</span>
+                                    <div class="p-column-content">
+                                        <em *ngIf="rowData.isExecutor" class="fa fa-fw fa-check"></em>
+                                        {{rowData['isExecutorDesc']}}
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="summary">
+                            <div *ngIf="userPagedTableSummary.totalRecords > 0">{{l('ShowingRecordsRange', userPagedTableSummary.firstRecordInPage, userPagedTableSummary.lastRecordInPage, userPagedTableSummary.totalRecords)}}</div>
+                            <div *ngIf="userPagedTableSummary.totalRecords == 0">{{l('RecordsNotFound')}}</div>
+                        </ng-template>
+                    </p-table>
+                </form>
+            </p-tabPanel>
+
+            <p-tabPanel header="{{l('OrgUnits')}}">
+                <form [formGroup]="orgUnitForm">
+                    <div class="mb-4">
+                        <a href="#" (click)="clickAddOrgUnitIsShow($event)">
+                            <span [hidden]="addOrgUnitIsShown"><em class="fa fa-angle-down"></em> {{l("ProcessSecurity.AddOrgUnit")}}</span>
+                            <span [hidden]="!addOrgUnitIsShown"><em class="fa fa-angle-up"></em> {{l("Hide")}}</span>
+                        </a>
+                    </div>
+
+                    <div *ngIf="addOrgUnitIsShown" class="p-fluid mb-4">
+                        <div class="field grid">
+                            <label for="orgUnit" class="col-12 md:col-4 lg:col-2">
+                                {{fieldLabels["orgUnit"]}}<span class="required"> *</span>
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-10">
+                                <p-autoComplete formControlName="orgUnit" [suggestions]="orgUnitCombo" (completeMethod)="fillAutocompleteDynamicOrgUnit($event)" field="label" [forceSelection]="true" [minLength]="3" placeholder="{{l('TypeToSelect')}}" emptyMessage="{{l('RecordsNotFound')}}"></p-autoComplete>
+                            </div>
+                        </div>
+                        <div class="field grid">
+                            <label for="orgUnitLevel" class="col-12 md:col-4 lg:col-2">
+                                {{fieldLabels["orgUnitLevel"]}}<span class="required"> *</span>
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-10">
+                                <p-radioButton name="orgUnitLevel" [value]="SecurityMemberLevel.Reader.toString()" label="{{l('ProcessSecurity.Level.Reader')}}" formControlName="orgUnitLevel"></p-radioButton>
+                                <p-radioButton [style.margin-left.px]="10" name="orgUnitLevel" [value]="SecurityMemberLevel.Editor.toString()" label="{{l('ProcessSecurity.Level.Editor')}}" formControlName="orgUnitLevel"></p-radioButton>
+                            </div>
+                        </div>
+                        <div class="field grid" *ngIf="orgUnitF.orgUnitLevel.value == SecurityMemberLevel.Editor.toString()">
+                            <label for="orgUnitIsExecutor" class="col-12 md:col-4 lg:col-2">
+                                {{fieldLabels["orgUnitIsExecutor"]}}<span class="required"> *</span>
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-10">
+                                <p-checkbox id="orgUnitIsExecutor" name="orgUnitIsExecutor" [formControl]="orgUnitForm.controls['orgUnitIsExecutor']" value="true" binary="true"></p-checkbox>
+                            </div>
+                        </div>
+                        <div class="grid">
+                            <div class="col-12 form-title-section">
+                                <div class="form-toolbar">
+                                    <p-button type="button" label="{{l('ProcessSecurity.AddOrgUnit')}}" icon="pi pi-plus" (onClick)="createOrgUnit()"></p-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid p-fluid">
+                        <div class="col-12">
+                            <div class="p-inputgroup">
+                                <input type="text" pInputText placeholder="{{l('SearchDots')}}" [(ngModel)]="orgUnitFilterText"
+                                       [ngModelOptions]="{standalone: true}" (keyup.enter)="filterSearchOrgUnit()">
+                                <button type="submit" pButton pRipple icon="fa fa-search" (click)="filterSearchOrgUnit()"></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p-table #dtOrgUnit [columns]="orgUnitCols" [value]="orgUnitList" [(selection)]="orgUnitSelectedItem" [lazy]="true" (onLazyLoad)="loadDataOrgUnit($event)" [paginator]="true"
+                             [rows]="10" [totalRecords]="orgUnitPagedTableSummary.totalRecords" [rowsPerPageOptions]="[10,20,30,50,100]" selectionMode="single"
+                             sortField="typeDesc" [sortOrder]="1" styleClass="p-datatable-striped p-datatable-sm" class="p-datatable-responsive">
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th scope="col" style="width:140px;">{{l('Actions')}}</th>
+                                <th scope="col" *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+                                    {{col.header}}
+                                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-columns="columns">
+                            <tr [pSelectableRow]="rowData">
+                                <td>
+                                    <button type="button" pButton icon="fa fa-times" label="{{l('Delete')}}" (click)="delete($event, rowData);"></button>
+                                </td>
+                                <td>
+                                    <span class="p-column-title">{{getHeaderTitleColumn(columns, 'memberDesc')}}</span>
+                                    <div class="p-column-content">
+                                        <em class="fa fa-fw fa-sitemap"></em>
+                                        {{rowData['memberDesc']}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="p-column-title">{{getHeaderTitleColumn(columns, 'levelDesc')}}</span>
+                                    <div class="p-column-content">
+                                        <em *ngIf="rowData.level === SecurityMemberLevel.Reader" class="fa fa-fw fa-eye"></em>
+                                        <em *ngIf="rowData.level === SecurityMemberLevel.Editor" class="fa fa-fw fa-edit"></em>
+                                        {{rowData['levelDesc']}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="p-column-title">{{getHeaderTitleColumn(columns, 'isExecutorDesc')}}</span>
+                                    <div class="p-column-content">
+                                        <em *ngIf="rowData.isExecutor" class="fa fa-fw fa-check"></em>
+                                        {{rowData['isExecutorDesc']}}
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="summary">
+                            <div *ngIf="orgUnitPagedTableSummary.totalRecords > 0">{{l('ShowingRecordsRange', orgUnitPagedTableSummary.firstRecordInPage, orgUnitPagedTableSummary.lastRecordInPage, orgUnitPagedTableSummary.totalRecords)}}</div>
+                            <div *ngIf="orgUnitPagedTableSummary.totalRecords == 0">{{l('RecordsNotFound')}}</div>
+                        </ng-template>
+                    </p-table>
+                </form>
+            </p-tabPanel>
+        </p-tabView>
+    </div>
+
+</div>
+
+<app-preloader [blocked]="blockedDocument"></app-preloader>

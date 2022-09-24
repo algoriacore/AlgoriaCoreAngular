@@ -1,0 +1,101 @@
+<div class="grid">
+   <div class="col-12 form-title-section">
+      <div class="form-title">{{l('MailServiceMails.MailServiceMail')}}</div>
+      <div class="form-toolbar">
+         <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+         <p-button styleClass="p-button-rounded p-button-warning" icon="pi pi-question"
+            (onClick)="helpOnScreenService.show('MAILSERVICEMAIL.MAILSERVICEMAIL.FORM', true)"></p-button>
+      </div>
+   </div>
+   <div class="col-12">
+      <form [formGroup]="form">
+         <div class="card">
+            <p-tabView>
+               <p-tabPanel header="{{l('GeneralData')}}">
+
+                  <div class="p-fluid">
+                     <div class="field grid">
+
+                        <label class="col-12 md:col-4 lg:col-2"
+                           for="isLocalConfig">{{fieldLabels["isLocalConfig"]}}</label>
+
+                        <div class="col-12 md:col-8 lg:col-10">
+                           <p-checkbox disabled="true" id="isLocalConfig" name="isLocalConfig"
+                              [formControl]="form.controls['isLocalConfig']" value="true" binary="true"></p-checkbox>
+                        </div>
+                     </div>
+                     <div class="field grid">
+
+                        <label class="col-12 md:col-4 lg:col-2" for="sendto">{{fieldLabels["sendto"]}}</label>
+
+                        <div class="col-12 md:col-8 lg:col-10">
+                           <input type="text" formControlName="sendto" id="sendto" autocomplete="off" maxlength="0"
+                              pInputText />
+                        </div>
+                     </div>
+                     <div class="field grid">
+
+                        <label class="col-12 md:col-4 lg:col-2" for="copyTo">{{fieldLabels["copyTo"]}}</label>
+
+                        <div class="col-12 md:col-8 lg:col-10">
+                           <input type="text" formControlName="copyTo" id="copyTo" autocomplete="off" maxlength="0"
+                              pInputText />
+                        </div>
+                     </div>
+                     <div class="field grid">
+
+                        <label class="col-12 md:col-4 lg:col-2" for="blindCopyTo">{{fieldLabels["blindCopyTo"]}}</label>
+
+                        <div class="col-12 md:col-8 lg:col-10">
+                           <input type="text" formControlName="blindCopyTo" id="blindCopyTo" autocomplete="off"
+                              maxlength="0" pInputText />
+                        </div>
+                     </div>
+                     <div class="field grid">
+
+                        <label class="col-12 md:col-4 lg:col-2" for="subject">{{fieldLabels["subject"]}}</label>
+
+                        <div class="col-12 md:col-8 lg:col-10">
+                           <input type="text" formControlName="subject" id="subject" autocomplete="off" maxlength="0"
+                              pInputText />
+                        </div>
+                     </div>
+
+                     <br>
+
+                     <div class="field grid">
+
+                        <label class="col-12 md:col-4 lg:col-2" for="status">{{fieldLabels["status"]}}</label>
+                        <div class="col-12 md:col-8 lg:col-10" *ngIf="model">
+
+                           <p-message *ngIf="isPending" severity="warning" text="{{statusDesc}}"></p-message>
+                           <p-message *ngIf="isSuccess" severity="success" text="{{statusDesc}}"></p-message>
+                           <p-message *ngIf="isError" severity="error" text="{{statusDesc}}"></p-message>
+                           <p-message *ngIf="isCanceled" severity="info" text="{{statusDesc}}"></p-message>
+
+                        </div>
+                     </div>
+                     <br>
+
+
+                     <p-panel header="{{l('MailServiceMailBodys.MailServiceMailBody')}}">
+                        <div [innerHTML]="htmlMessage"></div>
+                     </p-panel>
+
+                  </div>
+               </p-tabPanel>
+
+               <p-tabPanel *ngIf="bodyId" header="{{l('MailServiceMailAttachs.MailServiceMailAttach')}}">
+                  <app-mailservicemailattach-grid [mailServiceMailBodyId]="bodyId"></app-mailservicemailattach-grid>
+               </p-tabPanel>
+
+               <p-tabPanel *ngIf="!hasLocalConfig" header="{{l('MailServiceMailConfigs.MailServiceMailConfig')}}">
+                  <app-editmailservicemailconfig-form [mailServiceMailId]="id"></app-editmailservicemailconfig-form>
+               </p-tabPanel>
+
+
+            </p-tabView>
+         </div>
+      </form>
+   </div>
+</div>

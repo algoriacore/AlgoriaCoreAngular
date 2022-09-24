@@ -1,0 +1,20 @@
+<p-dialog *ngIf="message && display" header="{{message.title}}" [showHeader]="true" [(visible)]="display" [modal]="true" [responsive]="true"
+    [ngClass]="dialogColorStyle" (visibleChange)="onClose()">
+    <div class="ui-dialog-body" style="text-align: left !important;">
+        <div [innerHTML]="processMessage(message.text)"></div>
+    </div>
+    <p-footer>
+        <button type="button" pButton pRipple icon="pi pi-check" (click)="onClose()" label="{{l('Ok')}}" [ngClass]="buttonColorStyle"></button>
+    </p-footer>
+</p-dialog>
+
+<p-dialog *ngIf="message && displayConfirmation" header="{{l('Confirmation')}}" [showHeader]="true" [(visible)]="displayConfirmation" [modal]="true"
+    [ngClass]="dialogColorStyle" [responsive]="true" [style]="{width: '400px', minWidth: '250px'}" [minY]="70" [baseZIndex]="10000">
+    <div class="ui-dialog-body">
+        <div [innerHTML]="processMessage(message.message)"></div>
+    </div>
+    <p-footer>
+        <button type="button" pButton pRipple (click)="onConfirmReject()" label="{{message.cancelTitle}}" class="p-button-outlined" [ngClass]="buttonColorStyle"></button>
+        <button type="button" pButton pRipple (click)="onConfirmAccept()" label="{{message.acceptTitle}}" [ngClass]="buttonColorStyle"></button>
+    </p-footer>
+</p-dialog>

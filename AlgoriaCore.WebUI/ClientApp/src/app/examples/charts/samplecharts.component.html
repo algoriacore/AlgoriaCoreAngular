@@ -1,0 +1,42 @@
+<form [formGroup]="form">
+    <div class="grid">
+
+        <div class="col-12 form-title-section">
+            <h3>
+                {{l('Examples.Charts')}}
+            </h3>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+
+                <div class="p-fluid">
+                    <div style="text-align:center;">
+                        <label style="font-size:26px;font-weight:bold;">Line</label><br />
+                        <label>(Total por mes)</label><br />
+                        <p-chart type="line" [data]="dataLine" (onDataSelect)="selectData($event)"></p-chart>
+                    </div>
+
+                    <div style="text-align:center;">
+                        <label style="font-size:26px;font-weight:bold;">Pie</label><br />
+                        <label>(Tiempo de ejecución)</label><br />
+                        <p-chart type="pie" [data]="dataPie" (onDataSelect)="selectData($event)"></p-chart>
+                    </div>
+
+                    <div style="text-align:center;margin-top:20px;">
+                        <label style="font-size:26px;font-weight:bold;">Doughnut</label><br />
+                        <label>(Severidad)</label>
+                        <p-chart type="doughnut" [data]="dataDoughnut" (onDataSelect)="selectData($event)"></p-chart>
+                    </div>
+
+                    <div style="text-align:center;margin-top:20px;">
+                        <label style="font-size:26px;font-weight:bold;">Polar</label><br />
+                        <label>(Tiempo de ejecución)</label>
+                        <p-chart type="polarArea" [data]="dataPolar" (onDataSelect)="selectData($event)"></p-chart>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>

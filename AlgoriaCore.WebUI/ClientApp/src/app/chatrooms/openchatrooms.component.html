@@ -1,0 +1,15 @@
+<div class="grid">
+
+    <div class="col-12 form-title-section">
+        <div class="form-title">{{l('ChatRooms.ChatRoom')}}</div>
+    </div>
+
+    <div class="col-12">
+
+        <div *ngIf="id && model && model.chatRoomId">
+            <app-chatlog chatRoomId="{{model.chatRoomId}}" name="{{model.name}}" description="{{model.description}}"></app-chatlog>
+        </div>
+
+    </div>
+
+</div>

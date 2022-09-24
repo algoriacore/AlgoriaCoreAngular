@@ -1,0 +1,77 @@
+<form [formGroup]="form" class="login" (ngSubmit)="onSubmit()">
+    <div class="grid p-ai-stretch vertical-container" style="height: 100vh; margin: 0 !important;">
+        <div class="col-12 p-ai-stretch vertical-container" id="sectionForm">
+            <div class="col-12 grid p-ai-stretch vertical-container">
+                <div class="col-1 sm:col-1 md:col-1 lg:col-2"></div>
+                <div class="col-10 sm:col-10 md:col-10 lg:col-8">
+                    <img src="assets/layout/images/logo-algoria.svg" class="logo" />
+                    <h3 class="title">{{l("Register.User.Registry")}}</h3>
+                    <div class="p-fluid formgrid grid p-mb-4">
+                        <div class="field col-12 md:col-4">
+                            <label for="tenancyname">{{l('Register.User.Instance')}}<span class="required"> *</span></label>
+                            <input type="text" pInputText autocomplete="off" formControlName="tenancyname" id="tenancyname" maxlength="50" />
+                            <small *ngIf="submitted && f.tenancyname.invalid" id="tenancyname-error" class="p-error">{{l("RequiredFieldWithoutParameters")}}</small>
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label for="tenantName">{{l('Register.User.InstanceName')}}<span class="required"> *</span></label>
+                            <input type="text" pInputText autocomplete="off" formControlName="tenantName" id="tenantName" maxlength="150" />
+                            <small *ngIf="submitted && f.tenantName.invalid" id="tenantName-error" class="p-error">{{l("RequiredFieldWithoutParameters")}}</small>
+                        </div>
+                        <div class="col-12 md:col-4">
+
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label for="name">{{l('Register.User.Name')}}<span class="required"> *</span></label>
+                            <input type="text" pInputText autocomplete="off" formControlName="name" id="name" maxlength="32" />
+                            <small *ngIf="submitted && f.name.invalid" id="name-error" class="p-error">{{l("RequiredFieldWithoutParameters")}}</small>
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label for="lastName">{{l('Register.User.LastName')}}<span class="required"> *</span></label>
+                            <input type="text" pInputText autocomplete="off" formControlName="lastName" id="lastName" maxlength="50" />
+                            <small *ngIf="submitted && f.lastName.invalid" id="lastName-error" class="p-error">{{l("RequiredFieldWithoutParameters")}}</small>
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label for="secondLastName">{{l('Register.User.SecondLastName')}}</label>
+                            <input type="text" pInputText autocomplete="off" formControlName="secondLastName" id="secondLastName" maxlength="50" />
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label for="password">{{l('Register.User.Password')}}<span class="required"> *</span></label>
+                            <app-password-field formControlName="password" style="width: 100%;"></app-password-field>
+                            <small *ngIf="submitted && f.password.invalid" id="name-error" class="p-error">{{l("RequiredFieldWithoutParameters")}}</small>
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label for="passwordConfirm">{{l('Register.User.ConfirmPassword')}}<span class="required"> *</span></label>
+                            <app-password-field formControlName="passwordConfirm" style="width: 100%;" [feedback]="false"></app-password-field>
+                            <small *ngIf="submitted && f.passwordConfirm.invalid" id="passwordConfirm-error" class="p-error">{{l("RequiredFieldWithoutParameters")}}</small>
+                        </div>
+                        <div class="field col-12 md:col-4 p-mb-5">
+                            <label for="emailAddress">{{l('Register.User.Email')}}<span class="required"> *</span></label>
+                            <input type="text" pInputText autocomplete="off" formControlName="emailAddress" id="emailAddress" maxlength="150" />
+                            <small *ngIf="submitted && f.emailAddress.invalid" id="emailAddress-error" class="p-error">{{l("RequiredFieldWithoutParameters")}}</small>
+                        </div>
+                        <div class="field col-12">
+                            <div class="field-checkbox p-mb-1">
+                                <p-checkbox id="noticeOfPrivacyAccepted" inputId="noticeOfPrivacyAccepted" name="noticeOfPrivacyAccepted" [formControl]="f['noticeOfPrivacyAccepted']" value="true" binary="true"></p-checkbox>
+                                <label for="noticeOfPrivacyAccepted">
+                                    <a href="https://www.clubfactura.mx/sitio/politicaprivacidad.html" target="_blank" style="text-decoration: underline;">{{l('Register.User.TermsAndConditions')}}</a>
+                                </label>
+                            </div>
+                            <small *ngIf="submitted && f.noticeOfPrivacyAccepted.invalid" id="noticeOfPrivacyAccepted-error" class="p-error">{{l("RequiredFieldWithoutParameters")}}</small>
+                        </div>
+                    </div>
+
+                    <div class="formgrid grid">
+                        <div class="col-12 p-mb-6">
+                            <p-button type="submit" label="{{l('Register.User.Register')}}" class="mr-5" [style]="{ 'margin-bottom': '1.5rem' }"></p-button>
+                            <p-button type="button" label="{{l('Return')}}" (onClick)="return()" styleClass="p-button-secondary" [style]="{ 'margin-bottom': '1.5rem' }"></p-button>
+                        </div>
+                        <div class="col-12">
+                            <p>{{l('Copyright', currentDateTime.getFullYear())}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-1 sm:col-1 md:col-1 lg:col-2"></div>
+            </div>
+        </div>
+    </div>
+</form>

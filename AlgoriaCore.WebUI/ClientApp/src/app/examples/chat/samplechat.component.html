@@ -1,0 +1,128 @@
+<div class="layout-dashboard">
+    <div class="grid">
+
+        <div class="col-8">
+
+            <div class="grid">
+                <div class="col-12">
+                    <div class="intro-box">
+                        <div class="intro-box-name intro-box-greeting">{{l('Chat')}}</div>
+                        <div class="intro-box-detail" *ngIf="selectedUser.id">
+                            <em class="fa fa-circle" [ngClass]="{'contactChatStatusOnline':selectedUser.isOnline, 'contactChatStatusOffline':!selectedUser.isOnline}"></em>
+                            {{selectedUser.friendUserName}}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form [formGroup]="form" (ngSubmit)="sendMessage()">
+                <div class="card chat">
+
+                    <p-virtualScroller #virtualScroller [value]="selectedUser.messages" scrollHeight="500px" [itemSize]="60">
+                            <ng-template let-msg pTemplate="item" let-i="index">
+
+                                <div class="clearfix message-from" *ngIf="msg['side'] == 2">
+                                    <img src="{{selectedUser.friendProfilePictureUrl}}" alt="" class="circuloChat" />
+                                    <span>{{msg['message']}}</span>
+                                    <span class="span-chat-time">
+                                        <em class="fa fa-clock-o"></em>
+                                        {{msg['creationTime'] | momentFormat: 'DD/MM/YYYY HH:mm:ss'}}
+                                    </span>
+                                </div>
+                                <div class="clearfix message-own" *ngIf="msg['side'] == 1">
+                                    <span class="span-chat-time">
+                                        <em class="fa fa-clock-o"></em>
+                                        {{msg['creationTime'] | momentFormat: 'DD/MM/YYYY HH:mm:ss'}}
+                                    </span>
+                                    <span>{{msg['message']}}</span>
+                                    <img src="{{urlPictureProfile}}" alt="" class="circuloChat" />
+                                </div>
+
+                            </ng-template>
+                    </p-virtualScroller>
+
+                    <div class="new-message" *ngIf="selectedUser.state == friendshipState.Accepted">
+                        <textarea formControlName="message" id="message" placeholder="{{l('Chat.TypeAMessageHere')}}" (keydown.Enter)="sendMessage()" maxlength="4096"></textarea>
+                        <div class="new-message-footer">
+
+                            <a class="new-message-send" (click)="sendMessage()" *ngIf="selectedUser.id">Send</a>
+                        </div>
+                    </div>
+
+                    <div class="grid">
+                        <div class="col-12 text-center">
+                            <p-button type="button" label="{{l('Chat.UnblockUser')}}" icon="pi pi-fw pi-check" (onClick)="unblock(selectedUser)" *ngIf="selectedUser.state == friendshipState.Blocked"></p-button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
+
+        <div class="col-4">
+
+            <div class="grid">
+                <div class="col-12 form-title-section">
+                    <div class="form-toolbar">
+                        <p-button type="button" label="{{l('SearchDots')}}" (onClick)="search()"></p-button>
+                        <p-button type="button" styleClass="p-button-rounded p-button-warning" icon="pi pi-question" (onClick)="helpOnScreenService.show('EXAMPLES.CHAT.FORM', true)"></p-button>
+            
+                    </div>
+                </div>
+            </div>
+
+            <div class="inbox">
+                <div class="inbox-header">
+                    <em class="fa fa-users"></em>
+                    {{l('Chat.Friends')}}
+                    <a (click)="search()">
+                        <em class="fa fa-user-plus"></em>
+                    </a>
+                </div>
+                <div class="inbox-content">
+                    <ul>
+                        <li *ngFor="let usr of getFilteredFriends(friendshipState.Accepted, userNameFilter)">
+                            <img alt="Profile" src="{{usr.friendProfilePictureUrl}}" class="circuloChat" title="{{usr.friendUserName}}" />
+                            <div class="inbox-message">
+                                <em alt="Online" class="fa fa-circle" [ngClass]="{'contactChatStatusOnline':usr.isOnline, 'contactChatStatusOffline':!usr.isOnline}"></em>
+                                <span> {{usr.friendUserName}}</span>
+                                <span class="badge rounded badge-warning" *ngIf="usr.unreadMessageCount > 0">{{usr.unreadMessageCount}}</span>
+                                <button type="button" pButton icon="fa fa-wrench" class="p-button-rounded" (click)="createAndShowMenu($event,usr);"></button>
+                            </div>
+                        </li>
+                        <li *ngIf="getFilteredFriendsCount(friendshipState.Accepted) == 0">{{l("Chat.YouDontHaveAnyFriend")}}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="inbox">
+                <div class="inbox-header">
+                    <em class="fa fa-ban"></em>
+                    {{l('Chat.BlockedUsers')}}
+                </div>
+                <div class="inbox-content">
+                    <ul>
+                        <li *ngFor="let usr of getFilteredFriends(friendshipState.Blocked, userNameFilter)">
+                            <img alt="Profile" src="{{usr.friendProfilePictureUrl}}" class="circuloChat" title="{{usr.friendUserName}}" />
+                            <div class="inbox-message">
+                                <em class="fa fa-circle" [ngClass]="{'contactChatStatusOnline':usr.isOnline, 'contactChatStatusOffline':!usr.isOnline}"></em>
+                                <span> {{usr.friendUserName}}</span>
+                                <span class="badge rounded badge-warning" *ngIf="usr.unreadMessageCount > 0">{{usr.unreadMessageCount}}</span>
+                                <button type="button" pButton icon="fa fa-wrench" class="p-button-rounded" (click)="createAndShowMenu($event,usr);"></button>
+                            </div>
+                        </li>
+                        <li *ngIf="getFilteredFriendsCount(friendshipState.Blocked) == 0">{{l("Chat.YouDontHaveAnyBlockedFriend")}}</li>
+                    </ul>
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+<p-menu #menu popup="popup" [model]="menuItems" [style]="{'width':'170px'}"></p-menu>

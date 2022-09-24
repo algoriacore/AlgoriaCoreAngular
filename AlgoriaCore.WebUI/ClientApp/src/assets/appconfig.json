@@ -1,0 +1,22 @@
+{
+    "remoteServiceBaseUrl": "http://localhost:60900",
+    "appBaseUrl": "http://localhost:4200",
+    "appTitle": "Algoria Core App",
+    "appPrefix": "app-core",
+    "googleAPIKey": "AIzaSyDjmJcT-ZUS4ME1w4EvBzu8mEve54YOPmg",
+    "timeouts": {
+        "default": 30000,
+        "urls": [
+            {
+                "url": "/api/Help/GetHelpList",
+                "timeout": 5000
+            },
+            {
+                "url": "/api/CatalogCustomImpl/GetCatalogCustomImplList",
+                "timeout": 300000
+            }
+        ]
+    },
+    "frequencyCheckVersion": 30,
+    "_commentFrequencyCheckVersion": "Medida en Minutos"
+}

@@ -1,0 +1,89 @@
+<form [formGroup]="form">
+    <div class="grid">
+
+        <div class="col-12 form-title-section">
+            <h3>
+                {{l('EmailTemplates')}}
+                <p-button type="button" styleClass="p-button-text algoria-button-help" icon="pi pi-info-circle"
+                          (onClick)="helpOnScreenService.show('ADMINISTRATION.EMAILTEMPLATE.FORM', true)"></p-button>
+            </h3>
+            <div class="form-toolbar">
+                <p-button type="button" icon="pi pi-clock" styleClass="p-button-warning" (onClick)="showChangeHistory()" pTooltip="{{l('ShowChangeHistory')}}" tooltipPosition="top" *ngIf="id"></p-button>
+                <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+                <p-button type="button" label="{{l('Test')}}" (onClick)="sendTest()"></p-button>
+                <p-button type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+
+                <h5>{{l('GeneralData')}}</h5>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-4">
+                        <label for="name">{{l('EmailTemplates.DisplayNameForm')}}<span class="required"> *</span></label>
+                        <input type="text" #name formControlName="displayname" id="displayname" autocomplete="off" maxlength="100" pInputText />
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="mailkey">{{l('EmailTemplates.MailKeyForm')}}<span class="required"> *</span></label>
+                        <p-dropdown #cmbMailKey [options]="mailKeyList" formControlName="mailkey" id="mailkey" [showClear]="false" placeholder="{{l('Select')}}" (onChange)="onChangeMailKey()"></p-dropdown>
+                    </div>
+                </div>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-4">
+                        <label for="sendto">{{l('EmailTemplates.SendToForm')}}</label>
+                        <input type="text" formControlName="sendto" id="sendto" autocomplete="off" maxlength="1000" pInputText />
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="copyto">{{l('EmailTemplates.CopyToForm')}}</label>
+                        <input type="text" formControlName="copyto" id="copyto" autocomplete="off" maxlength="1000" pInputText />
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="blindcopyto">{{l('EmailTemplates.BlindCopyToForm')}}</label>
+                        <input type="text" formControlName="blindcopyto" id="blindcopyto" autocomplete="off" maxlength="1000" pInputText />
+                    </div>
+                </div>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 lg:col-8">
+                        <label for="subject">{{l('EmailTemplates.SubjectForm')}}</label>
+                        <input type="text" formControlName="subject" id="subject" autocomplete="off" maxlength="250" pInputText />
+                    </div>
+                    <div class="field col-12 ">
+                        <p-checkbox name="isactive" [formControl]="f['isactive']" label="{{l('IsActive')}}" value="true" binary="true"></p-checkbox>
+                    </div>
+                </div>
+
+                <div class="p-fluid formgrid grid">
+
+                    <div class="field sm:col-8 md:col-9 lg:col-9">
+                        <label for="body">{{l('EmailTemplates.BodyForm')}}</label>
+                        <!--<ck-editor name="body"
+                           formControlName="body"
+                           skin="moono-lisa"
+                           language="es-MX"
+                           [fullPage]="true"
+                           [config]="{ height: 320 }">
+                </ck-editor>-->
+                        <app-editor [formControl]="f['body']" id="body" [style]="{'height':'320px'}"></app-editor>
+                    </div>
+
+                    <div class="field sm:col-4 md:col-3 lg:col-3">
+                        <label for="body" class="aoptions-title">{{l('EmailTemplates.BodyParamsForm')}}</label>
+                        <div class="aoptions" style="overflow-y:auto;height:350px;">
+                            <div class="opt" *ngFor="let option of parametros;">
+                                <span>{{option.label}}</span> &emsp;&emsp;
+                                <div class="alnk">
+                                    <a title="Copiar" (click)="copy(option.label)"><em class="pi pi-copy"></em></a>&nbsp;
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>

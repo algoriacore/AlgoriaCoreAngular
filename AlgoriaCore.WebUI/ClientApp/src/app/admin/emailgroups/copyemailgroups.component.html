@@ -1,0 +1,30 @@
+<div class="grid">
+    <div class="col-12 form-title-section">
+        <div class="form-title">{{l('EmailGroups.Copy')}}</div>
+        <div class="form-toolbar">
+            <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+            <p-button type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
+        </div>
+    </div>
+    <div class="col-12">
+        <form [formGroup]="form">
+            <div class="card">
+                <h5>{{l('GeneralData')}}</h5>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12">
+                        <label>{{l('EmailGroups.Copy.SelectedForm')}}</label>
+                        <p><span class="text-900">{{model.displayName}}</span></p>
+                    </div>
+                    <div class="field col-12">
+                        <label for="displayname">{{l('EmailGroups.Copy.DisplayNameForm')}}<span class="required"> *</span></label>
+                        <input type="text" formControlName="displayname" id="displayname" autocomplete="off" maxlength="100" pInputText />
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<app-preloader [blocked]="blockedDocument"></app-preloader>

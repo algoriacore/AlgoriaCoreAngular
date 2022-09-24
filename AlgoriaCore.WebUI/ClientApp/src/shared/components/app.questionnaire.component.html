@@ -1,0 +1,136 @@
+<form [formGroup]="form" *ngIf="!readOnly">
+    <div class="grid">
+        <div class="col-12">
+            <div class="card" *ngFor="let questionnaireSection of questionnaireSections">
+                <h5><span *ngIf="questionnaireSection.iconAF" [ngClass]="questionnaireSection.iconAF" style="margin-right: 10px;"></span>{{questionnaireSection.name}}</h5>
+
+                <div class="p-fluid formgrid grid">
+                    <div *ngFor="let field of questionnaireSection.fields" class="field col-12" [ngClass]="field.fieldControl !== QuestionnaireFieldControl.InputTextArea ? 'md:col-4': ''">
+                        <label for="{{field.fieldName}}">
+                            {{field.name}}
+                            <span class="required" *ngIf="field.isRequired"> *</span>
+                        </label>
+                        <div *ngIf="field.fieldControl === QuestionnaireFieldControl.InputText">
+                            <input type="text" [formControlName]="field.fieldName" id="{{field.fieldName}}" autocomplete="off" [maxLength]="field.fieldSize" pInputText />
+                        </div>
+                        <div *ngIf="field.fieldControl === QuestionnaireFieldControl.DropDown">
+                            <p-dropdown [options]="field.optionsCombo" [formControlName]="field.fieldName" filter="true" [showClear]="true" placeholder="{{l('Select')}}" emptyFilterMessage="{{l('RecordsNotFound')}}"></p-dropdown>
+                        </div>
+                        <div *ngIf="field.fieldControl === QuestionnaireFieldControl.Listbox">
+                            <p-listbox [options]="field.optionsCombo" [formControlName]="field.fieldName"></p-listbox>
+                        </div>
+                        <div *ngIf="field.fieldControl === QuestionnaireFieldControl.RadioButton" class="p-formgroup-inline">
+                            <div *ngFor="let option of field.optionsCombo" class="field-radiobutton">
+                                <p-radioButton [name]="field.fieldName" [inputId]="field.fieldName + option.value" [value]="option.value" [formControlName]="field.fieldName"></p-radioButton>
+                                <label [for]="field.fieldName + option.value">{{option.label}}</label>
+                            </div>
+                        </div>
+                        <div *ngIf="field.fieldControl === QuestionnaireFieldControl.InputSwitch">
+                            <p-inputSwitch [formControlName]="field.fieldName"></p-inputSwitch>
+                        </div>
+                        <div *ngIf="field.fieldControl === QuestionnaireFieldControl.InputMask">
+                            <p-inputMask [mask]="field.inputMask" [formControlName]="field.fieldName" [placeholder]="field.inputMask" [maxlength]="field.fieldSize"></p-inputMask>
+                        </div>
+                        <div *ngIf="field.fieldControl === QuestionnaireFieldControl.InputTextArea">
+                            <textarea [formControlName]="field.fieldName" [rows]="5" [maxLength]="field.fieldSize" style="width: 100%;" pInputTextarea></textarea>
+                        </div>
+                        <div *ngIf="field.fieldControl === QuestionnaireFieldControl.ListboxMultivalue">
+                            <p-listbox [options]="field.optionsCombo" [formControlName]="field.fieldName" multiple="multiple"></p-listbox>
+                        </div>
+                        <div class="p-fluid formgrid grid col-12" *ngIf="field.fieldControl === QuestionnaireFieldControl.Checkbox">
+                            <div *ngFor="let option of field.optionsCombo" class="field-checkbox col-12 sm:col-12 md:col-6 xl:col-4">
+                                <p-checkbox [formControl]="form.controls[field.fieldName]" [name]="field.fieldName" [value]="option.value" [label]="option.label"></p-checkbox>
+                            </div>
+                        </div>
+                        <div *ngIf="field.fieldControl === QuestionnaireFieldControl.Multiselect">
+                            <p-multiSelect [options]="field.optionsCombo" [formControlName]="field.fieldName" maxSelectedLabels="10" defaultLabel="{{l('Select')}}" emptyFilterMessage="{{l('RecordsNotFound')}}"></p-multiSelect>
+                        </div>
+                        <div *ngIf="field.fieldControl === QuestionnaireFieldControl.CalendarBasic">
+                            <p-calendar [formControlName]="field.fieldName" [locale]="appDatetimeControlsLocale" dateFormat="dd/mm/yy" showButtonBar="true"></p-calendar>
+                        </div>
+                        <div *ngIf="field.fieldControl === QuestionnaireFieldControl.CalendarTime">
+                            <p-calendar [formControlName]="field.fieldName" [locale]="appDatetimeControlsLocale" dateFormat="dd/mm/yy" showButtonBar="true" [showTime]="true"></p-calendar>
+                        </div>
+                        <div *ngIf="field.fieldControl === QuestionnaireFieldControl.CalendarTimeOnly">
+                            <p-calendar [formControlName]="field.fieldName" [timeOnly]="true"></p-calendar>
+                        </div>
+                        <div *ngIf="field.fieldControl === QuestionnaireFieldControl.SpinnerFormatInput">
+                            <p-inputNumber [showButtons]="true" [formControlName]="field.fieldName" [maxlength]="32"
+                            [useGrouping]="field.customProperties && field.customProperties.useGrouping"
+                            [minFractionDigits]="field.fieldSize"
+                            [maxFractionDigits]="field.fieldSize"></p-inputNumber>
+                        </div>
+                        <div *ngIf="field.fieldControl === QuestionnaireFieldControl.Spinner">
+                            <div *ngIf="field.fieldType === QuestionnaireFieldType.Integer">
+                                <p-inputNumber [showButtons]="true" [formControlName]="field.fieldName" [min]="-2147483647" [max]="2147483647" [maxlength]="10"
+                                [useGrouping]="field.customProperties && field.customProperties.useGrouping"></p-inputNumber>
+                            </div>
+                            <div *ngIf="field.fieldType === QuestionnaireFieldType.Decimal">
+                                <p-inputNumber [showButtons]="true" [formControlName]="field.fieldName" [min]="-2147483647" [max]="2147483647" [maxlength]="10"
+                                               [useGrouping]="field.customProperties && field.customProperties.useGrouping"
+                                               [minFractionDigits]="field.fieldSize"
+                                               [maxFractionDigits]="field.fieldSize"></p-inputNumber>
+                            </div>
+                            <div *ngIf="field.fieldType === QuestionnaireFieldType.Currency">
+                                <p-inputNumber [showButtons]="true" [formControlName]="field.fieldName" [min]="-2147483647" [max]="2147483647" [maxlength]="10"
+                                               [useGrouping]="field.customProperties && field.customProperties.useGrouping"
+                                               [minFractionDigits]="field.fieldSize"
+                                               [maxFractionDigits]="field.fieldSize"
+                                               mode="currency"
+                                               [currency]="field.customProperties && field.customProperties.currency"
+                                               [locale]="field.customProperties && field.customProperties.locale"></p-inputNumber>
+                            </div>
+                        </div>
+                        <div *ngIf="field.fieldControl === QuestionnaireFieldControl.TextNumber">
+                            <div *ngIf="field.fieldType === QuestionnaireFieldType.Integer">
+                                <app-text-number [formControlName]="field.fieldName" allowEmpty="true"
+                                                 [allowNegatives]="field.customProperties && field.customProperties.minValue < 0"
+                                                 [useMilesSep]="field.customProperties && field.customProperties.useGrouping"></app-text-number>
+                            </div>
+                            <div *ngIf="field.fieldType === QuestionnaireFieldType.Decimal">
+                                <app-text-number [formControlName]="field.fieldName" allowEmpty="true"
+                                                 [useMilesSep]="field.customProperties && field.customProperties.useGrouping"
+                                                 [allowNegatives]="field.customProperties && field.customProperties.minValue < 0"
+                                                 [decimals]="field.fieldSize"></app-text-number>
+                            </div>
+                            <div *ngIf="field.fieldType === QuestionnaireFieldType.Currency">
+                                <app-text-number [formControlName]="field.fieldName" allowEmpty="true"
+                                                 [useMilesSep]="field.customProperties && field.customProperties.useGrouping"
+                                                 [allowNegatives]="field.customProperties && field.customProperties.minValue < 0"
+                                                 [decimals]="field.fieldSize"></app-text-number>
+                            </div>
+                        </div>
+                        <div *ngIf="field.fieldControl === QuestionnaireFieldControl.GoogleAddress">
+                            <app-google-map-address [formControlName]="field.fieldName"></app-google-map-address>
+                        </div>
+                        <div *ngIf="field.fieldControl === QuestionnaireFieldControl.Autocomplete">
+                            <p-dropdown [formControlName]="field.fieldName" [options]="field.optionsCombo" filter="true" [showClear]="true" placeholder="{{l('Select')}}" emptyFilterMessage="{{l('RecordsNotFound')}}"></p-dropdown>
+                        </div>
+                        <div *ngIf="field.fieldControl === QuestionnaireFieldControl.AutocompleteDynamic">
+                            <p-autoComplete [formControlName]="field.fieldName" [suggestions]="field.optionsCombo" (completeMethod)="fillAutocompleteDynamic($event, field)" field="label" [forceSelection]="true" [minLength]="3" placeholder="{{l('TypeToSelect')}}" emptyMessage="{{l('RecordsNotFound')}}"></p-autoComplete>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="grid" *ngIf="readOnly">
+    <div class="col-12">
+        <div class="card" *ngFor="let questionnaireSection of questionnaireSections">
+            <h5><span *ngIf="questionnaireSection.iconAF" [ngClass]="questionnaireSection.iconAF" style="margin-right: 10px;"></span>{{questionnaireSection.name}}</h5>
+
+            <div class="p-fluid formgrid grid">
+                <div *ngFor="let field of questionnaireSection.fields" class="field col-12" [ngClass]="field.fieldControl !== QuestionnaireFieldControl.InputTextArea ? 'md:col-4': ''">
+                    <label for="{{field.fieldName}}">
+                        {{field.name}}
+                    </label>
+                    <div style="white-space: pre-line;">
+                        {{transformFieldValueToDisplay(value[field.fieldName], field)}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

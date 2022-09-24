@@ -1,0 +1,44 @@
+<form [formGroup]="form">
+    <div class="grid">
+
+        <div class="col-12 form-title-section">
+            <div>
+                <h3>
+                    {{l('Tenants')}}
+                    <p-button type="button" styleClass="p-button-text algoria-button-help" icon="pi pi-info-circle"
+                              (onClick)="helpOnScreenService.show('INSTANCE.FORM', true)"></p-button>
+                </h3>
+                <small>{{l('Tenants.Tenant.Edit')}}</small>
+            </div>
+            <div class="form-toolbar">
+                <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+                <p-button type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+
+                <h5>{{l('GeneralData')}}</h5>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="col-12 md:col-9 lg:col-4">
+                        <div class="field">
+                            <label for="name">{{l('Tenants.NameForm')}}<span class="required"> *</span></label>
+                            <input type="text" formControlName="name" id="name" autocomplete="off" maxlength="150" pInputText />
+                        </div>
+                        <div class="field">
+                            <label for="displayName">{{l('Tenants.TenancyNameForm')}}<span class="required"> *</span></label>
+                            <input type="text" formControlName="tenancyName" id="tenancyName" autocomplete="off" maxlength="50" pInputText />
+                        </div>
+                        <div class="field">
+                            <p-checkbox id="isActive" name="isActive" [formControl]="form.controls['isActive']" value="true" binary="true" label="{{l('IsActive')}}"></p-checkbox>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</form>

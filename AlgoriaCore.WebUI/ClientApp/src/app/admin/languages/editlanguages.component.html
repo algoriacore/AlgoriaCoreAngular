@@ -1,0 +1,110 @@
+<form [formGroup]="form">
+    <div class="grid">
+
+        <div class="col-12 form-title-section">
+            <div>
+                <h3>
+                    {{l('Languages')}}
+                    <p-button type="button" styleClass="p-button-text algoria-button-help" icon="pi pi-info-circle"
+                              (onClick)="helpOnScreenService.show('ADMINISTRATION.LANGUAGE.FORM', true)"></p-button>
+                </h3>
+                <small>{{l('Languages.Language.Edit')}}</small>
+            </div>
+            <div class="form-toolbar">
+                <p-button type="button" icon="pi pi-clock" styleClass="p-button-warning" (onClick)="showChangeHistory()" pTooltip="{{l('ShowChangeHistory')}}" tooltipPosition="top" *ngIf="id"></p-button>
+                <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+                <p-button type="button" label="{{l('SaveAndContinue')}}" (onClick)="save()" *ngIf="!id"></p-button>
+                <p-button type="button" label="{{l('Save')}}" (onClick)="save()" *ngIf="id"></p-button>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+
+                <h5>{{l('GeneralData')}}</h5>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="col-12 md:col-9 lg:col-4">
+                        <div class="field">
+                            <label for="name">{{fieldLabels["name"]}}<span class="required"> *</span></label>
+                            <input type="text" #name formControlName="name" id="name" autocomplete="off" maxlength="10" pInputText />
+                        </div>
+                        <div class="field">
+                            <label for="displayName">
+                                {{fieldLabels["displayName"]}}<span class="required"> *</span>
+                            </label>
+                            <input type="text" formControlName="displayName" id="displayName" autocomplete="off" maxlength="100" pInputText />
+                        </div>
+                        <div class="field">
+                            <p-checkbox id="isActive" name="isActive" [formControl]="form.controls['isActive']" value="true" binary="true" label="{{l('IsActive')}}"></p-checkbox>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card" *ngIf="id && permissions.changeTexts">
+
+                <p-table #dt1 [columns]="cols" [value]="data" [(selection)]="selectedItem" [lazy]="true" (onLazyLoad)="loadData($event)" [paginator]="true"
+                         [rows]="10" [totalRecords]="pagedTableSummary.totalRecords" [rowsPerPageOptions]="[10,20,30,50,100]" dataKey="key" selectionMode="single"
+                         sortField="key" stateStorage="local" [stateKey]="browserStorageTableKey" styleClass="p-datatable-striped p-datatable-sm" class="p-datatable-responsive">
+                    <ng-template pTemplate="caption">
+                        <div class="grid p-fluid">
+                            <div class="col-12 sm:col-7 md:col-8 lg:col-9">
+                                <h5>{{l('Languages.Texts')}}</h5>
+                            </div>
+                            <div class="col-12 sm:col-5 md:col-4 lg:col-3">
+                                <span class="p-input-icon-left">
+                                    <i class="pi pi-search"></i>
+                                    <input type="text" pInputText placeholder="{{l('SearchDots')}}" formControlName="filterText" (keydown.enter)="filterSearch($event)" />
+                                </span>
+                            </div>
+                        </div>
+                    </ng-template>
+
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th scope="col" style="width:140px;">{{l('Actions')}}</th>
+                            <th scope="col" *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+                                {{col.header}}
+                                <p-sortIcon [field]="col.field"></p-sortIcon>
+                            </th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <tr [pSelectableRow]="rowData">
+                            <td>
+                                <div>
+                                    <button pButton pRipple [disabled]="!permissions.edit" icon="pi pi-pencil" class="p-button-sm mr-2" (click)="edit(rowData)" pTooltip="{{l('Edit')}}" tooltipPosition="top"></button>
+                                    <button pButton pRipple icon="pi pi-clock" class="p-button-sm p-button-warning" (click)="showTextChangeHistory(rowData.id)"
+                                            pTooltip="{{l('ShowChangeHistory')}}" tooltipPosition="top" [disabled]="!rowData.id"></button>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'key')}}</span>
+                                <div class="p-column-content">{{rowData.key}}</div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'value')}}</span>
+                                <div class="p-column-content">{{rowData.value}}</div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="paginatorleft"></ng-template>
+                    <ng-template pTemplate="paginatorright">
+                        <div *ngIf="pagedTableSummary.totalRecords > 0" class="p-text-bold">
+                            {{l('ShowingRecordsRange', pagedTableSummary.firstRecordInPage, pagedTableSummary.lastRecordInPage, pagedTableSummary.totalRecords)}}
+                        </div>
+                        <div *ngIf="pagedTableSummary.totalRecords == 0" class="p-text-bold">{{l('RecordsNotFound')}}</div>
+                    </ng-template>
+                </p-table>
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+</form>

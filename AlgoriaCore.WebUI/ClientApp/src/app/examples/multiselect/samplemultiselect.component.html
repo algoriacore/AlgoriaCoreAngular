@@ -1,0 +1,59 @@
+<form [formGroup]="form">
+    <div class="grid">
+
+        <div class="col-12 form-title-section">
+            <h3>
+                {{l('Examples.Autocomplete')}}
+            </h3>
+            <div class="form-toolbar">
+                <p-button type="button" [style.margin-left.px]="10" label="Verificar" (onClick)="verify()"></p-button>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-4">
+                        <label for="name">{{fieldLabels['simple']}}</label>
+                        <p-autoComplete formControlName="simpleValue"
+                                        [suggestions]="lista"
+                                        [forceSelection]="true"
+                                        field="fullName"
+                                        (completeMethod)="search($event)">
+                        </p-autoComplete>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="displayName">{{fieldLabels['itemTemplate']}}</label>
+                        <p-autoComplete formControlName="itemTemplateValue"
+                                        [suggestions]="lista"
+                                        [dropdown]="true"
+                                        [forceSelection]="true"
+                                        field="fullName"
+                                        (completeMethod)="search($event)">
+                            <ng-template let-value pTemplate="item">
+                                <label style="font-weight:bold;">Nombre: </label>{{value.fullName}}
+                            </ng-template>
+                        </p-autoComplete>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="selectedValue">{{fieldLabels['multipleWithChecks']}}</label>
+                        <p-autoComplete formControlName="selectedValue"
+                                        [suggestions]="lista"
+                                        [dropdown]="true"
+                                        [multiple]="true"
+                                        [forceSelection]="true"
+                                        field="fullName"
+                                        (completeMethod)="search($event)">
+                            <ng-template let-value pTemplate="item">
+                                <label><input type="checkbox" (click)="checkSelect($event,value)" [checked]="verifyCheck(value)" />{{value.fullName}}</label>
+                            </ng-template>
+                        </p-autoComplete>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</form>

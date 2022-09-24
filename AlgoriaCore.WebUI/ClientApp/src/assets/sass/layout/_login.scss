@@ -1,0 +1,107 @@
+.login-body {
+    padding: 0;
+    background: url("../../layout/images/pages/login-bg.jpg");
+    background-size: cover;
+    overflow: hidden;
+    margin: 0 auto;
+    position: relative;
+    height: 100vh;
+
+    .login-topbar {
+        height: 60px;
+        padding: 15px 150px 15px 150px;
+        background-color: #3a3e45;
+        @include shadow(0 2px 6px 0 rgba(0, 0, 0, 0.24));
+
+        img {
+            height: 30px;
+            vertical-align: middle;
+        }
+
+        .app-title {
+            color: #ffffff;
+            font-size: 24px;
+            vertical-align: middle;
+            margin-left: 24px;
+        }
+    }
+
+    .login-panel {
+        border-top: 4px solid #feedbc;
+        padding: 0 70px 20px 70px;
+        height: 350px;
+        width: 560px;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        margin-left: -280px;
+        margin-top: -175px;
+        background-color: rgba(0,0,0,.13);
+        @include border-radius($borderRadius);
+
+        h1 {
+            display: inline-block;
+            font-size: 16px;
+            background-color: #feedbc;
+            margin: 0 0 16px 0;
+            color: #666666;
+            padding: 4px 8px;
+            @include border-radius($borderRadius);
+        }
+
+        p {
+            color: #c8c8c8;
+            margin: 0 0 0 0;
+        }
+
+        label {
+            display: block;
+            color: #c8c8c8;
+            margin: 24px 0 7px 0;
+        }
+
+        input {
+            background: transparent;
+            border: 1px solid #dadada;
+            color: #dadada;
+            font-size: $fontSize;
+            padding: .429em;
+            @include transition(border-color $transitionDuration);
+            @include border-radius($borderRadius);
+
+            &:hover, &:focus {
+                outline: 0 none;
+                border-color: #ffffff;
+            }
+        }
+
+        button {
+            margin: 28px 0 0 0;
+            display: block;
+            min-width: 120px;
+            padding: 0.5rem 1rem;
+        }
+    }
+}
+
+@media screen and (max-width: 40em) {
+
+    .login-body {
+        .login-topbar {
+            padding: 15px 70px 15px 70px;
+        }
+        
+        .login-panel {
+            left: 0;
+            top: 25%;
+            width: 100%;
+            margin-top: 0;
+            margin-left: 0;
+
+            input {
+                width: 100%;
+            }
+        }
+    }
+    
+}

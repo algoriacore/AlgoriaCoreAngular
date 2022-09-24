@@ -1,0 +1,220 @@
+<form [formGroup]="form" *ngIf="model">
+    <div class="grid">
+
+        <div class="col-12 form-title-section">
+            <h3>
+                {{model.template.nameSingular}}
+            </h3>
+            <div class="form-toolbar">
+                <p-button type="button" icon="pi pi-clock" styleClass="p-button-warning" (onClick)="showChangeHistory()" pTooltip="{{l('ShowChangeHistory')}}" tooltipPosition="top" *ngIf="id"></p-button>
+                <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+                <p-button *ngIf="!id && permissions.create" type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
+                <p-button *ngIf="id && permissions.edit" type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
+                <p-button *ngIf="id && permissions.edit && model.template.hasSecurity" type="button" icon="pi pi-lock" (onClick)="configSecurity()"></p-button>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card" *ngIf="model.template.isActivity">
+                <h5>{{l('Processes.Process.Activity')}}</h5>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="col-12 md:col-6" *ngIf="id">
+                        <div class="field grid">
+                            <label class="col-12 md:col-4 lg:col-3">{{fieldLabels['ACT_CreationTime']}}</label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                {{model.activity.creationTimeDesc}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-6" *ngIf="id">
+                        <div class="field grid">
+                            <label class="col-12 md:col-4 lg:col-3">{{fieldLabels['ACT_UserCreator']}}</label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                {{model.activity.userCreatorDesc}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-6">
+                        <div class="field grid">
+                            <label for="ACT_Description" class="col-12 md:col-4 lg:col-3">
+                                {{fieldLabels['ACT_Description']}}<span class="required"> *</span>
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                <input type="text" formControlName="ACT_Description" id="ACT_Description" autocomplete="off" maxlength="100" pInputText />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-6">
+                        <div class="field grid">
+                            <label for="ACT_Status" class="col-12 md:col-4 lg:col-3">
+                                {{fieldLabels['ACT_Status']}}<span class="required"> *</span>
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                <p-dropdown [options]="model.activityStatusCombo" formControlName="ACT_Status" filter="true" placeholder="{{l('Select')}}" emptyFilterMessage="{{l('RecordsNotFound')}}"></p-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-6">
+                        <div class="field grid">
+                            <label for="ACT_InitialPlannedDate" class="col-12 md:col-4 lg:col-3">
+                                {{fieldLabels['ACT_InitialPlannedDate']}}
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                <p-calendar formControlName="ACT_InitialPlannedDate" [locale]="appDatetimeControlsLocale" dateFormat="dd/mm/yy" showButtonBar="true"></p-calendar>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-6">
+                        <div class="field grid">
+                            <label for="ACT_FinalPlannedDate" class="col-12 md:col-4 lg:col-3">
+                                {{fieldLabels['ACT_FinalPlannedDate']}}<span class="required"> *</span>
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                <p-calendar formControlName="ACT_FinalPlannedDate" [locale]="appDatetimeControlsLocale" dateFormat="dd/mm/yy" showButtonBar="true"></p-calendar>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-6">
+                        <div class="field grid">
+                            <label for="ACT_InitialRealDate" class="col-12 md:col-4 lg:col-3">
+                                {{fieldLabels['ACT_InitialRealDate']}}
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                <p-calendar formControlName="ACT_InitialRealDate" [locale]="appDatetimeControlsLocale" dateFormat="dd/mm/yy" showButtonBar="true"></p-calendar>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-6">
+                        <div class="field grid">
+                            <label for="ACT_FinalRealDate" class="col-12 md:col-4 lg:col-3">
+                                {{fieldLabels['ACT_FinalRealDate']}}
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                <p-calendar formControlName="ACT_FinalRealDate" [locale]="appDatetimeControlsLocale" dateFormat="dd/mm/yy" showButtonBar="true"></p-calendar>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-6" *ngIf="id">
+                        <div class="field grid">
+                            <label class="col-12 md:col-4 lg:col-3">
+                                {{fieldLabels['ACT_IsOnTime']}}
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                {{model.activity.isOnTimeDesc}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-6"></div>
+                    <div class="col-12 md:col-6">
+                        <div class="field grid">
+                            <label for="ACT_Executor" class="col-12 md:col-4 lg:col-3">
+                                {{fieldLabels['ACT_Executor']}}<span class="required"> *</span>
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                <p-autoComplete formControlName="ACT_Executor" [suggestions]="userCombo" (completeMethod)="fillAutocompleteDynamicUser($event)" field="label" [forceSelection]="true" [minLength]="3" placeholder="{{l('TypeToSelect')}}" emptyMessage="{{l('RecordsNotFound')}}" [multiple]="true"></p-autoComplete>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-6">
+                        <div class="field grid">
+                            <label for="ACT_Evaluator" class="col-12 md:col-4 lg:col-3">
+                                {{fieldLabels['ACT_Evaluator']}}<span class="required"> *</span>
+                            </label>
+                            <div class="col-12 md:col-8 lg:col-9">
+                                <p-autoComplete formControlName="ACT_Evaluator" [suggestions]="userCombo" (completeMethod)="fillAutocompleteDynamicUser($event)" field="label" [forceSelection]="true" [minLength]="3" placeholder="{{l('TypeToSelect')}}" emptyMessage="{{l('RecordsNotFound')}}" [multiple]="true"></p-autoComplete>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" *ngFor="let templateSection of templateSections">
+                <h5><span [ngClass]="templateSection.iconAF" style="margin-right: 10px;"></span>{{templateSection.name}}</h5>
+
+                <div class="p-fluid">
+                    <div class="field grid" *ngFor="let field of templateSection.fields">
+                        <label for="{{field.fieldName}}" class="col-12 md:col-4 lg:col-2">
+                            {{field.name}}
+                            <span class="required" *ngIf="field.isRequired"> *</span>
+                        </label>
+                        <div class="col-12 md:col-8" [ngClass]="getControlSizeClass(field.fieldControl)">
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.InputText">
+                                <input type="text" [formControlName]="field.fieldName" id="{{field.fieldName}}" autocomplete="off" [maxLength]="field.fieldSize" pInputText />
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.DropDown">
+                                <p-dropdown [options]="field.optionsCombo" [formControlName]="field.fieldName" filter="true" [showClear]="true" placeholder="{{l('Select')}}" emptyFilterMessage="{{l('RecordsNotFound')}}"></p-dropdown>
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.Listbox">
+                                <p-listbox [options]="field.optionsCombo" [formControlName]="field.fieldName"></p-listbox>
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.RadioButton" class="p-formgroup-inline">
+                                <div *ngFor="let option of field.optionsCombo" class="field-radiobutton">
+                                    <p-radioButton [name]="field.fieldName" [inputId]="option.value" [value]="option.value" [formControlName]="field.fieldName"></p-radioButton>
+                                    <label [for]="option.value">{{option.label}}</label>
+                                </div>
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.InputSwitch">
+                                <p-inputSwitch [formControlName]="field.fieldName"></p-inputSwitch>
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.InputMask">
+                                <p-inputMask [mask]="field.inputMask" [formControlName]="field.fieldName" [placeholder]="field.inputMask" [maxlength]="field.fieldSize"></p-inputMask>
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.InputTextArea">
+                                <textarea [formControlName]="field.fieldName" [rows]="5" [maxLength]="field.fieldSize" style="width: 100%;" pInputTextarea></textarea>
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.ListboxMultivalue">
+                                <p-listbox [options]="field.optionsCombo" [formControlName]="field.fieldName" multiple="multiple"></p-listbox>
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.Checkbox">
+                                <div *ngFor="let option of field.optionsCombo" class="ui-g-12 ui-lg-2 ui-md-3">
+                                    <p-checkbox [formControl]="form.controls[field.fieldName]" [name]="field.fieldName" [value]="option.value" [label]="option.label"></p-checkbox>
+                                </div>
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.Multiselect">
+                                <p-multiSelect [options]="field.optionsCombo" [formControlName]="field.fieldName" maxSelectedLabels="10" defaultLabel="{{l('Select')}}" emptyFilterMessage="{{l('RecordsNotFound')}}"></p-multiSelect>
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.CalendarBasic">
+                                <p-calendar [formControlName]="field.fieldName" [locale]="appDatetimeControlsLocale" dateFormat="dd/mm/yy" showButtonBar="true"></p-calendar>
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.CalendarTime">
+                                <p-calendar [formControlName]="field.fieldName" [locale]="appDatetimeControlsLocale" dateFormat="dd/mm/yy" showButtonBar="true" [showTime]="true"></p-calendar>
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.CalendarTimeOnly">
+                                <p-calendar [formControlName]="field.fieldName" [timeOnly]="true"></p-calendar>
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.Spinner">
+                                <p-inputNumber [showButtons]="true" [formControlName]="field.fieldName" [min]="-2147483647" [max]="2147483647" [maxlength]="10"></p-inputNumber>
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.SpinnerFormatInput">
+                                <p-inputNumber [showButtons]="true" [formControlName]="field.fieldName" [maxlength]="32" locale="es-MX"></p-inputNumber>
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.TextNumber">
+                                <div *ngIf="field.fieldType === TemplateFieldType.Integer">
+                                    <app-text-number [formControlName]="field.fieldName" allowEmpty="true" useMilesSep="true"></app-text-number>
+                                </div>
+                                <div *ngIf="field.fieldType === TemplateFieldType.Decimal">
+                                    <app-text-number [formControlName]="field.fieldName" allowEmpty="true" useMilesSep="true" [decimals]="field.fieldSize"></app-text-number>
+                                </div>
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.GoogleAddress">
+                                <app-google-map-address [formControlName]="field.fieldName"></app-google-map-address>
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.Autocomplete">
+                                <p-dropdown [formControlName]="field.fieldName" [options]="field.optionsCombo" filter="true" [showClear]="true" placeholder="{{l('Select')}}" emptyFilterMessage="{{l('RecordsNotFound')}}"></p-dropdown>
+                            </div>
+                            <div *ngIf="field.fieldControl === TemplateFieldControl.AutocompleteDynamic">
+                                <p-autoComplete [formControlName]="field.fieldName" [suggestions]="field.optionsCombo" (completeMethod)="fillAutocompleteDynamic($event, field)" field="label" [forceSelection]="true" [minLength]="3" placeholder="{{l('TypeToSelect')}}" emptyMessage="{{l('RecordsNotFound')}}"></p-autoComplete>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="id && model && model.template.hasChatRoom">
+                <app-chatlog chatRoomId="{{'table-process_' + model.template.id + '_' + id}}" name="Chat" description="{{model.template.description}}"></app-chatlog>
+            </div>
+        </div>
+
+    </div>
+</form>

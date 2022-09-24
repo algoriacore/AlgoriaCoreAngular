@@ -1,0 +1,7 @@
+<div class="layout-menu-container" (click)="onMenuClick($event)">
+    <p-scrollPanel #layoutMenuScroller [style]="{height: '100%'}">
+        <div class="menu-scroll-content">
+            <ul app-submenu [item]="model" root="true" class="layout-menu" visible="true" [reset]="reset" parentActive="true"></ul>
+        </div>
+    </p-scrollPanel>
+</div>

@@ -1,0 +1,128 @@
+<style type="text/css">
+    .avatar-logo {
+        margin: auto;
+        border: 1px solid #61B5A1;
+        border-radius: 50%;
+        background: #61B5A1;
+        width: 7.5rem;
+        height: 7.5rem;
+        margin-top: 0;
+        margin-bottom: 0.3rem;
+    }
+
+        .avatar-logo img {
+            width: 5rem;
+            height: 5rem;
+            left: 1.2rem;
+            position: relative;
+            top: 1.2rem;
+        }
+</style>
+
+<form [formGroup]="usuarioForm" (ngSubmit)="save()">
+    <div class="grid">
+        <div class="col-12 form-title-section">
+            <h3>
+                {{l('Users.Profile.Title')}}
+                <p-button type="button" styleClass="p-button-text algoria-button-help" icon="pi pi-info-circle"
+                          (onClick)="helpOnScreenService.show('ADMINISTRATION.USER.PROFILE', true)"></p-button>
+            </h3>
+            <div class="form-toolbar">
+                <p-button type="button" label="{{l('SaveChanges')}}" (onClick)="save()"></p-button>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+                <h5>{{l('GeneralData')}}</h5>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="col-6 sm:col-7 md:col-10">
+                        <div class="p-fluid formgrid grid">
+                            <div class="field col-12 md:col-4">
+                                <label for="name">{{l('Users.NameForm')}}<span class="required"> *</span></label>
+                                <input type="text" formControlName="name" id="name" autocomplete="off" maxlength="50" pInputText />
+                            </div>
+                            <div class="field col-12 md:col-4">
+                                <label for="lastname">{{l('Users.LastNameForm')}}<span class="required"> *</span></label>
+                                <input type="text" formControlName="lastname" id="lastname" autocomplete="off" maxlength="50" pInputText />
+                            </div>
+                            <div class="field col-12 md:col-4">
+                                <label for="secondlastname">{{l('Users.SecondLastNameForm')}}</label>
+                                <input type="text" formControlName="secondlastname" id="secondlastname" autocomplete="off" maxlength="50" pInputText />
+                            </div>
+
+                            <div class="field col-12 md:col-4">
+                                <label for="emailaddress">{{l('Users.EmailAddressForm')}}<span class="required"> *</span></label>
+                                <input type="text" formControlName="emailaddress" id="emailaddress" autocomplete="off" maxlength="250" pInputText />
+                            </div>
+                            <div class="field col-12 md:col-4">
+                                <label for="phonenumber">{{l('Users.PhoneNumberForm')}}</label>
+                                <input type="text" formControlName="phonenumber" id="phonenumber" autocomplete="off" maxlength="20" pInputText />
+                            </div>
+                            <div class="field col-12 md:col-4">
+                                <label for="secondlastname">{{l('Users.Profile.ChangeAvatar')}}</label>
+                                <p-fileUpload #fileUpload accept="image/*" maxFileSize="52428800" customUpload="true" chooseIcon="pi pi-upload"
+                                              auto="true" mode="basic" chooseLabel="{{l('Users.Profile.ChangeAvatarButton')}}"
+                                              invalidFileSizeMessageSummary="El tamaño del archivo es demasiado grande"
+                                              invalidFileSizeMessageDetail="El tamaño máximo permitido es de 50Mb"
+                                              invalidFileTypeMessageSummary="{0} no es un archivo válido"
+                                              (uploadHandler)="myUploader($event)" (onUpload)="onUpload($event)">
+
+                                </p-fileUpload>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 sm:col-5 md:col-2" style="text-align:center">
+                        <p-avatar *ngIf="!urlLogoTemp" image="{{urlLogo}}" styleClass="p-avatar-xxxl" shape="circle"></p-avatar>
+                        <p-avatar *ngIf="urlLogoTemp" image="{{urlLogoTemp}}" styleClass="p-avatar-xxxl" shape="circle"></p-avatar>
+                        <div class="p-mt-2 p-text-bold">{{l('Users.Profile.AvatarPreview')}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 md:col-6">
+            <div class="card">
+                <h5>{{l('Users.Profile.ChangePassword')}}</h5>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 lg:col-7">
+                        <label for="password">{{l('Users.CurrentPasswordForm')}}</label>
+                        <app-password-field formControlName="currentpassword" style="width: 100%;" [feedback]="false"></app-password-field>
+                    </div>
+                    <div class="field col-12 lg:col-7">
+                        <label for="password">{{l('Users.NewPasswordForm')}}</label>
+                        <app-password-field formControlName="newpassword" style="width: 100%;"></app-password-field>
+                    </div>
+                    <div class="field col-12 lg:col-7">
+                        <label for="passwordrepeat">{{l('Users.PasswordRepeatForm')}}</label>
+                        <app-password-field formControlName="newpasswordconfirm" style="width: 100%;" [feedback]="false"></app-password-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 md:col-6">
+            <div class="card">
+                <h5>{{l('Users.Preferences')}}</h5>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 lg:col-7">
+                        <label for="language">{{l('Users.Preferences.Localization.Language')}}</label>
+                        <small id="language-help">{{l('Users.Preferences.Localization.LanguageLegend')}}</small>
+                        <p-dropdown [options]="languageCombo" formControlName="language" [showClear]="true" placeholder="{{l('Select')}}" filter="true" aria-describedby="language-help"></p-dropdown>
+                    </div>
+                    <div class="field col-12 lg:col-7">
+                        <label for="timeZone">{{l('Users.Preferences.Localization.TimeZone')}}</label>
+                        <p-dropdown [options]="timeZoneCombo" formControlName="timeZone" [showClear]="true" placeholder="{{l('Select')}}" filter="true"></p-dropdown>
+                    </div>
+                    <div class="field col-12 lg:col-7">
+                        <label for="timeZone">{{l('Users.Preferences.Design.AppTheme')}}</label>
+                        <p-dropdown [options]="appThemeCombo" formControlName="appTheme" placeholder="{{l('Select')}}"></p-dropdown>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

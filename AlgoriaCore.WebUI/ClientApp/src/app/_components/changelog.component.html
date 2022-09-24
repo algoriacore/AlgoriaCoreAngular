@@ -1,0 +1,53 @@
+<div class="grid">
+
+    <div class="col-12">
+
+        <p-table #dt1 [columns]="cols" [value]="data" [(selection)]="selectedItem" [lazy]="true" (onLazyLoad)="loadData($event)" [paginator]="true"
+                 [rows]="10" [totalRecords]="pagedTableSummary.totalRecords" [rowsPerPageOptions]="[10,20,30,50,100]" dataKey="id" selectionMode="single"
+                 sortField="datetime" [sortOrder]="-1" styleClass="p-datatable-striped p-datatable-sm" class="p-datatable-responsive">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th scope="col" *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width" [pSortableColumnDisabled]="!col.sortable ? true : false">
+                        {{col.header}}
+                        <ng-container *ngIf="col.sortable">
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                        </ng-container>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr [pSelectableRow]="rowData">
+                    <td>
+                        <span class="p-column-title">{{getHeaderTitleColumn(columns, 'datetime')}}</span>
+                        <div class="p-column-content">{{rowData['datetime'].format('DD/MM/YYYY HH:mm:ss')}}</div>
+                    </td>
+                    <td>
+                        <span class="p-column-title">{{getHeaderTitleColumn(columns, 'userDesc')}}</span>
+                        <div class="p-column-content">{{rowData.userDesc}}</div>
+                    </td>
+                    <td>
+                        <span class="p-column-title">{{getHeaderTitleColumn(columns, 'detail')}}</span>
+                        <div class="p-column-content" [innerHTML]="processDetail(rowData['detail'])"></div>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="paginatorleft"></ng-template>
+            <ng-template pTemplate="paginatorright">
+                <div *ngIf="pagedTableSummary.totalRecords > 0" class="p-text-bold">
+                    {{l('ShowingRecordsRange', pagedTableSummary.firstRecordInPage, pagedTableSummary.lastRecordInPage, pagedTableSummary.totalRecords)}}
+                </div>
+                <div *ngIf="pagedTableSummary.totalRecords == 0" class="p-text-bold">{{l('RecordsNotFound')}}</div>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <div class="col-12 form-title-section">
+        <div></div>
+        <div class="form-toolbar">
+            <p-button type="button" label="{{l('Exit')}}" (onClick)="return()"></p-button>
+        </div>
+    </div>
+
+</div>
+
+<app-preloader [blocked]="blockedDocument"></app-preloader>

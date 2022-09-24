@@ -1,0 +1,56 @@
+<form [formGroup]="form">
+    <div class="grid">
+
+        <div class="col-12 form-title-section">
+            <div>
+                <h3>
+                    {{l('Roles')}}
+                    <p-button type="button" styleClass="p-button-text algoria-button-help" icon="pi pi-info-circle"
+                              (onClick)="helpOnScreenService.show('ADMINISTRATION.ROLE.FORM', true)"></p-button>
+                </h3>
+                <small>{{l('Roles.Role.Edit')}}</small>
+            </div>
+            
+            <div class="form-toolbar">
+                <p-button type="button" icon="pi pi-clock" styleClass="p-button-warning" (onClick)="showChangeHistory()" pTooltip="{{l('ShowChangeHistory')}}" tooltipPosition="top" *ngIf="id"></p-button>
+                <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+                <p-button type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+                <h5>{{l('GeneralData')}}</h5>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="col-12 md:col-9 lg:col-4">
+                        <div class="field">
+                            <label for="name">{{l('Roles.NameForm')}}<span class="required"> *</span></label>
+                            <input type="text" #name formControlName="name" id="name" autocomplete="off" maxlength="50" pInputText />
+                        </div>
+                        <div class="field">
+                            <label for="displayName">{{l('Roles.DisplayNameForm')}}<span class="required"> *</span></label>
+                            <input type="text" formControlName="displayName" id="displayName" autocomplete="off" maxlength="100" pInputText />
+                        </div>
+                        <div class="field">
+                            <p-checkbox id="isActive" name="isActive" [formControl]="form.controls['isActive']" value="true" binary="true" label="{{l('IsActive')}}"></p-checkbox>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card">
+                <h5>{{l('Roles.PermissionForm')}}</h5>
+
+                <div class="p-fluid">
+                    <p-tree #tree [value]="treeNodes" selectionMode="checkbox" [(selection)]="selectedNodes"
+                            [style]="{width: '100%'}" emptyMessage="{{l('RecordsNotFound')}}"
+                            [propagateSelectionUp]="false" [propagateSelectionDown]="false"></p-tree>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>

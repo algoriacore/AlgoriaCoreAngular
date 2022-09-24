@@ -1,0 +1,79 @@
+<form [formGroup]="form">
+    <div class="grid">
+
+        <div class="col-12 form-title-section">
+            <h3>
+                {{l('ChatRooms.ChatRoom')}}
+                <p-button type="button" styleClass="p-button-text algoria-button-help" icon="pi pi-info-circle"
+                          (onClick)="helpOnScreenService.show('ADMINISTRATION.HELP.FORM', true)"></p-button>
+            </h3>
+            <div class="form-toolbar">
+                <p-button type="button" icon="pi pi-clock" styleClass="p-button-warning" (onClick)="showChangeHistory()" pTooltip="{{l('ShowChangeHistory')}}" tooltipPosition="top" *ngIf="id"></p-button>
+                <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+                <p-button type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+                <h5>{{l('GeneralData')}}</h5>
+
+                <div class="p-fluid">
+                    <div class="field grid" *ngIf="model">
+                        <label for="chatRoomId" class="col-12 md:col-4 lg:col-2">
+                            {{fieldLabels["chatRoomId"]}}
+                        </label>
+                        <div class="col-12 md:col-8 lg:col-10">
+                            {{model.chatRoomId}}
+                        </div>
+                    </div>
+                    <div class="field grid" *ngIf="!(model)">
+                        <label for="chatRoomId" class="col-12 md:col-4 lg:col-2">
+                            {{fieldLabels["chatRoomId"]}}<span class="required"> *</span>
+                        </label>
+                        <div class="col-12 md:col-8 lg:col-10">
+                            <input type="text" formControlName="chatRoomId" id="chatRoomId" autocomplete="off" maxlength="50" pInputText />
+                        </div>
+                    </div>
+                    <div class="field grid">
+                        <label for="name" class="col-12 md:col-4 lg:col-2">
+                            {{fieldLabels["name"]}}<span class="required"> *</span>
+                        </label>
+                        <div class="col-12 md:col-8 lg:col-10">
+                            <input type="text" formControlName="name" id="name" autocomplete="off" maxlength="50" pInputText />
+                        </div>
+                    </div>
+                    <div class="field grid">
+                        <label for="description" class="col-12 md:col-4 lg:col-2">
+                            {{fieldLabels["description"]}}<span class="required"> *</span>
+                        </label>
+                        <div class="col-12 md:col-8 lg:col-10">
+                            <input type="text" formControlName="description" id="description" autocomplete="off" maxlength="250" pInputText />
+                        </div>
+                    </div>
+                    <div class="field grid" *ngIf="model">
+                        <label for="chatRoomId" class="col-12 md:col-4 lg:col-2">
+                            {{l('UserCreator')}}
+                        </label>
+                        <div class="col-12 md:col-8 lg:col-10">
+                            {{model.userCreatorDesc}}
+                        </div>
+                    </div>
+                    <div class="field grid" *ngIf="model">
+                        <label for="chatRoomId" class="col-12 md:col-4 lg:col-2">
+                            {{l('CreationDateTime')}}
+                        </label>
+                        <div class="col-12 md:col-8 lg:col-10">
+                            {{dateTimeService.getDateTimeToDisplay(model.creationTime)}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="id && model && model.chatRoomId">
+                <app-chatlog chatRoomId="{{model.chatRoomId}}" name="{{model.name}}" description="{{model.description}}"></app-chatlog>
+            </div>
+        </div>
+
+    </div>
+</form>

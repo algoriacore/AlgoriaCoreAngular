@@ -1,0 +1,129 @@
+<form [formGroup]="form">
+    <div class="grid">
+
+        <div class="col-12 form-title-section">
+            <h3>
+                {{l('Questionnaires.Questionnaire')}}
+                <p-button type="button" styleClass="p-button-text algoria-button-help" icon="pi pi-info-circle"
+                          (onClick)="helpOnScreenService.show('QUESTIONNAIRES.FORM', true)"></p-button>
+            </h3>
+            <div class="form-toolbar">
+                <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+                <p-button type="button" label="@" (onClick)="customCodeInput()"></p-button>
+                <p-button type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
+            </div>
+        </div>
+
+        <div class="col-12">
+
+            <div class="card">
+                <h5>{{l('GeneralData')}}</h5>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-4">
+                        <label for="name">{{fieldLabels["name"]}}<span class="required">*</span></label>
+                        <input type="text" formControlName="name" pattern="^.{3,50}$" autocomplete="off" pInputText />
+                    </div>
+                    <div class="field col-12 md:col-4" *ngIf="model.id">
+                        <label for="userCreator">{{l('Questionnaires.Questionnaire.UserCreator')}}</label>
+                        <p id="userCreator">{{model.userCreator}}</p>
+                    </div>
+                    <div class="field col-12 md:col-4" *ngIf="model.id">
+                        <label for="creationDateTime">{{l('Questionnaires.Questionnaire.CreationDateTime')}}</label>
+                        <p id="creationDateTime">{{dateTimeService.getDateTimeToDisplay(model.creationDateTime)}}</p>
+                    </div>
+                    <div class="field col-12">
+                        <p-checkbox name="isActive" [formControl]="form.controls['isActive']" label="{{l('IsActive')}}" value="true" binary="true"></p-checkbox>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card">
+                <h5>{{l('QuestionnaireFields')}}</h5>
+
+                <div class="grid">
+                    <div class="col-12 form-title-section">
+                        <div class="form-toolbar">
+                            <p-button type="button" label="{{l('QuestionnaireSections.AddSection')}}" icon="fa fa-plus" (onClick)="sectionCreate()"></p-button>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+
+                <p-table [columns]="questionnaireFieldsCols" [value]="questionnaireFieldsData" dataKey="questionnaireSection" [expandedRowKeys]="expandedRows" styleClass="p-datatable-striped p-datatable-sm" class="p-datatable-responsive">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th scope="col" style="width:140px;">{{l('Actions')}}</th>
+                            <th scope="col" *ngFor="let col of questionnaireFieldsCols">
+                                {{col.header}}
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex" let-expanded="expanded">
+                        <tr class="ui-widget-header" *ngIf="questionnaireFieldsDataGrouped[rowData.questionnaireSection].index === rowIndex">
+                            <td>
+                                <div>
+                                    <button pButton pRipple icon="pi pi-pencil" class="p-button-sm mr-2" (click)="sectionEdit(rowData.questionnaireSection)" pTooltip="{{l('Edit')}}" tooltipPosition="top"></button>
+                                    <button pButton pRipple icon="pi pi-trash" class="p-button-sm p-button-danger mr-2" (click)="sectionDelete(rowData.questionnaireSection)" pTooltip="{{l('Delete')}}" tooltipPosition="top"></button>
+                                    <button pButton pRipple icon="pi pi-plus" class="p-button-sm p-button-warning" (click)="fieldCreate(rowData)" pTooltip="{{l('QuestionnaireFields.QuestionnaireField.Add')}}" tooltipPosition="top"></button>
+                                </div>
+                            </td>
+                            <td colspan="6" style="font-size: 1.1rem;">
+                                <a *ngIf="rowData.order" href="#" [pRowToggler]="rowData" class="text-900">
+                                    <em [ngClass]="expanded ? 'fa fa-fw fa-chevron-circle-down' : 'fa fa-fw fa-chevron-circle-right'"></em>
+                                    <span><em *ngIf="rowData.questionnaireSectionIconAF" [ngClass]="rowData.questionnaireSectionIconAF"></em>&nbsp;&nbsp;{{l('QuestionnaireSections.SectionTitle', rowData.questionnaireSectionOrder + ' ' + rowData.questionnaireSectionDesc)}}</span>
+                                </a>
+                                <span *ngIf="!rowData.order" class="text-900"><em *ngIf="rowData.questionnaireSectionIconAF" [ngClass]="rowData.questionnaireSectionIconAF"></em>&nbsp;&nbsp;{{l('QuestionnaireSections.SectionTitle', rowData.questionnaireSectionOrder + ' ' + rowData.questionnaireSectionDesc)}}</span>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="rowexpansion" let-rowData let-rowIndex="rowIndex" let-columns="columns">
+                        <tr>
+                            <td>
+                                <div class="ml-4">
+                                    <button pButton pRipple icon="pi pi-pencil" class="p-button-sm mr-2" (click)="fieldEdit(rowData.name)" pTooltip="{{l('Edit')}}" tooltipPosition="top"></button>
+                                    <button pButton pRipple icon="pi pi-trash" class="p-button-sm p-button-danger mr-2" (click)="fieldDelete(rowData.name)" pTooltip="{{l('Delete')}}" tooltipPosition="top"></button>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'name')}}</span>
+                                <div class="p-column-content">{{rowData['order'] +  ' ' + rowData['name']}}</div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'fieldName')}}</span>
+                                <div class="p-column-content">{{rowData['fieldName']}}</div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'fieldTypeDesc')}}</span>
+                                <div class="p-column-content">{{rowData['fieldTypeDesc'] + (rowData['fieldSize'] ? '(' + rowData['fieldSize'] + ')': '')}}</div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'fieldControlDesc')}}</span>
+                                <div class="p-column-content">{{rowData['fieldControlDesc']}}</div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'inputMask')}}</span>
+                                <div class="p-column-content">{{rowData.hasKeyFilter ? rowData['keyFilter']: rowData.inputMask}}</div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'isRequiredDesc')}}</span>
+                                <div class="p-column-content">{{rowData['isRequiredDesc']}}</div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="summary">
+                        <div *ngIf="questionnaireFieldsData.length > 0">{{l('ShowingRecordsRange', 1, questionnaireFieldsData.length, questionnaireFieldsData.length)}}</div>
+                        <div *ngIf="questionnaireFieldsData.length == 0">{{l('RecordsNotFound')}}</div>
+                    </ng-template>
+                </p-table>
+            </div>
+
+        </div>
+
+    </div>
+</form>
+
+<p-menu #sectionMenu popup="popup" [model]="sectionItems" [style]="{'width':'200px'}"></p-menu>
+<p-menu #fieldMenu popup="popup" [model]="fieldItems" [style]="{'width':'200px'}"></p-menu>

@@ -1,0 +1,41 @@
+/* Utils */
+.clearfix:after {
+    content: " ";
+    display: block;
+    clear: both;
+}
+
+.card {
+    background: #ffffff;
+    padding: 1rem;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+    border-radius: $borderRadius;
+
+    .card-header {
+        @include flex();
+        @include flex-align-center();
+        @include flex-justify-between();
+    }
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    &.card-w-title {
+        padding-bottom: 1rem;
+    }
+
+    &.no-gutter {
+        margin-bottom: 0;
+    }
+}
+
+.p-toast {
+    &.p-toast-top-right,
+    &.p-toast-top-left,
+    &.p-toast-top-center {
+        top: 100px;
+    }
+}

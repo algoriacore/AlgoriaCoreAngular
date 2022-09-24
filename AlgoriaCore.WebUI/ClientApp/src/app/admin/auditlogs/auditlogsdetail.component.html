@@ -1,0 +1,98 @@
+<form [formGroup]="form">
+    <div class="formgrid grid">
+        <div class="col-12 p-mb-4 p-fluid">
+            <h5>{{l('AuditLogDetail.UserInformations')}}</h5>
+
+            <div class="field grid">
+                <label class="col-12 md:col-4 lg:col-3">{{l('AuditLogDetail.Tenant')}}:</label>
+                <div class="col-12 md:col-8 lg:col-9">{{model.tenantName}}</div>
+            </div>
+            <div class="field grid">
+                <label class="col-12 md:col-4 lg:col-3">{{l('AuditLogDetail.UserName')}}:</label>
+                <div class="col-12 md:col-8 lg:col-9">{{model.userName}}</div>
+            </div>
+            <div class="field grid">
+                <label class="col-12 md:col-4 lg:col-3">{{l('AuditLogDetail.ImpersonalizerUserName')}}:</label>
+                <div class="col-12 md:col-8 lg:col-9">{{model.impersonalizerUserName}}</div>
+            </div>
+            <div class="field grid">
+                <label class="col-12 md:col-4 lg:col-3">{{l('AuditLogDetail.ClientIpAddress')}}:</label>
+                <div class="col-12 md:col-8 lg:col-9">{{model.clientIpAddress}}</div>
+            </div>
+            <div class="field grid">
+                <label class="col-12 md:col-4 lg:col-3">{{l('AuditLogDetail.ClientName')}}:</label>
+                <div class="col-12 md:col-8 lg:col-9">{{model.clientName}}</div>
+            </div>
+            <div class="field grid">
+                <label class="col-12 md:col-4 lg:col-3">{{l('AuditLogDetail.Browser')}}:</label>
+                <div class="col-12 md:col-8 lg:col-9">{{model.browserInfo}}</div>
+            </div>
+
+            <h5 class="p-mt-6">{{l('AuditLogDetail.ActionInformations')}}</h5>
+
+            <div class="field grid">
+                <label class="col-12 md:col-4 lg:col-3">{{l('AuditLogDetail.Service')}}:</label>
+                <div class="col-12 md:col-8 lg:col-9">{{model.serviceName}}</div>
+            </div>
+            <div class="field grid">
+                <label class="col-12 md:col-4 lg:col-3">{{l('AuditLogDetail.Method')}}:</label>
+                <div class="col-12 md:col-8 lg:col-9">{{model.methodName}}</div>
+            </div>
+            <div class="field grid">
+                <label class="col-12 md:col-4 lg:col-3">{{l('AuditLogDetail.ExecutionTime')}}:</label>
+                <div class="col-12 md:col-8 lg:col-9">{{getExecutionTime()}}</div>
+            </div>
+            <div class="field grid">
+                <label class="col-12 md:col-4 lg:col-3">{{l('AuditLogDetail.ExecutionDuration')}}:</label>
+                <div class="col-12 md:col-8 lg:col-9">{{model.executionDuration}}</div>
+            </div>
+            <div class="field grid">
+                <label class="col-12 md:col-4 lg:col-3">{{l('AuditLogDetail.Parameters')}}:</label>
+                <div class="col-12 md:col-8 lg:col-9" style="overflow-wrap: break-word;">{{model.parameters}}</div>
+            </div>
+
+            <h5 class="p-mt-6">{{l('AuditLogDetail.CustomData')}}</h5>
+
+            <div class="field grid">
+                <div *ngIf="!model.customData" class="col-12">{{l('None')}}</div>
+                <div *ngIf="model.customData" class="col-12" style="overflow-wrap: break-word;">{{model.customData}}</div>
+            </div>
+
+            <h5 class="p-mt-6">{{l('AuditLogDetail.ErrorState')}}</h5>
+
+            <div class="grid form-group">
+                <div class="col-12 md:col-12 sm:col-12">
+                    <p *ngIf="model.severity==0">
+                        <em class="pi pi-eye log-color-trace"></em>
+                        {{l('LogLevelTrace')}}
+                    </p>
+                    <p *ngIf="model.severity==1">
+                        <em class="pi pi-info-circle log-color-debug"></em>
+                        {{l('LogLevelDebug')}}
+                    </p>
+                    <p *ngIf="model.severity==2">
+                        <em class="pi pi-check-circle log-color-info"></em>
+                        {{l('LogLevelInformation')}}
+                    </p>
+                    <p *ngIf="model.severity==3">
+                        <em class="pi pi-exclamation-triangle log-color-warning"></em>
+                        {{l('LogLevelWarning')}}
+                    </p>
+                    <p *ngIf="model.severity==4">
+                        <em class="pi pi-times-circle log-color-error"></em>
+                        {{l('LogLevelError')}}
+                    </p>
+                    <p *ngIf="model.severity==5">
+                        <em class="pi pi-ban log-color-critical"></em>
+                        {{l('LogLevelCritical')}}
+                    </p>
+                    <pre *ngIf="model.exception">{{model.exception}}</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 p-text-right">
+            <p-button type="button" label="{{l('Exit')}}" (onClick)="return()" styleClass="ui-button-secondary"></p-button>
+        </div>
+    </div>
+</form>
