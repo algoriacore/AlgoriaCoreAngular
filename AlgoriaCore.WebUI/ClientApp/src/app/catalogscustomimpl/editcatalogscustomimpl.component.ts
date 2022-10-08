@@ -87,7 +87,7 @@ export class EditCatalogsCustomImplComponent extends AppComponentBase implements
     save(): void {
         const self = this;
         const questionnaireComponent = self.questionnaireComponent as AppQuestionnaireComponent;
-        console.log(questionnaireComponent.getFieldsData());
+
         // stop here if form is invalid
         if (!questionnaireComponent.validate()) {
             return;

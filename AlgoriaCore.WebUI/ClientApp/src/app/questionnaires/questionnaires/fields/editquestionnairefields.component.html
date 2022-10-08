@@ -91,6 +91,17 @@
                 </div>
             </div>
 
+            <div class="p-fluid formgrid grid" *ngIf="f.fieldType.value === QuestionnaireFieldType.Multivalue.toString()">
+                <div class="field col-12 md:col-4">
+                    <label for="minValue">{{fieldLabels["minValue"]}}</label>
+                    <p-inputNumber [showButtons]="true" formControlName="minValue" [step]="1" [min]="0"></p-inputNumber>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label for="maxValue">{{fieldLabels["maxValue"]}}</label>
+                    <p-inputNumber [showButtons]="true" formControlName="maxValue" [step]="1" [min]="0"></p-inputNumber>
+                </div>
+            </div>
+
             <br />
 
             <div *ngIf="f.fieldType.value === QuestionnaireFieldType.Integer.toString()

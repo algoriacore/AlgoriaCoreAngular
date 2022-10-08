@@ -1,7 +1,7 @@
-import { ElementRef, Injectable } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
-import { LocalizationService } from './localization.service';
+import { Injectable } from '@angular/core';
+import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { AlertService } from './alert.service';
+import { LocalizationService } from './localization.service';
 
 @Injectable({ providedIn: 'root' })
 export class FormService {
@@ -77,6 +77,20 @@ export class FormService {
                             messages.push({ controlName: controlName, message: self.l('FieldNotNull', fieldLabel) });
                             break;
                         }
+                        case 'minSelecting': {
+                            console.log(error);
+                            messages.push({
+                                controlName: controlName, message: self.l('FieldMinSelecting', fieldLabel, error.minSelecting)
+                            });
+                            break;
+                        }
+                        case 'maxSelecting': {
+                            console.log(error);
+                            messages.push({
+                                controlName: controlName, message: self.l('FieldMaxSelecting', fieldLabel, error.maxSelecting)
+                            });
+                            break;
+                        }
                     }
                 });
             }
@@ -129,4 +143,28 @@ export class FormService {
 export class ControlError {
     controlName: string;
     message: string;
+}
+
+/** Custom validator for min selecting values */
+export function minSelecting(min: number): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => (
+        control.value && Array.isArray(control.value) && control.value.length >= min ? null : {
+            minSelecting: {
+                value: control.value,
+                minSelecting: min
+            }
+        }
+    );
+}
+
+/** Custom validator for max selecting values */
+export function maxSelecting(max: number): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => (
+        control.value && Array.isArray(control.value) && control.value.length <= max ? null : {
+            maxSelecting: {
+                value: control.value,
+                maxSelecting: max
+            }
+        }
+    );
 }

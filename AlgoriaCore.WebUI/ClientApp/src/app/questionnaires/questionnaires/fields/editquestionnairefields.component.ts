@@ -202,7 +202,10 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
             self.f.order.setValue(self.model.order);
 
             if (self.model.customProperties && (self.model.fieldType === QuestionnaireFieldType.Integer
-                || self.model.fieldType === QuestionnaireFieldType.Decimal || self.model.fieldType === QuestionnaireFieldType.Currency)) {
+                || self.model.fieldType === QuestionnaireFieldType.Decimal
+                || self.model.fieldType === QuestionnaireFieldType.Currency
+                || self.model.fieldType === QuestionnaireFieldType.Multivalue)) {
+
                 if (self.model.fieldType === QuestionnaireFieldType.Currency) {
                     self.f.currency.setValue(self.model.customProperties.currency);
                     self.f.locale.setValue(self.model.customProperties.locale);
@@ -210,7 +213,10 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
 
                 self.f.minValue.setValue(self.model.customProperties.minValue);
                 self.f.maxValue.setValue(self.model.customProperties.maxValue);
-                self.f.useGrouping.setValue(self.model.customProperties.useGrouping);
+
+                if (self.model.fieldType !== QuestionnaireFieldType.Multivalue) {
+                    self.f.useGrouping.setValue(self.model.customProperties.useGrouping);
+                }
             }
         } else {
             self.getCatalogCustomCombo();
@@ -232,9 +238,9 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
             inputMask: self.l('QuestionnaireFields.QuestionnaireField.InputMask'),
             hasKeyFilter: self.l('QuestionnaireFields.QuestionnaireField.HasKeyFilter'),
             keyFilter: self.l('QuestionnaireFields.QuestionnaireField.KeyFilter'),
-            catalogCustomFieldRelationQuestionnaire: self.l(
+            catalogCustomFieldRelationCatalogCustom: self.l(
                 'QuestionnaireFields.QuestionnaireField.CatalogCustomFieldRelationCatalogCustom'),
-            catalogCustomFieldRelationQuestionnaireField: self.l(
+            catalogCustomFieldRelationCatalogCustomField: self.l(
                 'QuestionnaireFields.QuestionnaireField.CatalogCustomFieldRelationCatalogCustomField'),
             isRequired: self.l('QuestionnaireFields.QuestionnaireField.IsRequired'),
             order: self.l('QuestionnaireFields.QuestionnaireField.Order'),
@@ -328,9 +334,11 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
         }
 
         const errors = [];
-        const fields = self.model.name ? self.modalConfig.data.fields
+        let fields = self.model.name ? self.modalConfig.data.fields
             .filter(p => p.name && p.name.toLowerCase() !== self.model.name.toLowerCase())
             : self.modalConfig.data.fields.filter(p => p.name);
+
+        fields = fields.concat(self.saved);
 
         if (fields.some(p => p.name.toLowerCase() === self.f.name.value.toLowerCase())) {
             errors.push(self.l('TemplateFields.TemplateField.DuplicatedFieldName'));
@@ -346,7 +354,7 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
         }
 
         self.model.name = self.f.name.value;
-        self.model.fieldType = self.f.fieldType.value;
+        self.model.fieldType = Number(self.f.fieldType.value);
         self.model.fieldSize = self.f.fieldType.value === QuestionnaireFieldType.Text.toString()
             || self.f.fieldType.value === QuestionnaireFieldType.Decimal.toString()
             || self.f.fieldType.value === QuestionnaireFieldType.Currency.toString() ? self.f.fieldSize.value : null;
@@ -368,7 +376,8 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
 
         if (self.f.fieldType.value === QuestionnaireFieldType.Integer.toString()
             || self.f.fieldType.value === QuestionnaireFieldType.Decimal.toString()
-            || self.f.fieldType.value === QuestionnaireFieldType.Currency.toString()) {
+            || self.f.fieldType.value === QuestionnaireFieldType.Currency.toString()
+            || self.f.fieldType.value === QuestionnaireFieldType.Multivalue.toString()) {
             self.model.customProperties = new QuestionnaireCustomPropertiesResponse();
 
             if (self.f.fieldType.value === QuestionnaireFieldType.Currency.toString()) {
@@ -378,7 +387,10 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
 
             self.model.customProperties.minValue = self.f.minValue.value;
             self.model.customProperties.maxValue = self.f.maxValue.value;
-            self.model.customProperties.useGrouping = self.f.useGrouping.value;
+
+            if (self.f.fieldType.value !== QuestionnaireFieldType.Multivalue.toString()) {
+                self.model.customProperties.useGrouping = self.f.useGrouping.value;
+            }
         } else {
             self.model.customProperties = null;
         }
@@ -405,6 +417,9 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
         self.f.catalogCustomFieldRelationCatalogCustomField.clearValidators();
 
         if (self.f.fieldType.value) {
+            self.fieldLabels['minValue'] = self.l('QuestionnaireFields.QuestionnaireField.Format.MinValue');
+            self.fieldLabels['maxValue'] = self.l('QuestionnaireFields.QuestionnaireField.Format.MaxValue');
+
             switch (Number.parseInt(self.f.fieldType.value, 10)) {
                 case QuestionnaireFieldType.Boolean:
                     self.fieldControlComboFiltered = self.fieldControlCombo.filter(p => p.value === '14');
@@ -417,6 +432,8 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
                 case QuestionnaireFieldType.Multivalue:
                     self.fieldControlComboFiltered = self.fieldControlCombo
                         .filter(p => Number.parseInt(p.value, 10) >= 21 && Number.parseInt(p.value, 10) <= 23);
+                    self.fieldLabels['minValue'] = self.l('QuestionnaireFields.QuestionnaireField.Options.MinSelecting');
+                    self.fieldLabels['maxValue'] = self.l('QuestionnaireFields.QuestionnaireField.Options.MaxSelecting');
                     break;
                 case QuestionnaireFieldType.Date:
                     self.fieldControlComboFiltered = self.fieldControlCombo.filter(p => p.value === '30');

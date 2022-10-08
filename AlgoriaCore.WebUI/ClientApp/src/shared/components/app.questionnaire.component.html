@@ -9,6 +9,9 @@
                         <label for="{{field.fieldName}}">
                             {{field.name}}
                             <span class="required" *ngIf="field.isRequired"> *</span>
+                            <span class="text-xs ml-2" *ngIf="field.fieldType === QuestionnaireFieldType.Multivalue && field.customProperties">
+                                {{caculateMinMaxSelectingMessage(field)}}
+                            </span>
                         </label>
                         <div *ngIf="field.fieldControl === QuestionnaireFieldControl.InputText">
                             <input type="text" [formControlName]="field.fieldName" id="{{field.fieldName}}" autocomplete="off" [maxLength]="field.fieldSize" pInputText />

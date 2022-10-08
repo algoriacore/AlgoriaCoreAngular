@@ -15,7 +15,7 @@ import {
     UserServiceProxy
 } from '../service-proxies/service-proxies';
 import { DateTimeService } from '../services/datetime.service';
-import { ControlError, FormService } from '../services/form.service';
+import { ControlError, FormService, maxSelecting, minSelecting } from '../services/form.service';
 import { LocalizationService } from '../services/localization.service';
 import { NumberFormatter } from '../utils/numberformatter.class';
 
@@ -127,6 +127,14 @@ export class AppQuestionnaireComponent implements OnInit {
 
                 if (field.customProperties && !Number.isNaN(field.customProperties.maxValue)) {
                     validators.push(Validators.max(field.customProperties.maxValue));
+                }
+            } else if (field.fieldType === QuestionnaireFieldType.Multivalue) {
+                if (field.customProperties && field.customProperties.minValue && !Number.isNaN(field.customProperties.minValue)) {
+                    validators.push(minSelecting(field.customProperties.minValue));
+                }
+
+                if (field.customProperties && field.customProperties.maxValue && !Number.isNaN(field.customProperties.maxValue)) {
+                    validators.push(maxSelecting(field.customProperties.maxValue));
                 }
             }
 
@@ -325,7 +333,7 @@ export class AppQuestionnaireComponent implements OnInit {
     }
 
     l(key: string, ...args: any[]): string {
-        return this.localizationService.l(key, args);
+        return this.localizationService.l(key, ...args);
     }
 
     validate(): boolean {
@@ -404,5 +412,31 @@ export class AppQuestionnaireComponent implements OnInit {
 
         self.form.reset();
         self.value = {};
+    }
+
+    caculateMinMaxSelectingMessage(field: QuestionnaireFieldResponse): string {
+        const self = this;
+        let res = '';
+
+        if (field.customProperties.minValue && !Number.isNaN(field.customProperties.minValue)
+            && field.customProperties.maxValue && !Number.isNaN(field.customProperties.maxValue)) {
+            res = self.l(
+                'CatalogsCustomImpl.CatalogCustomImpl.Multivalue.MinMaxSelectingMessage',
+                field.customProperties.minValue.toString(),
+                field.customProperties.maxValue.toString()
+            );
+        } else if (field.customProperties.minValue && !Number.isNaN(field.customProperties.minValue)) {
+            res = self.l(
+                'CatalogsCustomImpl.CatalogCustomImpl.Multivalue.MinSelectingMessage',
+                field.customProperties.minValue.toString()
+            );
+        } else if (field.customProperties.maxValue && !Number.isNaN(field.customProperties.maxValue)) {
+            res = self.l(
+                'CatalogsCustomImpl.CatalogCustomImpl.Multivalue.MaxSelectingMessage',
+                field.customProperties.maxValue.toString()
+            );
+        }
+
+        return res;
     }
 }
