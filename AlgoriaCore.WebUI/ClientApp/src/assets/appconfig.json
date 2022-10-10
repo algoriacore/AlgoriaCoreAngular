@@ -1,5 +1,5 @@
 {
-    "remoteServiceBaseUrl": "http://localhost:60900",
+    "remoteServiceBaseUrl": "http://localhost:51023",
     "appBaseUrl": "http://localhost:4200",
     "appTitle": "Algoria Core App",
     "appPrefix": "app-core",
