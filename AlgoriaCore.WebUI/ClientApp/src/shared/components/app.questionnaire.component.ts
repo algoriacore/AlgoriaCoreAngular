@@ -27,6 +27,7 @@ export class AppQuestionnaireComponent implements OnInit {
     @Input() questionnaire: QuestionnaireResponse;
     @Input() value: { [key: string]: any } = {};
     @Input() readOnly = false;
+    @Input() disabled = false;
 
     questionnaireSections: QuestionnaireSectionResponse[] = [];
     questionnaireFields: QuestionnaireFieldResponse[] = [];
@@ -144,7 +145,12 @@ export class AppQuestionnaireComponent implements OnInit {
 
                 self.form.addControl(field.fieldName, formControl);
             } else {
-                self.form.addControl(field.fieldName, new FormControl(null, validators));
+                formControl = new FormControl(null, validators);
+                self.form.addControl(field.fieldName, formControl);
+            }
+
+            if (self.disabled) {
+                formControl.disable();
             }
         }
     }
@@ -265,7 +271,7 @@ export class AppQuestionnaireComponent implements OnInit {
                                     }));
                                 }
                             } else if (field.mustHaveOptions) {
-                                if (typeof(fieldValue) === 'object' && fieldValue.value) {
+                                if (typeof(fieldValue) === 'object') {
                                     control.setValue(fieldValue.value.toString());
                                 }
                             } else {

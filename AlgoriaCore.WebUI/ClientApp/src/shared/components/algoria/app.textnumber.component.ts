@@ -18,7 +18,7 @@ import { NumberFormatter } from 'src/shared/utils/numberformatter.class';
                 [name]="name"
                 [style]="styleAttribute"
                 [maxLength]="maxlength"
-                [readonly]="readOnly !== undefined"
+                [readonly]="readOnly !== undefined && readOnly !== false"
                 [value]="formattedNumber"
                 (keydown)="onkeypress($event)"
                 (focus)="onFocus($event)"
