@@ -80,11 +80,11 @@ export class AppQuestionnaireComponent implements OnInit {
                     }
                 }
             }
+        }
 
-            if (self.value && !self.readOnly) {
-                self.prepareForm(self.questionnaireFields);
-                self.setFieldsData(self.value, self.questionnaireFields);
-            }
+        if (self.value && !self.readOnly) {
+            self.prepareForm(self.questionnaireFields);
+            self.setFieldsData(self.value, self.questionnaireFields);
         }
     }
 
