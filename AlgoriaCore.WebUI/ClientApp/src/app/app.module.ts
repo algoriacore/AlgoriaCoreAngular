@@ -84,7 +84,6 @@ import { AppTopBarComponent } from './app.topbar.component';
 import { CatalogsCustomImplModule } from './catalogscustomimpl/catalogscustomimpl.module';
 import { ProcessesModule } from './processes/processes.module';
 import { AppMessageComponent } from './_components/app.message.component';
-import { AppSecuredImageModule } from './_components/app.secured.image.module';
 import { ChangeLogComponent } from './_components/changelog.component';
 import { ErrorInterceptor } from './_helpers/error.interceptor';
 import { JwtInterceptor } from './_helpers/jwt.interceptor';
@@ -163,7 +162,6 @@ import { JwtInterceptor } from './_helpers/jwt.interceptor';
         TreeModule,
         TreeTableModule,
         ReactiveFormsModule,
-        AppSecuredImageModule,
         DynamicDialogModule,
         SharedModule,
         ProcessesModule,
