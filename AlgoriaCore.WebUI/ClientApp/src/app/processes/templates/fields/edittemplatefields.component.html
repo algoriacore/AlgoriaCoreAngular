@@ -161,9 +161,9 @@
                 <p-table [value]="model.options" dataKey="value" styleClass="p-datatable-striped p-datatable-sm">
                     <ng-template pTemplate="header">
                         <tr>
-                            <th>{{optionFieldLabels['description']}}</th>
-                            <th>{{optionFieldLabels['value']}}</th>
-                            <th style="width:8em">{{l('Actions')}}</th>
+                            <th scope="col">{{optionFieldLabels['description']}}</th>
+                            <th scope="col">{{optionFieldLabels['value']}}</th>
+                            <th scope="col" style="width:8em">{{l('Actions')}}</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-rowData let-ri="rowIndex">
