@@ -2166,7 +2166,7 @@ p-togglebutton.ng-dirty.ng-invalid > .p-togglebutton.p-button {
   box-shadow: 0 0 0 0.2rem #d6e5ef;
 }
     .fc .fc-toolbar .fc-button .fc-icon-chevron-left {
-        font-family: "PrimeIcons, sans-serif" !important;
+        font-family: PrimeIcons, sans-serif !important;
         text-indent: 0;
         font-size: 1rem;
     }
@@ -2174,7 +2174,7 @@ p-togglebutton.ng-dirty.ng-invalid > .p-togglebutton.p-button {
   content: "";
 }
     .fc .fc-toolbar .fc-button .fc-icon-chevron-right {
-        font-family: "PrimeIcons, sans-serif" !important;
+        font-family: PrimeIcons, sans-serif !important;
         text-indent: 0;
         font-size: 1rem;
     }
