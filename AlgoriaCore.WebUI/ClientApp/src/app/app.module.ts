@@ -82,7 +82,6 @@ import { AppMenuComponent, AppSubMenuComponent } from './app.menu.component';
 import { AppRoutes } from './app.routes';
 import { AppTopBarComponent } from './app.topbar.component';
 import { CatalogsCustomImplModule } from './catalogscustomimpl/catalogscustomimpl.module';
-import { ProcessesModule } from './processes/processes.module';
 import { AppMessageComponent } from './_components/app.message.component';
 import { ChangeLogComponent } from './_components/changelog.component';
 import { ErrorInterceptor } from './_helpers/error.interceptor';
@@ -164,7 +163,6 @@ import { JwtInterceptor } from './_helpers/jwt.interceptor';
         ReactiveFormsModule,
         DynamicDialogModule,
         SharedModule,
-        ProcessesModule,
         CatalogsCustomImplModule,
         TagModule,
         PasswordModule,

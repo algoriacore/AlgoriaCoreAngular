@@ -19,7 +19,6 @@ import { ServiceProxyModule } from './shared/service-proxies/service-proxy.modul
 import { CatalogsCustomService } from './shared/services/catalogscustom.service';
 import { DateTimeService } from './shared/services/datetime.service';
 import { LocalizationService } from './shared/services/localization.service';
-import { ProcessesService } from './shared/services/processes.service';
 import { SettingsService } from './shared/services/settings.service';
 import { SettingsClientService } from './shared/services/settingsclient.service';
 import { TitleService } from './shared/services/title.service';
@@ -54,7 +53,6 @@ export function appInitializerFactory(injector: Injector) {
             const localizationService: LocalizationService = injector.get(LocalizationService);
             const permissionService: PermissionCheckerService = injector.get(PermissionCheckerService);
             const settingsClientService: SettingsClientService = injector.get(SettingsClientService);
-            const processesService: ProcessesService = injector.get(ProcessesService);
             const catalogsCustomService: CatalogsCustomService = injector.get(CatalogsCustomService);
             const dateTimeService: DateTimeService = injector.get(DateTimeService);
             const titleService: TitleService = injector.get(TitleService);
@@ -100,7 +98,6 @@ export function appInitializerFactory(injector: Injector) {
                 localizationService.localization = result2.localization;
                 permissionService.permission = result2.permission;
                 settingsClientService.settings = result2.settingsClient;
-                processesService.templates = result2.templates;
                 catalogsCustomService.catalogs = result2.catalogsCustom;
                 settingsService.passwordComplexity = result2.passwordComplexity;
 
