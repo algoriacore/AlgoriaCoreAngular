@@ -2165,19 +2165,19 @@ p-togglebutton.ng-dirty.ng-invalid > .p-togglebutton.p-button {
   outline-offset: 0;
   box-shadow: 0 0 0 0.2rem #d6e5ef;
 }
-.fc .fc-toolbar .fc-button .fc-icon-chevron-left {
-  font-family: "PrimeIcons" !important;
-  text-indent: 0;
-  font-size: 1rem;
-}
+    .fc .fc-toolbar .fc-button .fc-icon-chevron-left {
+        font-family: "PrimeIcons, sans-serif" !important;
+        text-indent: 0;
+        font-size: 1rem;
+    }
 .fc .fc-toolbar .fc-button .fc-icon-chevron-left:before {
   content: "";
 }
-.fc .fc-toolbar .fc-button .fc-icon-chevron-right {
-  font-family: "PrimeIcons" !important;
-  text-indent: 0;
-  font-size: 1rem;
-}
+    .fc .fc-toolbar .fc-button .fc-icon-chevron-right {
+        font-family: "PrimeIcons, sans-serif" !important;
+        text-indent: 0;
+        font-size: 1rem;
+    }
 .fc .fc-toolbar .fc-button .fc-icon-chevron-right:before {
   content: "";
 }
@@ -3166,12 +3166,11 @@ p-togglebutton.ng-dirty.ng-invalid > .p-togglebutton.p-button {
         width: 2rem;
         height: 2rem;
         color: #61B5A1;
-        border: 0 none;
         background: transparent;
+        border: 2px solid #61B5A1;
         border-radius: 50%;
         transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
         margin-right: 0.5rem;
-        border: 2px solid #61B5A1;
         padding: 14px !important;
     }
 /*.p-dialog .p-dialog-header .p-dialog-header-icon:enabled:hover {
@@ -4081,7 +4080,6 @@ p-togglebutton.ng-dirty.ng-invalid > .p-togglebutton.p-button {
 }
 
 .p-steps .p-steps-item .p-menuitem-link {
-  background: transparent;
   transition: box-shadow 0.2s;
   border-radius: 3px;
   background: #ffffff;

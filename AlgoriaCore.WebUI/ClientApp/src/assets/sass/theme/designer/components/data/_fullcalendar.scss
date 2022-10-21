@@ -5,23 +5,23 @@
             border: $panelHeaderBorder;
             color: $panelHeaderTextColor;
         }
-    
+
         td {
             &.fc-widget-content {
                 background: $panelContentBg;
                 border: $panelContentBorder;
                 color: $panelContentTextColor;
             }
-    
+
             &.fc-head-container {
                 border: $panelHeaderBorder;
             }
         }
-    
+
         .fc-row {
             border-right: $panelHeaderBorder;
         }
-    
+
         .fc-event {
             background: $fullCalendarEventBg;
             border: $fullCalendarEventBorder;
@@ -62,14 +62,14 @@
             }
 
             .fc-icon-chevron-left {
-                font-family: 'PrimeIcons' !important;
+                font-family: 'PrimeIcons, sans-serif' !important;
                 text-indent: 0;
                 @include icon_override("\e900");
                 font-size: $primeIconFontSize;
             }
 
             .fc-icon-chevron-right {
-                font-family: 'PrimeIcons' !important;
+                font-family: 'PrimeIcons, sans-serif' !important;
                 text-indent: 0;
                 @include icon_override("\e901");
                 font-size: $primeIconFontSize;
