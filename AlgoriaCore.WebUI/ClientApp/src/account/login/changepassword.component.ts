@@ -2,7 +2,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { finalize, first } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { AppComponentBase } from 'src/app/app-component-base';
 import { AuthenticationService } from '../../app/_services/authentication.service';
 import { UserChangePasswordCommand, UserLoginQuery } from '../../shared/service-proxies/service-proxies';
