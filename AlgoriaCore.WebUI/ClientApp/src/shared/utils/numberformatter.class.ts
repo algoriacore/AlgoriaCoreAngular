@@ -50,19 +50,7 @@ export class NumberFormatter {
         let resp = nDecimals === -1 || nDecimals === 0 ? entero : entero + '.' + nDecimals;
 
         // Rellenar con ceros los decimales que falten al final..
-        if (nDecs > 0) {
-            if (resp.indexOf('.') < 0) {
-                resp += ('.' + strDecs);
-            } else {
-                let so = resp.substring(resp.indexOf('.'));
-
-                so = so.replace('.', '');
-
-                for (let i = (so.length + 1); i <= nDecs; i++) {
-                    resp += '0';
-                }
-            }
-        }
+        resp = this.fillDecimals(resp, nDecs, strDecs);
 
         const esNegativo = (valor < 0);
 
@@ -108,5 +96,25 @@ export class NumberFormatter {
         }
 
         return entero;
+    }
+
+    private fillDecimals(value: string, nDecs: any, strDecs: string): string {
+        let resp = value;
+
+        if (nDecs > 0) {
+            if (resp.indexOf('.') < 0) {
+                resp += ('.' + strDecs);
+            } else {
+                let so = resp.substring(resp.indexOf('.'));
+
+                so = so.replace('.', '');
+
+                for (let i = (so.length + 1); i <= nDecs; i++) {
+                    resp += '0';
+                }
+            }
+        }
+
+        return resp;
     }
 }
