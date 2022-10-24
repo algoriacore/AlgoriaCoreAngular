@@ -62,9 +62,6 @@ export class LocalizationService {
         let strConcatenated = '';
         let strRemaining = value;
         let strAux = '';
-        let labelElements: string[] = [];
-        let labelOnly: string;
-        let labelArgs: any[] = [];
         let beginOfLabelNestedPosition = -1;
         let endOfLabelPosition = -1;
         const endOfLabelLength: number = endOfLabel.length;
@@ -87,31 +84,7 @@ export class LocalizationService {
             label = strAux.substring(0, endOfLabelPosition);
 
             if (label) {
-                if (label.indexOf('(DT)') === 0) {
-                    labelOnly = label.replace('(DT)', '') + 'Z';
-                    strConcatenated += self.dateTimeService.getDateTimeStringISOToFormat(labelOnly);
-                } else if (label.indexOf('(D)') === 0) {
-                    labelOnly = label.replace('(D)', '');
-                    strConcatenated += self.dateTimeService.getDateStringISOToFormat(labelOnly);
-                } else if (label.indexOf('(T)') === 0) {
-                    labelOnly = label.replace('(T)', '');
-                    strConcatenated += self.dateTimeService.getTimeStringISOToFormat(labelOnly);
-                } else {
-                    labelElements = label.split(',');
-                    labelOnly = labelElements[0];
-                    labelArgs = [];
-
-                    if (labelElements.length > 1) {
-                        labelArgs = labelElements.slice(1);
-
-                        labelArgs = labelArgs.map(function (arg) {
-                            return self.replaceLabel(arg.trim());
-                        });
-                    }
-
-                    strConcatenated += self.l(labelOnly, ...labelArgs);
-                }
-
+                strConcatenated = self.getStrConcatenated(strConcatenated, label);
                 strRemaining = strAux.substring(endOfLabelPosition + endOfLabelLength);
             } else {
                 strRemaining = strAux;
@@ -121,5 +94,40 @@ export class LocalizationService {
         }
 
         return strConcatenated + strRemaining;
+    }
+
+    private getStrConcatenated(value: string, label: string): string {
+        const self = this;
+        let strConcatenated = value;
+        let labelOnly: string;
+        let labelElements: string[] = [];
+        let labelArgs: any[] = [];
+
+        if (label.indexOf('(DT)') === 0) {
+            labelOnly = label.replace('(DT)', '') + 'Z';
+            strConcatenated += self.dateTimeService.getDateTimeStringISOToFormat(labelOnly);
+        } else if (label.indexOf('(D)') === 0) {
+            labelOnly = label.replace('(D)', '');
+            strConcatenated += self.dateTimeService.getDateStringISOToFormat(labelOnly);
+        } else if (label.indexOf('(T)') === 0) {
+            labelOnly = label.replace('(T)', '');
+            strConcatenated += self.dateTimeService.getTimeStringISOToFormat(labelOnly);
+        } else {
+            labelElements = label.split(',');
+            labelOnly = labelElements[0];
+            labelArgs = [];
+
+            if (labelElements.length > 1) {
+                labelArgs = labelElements.slice(1);
+
+                labelArgs = labelArgs.map(function (arg) {
+                    return self.replaceLabel(arg.trim());
+                });
+            }
+
+            strConcatenated += self.l(labelOnly, ...labelArgs);
+        }
+
+        return strConcatenated;
     }
 }
