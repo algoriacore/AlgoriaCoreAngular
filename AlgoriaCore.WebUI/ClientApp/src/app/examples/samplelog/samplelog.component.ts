@@ -1,6 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import 'moment-duration-format';
 import 'moment-timezone';
 import { finalize } from 'rxjs/operators';

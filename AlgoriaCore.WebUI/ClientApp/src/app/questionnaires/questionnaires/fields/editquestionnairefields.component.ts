@@ -77,6 +77,65 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
         self.questionnaire = self.modalConfig.data.questionnaire;
         self.questionnaireSectionDesc = self.modalConfig.data.section.name;
 
+        self.fillCombos();
+        self.prepareLabels();
+        self.prepareForm();
+
+        if (self.modalConfig.data.field) {
+            if (self.model.catalogCustom) {
+                self.getCatalogCustomCombo(new ComboboxItemDto({
+                    value: self.model.catalogCustom.catalogCustom,
+                    label: self.model.catalogCustom.catalogCustomDesc
+                }), self.model.catalogCustom.fieldName);
+            } else {
+                self.getCatalogCustomCombo();
+            }
+
+            self.f.name.setValue(self.model.name);
+            self.f.fieldType.setValue(self.model.fieldType.toString());
+
+            self.onChangeFieldType();
+
+            self.f.fieldSize.setValue(self.model.fieldSize);
+            self.f.fieldControl.setValue(self.model.fieldControl.toString());
+
+            self.onChangeHasKeyFilter();
+
+            self.f.inputMask.setValue(self.model.inputMask);
+            self.f.hasKeyFilter.setValue(self.model.hasKeyFilter);
+            self.f.keyFilter.setValue(self.model.hasKeyFilter ? self.model.keyFilter : null);
+            self.f.isRequired.setValue(self.model.isRequired);
+            self.f.order.setValue(self.model.order);
+
+            if (self.model.customProperties && (self.model.fieldType === QuestionnaireFieldType.Integer
+                || self.model.fieldType === QuestionnaireFieldType.Decimal
+                || self.model.fieldType === QuestionnaireFieldType.Currency
+                || self.model.fieldType === QuestionnaireFieldType.Multivalue)) {
+
+                if (self.model.fieldType === QuestionnaireFieldType.Currency) {
+                    self.f.currency.setValue(self.model.customProperties.currency);
+                    self.f.locale.setValue(self.model.customProperties.locale);
+                }
+
+                self.f.minValue.setValue(self.model.customProperties.minValue);
+                self.f.maxValue.setValue(self.model.customProperties.maxValue);
+
+                if (self.model.fieldType !== QuestionnaireFieldType.Multivalue) {
+                    self.f.useGrouping.setValue(self.model.customProperties.useGrouping);
+                }
+            }
+        } else {
+            self.getCatalogCustomCombo();
+            self.getFieldNextOrder();
+        }
+    }
+
+    fillCombos(): void {
+        const self = this;
+
+        self.fieldTypeCombo = [];
+        self.fieldControlCombo = [];
+
         self.fieldTypeCombo.push(new ComboboxItemDto({
             value: '1', label: self.l('QuestionnaireFields.QuestionnaireField.TypeBoolean')
         }));
@@ -171,57 +230,6 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
         self.fieldControlCombo.push(new ComboboxItemDto({
             value: '61', label: self.l('QuestionnaireFields.QuestionnaireField.ControlAutocompleteDynamic')
         }));
-
-        self.prepareLabels();
-        self.prepareForm();
-
-        if (self.modalConfig.data.field) {
-            if (self.model.catalogCustom) {
-                self.getCatalogCustomCombo(new ComboboxItemDto({
-                    value: self.model.catalogCustom.catalogCustom,
-                    label: self.model.catalogCustom.catalogCustomDesc
-                }), self.model.catalogCustom.fieldName);
-            } else {
-                self.getCatalogCustomCombo();
-            }
-
-            self.f.name.setValue(self.model.name);
-            self.f.fieldType.setValue(self.model.fieldType.toString());
-
-            self.onChangeFieldType();
-
-            self.f.fieldSize.setValue(self.model.fieldSize);
-            self.f.fieldControl.setValue(self.model.fieldControl.toString());
-
-            self.onChangeHasKeyFilter();
-
-            self.f.inputMask.setValue(self.model.inputMask);
-            self.f.hasKeyFilter.setValue(self.model.hasKeyFilter);
-            self.f.keyFilter.setValue(self.model.hasKeyFilter ? self.model.keyFilter : null);
-            self.f.isRequired.setValue(self.model.isRequired);
-            self.f.order.setValue(self.model.order);
-
-            if (self.model.customProperties && (self.model.fieldType === QuestionnaireFieldType.Integer
-                || self.model.fieldType === QuestionnaireFieldType.Decimal
-                || self.model.fieldType === QuestionnaireFieldType.Currency
-                || self.model.fieldType === QuestionnaireFieldType.Multivalue)) {
-
-                if (self.model.fieldType === QuestionnaireFieldType.Currency) {
-                    self.f.currency.setValue(self.model.customProperties.currency);
-                    self.f.locale.setValue(self.model.customProperties.locale);
-                }
-
-                self.f.minValue.setValue(self.model.customProperties.minValue);
-                self.f.maxValue.setValue(self.model.customProperties.maxValue);
-
-                if (self.model.fieldType !== QuestionnaireFieldType.Multivalue) {
-                    self.f.useGrouping.setValue(self.model.customProperties.useGrouping);
-                }
-            }
-        } else {
-            self.getCatalogCustomCombo();
-            self.getFieldNextOrder();
-        }
     }
 
     prepareLabels() {
@@ -333,20 +341,7 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
             return;
         }
 
-        const errors = [];
-        let fields = self.model.name ? self.modalConfig.data.fields
-            .filter(p => p.name && p.name.toLowerCase() !== self.model.name.toLowerCase())
-            : self.modalConfig.data.fields.filter(p => p.name);
-
-        fields = fields.concat(self.saved);
-
-        if (fields.some(p => p.name.toLowerCase() === self.f.name.value.toLowerCase())) {
-            errors.push(self.l('TemplateFields.TemplateField.DuplicatedFieldName'));
-        }
-
-        if (fields.some(p => p['questionnaireSection'] === self.modalConfig.data.section.order && p.order === self.f.order.value)) {
-            errors.push(self.l('TemplateFields.TemplateField.DuplicatedOrder'));
-        }
+        const errors = self.getFieldDuplicatedErrors();
 
         if (errors.length > 0) {
             self.formService.showErrorsFromMessages(errors);
@@ -404,6 +399,27 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
         } else {
             self.activateNewMode();
         }
+    }
+
+    getFieldDuplicatedErrors(): any[] {
+        const self = this;
+        const errors = [];
+
+        let fields = self.model.name ? self.modalConfig.data.fields
+            .filter(p => p.name && p.name.toLowerCase() !== self.model.name.toLowerCase())
+            : self.modalConfig.data.fields.filter(p => p.name);
+
+        fields = fields.concat(self.saved);
+
+        if (fields.some(p => p.name.toLowerCase() === self.f.name.value.toLowerCase())) {
+            errors.push(self.l('TemplateFields.TemplateField.DuplicatedFieldName'));
+        }
+
+        if (fields.some(p => p['questionnaireSection'] === self.modalConfig.data.section.order && p.order === self.f.order.value)) {
+            errors.push(self.l('TemplateFields.TemplateField.DuplicatedOrder'));
+        }
+
+        return errors;
     }
 
     onChangeFieldType(): void {
@@ -522,11 +538,13 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
                 if (currentItem && !data.some(p => p.value === currentItem.value)) {
                     data.push(currentItem);
 
-                    data = data.sort((a, b) =>
-                        a.label.toLowerCase() > b.label.toLowerCase() ? 1
-                            : a.label.toLowerCase() < b.label.toLowerCase() ? - 1
-                                : 0
-                    );
+                    data = data.sort((a, b) => {
+                        if (a.label.toLowerCase() > b.label.toLowerCase()) {
+                            return 1;
+                        } 
+
+                        return a.label.toLowerCase() < b.label.toLowerCase() ? - 1 : 0;
+                    });
                 }
 
                 self.catalogCustomCombo = data;
@@ -640,8 +658,6 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
     }
 
     mustFieldControlHaveOptions(fieldControl: number): boolean {
-        const self = this;
-
         if (fieldControl) {
             const fieldControlStr = fieldControl.toString();
 

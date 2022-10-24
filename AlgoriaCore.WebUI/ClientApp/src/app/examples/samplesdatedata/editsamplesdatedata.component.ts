@@ -233,7 +233,6 @@ export class EditSamplesDateDataComponent extends AppComponentBase implements On
 
     onChangeTimeZone(event): void {
         const self = this;
-        // let timeZone: string;
 
         let dateTimeData: moment.Moment = this.dateTimeService.getDateTimeToSaveServer(self.f.dateTimeData.value);
         let dateData: moment.Moment = this.dateTimeService.getDateToSaveServer(self.f.dateData.value);
@@ -247,12 +246,8 @@ export class EditSamplesDateDataComponent extends AppComponentBase implements On
         const timeDataStep15Min: moment.Duration = this.dateTimeService.getTimeToSaveServer(self.f.timeDataStep15Min.value);
 
         if (self.f.timeZone.value) {
-            // moment.tz.setDefault(self.f.timeZone.value.value);
-            // timeZone = self.f.timeZone.value.value;
             self.dateTimeService.setTimeZone(self.f.timeZone.value);
         } else {
-            // moment.tz.setDefault();
-            // timeZone = moment.tz.guess();
             self.dateTimeService.setTimeZone();
         }
 

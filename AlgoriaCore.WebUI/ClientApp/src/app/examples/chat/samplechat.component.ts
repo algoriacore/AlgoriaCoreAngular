@@ -95,13 +95,12 @@ export class SampleChatComponent extends AppComponentBase implements OnInit {
             if (!user) {
                 return;
             }
-            // console.log('onMessageReceived2.add');
-            user.messages = user.messages || [];
 
-            // var msg = new ChatMessageListResponse(message);
+            user.messages = user.messages || [];
             user.messages.push(message);
 
             const tmp = user.messages.slice(0, user.messages.length);
+
             user.messages = tmp;
 
             const isCurrentChatUser = self.selectedUser !== null && self.selectedUser.friendTenantId === user.friendTenantId &&
@@ -190,6 +189,11 @@ export class SampleChatComponent extends AppComponentBase implements OnInit {
                         self.userFriendship[i].friendUserId + '&v' + (new Date().getTime());
                 }
 
+                for (const userFriendship of self.userFriendship) {
+                    userFriendship.friendProfilePictureUrl = this.getBaseServiceUrl() + '/api/User/GetPictureProfile?id=' +
+                        userFriendship.friendUserId + '&v' + (new Date().getTime());
+                }
+
                 self.triggerUnreadMessageCountChangeEvent();
             });
     }
@@ -216,12 +220,6 @@ export class SampleChatComponent extends AppComponentBase implements OnInit {
             self.f.message.setValue('');
             self.sendingMessage = false;
         });
-    }
-
-    loadData(event: LazyLoadEvent) {
-        // const self = this;
-
-        console.log('loadData');
     }
 
     search(): void {
@@ -461,15 +459,10 @@ export class SampleChatComponent extends AppComponentBase implements OnInit {
 
     scrollToBottom(): void {
         const self = this;
-        console.log('scrollToBottom');
+
         if (self.selectedUser.id) {
-            console.log('scrollToBottom todo');
             setTimeout(function () {
-                console.log('scrollTo scrolling');
-                // self.virtualScroller.scrollTo(self.selectedUser.messages.length);
-                // self.virtualScroller.scroller.scrollTo({ top: self.selectedUser.messages.length });
                 self.virtualScroller.scrollToIndex(self.selectedUser.messages.length);
-                console.log('scrollTo scrolled');
             }, 1000);
         }
     }

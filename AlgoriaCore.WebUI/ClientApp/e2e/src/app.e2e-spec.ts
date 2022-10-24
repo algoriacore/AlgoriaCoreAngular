@@ -5,7 +5,7 @@ describe('workspace-project App', () => {
     let page: AppPage;
 
     beforeEach(() => {
-         // page = new AppPage();
+         // Intentional
     });
 
 });

@@ -275,7 +275,6 @@ export class EditQuestionnairesComponent extends AppComponentBase implements OnI
         }
 
         self.updateRowGroupMetaData();
-        // self.expandedRows = {};
     }
 
     assignFieldDescriptions(field: QuestionnaireFieldResponse): void {
