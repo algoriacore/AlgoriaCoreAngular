@@ -2,7 +2,7 @@ import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
-import { LazyLoadEvent, MenuItem } from 'primeng/api';
+import { MenuItem } from 'primeng/api';
 import { Menu } from 'primeng/menu';
 import { VirtualScroller } from 'primeng/virtualscroller';
 import { finalize } from 'rxjs/operators';
@@ -109,7 +109,6 @@ export class SampleChatComponent extends AppComponentBase implements OnInit {
             if (message.side === self.chatMessageSide.Receiver) {
                 user.unreadMessageCount += 1;
                 message.readState = self.chatMessageReadState.Unread;
-                self.triggerUnreadMessageCountChangeEvent();
 
                 if (isCurrentChatUser) {
                     self.markAllUnreadMessagesOfUserAsRead(user);
@@ -168,7 +167,6 @@ export class SampleChatComponent extends AppComponentBase implements OnInit {
             }
 
             user.unreadMessageCount = 0;
-            self.triggerUnreadMessageCountChangeEvent();
         });
     }
 
@@ -184,17 +182,10 @@ export class SampleChatComponent extends AppComponentBase implements OnInit {
             .subscribe(data => {
                 self.userFriendship = (data.items as ChatFriendDto[]);
 
-                for (let i = 0; i < self.userFriendship.length; i++) {
-                    self.userFriendship[i].friendProfilePictureUrl = this.getBaseServiceUrl() + '/api/User/GetPictureProfile?id=' +
-                        self.userFriendship[i].friendUserId + '&v' + (new Date().getTime());
-                }
-
                 for (const userFriendship of self.userFriendship) {
                     userFriendship.friendProfilePictureUrl = this.getBaseServiceUrl() + '/api/User/GetPictureProfile?id=' +
                         userFriendship.friendUserId + '&v' + (new Date().getTime());
                 }
-
-                self.triggerUnreadMessageCountChangeEvent();
             });
     }
 
@@ -465,17 +456,5 @@ export class SampleChatComponent extends AppComponentBase implements OnInit {
                 self.virtualScroller.scrollToIndex(self.selectedUser.messages.length);
             }, 1000);
         }
-    }
-
-    triggerUnreadMessageCountChangeEvent(): void {
-    /*
-        const self = this;
-
-        let totalUnreadMessageCount = 0;
-
-        if (self.userFriendship) {
-            totalUnreadMessageCount = _.reduce(self.userFriendship, (memo, friend) => memo + friend.unreadMessageCount, 0);
-        }
-        */
     }
 }

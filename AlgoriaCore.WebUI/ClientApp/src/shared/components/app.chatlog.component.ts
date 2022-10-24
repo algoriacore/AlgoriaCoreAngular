@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Injector, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Injector, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FileUpload } from 'primeng/fileupload';
 import { finalize } from 'rxjs/operators';
 import { AppComponentBase } from '../../app/app-component-base';
@@ -160,10 +160,6 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
                 instanceReady: function (evt) {
                     evt.editor.setReadOnly();
                     document.getElementById(evt.editor.id + '_top').style.display = 'none';
-                    // console.log(evt.editor);
-                    // evt.editor.stylesSet.add('my_styles', [
-                    //    { name: 'Attachment Icon', element: 'div', styles: { color: 'Blue' } }
-                    // ]);
                 },
                 contentDom: function (contentDom) {
                     const editable = contentDom.editor.editable();

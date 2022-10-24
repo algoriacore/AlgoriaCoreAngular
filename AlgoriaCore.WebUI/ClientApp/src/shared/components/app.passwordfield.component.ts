@@ -40,9 +40,6 @@ export class PasswordFieldComponent implements ControlValueAccessor {
         this.propagateChange = fn;
     }
 
-    // not used, used for touch input
-    public registerOnTouched() { }
-
     onChange(event) {
         const self = this;
 

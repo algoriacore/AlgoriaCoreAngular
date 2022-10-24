@@ -1,5 +1,3 @@
-// import * as _ from 'lodash';
-
 // eslint-disable-next-line no-shadow
 enum FormatStringTokenType {
     ConstantText,
@@ -98,7 +96,7 @@ class FormatStringTokenizer {
 export class FormattedStringValueExtracter {
 
     extract(str: string, format: string): ExtractionResult {
-        if (str === format) { // TODO: think on that!
+        if (str === format) {
             return new ExtractionResult(true);
         }
 
@@ -154,8 +152,8 @@ export class FormattedStringValueExtracter {
 
         const values = [];
 
-        for (let i = 0; i < result.matches.length; i++) {
-            values.push(result.matches[i].value);
+        for (const match of result.matches) {
+            values.push(match.value);
         }
 
         return values;

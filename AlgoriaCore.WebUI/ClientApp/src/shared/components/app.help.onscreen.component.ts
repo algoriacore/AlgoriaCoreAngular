@@ -33,10 +33,11 @@ export class AppHelpOnScreenComponent extends AppComponentBase implements OnInit
     }
 
     @HostListener('window:keyup', ['$event'])
-    keyEvent(event: KeyboardEvent) {
+    keyEvent(e: KeyboardEvent) {
         const self = this;
+        const kc = e.keyCode ? e.keyCode : e.which;
 
-        if (event.keyCode === 27) {
+        if (kc === 27) {
             self.hide();
         }
     }
@@ -64,20 +65,26 @@ export class AppHelpOnScreenComponent extends AppComponentBase implements OnInit
                     self.isNoShowAnymoreOriginal = self.isNoShowAnymore;
 
                     if ((!self.isNoShowAnymore || self.message.forced) && message.key) {
-                        // Obtener el contenido de la ayuda del servidor
-                        self.helpService.getHelpByKeyForCurrentUser(message.key)
-                            .subscribe(data => {
-                                if (data && data.isActive) {
-                                    self.dvContent.nativeElement.innerHTML = data.body;
-                                    self.visible = true;
-                                } else if (self.message.forced) {
-                                    self.alertService.warning(self.l('HelpNotAvailable'));
-                                }
-                            });
+                        self.showHelpContent(message);
                     }
                 }
             }
         });
+    }
+
+    showHelpContent(message): void {
+        const self = this;
+
+        // Obtener el contenido de la ayuda del servidor
+        self.helpService.getHelpByKeyForCurrentUser(message.key)
+            .subscribe(data => {
+                if (data && data.isActive) {
+                    self.dvContent.nativeElement.innerHTML = data.body;
+                    self.visible = true;
+                } else if (self.message.forced) {
+                    self.alertService.warning(self.l('HelpNotAvailable'));
+                }
+            });
     }
 
     ngOnDestroy() {
@@ -96,8 +103,6 @@ export class AppHelpOnScreenComponent extends AppComponentBase implements OnInit
 
     onHide() {
         const self = this;
-
-        // self.navSideBar.destroyModal();
 
         if (self.visible && self.message.key) {
             if (self.isNoShowAnymore !== self.isNoShowAnymoreOriginal) {

@@ -34,7 +34,7 @@
                         <tr [pSelectableRow]="rowData">
                             <td>
                                 <div>
-                                    <button pButton pRipple type="button" icon="pi pi-check" class="p-button-sm mr-2" (click)="select(rowData)" pTooltip="{{l('Select')}}" tooltipPosition="top"></button>
+                                    <button pButton pRipple type="button" icon="pi pi-check" class="p-button-sm mr-2" (click)="select($event, rowData)" pTooltip="{{l('Select')}}" tooltipPosition="top"></button>
                                 </div>
                             </td>
                             <td>
