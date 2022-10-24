@@ -26,21 +26,10 @@ export class NumberFormatter {
 
         const vals = valor.toString();
         const partes = vals.split('.');
-        let entero = '';
-        let nDecimals = -1;
-        let cont = 0;
-
-        for (let i = partes[0].length - 1; i >= 0; i--) {
-            cont++;
-            entero = partes[0][i] + entero;
-
-            // Si es el tercer carácter, se le pone una coma
-            if (cont % 3 === 0 && i > 0) {
-                entero = ',' + entero;
-            }
-        }
+        let entero = this.getEntero(partes[0]);
 
         // Decimales default
+        let nDecimals = -1;
         let strDecs = '';
 
         for (let j = 1; j <= nDecs; j++) {
@@ -102,5 +91,22 @@ export class NumberFormatter {
 
             return esx.toString();
         }
+    }
+
+    private getEntero(value: string): string {
+        let entero = '';
+        let cont = 0;
+
+        for (let i = value.length - 1; i >= 0; i--) {
+            cont++;
+            entero = value[i] + entero;
+
+            // Si es el tercer carácter, se le pone una coma
+            if (cont % 3 === 0 && i > 0) {
+                entero = ',' + entero;
+            }
+        }
+
+        return entero;
     }
 }
