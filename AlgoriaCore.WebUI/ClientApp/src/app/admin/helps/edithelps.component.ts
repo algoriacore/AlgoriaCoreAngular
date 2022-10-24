@@ -103,7 +103,6 @@ export class EditHelpsComponent extends AppComponentBase implements OnInit {
                         self.f.displayName.setValue(data.displayName);
                         self.f.isActive.setValue(data.isActive);
                         self.f.body.setValue(self.model.body);
-                        // self.quillEditor.root.innerHTML = self.model.body.replace(/\n/g, "");
                     }
                 }, 0);
             });

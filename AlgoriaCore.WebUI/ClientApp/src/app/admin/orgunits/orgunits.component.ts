@@ -161,7 +161,7 @@ export class OrgUnitsComponent extends AppComponentBase implements OnInit {
             node.expanded = expand;
 
             for (const cn of node.children) {
-                this.expandChildren(cn);
+                self.expandChildren(cn);
             }
         }
     }

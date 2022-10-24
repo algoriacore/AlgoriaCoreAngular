@@ -1,11 +1,11 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
-import { Observable, throwError, of } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError, timeout } from 'rxjs/operators';
 import { AppConsts } from '../../shared/AppConsts';
+import { AlertService } from '../../shared/services/alert.service';
 import { DateTimeService } from '../../shared/services/datetime.service';
 import { AuthenticationService } from '../_services/authentication.service';
-import { timeout, catchError } from 'rxjs/operators';
-import { AlertService } from '../../shared/services/alert.service';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
@@ -21,7 +21,7 @@ export class JwtInterceptor implements HttpInterceptor {
 
             // add authorization header with jwt token if available
             const currentUser = this.authenticationService.currentUserValue;
-            // console.log("JwtInterceptor: Insertando token");
+
             if (currentUser && currentUser.token) {
                 request = request.clone({
                     setHeaders: {
@@ -46,8 +46,6 @@ export class JwtInterceptor implements HttpInterceptor {
                 return throwError(err);
             })
         );
-
-        // return next.handle(request).pipe(timeout(this.getTimeoutByUrl(request.url)));
     }
 
     getTimeoutByUrl(url: string): number {

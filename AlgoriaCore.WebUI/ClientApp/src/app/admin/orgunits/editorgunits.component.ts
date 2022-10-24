@@ -161,7 +161,12 @@ export class EditOrgUnitsComponent extends AppComponentBase implements OnInit {
     loadDataUser(event: LazyLoadEvent) {
         const self = this;
 
-        self.queryUsers.sorting = event.sortField ? (event.sortField + ' ' + (event.sortOrder === 1 ? 'ASC' : 'DESC')) : '';
+        if (event.sortField) {
+            self.queryUsers.sorting = event.sortField + ' ' + (event.sortOrder === 1 ? 'ASC' : 'DESC');
+        } else {
+            self.queryUsers.sorting = '';
+        }
+
         self.queryUsers.pageNumber = 1 + (event.first / event.rows);
         self.queryUsers.pageSize = event.rows;
         self.getUserList();

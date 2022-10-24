@@ -359,9 +359,7 @@ export class AppSubMenuComponent extends AppComponentBase {
 
     checkChildMenuItemPermission(menuItem): boolean {
 
-        for (let i = 0; i < menuItem.items.length; i++) {
-            const subMenuItem = menuItem.items[i];
-
+        for (const subMenuItem of menuItem.items) {
             if (subMenuItem.permissionName && this.permission.isGranted(subMenuItem.permissionName) && subMenuItem.visible !== false) {
                 return true;
             }

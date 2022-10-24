@@ -235,7 +235,7 @@ export class AuditLogsComponent extends AppComponentBase implements OnInit {
     downloadTempFile(file: any): void {
         const url = this.getBaseServiceUrl() + '/api/File/DownloadTempFile?fileType=' + file.fileType +
             '&fileToken=' + file.fileToken + '&fileName=' + file.fileName;
-        // location.href = url; //TODO: This causes reloading of same page in Firefox
+
         window.open(url, '_blank');
     }
 

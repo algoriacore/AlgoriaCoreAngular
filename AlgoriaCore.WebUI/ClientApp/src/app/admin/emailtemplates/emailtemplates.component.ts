@@ -1,19 +1,14 @@
-import { Component, Injector, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LazyLoadEvent, MenuItem } from 'primeng/api';
-import { Menu } from 'primeng/menu';
+import { FileUpload } from 'primeng/fileupload';
+import { finalize } from 'rxjs/operators';
 import {
-    MailGroupServiceProxy,
-    MailTemplateGetListQuery,
-    MailTemplateListResponse,
-    MailTemplateGetForEditQuery,
-    MailTemplateForEditResponse,
-    MailTemplateUpdateCommand
+    MailGroupServiceProxy, MailTemplateForEditResponse, MailTemplateGetForEditQuery, MailTemplateGetListQuery,
+    MailTemplateListResponse, MailTemplateUpdateCommand
 } from '../../../shared/service-proxies/service-proxies';
 import { AppComponentBase, PagedTableSummary } from '../../app-component-base';
-import { finalize } from 'rxjs/operators';
-import { FileUpload } from 'primeng/fileupload';
 import { AppComponent } from '../../app.component';
 
 @Component({
