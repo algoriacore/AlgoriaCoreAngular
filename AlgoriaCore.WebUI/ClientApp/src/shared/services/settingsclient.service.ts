@@ -12,7 +12,7 @@ export class SettingsClientService {
         return this._settings[key];
     }
 
-    setSetting(key: string, value: string): string {
-        return this._settings[key] = value;
+    setSetting(key: string, value: string): void {
+        this._settings[key] = value;
     }
 }
