@@ -1,3 +1,5 @@
+import { Utils } from "./utils";
+
 export class NumberFormatter {
 
     // métodos privados
@@ -5,7 +7,7 @@ export class NumberFormatter {
 
         let valor: any = '';
 
-        if (value === undefined || value === null) {
+        if (Utils.isNullOrUndefined(value)) {
             value = '0';
         }
 
@@ -40,29 +42,23 @@ export class NumberFormatter {
 
         // Decimales default
         let strDecs = '';
+
         for (let j = 1; j <= nDecs; j++) {
             strDecs += '0';
         }
 
         if (nDecimals === -1) {
-            if (partes[1] !== null && partes[1] !== undefined) {
+            if (!Utils.isNullOrUndefined(partes[1])) {
                 nDecimals = partes[1];
             }
+        } else if (!Utils.isNullOrUndefined(partes[1])) {
+            nDecimals = partes[1];
+            nDecimals = parseInt((nDecimals + strDecs).substring(0, nDecimals), 10);
         } else {
-            if (partes[1] !== null && partes[1] !== undefined) {
-                nDecimals = partes[1];
-                nDecimals = parseInt((nDecimals + strDecs).substring(0, nDecimals), 10);
-            } else {
-                nDecimals += parseInt(strDecs, 10);
-            }
+            nDecimals += parseInt(strDecs, 10);
         }
 
-        let resp = '';
-        if (nDecimals === -1 || nDecimals === 0) {
-            resp = entero;
-        } else {
-            resp = entero + '.' + nDecimals;
-        }
+        let resp = nDecimals === -1 || nDecimals === 0 ? entero : entero + '.' + nDecimals;
 
         // Rellenar con ceros los decimales que falten al final..
         if (nDecs > 0) {
@@ -70,6 +66,7 @@ export class NumberFormatter {
                 resp += ('.' + strDecs);
             } else {
                 let so = resp.substring(resp.indexOf('.'));
+
                 so = so.replace('.', '');
 
                 for (let i = (so.length + 1); i <= nDecs; i++) {
@@ -79,7 +76,8 @@ export class NumberFormatter {
         }
 
         const esNegativo = (valor < 0);
-        if (esNegativo === true) {
+
+        if (esNegativo) {
             resp = '-' + resp;
         }
 
