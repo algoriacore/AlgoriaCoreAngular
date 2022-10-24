@@ -18,6 +18,7 @@ import { DateTimeService } from '../services/datetime.service';
 import { ControlError, FormService, maxSelecting, minSelecting } from '../services/form.service';
 import { LocalizationService } from '../services/localization.service';
 import { NumberFormatter } from '../utils/numberformatter.class';
+import { Utils } from '../utils/utils';
 
 @Component({
     selector: 'app-questionnaire',
@@ -369,44 +370,48 @@ export class AppQuestionnaireComponent implements OnInit {
     getFieldsData(): any {
         const self = this;
         const data = {};
-        let fieldValue;
 
         for (const field of self.questionnaireFields) {
-            data[field.fieldName] = null;
-            fieldValue = self.f[field.fieldName].value;
+            data[field.fieldName] = self.getFielddata(field);
+        }
 
-            if (fieldValue !== null && fieldValue !== undefined) {
-                switch (field.fieldType) {
-                    case QuestionnaireFieldType.Date:
-                        data[field.fieldName] = self.dateTimeService.getDateToSaveServer(fieldValue);
-                        break;
-                    case QuestionnaireFieldType.DateTime:
-                        data[field.fieldName] = self.dateTimeService.getDateTimeToSaveServer(fieldValue);
-                        break;
-                    case QuestionnaireFieldType.Time:
-                        data[field.fieldName] = self.dateTimeService.getTimeToSaveServer(fieldValue).format('HH:mm');
-                        break;
-                    case QuestionnaireFieldType.Multivalue:
-                        data[field.fieldName] = fieldValue.map(p => field.options.find(q => q.value === Number(p)));
-                        break;
-                    case QuestionnaireFieldType.CatalogCustom:
-                        if (field.fieldControl === QuestionnaireFieldControl.Autocomplete) {
-                            fieldValue = field['optionsCombo'].find(q => q.value === fieldValue);
-                        }
+        return data;
+    }
 
-                        data[field.fieldName] = { value: fieldValue.value, description: fieldValue.label };
-                        break;
-                    default:
-                        if (field.fieldControl === QuestionnaireFieldControl.AutocompleteDynamic) {
-                            data[field.fieldName] = { value: fieldValue.value, description: fieldValue.label };
-                        } else {
-                            if (field.mustHaveOptions && field.options) {
-                                data[field.fieldName] = field.options.find(q => q.value === Number(fieldValue));
-                            } else {
-                                data[field.fieldName] = fieldValue;
-                            }
-                        }
-                }
+    getFielddata(field: QuestionnaireFieldResponse): any {
+        const self = this;
+        let data = null;
+        let fieldValue = self.f[field.fieldName].value;
+
+        if (!Utils.isNullOrUndefined(fieldValue)) {
+            switch (field.fieldType) {
+                case QuestionnaireFieldType.Date:
+                    data = self.dateTimeService.getDateToSaveServer(fieldValue);
+                    break;
+                case QuestionnaireFieldType.DateTime:
+                    data = self.dateTimeService.getDateTimeToSaveServer(fieldValue);
+                    break;
+                case QuestionnaireFieldType.Time:
+                    data = self.dateTimeService.getTimeToSaveServer(fieldValue).format('HH:mm');
+                    break;
+                case QuestionnaireFieldType.Multivalue:
+                    data[field.fieldName] = fieldValue.map(p => field.options.find(q => q.value === Number(p)));
+                    break;
+                case QuestionnaireFieldType.CatalogCustom:
+                    if (field.fieldControl === QuestionnaireFieldControl.Autocomplete) {
+                        fieldValue = field['optionsCombo'].find(q => q.value === fieldValue);
+                    }
+
+                    data = { value: fieldValue.value, description: fieldValue.label };
+                    break;
+                default:
+                    if (field.fieldControl === QuestionnaireFieldControl.AutocompleteDynamic) {
+                        data = { value: fieldValue.value, description: fieldValue.label };
+                    } else if (field.mustHaveOptions && field.options) {
+                        data = field.options.find(q => q.value === Number(fieldValue));
+                    } else {
+                        data = fieldValue;
+                    }
             }
         }
 

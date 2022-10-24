@@ -107,31 +107,10 @@ export class FormattedStringValueExtracter {
         }
 
         const result = new ExtractionResult(true);
+        str = this.processStr(str, result, formatTokens);
 
-        for (let i = 0; i < formatTokens.length; i++) {
-            const currentToken = formatTokens[i];
-            const previousToken = i > 0 ? formatTokens[i - 1] : null;
-
-            if (currentToken.type === FormatStringTokenType.ConstantText) {
-                if (i === 0) {
-                    if (str.indexOf(currentToken.text) !== 0) {
-                        result.isMatch = false;
-                        return result;
-                    }
-
-                    str = str.substr(currentToken.text.length, str.length - currentToken.text.length);
-                } else {
-                    const matchIndex = str.indexOf(currentToken.text);
-
-                    if (matchIndex < 0) {
-                        result.isMatch = false;
-                        return result;
-                    }
-
-                    result.matches.push({ name: previousToken.text, value: str.substr(0, matchIndex) });
-                    str = str.substring(0, matchIndex + currentToken.text.length);
-                }
-            }
+        if (!result.isMatch) {
+            return result;
         }
 
         const lastToken = formatTokens[formatTokens.length - 1]; // Last
@@ -157,5 +136,37 @@ export class FormattedStringValueExtracter {
         }
 
         return values;
+    }
+
+    private processStr(value: string, result: ExtractionResult, formatTokens: FormatStringToken[]): string {
+        let str = value;
+
+        for (let i = 0; i < formatTokens.length; i++) {
+            const currentToken = formatTokens[i];
+            const previousToken = i > 0 ? formatTokens[i - 1] : null;
+
+            if (currentToken.type === FormatStringTokenType.ConstantText) {
+                if (i === 0) {
+                    if (str.indexOf(currentToken.text) !== 0) {
+                        result.isMatch = false;
+                        break;
+                    }
+
+                    str = str.substring(currentToken.text.length, str.length - currentToken.text.length);
+                } else {
+                    const matchIndex = str.indexOf(currentToken.text);
+
+                    if (matchIndex < 0) {
+                        result.isMatch = false;
+                        break;
+                    }
+
+                    result.matches.push({ name: previousToken.text, value: str.substring(0, matchIndex) });
+                    str = str.substring(0, matchIndex + currentToken.text.length);
+                }
+            }
+        }
+
+        return str;
     }
 }
