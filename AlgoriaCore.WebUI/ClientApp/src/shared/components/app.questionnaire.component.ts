@@ -344,38 +344,7 @@ export class AppQuestionnaireComponent implements OnInit {
         let res = value;
 
         if (Utils.isNullOrWhiteSpace(value)) {
-            const formatter = new NumberFormatter();
-
-            switch (field.fieldType) {
-                case QuestionnaireFieldType.Boolean:
-                    res = value ? self.l('Yes') : self.l('No');
-                    break;
-                case QuestionnaireFieldType.Multivalue:
-                    res = self.transformFieldValueToDisplayForMultivalue(value);
-                    break;
-                case QuestionnaireFieldType.CatalogCustom:
-                case QuestionnaireFieldType.User:
-                    res = value && value.description ? value.description : '';
-                    break;
-                case QuestionnaireFieldType.Integer:
-                    res = formatter.format(value, 0);
-                    break;
-                case QuestionnaireFieldType.Decimal:
-                case QuestionnaireFieldType.Currency:
-                    res = formatter.format(value, field.fieldSize ? field.fieldSize : 2);
-                    break;
-                case QuestionnaireFieldType.Date:
-                    res = self.dateTimeService.getDateStringISOToFormat(value);
-                    break;
-                case QuestionnaireFieldType.DateTime:
-                    res = self.dateTimeService.getDateTimeStringISOToFormat(value);
-                    break;
-                default:
-                    if (field.mustHaveOptions) {
-                        res = value && value.description ? value.description : '';
-                    }
-                    break;
-            }
+            res = self.transformFieldValueToDisplayAux(value, field, new NumberFormatter());
         }
 
         return res;
@@ -402,6 +371,42 @@ export class AppQuestionnaireComponent implements OnInit {
         }
 
         return res;
+    }
+
+    transformFieldValueToDisplayAux(value: any, field: QuestionnaireFieldResponse, formatter: NumberFormatter): any {
+        const self = this;
+        let res = value;
+
+        switch (field.fieldType) {
+            case QuestionnaireFieldType.Boolean:
+                res = value ? self.l('Yes') : self.l('No');
+                break;
+            case QuestionnaireFieldType.Multivalue:
+                res = self.transformFieldValueToDisplayForMultivalue(value);
+                break;
+            case QuestionnaireFieldType.CatalogCustom:
+            case QuestionnaireFieldType.User:
+                res = value && value.description ? value.description : '';
+                break;
+            case QuestionnaireFieldType.Integer:
+                res = formatter.format(value, 0);
+                break;
+            case QuestionnaireFieldType.Decimal:
+            case QuestionnaireFieldType.Currency:
+                res = formatter.format(value, field.fieldSize ? field.fieldSize : 2);
+                break;
+            case QuestionnaireFieldType.Date:
+                res = self.dateTimeService.getDateStringISOToFormat(value);
+                break;
+            case QuestionnaireFieldType.DateTime:
+                res = self.dateTimeService.getDateTimeStringISOToFormat(value);
+                break;
+            default:
+                if (field.mustHaveOptions) {
+                    res = value && value.description ? value.description : '';
+                }
+                break;
+        }
     }
 
     l(key: string, ...args: any[]): string {
