@@ -133,19 +133,19 @@ export class AppQuestionnaireComponent implements OnInit {
 
     calculateValidatorsForField(field: QuestionnaireFieldResponse): ValidatorFn[] {
         const self = this;
-        const validators: ValidatorFn[] = [];
+        let validators: ValidatorFn[] = [];
 
         if (field.isRequired) {
             validators.push(Validators.required);
         }
 
         if (field.fieldType === QuestionnaireFieldType.Text) {
-            validators.concat(self.calculateValidatorsForFieldText(field));
+            validators = validators.concat(self.calculateValidatorsForFieldText(field));
         } else if (field.fieldType === QuestionnaireFieldType.Integer || field.fieldType === QuestionnaireFieldType.Decimal
             || field.fieldType === QuestionnaireFieldType.Currency) {
-            validators.concat(self.calculateValidatorsForFieldNumeric(field));
+            validators = validators.concat(self.calculateValidatorsForFieldNumeric(field));
         } else if (field.fieldType === QuestionnaireFieldType.Multivalue) {
-            validators.concat(self.calculateValidatorsForFieldMultivalue(field));
+            validators = validators.concat(self.calculateValidatorsForFieldMultivalue(field));
         }
 
         return validators;
