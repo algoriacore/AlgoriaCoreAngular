@@ -14,7 +14,9 @@ import { RootComponent } from './root.component';
 import { AppConsts } from './shared/AppConsts';
 import { AppSettings } from './shared/AppSettings';
 import { SubdomainTenancyNameFinder } from './shared/helpers/SubdomainTenancyNameFinder';
-import { API_BASE_URL, UserConfigurationGetAllQuery, UserConfigurationResponse, UserConfigurationServiceProxy } from './shared/service-proxies/service-proxies';
+import {
+    API_BASE_URL, UserConfigurationGetAllQuery, UserConfigurationResponse, UserConfigurationServiceProxy
+} from './shared/service-proxies/service-proxies';
 import { ServiceProxyModule } from './shared/service-proxies/service-proxy.module';
 import { CatalogsCustomService } from './shared/services/catalogscustom.service';
 import { DateTimeService } from './shared/services/datetime.service';
@@ -84,7 +86,7 @@ export class RootModule {
 
                 const userConfigurationServiceProxy: UserConfigurationServiceProxy = injector.get(UserConfigurationServiceProxy);
                 const authenticationService: AuthenticationService = injector.get(AuthenticationService);
-                
+
                 const titleService: TitleService = injector.get(TitleService);
                 const versionCheckService: VersionCheckService = injector.get(VersionCheckService);
 
@@ -108,7 +110,7 @@ export class RootModule {
 
                 return Promise.all(promises);
             });
-        })
+        });
     }
 
     private static proccessUserConfiguration(injector: Injector, result: any, result2: UserConfigurationResponse) {

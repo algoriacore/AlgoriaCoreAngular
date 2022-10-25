@@ -407,6 +407,8 @@ export class AppQuestionnaireComponent implements OnInit {
                 }
                 break;
         }
+
+        return res;
     }
 
     l(key: string, ...args: any[]): string {

@@ -90,7 +90,6 @@ class FormatStringTokenizer {
 
         return tokens;
     }
-
 }
 
 export class FormattedStringValueExtracter {

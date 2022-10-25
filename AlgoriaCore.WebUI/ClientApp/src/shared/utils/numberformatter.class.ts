@@ -1,4 +1,4 @@
-import { Utils } from "./utils";
+import { Utils } from './utils';
 
 export class NumberFormatter {
 
@@ -26,7 +26,7 @@ export class NumberFormatter {
 
         const vals = valor.toString();
         const partes = vals.split('.');
-        let entero = this.getEntero(partes[0]);
+        const entero = this.getEntero(partes[0]);
 
         // Decimales default
         let nDecimals = -1;

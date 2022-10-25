@@ -1,4 +1,4 @@
-import { AuthenticationService } from "../../app/_services/authentication.service";
+import { AuthenticationService } from '../../app/_services/authentication.service';
 
 export class Utils {
 

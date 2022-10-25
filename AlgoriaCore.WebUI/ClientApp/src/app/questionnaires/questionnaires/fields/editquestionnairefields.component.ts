@@ -390,7 +390,7 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
         let catalogCustom = null;
 
         if (self.f.fieldType.value === QuestionnaireFieldType.CatalogCustom.toString()) {
-            return new QuestionnaireCatalogCustomResponse({
+            catalogCustom = new QuestionnaireCatalogCustomResponse({
                 catalogCustom: self.f.catalogCustomFieldRelationCatalogCustom.value,
                 fieldName: self.f.catalogCustomFieldRelationCatalogCustomField.value
             });
@@ -565,7 +565,7 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
                     data = data.sort((a, b) => {
                         if (a.label.toLowerCase() > b.label.toLowerCase()) {
                             return 1;
-                        } 
+                        }
 
                         return a.label.toLowerCase() < b.label.toLowerCase() ? - 1 : 0;
                     });
