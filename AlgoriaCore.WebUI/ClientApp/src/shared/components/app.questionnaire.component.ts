@@ -70,15 +70,7 @@ export class AppQuestionnaireComponent implements OnInit {
                 section.fields.sort((a, b) => a.order - b.order);
 
                 if (!self.readOnly) {
-                    for (const field of section.fields) {
-                        if (field.fieldType === QuestionnaireFieldType.CatalogCustom) {
-                            self.fillAutocomplete(field);
-                        } else if (field.mustHaveOptions && field.options) {
-                            field['optionsCombo'] = field.options.map(p => new ComboboxItemDto({
-                                value: p.value.toString(), label: p.description
-                            }));
-                        }
-                    }
+                    self.createCombosForFields(section.fields);
                 }
             }
         }
@@ -86,6 +78,20 @@ export class AppQuestionnaireComponent implements OnInit {
         if (self.value && !self.readOnly) {
             self.prepareForm(self.questionnaireFields);
             self.setFieldsData(self.value, self.questionnaireFields);
+        }
+    }
+
+    createCombosForFields(fields: QuestionnaireFieldResponse[]): void {
+        const self = this;
+
+        for (const field of fields) {
+            if (field.fieldType === QuestionnaireFieldType.CatalogCustom) {
+                self.fillAutocomplete(field);
+            } else if (field.mustHaveOptions && field.options) {
+                field['optionsCombo'] = field.options.map(p => new ComboboxItemDto({
+                    value: p.value.toString(), label: p.description
+                }));
+            }
         }
     }
 
@@ -107,38 +113,7 @@ export class AppQuestionnaireComponent implements OnInit {
         self.form = self.formBuilder.group({});
 
         for (const field of questionnaireFields) {
-            validators = [];
-
-            if (field.isRequired) {
-                validators.push(Validators.required);
-            }
-
-            if (field.fieldType === QuestionnaireFieldType.Text) {
-                if (field.fieldSize) {
-                    validators.push(Validators.maxLength(field.fieldSize));
-                }
-
-                if (field.hasKeyFilter && field.keyFilter) {
-                    validators.push(Validators.pattern(field.keyFilter));
-                }
-            } else if (field.fieldType === QuestionnaireFieldType.Integer || field.fieldType === QuestionnaireFieldType.Decimal
-                || field.fieldType === QuestionnaireFieldType.Currency) {
-                if (field.customProperties && !Number.isNaN(field.customProperties.minValue)) {
-                    validators.push(Validators.min(field.customProperties.minValue));
-                }
-
-                if (field.customProperties && !Number.isNaN(field.customProperties.maxValue)) {
-                    validators.push(Validators.max(field.customProperties.maxValue));
-                }
-            } else if (field.fieldType === QuestionnaireFieldType.Multivalue) {
-                if (field.customProperties && field.customProperties.minValue && !Number.isNaN(field.customProperties.minValue)) {
-                    validators.push(minSelecting(field.customProperties.minValue));
-                }
-
-                if (field.customProperties && field.customProperties.maxValue && !Number.isNaN(field.customProperties.maxValue)) {
-                    validators.push(maxSelecting(field.customProperties.maxValue));
-                }
-            }
+            validators = self.calculateValidatorsForField(field);
 
             if (field.fieldType === QuestionnaireFieldType.Boolean) {
                 formControl = new FormControl(false, { nonNullable: true });
@@ -154,6 +129,43 @@ export class AppQuestionnaireComponent implements OnInit {
                 formControl.disable();
             }
         }
+    }
+
+    calculateValidatorsForField(field: QuestionnaireFieldResponse): ValidatorFn[] {
+        const validators: ValidatorFn[] = [];
+
+        if (field.isRequired) {
+            validators.push(Validators.required);
+        }
+
+        if (field.fieldType === QuestionnaireFieldType.Text) {
+            if (field.fieldSize) {
+                validators.push(Validators.maxLength(field.fieldSize));
+            }
+
+            if (field.hasKeyFilter && field.keyFilter) {
+                validators.push(Validators.pattern(field.keyFilter));
+            }
+        } else if (field.fieldType === QuestionnaireFieldType.Integer || field.fieldType === QuestionnaireFieldType.Decimal
+            || field.fieldType === QuestionnaireFieldType.Currency) {
+            if (field.customProperties && !Number.isNaN(field.customProperties.minValue)) {
+                validators.push(Validators.min(field.customProperties.minValue));
+            }
+
+            if (field.customProperties && !Number.isNaN(field.customProperties.maxValue)) {
+                validators.push(Validators.max(field.customProperties.maxValue));
+            }
+        } else if (field.fieldType === QuestionnaireFieldType.Multivalue) {
+            if (field.customProperties && field.customProperties.minValue && !Number.isNaN(field.customProperties.minValue)) {
+                validators.push(minSelecting(field.customProperties.minValue));
+            }
+
+            if (field.customProperties && field.customProperties.maxValue && !Number.isNaN(field.customProperties.maxValue)) {
+                validators.push(maxSelecting(field.customProperties.maxValue));
+            }
+        }
+
+        return validators;
     }
 
     fillAutocompleteDynamicUser(event: any): void {
@@ -201,87 +213,89 @@ export class AppQuestionnaireComponent implements OnInit {
         const self = this;
 
         if (data && fields && fields.length > 0) {
-            let fieldValue;
-            let control: AbstractControl;
-
             for (const field of fields) {
-                fieldValue = data[field.fieldName];
+                self.setFieldData(field, data[field.fieldName]);
+            }
+        }
+    }
 
-                if (fieldValue !== null && fieldValue !== undefined) {
-                    control = self.f[field.fieldName];
+    setFieldData(field: QuestionnaireFieldResponse, fieldValue: any): void {
+        const self = this;
+        let control: AbstractControl;
 
-                    switch (field.fieldType) {
-                        case QuestionnaireFieldType.Date:
-                            if (typeof(fieldValue) === 'string') {
-                                control.setValue(moment(fieldValue, 'YYYY-MM-DDT00:00').toDate());
-                            }
-                            break;
-                        case QuestionnaireFieldType.DateTime:
-                            if (typeof (fieldValue) === 'string') {
-                                control.setValue(moment(fieldValue, 'YYYY-MM-DDTHH:mmZ').toDate());
-                            }
-                            break;
-                        case QuestionnaireFieldType.Time: {
-                            if (typeof (fieldValue) === 'string') {
-                                const now = moment();
-                                const duration = moment.duration(fieldValue);
-                                const date = new Date(
-                                    now.year(),
-                                    now.month(),
-                                    now.date(),
-                                    duration.hours(),
-                                    duration.minutes(),
-                                    duration.seconds(),
-                                    duration.milliseconds()
-                                );
+        if (!Utils.isNullOrUndefined(fieldValue)) {
+            control = self.f[field.fieldName];
 
-                                control.setValue(date);
-                            }
-                            break;
-                        }
-                        case QuestionnaireFieldType.Multivalue:
-                            if (Array.isArray(fieldValue)) {
-                                control.setValue(fieldValue.map(p => p.value.toString()));
-                            } else if (fieldValue.value) {
-                                control.setValue(fieldValue.value.toString());
-                            }
-                            break;
-                        case QuestionnaireFieldType.CatalogCustom:
-                            if (typeof(fieldValue) === 'object' && fieldValue.value) {
-                                if (field.fieldControl === QuestionnaireFieldControl.Autocomplete) {
-                                    control.setValue(fieldValue.value);
-                                } else if (field.fieldControl === QuestionnaireFieldControl.AutocompleteDynamic) {
-                                    control.setValue(new ComboboxItemDto({
-                                        value: fieldValue.value, label: fieldValue.description
-                                    }));
-                                }
-                            }
-                            break;
-                        case QuestionnaireFieldType.Integer:
-                        case QuestionnaireFieldType.Decimal:
-                        case QuestionnaireFieldType.Currency:
-                            if (!isNaN(fieldValue)) {
-                                control.setValue(fieldValue);
-                            }
-                            break;
-                        default:
-                            if (field.fieldControl === QuestionnaireFieldControl.AutocompleteDynamic) {
-                                if (typeof(fieldValue) === 'object' && fieldValue.value) {
-                                    control.setValue(new ComboboxItemDto({
-                                        value: fieldValue.value.toString(), label: fieldValue.description
-                                    }));
-                                }
-                            } else if (field.mustHaveOptions) {
-                                if (typeof(fieldValue) === 'object') {
-                                    control.setValue(fieldValue.value.toString());
-                                }
-                            } else {
-                                if (typeof (fieldValue) !== 'object' && !Array.isArray(fieldValue)) {
-                                    control.setValue(fieldValue);
-                                }
-                            }
+            switch (field.fieldType) {
+                case QuestionnaireFieldType.Date:
+                    if (typeof (fieldValue) === 'string') {
+                        control.setValue(moment(fieldValue, 'YYYY-MM-DDT00:00').toDate());
                     }
+                    break;
+                case QuestionnaireFieldType.DateTime:
+                    if (typeof (fieldValue) === 'string') {
+                        control.setValue(moment(fieldValue, 'YYYY-MM-DDTHH:mmZ').toDate());
+                    }
+                    break;
+                case QuestionnaireFieldType.Time: {
+                    if (typeof (fieldValue) === 'string') {
+                        const now = moment();
+                        const duration = moment.duration(fieldValue);
+                        const date = new Date(
+                            now.year(),
+                            now.month(),
+                            now.date(),
+                            duration.hours(),
+                            duration.minutes(),
+                            duration.seconds(),
+                            duration.milliseconds()
+                        );
+
+                        control.setValue(date);
+                    }
+                    break;
                 }
+                case QuestionnaireFieldType.Multivalue:
+                    if (Array.isArray(fieldValue)) {
+                        control.setValue(fieldValue.map(p => p.value.toString()));
+                    } else if (fieldValue.value) {
+                        control.setValue(fieldValue.value.toString());
+                    }
+                    break;
+                case QuestionnaireFieldType.CatalogCustom:
+                    if (typeof (fieldValue) === 'object' && fieldValue.value) {
+                        if (field.fieldControl === QuestionnaireFieldControl.Autocomplete) {
+                            control.setValue(fieldValue.value);
+                        } else if (field.fieldControl === QuestionnaireFieldControl.AutocompleteDynamic) {
+                            control.setValue(new ComboboxItemDto({
+                                value: fieldValue.value, label: fieldValue.description
+                            }));
+                        }
+                    }
+                    break;
+                case QuestionnaireFieldType.Integer:
+                case QuestionnaireFieldType.Decimal:
+                case QuestionnaireFieldType.Currency:
+                    if (!isNaN(fieldValue)) {
+                        control.setValue(fieldValue);
+                    }
+                    break;
+                default:
+                    if (field.fieldControl === QuestionnaireFieldControl.AutocompleteDynamic) {
+                        if (typeof (fieldValue) === 'object' && fieldValue.value) {
+                            control.setValue(new ComboboxItemDto({
+                                value: fieldValue.value.toString(), label: fieldValue.description
+                            }));
+                        }
+                    } else if (field.mustHaveOptions) {
+                        if (typeof (fieldValue) === 'object') {
+                            control.setValue(fieldValue.value.toString());
+                        }
+                    } else {
+                        if (typeof (fieldValue) !== 'object' && !Array.isArray(fieldValue)) {
+                            control.setValue(fieldValue);
+                        }
+                    }
             }
         }
     }
@@ -290,7 +304,7 @@ export class AppQuestionnaireComponent implements OnInit {
         const self = this;
         let res = value;
 
-        if (value !== null && value !== undefined && value !== '') {
+        if (Utils.isNullOrWhiteSpace(value)) {
             const formatter = new NumberFormatter();
 
             switch (field.fieldType) {

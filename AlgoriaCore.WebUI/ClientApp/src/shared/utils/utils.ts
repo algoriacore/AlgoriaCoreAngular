@@ -6,6 +6,10 @@ export class Utils {
         return value === undefined || value === null;
     }
 
+    public static isNullOrWhiteSpace(value: any): boolean {
+        return this.isNullOrUndefined(value) || value.toString().trim() === '';
+    }
+
     public static isHost(authenticationService: AuthenticationService): boolean {
         return !(authenticationService.currentUserValue) || authenticationService.currentUserValue.tenantId === null;
     }
