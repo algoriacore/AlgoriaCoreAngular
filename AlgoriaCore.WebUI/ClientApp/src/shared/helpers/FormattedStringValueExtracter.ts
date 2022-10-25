@@ -140,10 +140,10 @@ export class FormattedStringValueExtracter {
 
     private processStr(value: string, result: ExtractionResult, formatTokens: FormatStringToken[]): string {
         let str = value;
+        let previousToken = null;
 
         for (let i = 0; i < formatTokens.length; i++) {
             const currentToken = formatTokens[i];
-            const previousToken = i > 0 ? formatTokens[i - 1] : null;
 
             if (currentToken.type === FormatStringTokenType.ConstantText) {
                 if (i === 0) {
@@ -165,6 +165,8 @@ export class FormattedStringValueExtracter {
                     str = str.substring(0, matchIndex + currentToken.text.length);
                 }
             }
+
+            previousToken = formatTokens[i];
         }
 
         return str;

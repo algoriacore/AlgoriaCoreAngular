@@ -97,6 +97,11 @@ export class TextNumberComponent implements ControlValueAccessor, AfterViewInit,
         this.propagateChange = fn;
     }
 
+    // not used, used for touch input
+    public registerOnTouched() {
+        // Empty
+    }
+
     ngOnChanges(changes): void {
         if (changes.useMilesSep || changes.decs) {
             this.formatNumber(this.value);
@@ -123,7 +128,7 @@ export class TextNumberComponent implements ControlValueAccessor, AfterViewInit,
             permitidos.push(190);
         }
 
-        if (this.isInPermitidos(permitidos, kc)) {
+        if (this.isInPermitidos(permitidos, e, kc)) {
             if (kc === 190 && valor.indexOf('.') >= 0) {
                 e.preventDefault();
             }
@@ -142,7 +147,7 @@ export class TextNumberComponent implements ControlValueAccessor, AfterViewInit,
         }
     }
 
-    isInPermitidos(permitidos: any[], kc: any): boolean {
+    isInPermitidos(permitidos: any[], e: any, kc: any): boolean {
         return permitidos.indexOf(kc) !== -1 ||
             // Allow: Ctrl+A
             (kc === 65 && e.ctrlKey === true) ||

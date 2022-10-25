@@ -67,7 +67,7 @@ export class AppQuestionnaireComponent implements OnInit {
                 .sort((a, b) => a.order - b.order);
 
             for (const section of self.questionnaireSections) {
-                section.fields = section.fields.sort((a, b) => a.order - b.order);
+                section.fields.sort((a, b) => a.order - b.order);
 
                 if (!self.readOnly) {
                     for (const field of section.fields) {
@@ -298,18 +298,24 @@ export class AppQuestionnaireComponent implements OnInit {
                     res = value ? self.l('Yes') : self.l('No');
                     break;
                 case QuestionnaireFieldType.Multivalue:
-                    res = Array.isArray(value) ? value.sort((a, b) => {
-                        const aStr = a.description.toLowerCase();
-                        const bStr = b.description.toLowerCase();
+                    res = '';
 
-                        if (aStr > bStr) {
-                            return 1;
-                        } else if (aStr < bStr) {
-                            return -1;
-                        } else {
-                            return 0;
-                        }
-                    }).filter(p => p.description).map(p => p.description).join(', ') : '';
+                    if (Array.isArray(value)) {
+                        value.sort((a, b) => {
+                            const aStr = a.description.toLowerCase();
+                            const bStr = b.description.toLowerCase();
+
+                            if (aStr > bStr) {
+                                return 1;
+                            } else if (aStr < bStr) {
+                                return -1;
+                            } else {
+                                return 0;
+                            }
+                        });
+
+                        res = value.filter(p => p.description).map(p => p.description).join(', ');
+                    }
                     break;
                 case QuestionnaireFieldType.CatalogCustom:
                 case QuestionnaireFieldType.User:

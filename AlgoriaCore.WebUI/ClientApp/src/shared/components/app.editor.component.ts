@@ -56,6 +56,11 @@ export class AppEditorComponent extends AppComponentBase implements AfterViewIni
         this.propagateChange = fn;
     }
 
+    // not used, used for touch input
+    public registerOnTouched() {
+        // Empty
+    }
+
     transformStyle(style: any): string {
         let styleStr = '';
 

@@ -80,6 +80,11 @@ export class GoogleMapAddressComponent implements ControlValueAccessor, AfterVie
         this.propagateChange = fn;
     }
 
+    // not used, used for touch input
+    public registerOnTouched() {
+        // Empty
+    }
+
     ngOnChanges(changes): void {
         if (changes.style) {
             if (this.style !== undefined) {

@@ -209,4 +209,8 @@ export class SampleChartsComponent extends AppComponentBase implements OnInit {
 
         self.dataPolar.datasets.push(objDataset);
     }
+
+    selectData(event) {
+        // Empty
+    }
 }
