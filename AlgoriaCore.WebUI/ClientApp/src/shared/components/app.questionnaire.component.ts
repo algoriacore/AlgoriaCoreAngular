@@ -256,6 +256,8 @@ export class AppQuestionnaireComponent implements OnInit {
     }
 
     setFieldControlData(field: QuestionnaireFieldResponse, fieldValue: any, control: AbstractControl): void {
+        const self = this;
+
         switch (field.fieldType) {
             case QuestionnaireFieldType.Date:
                 if (typeof (fieldValue) === 'string') {
@@ -293,15 +295,7 @@ export class AppQuestionnaireComponent implements OnInit {
                 }
                 break;
             case QuestionnaireFieldType.CatalogCustom:
-                if (typeof (fieldValue) === 'object' && fieldValue.value) {
-                    if (field.fieldControl === QuestionnaireFieldControl.Autocomplete) {
-                        control.setValue(fieldValue.value);
-                    } else if (field.fieldControl === QuestionnaireFieldControl.AutocompleteDynamic) {
-                        control.setValue(new ComboboxItemDto({
-                            value: fieldValue.value, label: fieldValue.description
-                        }));
-                    }
-                }
+                self.setFieldControlDataForCatalogCustom(field, fieldValue, control);
                 break;
             case QuestionnaireFieldType.Integer:
             case QuestionnaireFieldType.Decimal:
@@ -311,21 +305,37 @@ export class AppQuestionnaireComponent implements OnInit {
                 }
                 break;
             default:
-                if (field.fieldControl === QuestionnaireFieldControl.AutocompleteDynamic) {
-                    if (typeof (fieldValue) === 'object' && fieldValue.value) {
-                        control.setValue(new ComboboxItemDto({
-                            value: fieldValue.value.toString(), label: fieldValue.description
-                        }));
-                    }
-                } else if (field.mustHaveOptions) {
-                    if (typeof (fieldValue) === 'object') {
-                        control.setValue(fieldValue.value.toString());
-                    }
-                } else {
-                    if (typeof (fieldValue) !== 'object' && !Array.isArray(fieldValue)) {
-                        control.setValue(fieldValue);
-                    }
-                }
+                self.setFieldControlDataForDefault(field, fieldValue, control);
+        }
+    }
+
+    setFieldControlDataForCatalogCustom(field: QuestionnaireFieldResponse, fieldValue: any, control: AbstractControl): void {
+        if (typeof (fieldValue) === 'object' && fieldValue.value) {
+            if (field.fieldControl === QuestionnaireFieldControl.Autocomplete) {
+                control.setValue(fieldValue.value);
+            } else if (field.fieldControl === QuestionnaireFieldControl.AutocompleteDynamic) {
+                control.setValue(new ComboboxItemDto({
+                    value: fieldValue.value, label: fieldValue.description
+                }));
+            }
+        }
+    }
+
+    setFieldControlDataForDefault(field: QuestionnaireFieldResponse, fieldValue: any, control: AbstractControl): void {
+        if (field.fieldControl === QuestionnaireFieldControl.AutocompleteDynamic) {
+            if (typeof (fieldValue) === 'object' && fieldValue.value) {
+                control.setValue(new ComboboxItemDto({
+                    value: fieldValue.value.toString(), label: fieldValue.description
+                }));
+            }
+        } else if (field.mustHaveOptions) {
+            if (typeof (fieldValue) === 'object') {
+                control.setValue(fieldValue.value.toString());
+            }
+        } else {
+            if (typeof (fieldValue) !== 'object' && !Array.isArray(fieldValue)) {
+                control.setValue(fieldValue);
+            }
         }
     }
 
@@ -341,24 +351,7 @@ export class AppQuestionnaireComponent implements OnInit {
                     res = value ? self.l('Yes') : self.l('No');
                     break;
                 case QuestionnaireFieldType.Multivalue:
-                    res = '';
-
-                    if (Array.isArray(value)) {
-                        value.sort((a, b) => {
-                            const aStr = a.description.toLowerCase();
-                            const bStr = b.description.toLowerCase();
-
-                            if (aStr > bStr) {
-                                return 1;
-                            } else if (aStr < bStr) {
-                                return -1;
-                            } else {
-                                return 0;
-                            }
-                        });
-
-                        res = value.filter(p => p.description).map(p => p.description).join(', ');
-                    }
+                    res = self.transformFieldValueToDisplayForMultivalue(value);
                     break;
                 case QuestionnaireFieldType.CatalogCustom:
                 case QuestionnaireFieldType.User:
@@ -383,6 +376,29 @@ export class AppQuestionnaireComponent implements OnInit {
                     }
                     break;
             }
+        }
+
+        return res;
+    }
+
+    transformFieldValueToDisplayForMultivalue(value: any): string {
+        let res = '';
+
+        if (Array.isArray(value)) {
+            value.sort((a, b) => {
+                const aStr = a.description.toLowerCase();
+                const bStr = b.description.toLowerCase();
+
+                if (aStr > bStr) {
+                    return 1;
+                } else if (aStr < bStr) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
+
+            res = value.filter(p => p.description).map(p => p.description).join(', ');
         }
 
         return res;
