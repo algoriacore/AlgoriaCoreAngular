@@ -132,6 +132,7 @@ export class AppQuestionnaireComponent implements OnInit {
     }
 
     calculateValidatorsForField(field: QuestionnaireFieldResponse): ValidatorFn[] {
+        const self = this;
         const validators: ValidatorFn[] = [];
 
         if (field.isRequired) {
@@ -139,30 +140,54 @@ export class AppQuestionnaireComponent implements OnInit {
         }
 
         if (field.fieldType === QuestionnaireFieldType.Text) {
-            if (field.fieldSize) {
-                validators.push(Validators.maxLength(field.fieldSize));
-            }
-
-            if (field.hasKeyFilter && field.keyFilter) {
-                validators.push(Validators.pattern(field.keyFilter));
-            }
+            validators.concat(self.calculateValidatorsForFieldText(field));
         } else if (field.fieldType === QuestionnaireFieldType.Integer || field.fieldType === QuestionnaireFieldType.Decimal
             || field.fieldType === QuestionnaireFieldType.Currency) {
-            if (field.customProperties && !Number.isNaN(field.customProperties.minValue)) {
-                validators.push(Validators.min(field.customProperties.minValue));
-            }
-
-            if (field.customProperties && !Number.isNaN(field.customProperties.maxValue)) {
-                validators.push(Validators.max(field.customProperties.maxValue));
-            }
+            validators.concat(self.calculateValidatorsForFieldNumeric(field));
         } else if (field.fieldType === QuestionnaireFieldType.Multivalue) {
-            if (field.customProperties && field.customProperties.minValue && !Number.isNaN(field.customProperties.minValue)) {
-                validators.push(minSelecting(field.customProperties.minValue));
-            }
+            validators.concat(self.calculateValidatorsForFieldMultivalue(field));
+        }
 
-            if (field.customProperties && field.customProperties.maxValue && !Number.isNaN(field.customProperties.maxValue)) {
-                validators.push(maxSelecting(field.customProperties.maxValue));
-            }
+        return validators;
+    }
+
+    calculateValidatorsForFieldText(field: QuestionnaireFieldResponse): ValidatorFn[] {
+        const validators: ValidatorFn[] = [];
+
+        if (field.fieldSize) {
+            validators.push(Validators.maxLength(field.fieldSize));
+        }
+
+        if (field.hasKeyFilter && field.keyFilter) {
+            validators.push(Validators.pattern(field.keyFilter));
+        }
+
+        return validators;
+    }
+
+    calculateValidatorsForFieldNumeric(field: QuestionnaireFieldResponse): ValidatorFn[] {
+        const validators: ValidatorFn[] = [];
+
+        if (field.customProperties && !Number.isNaN(field.customProperties.minValue)) {
+            validators.push(Validators.min(field.customProperties.minValue));
+        }
+
+        if (field.customProperties && !Number.isNaN(field.customProperties.maxValue)) {
+            validators.push(Validators.max(field.customProperties.maxValue));
+        }
+
+        return validators;
+    }
+
+    calculateValidatorsForFieldMultivalue(field: QuestionnaireFieldResponse): ValidatorFn[] {
+        const validators: ValidatorFn[] = [];
+
+        if (field.customProperties && field.customProperties.minValue && !Number.isNaN(field.customProperties.minValue)) {
+            validators.push(minSelecting(field.customProperties.minValue));
+        }
+
+        if (field.customProperties && field.customProperties.maxValue && !Number.isNaN(field.customProperties.maxValue)) {
+            validators.push(maxSelecting(field.customProperties.maxValue));
         }
 
         return validators;
@@ -226,77 +251,81 @@ export class AppQuestionnaireComponent implements OnInit {
         if (!Utils.isNullOrUndefined(fieldValue)) {
             control = self.f[field.fieldName];
 
-            switch (field.fieldType) {
-                case QuestionnaireFieldType.Date:
-                    if (typeof (fieldValue) === 'string') {
-                        control.setValue(moment(fieldValue, 'YYYY-MM-DDT00:00').toDate());
-                    }
-                    break;
-                case QuestionnaireFieldType.DateTime:
-                    if (typeof (fieldValue) === 'string') {
-                        control.setValue(moment(fieldValue, 'YYYY-MM-DDTHH:mmZ').toDate());
-                    }
-                    break;
-                case QuestionnaireFieldType.Time: {
-                    if (typeof (fieldValue) === 'string') {
-                        const now = moment();
-                        const duration = moment.duration(fieldValue);
-                        const date = new Date(
-                            now.year(),
-                            now.month(),
-                            now.date(),
-                            duration.hours(),
-                            duration.minutes(),
-                            duration.seconds(),
-                            duration.milliseconds()
-                        );
+            self.setFieldControlData(field, fieldValue, control);
+        }
+    }
 
-                        control.setValue(date);
-                    }
-                    break;
+    setFieldControlData(field: QuestionnaireFieldResponse, , fieldValue: any, control: AbstractControl): void {
+        switch (field.fieldType) {
+            case QuestionnaireFieldType.Date:
+                if (typeof (fieldValue) === 'string') {
+                    control.setValue(moment(fieldValue, 'YYYY-MM-DDT00:00').toDate());
                 }
-                case QuestionnaireFieldType.Multivalue:
-                    if (Array.isArray(fieldValue)) {
-                        control.setValue(fieldValue.map(p => p.value.toString()));
-                    } else if (fieldValue.value) {
+                break;
+            case QuestionnaireFieldType.DateTime:
+                if (typeof (fieldValue) === 'string') {
+                    control.setValue(moment(fieldValue, 'YYYY-MM-DDTHH:mmZ').toDate());
+                }
+                break;
+            case QuestionnaireFieldType.Time: {
+                if (typeof (fieldValue) === 'string') {
+                    const now = moment();
+                    const duration = moment.duration(fieldValue);
+                    const date = new Date(
+                        now.year(),
+                        now.month(),
+                        now.date(),
+                        duration.hours(),
+                        duration.minutes(),
+                        duration.seconds(),
+                        duration.milliseconds()
+                    );
+
+                    control.setValue(date);
+                }
+                break;
+            }
+            case QuestionnaireFieldType.Multivalue:
+                if (Array.isArray(fieldValue)) {
+                    control.setValue(fieldValue.map(p => p.value.toString()));
+                } else if (fieldValue.value) {
+                    control.setValue(fieldValue.value.toString());
+                }
+                break;
+            case QuestionnaireFieldType.CatalogCustom:
+                if (typeof (fieldValue) === 'object' && fieldValue.value) {
+                    if (field.fieldControl === QuestionnaireFieldControl.Autocomplete) {
+                        control.setValue(fieldValue.value);
+                    } else if (field.fieldControl === QuestionnaireFieldControl.AutocompleteDynamic) {
+                        control.setValue(new ComboboxItemDto({
+                            value: fieldValue.value, label: fieldValue.description
+                        }));
+                    }
+                }
+                break;
+            case QuestionnaireFieldType.Integer:
+            case QuestionnaireFieldType.Decimal:
+            case QuestionnaireFieldType.Currency:
+                if (!isNaN(fieldValue)) {
+                    control.setValue(fieldValue);
+                }
+                break;
+            default:
+                if (field.fieldControl === QuestionnaireFieldControl.AutocompleteDynamic) {
+                    if (typeof (fieldValue) === 'object' && fieldValue.value) {
+                        control.setValue(new ComboboxItemDto({
+                            value: fieldValue.value.toString(), label: fieldValue.description
+                        }));
+                    }
+                } else if (field.mustHaveOptions) {
+                    if (typeof (fieldValue) === 'object') {
                         control.setValue(fieldValue.value.toString());
                     }
-                    break;
-                case QuestionnaireFieldType.CatalogCustom:
-                    if (typeof (fieldValue) === 'object' && fieldValue.value) {
-                        if (field.fieldControl === QuestionnaireFieldControl.Autocomplete) {
-                            control.setValue(fieldValue.value);
-                        } else if (field.fieldControl === QuestionnaireFieldControl.AutocompleteDynamic) {
-                            control.setValue(new ComboboxItemDto({
-                                value: fieldValue.value, label: fieldValue.description
-                            }));
-                        }
-                    }
-                    break;
-                case QuestionnaireFieldType.Integer:
-                case QuestionnaireFieldType.Decimal:
-                case QuestionnaireFieldType.Currency:
-                    if (!isNaN(fieldValue)) {
+                } else {
+                    if (typeof (fieldValue) !== 'object' && !Array.isArray(fieldValue)) {
                         control.setValue(fieldValue);
                     }
-                    break;
-                default:
-                    if (field.fieldControl === QuestionnaireFieldControl.AutocompleteDynamic) {
-                        if (typeof (fieldValue) === 'object' && fieldValue.value) {
-                            control.setValue(new ComboboxItemDto({
-                                value: fieldValue.value.toString(), label: fieldValue.description
-                            }));
-                        }
-                    } else if (field.mustHaveOptions) {
-                        if (typeof (fieldValue) === 'object') {
-                            control.setValue(fieldValue.value.toString());
-                        }
-                    } else {
-                        if (typeof (fieldValue) !== 'object' && !Array.isArray(fieldValue)) {
-                            control.setValue(fieldValue);
-                        }
-                    }
-            }
+                }
         }
     }
 
