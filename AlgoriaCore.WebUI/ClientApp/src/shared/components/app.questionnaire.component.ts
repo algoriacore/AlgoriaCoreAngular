@@ -255,7 +255,7 @@ export class AppQuestionnaireComponent implements OnInit {
         }
     }
 
-    setFieldControlData(field: QuestionnaireFieldResponse, , fieldValue: any, control: AbstractControl): void {
+    setFieldControlData(field: QuestionnaireFieldResponse, fieldValue: any, control: AbstractControl): void {
         switch (field.fieldType) {
             case QuestionnaireFieldType.Date:
                 if (typeof (fieldValue) === 'string') {

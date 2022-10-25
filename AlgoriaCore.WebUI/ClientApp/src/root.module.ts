@@ -14,7 +14,7 @@ import { RootComponent } from './root.component';
 import { AppConsts } from './shared/AppConsts';
 import { AppSettings } from './shared/AppSettings';
 import { SubdomainTenancyNameFinder } from './shared/helpers/SubdomainTenancyNameFinder';
-import { API_BASE_URL, UserConfigurationGetAllQuery, UserConfigurationServiceProxy } from './shared/service-proxies/service-proxies';
+import { API_BASE_URL, UserConfigurationGetAllQuery, UserConfigurationResponse, UserConfigurationServiceProxy } from './shared/service-proxies/service-proxies';
 import { ServiceProxyModule } from './shared/service-proxies/service-proxy.module';
 import { CatalogsCustomService } from './shared/services/catalogscustom.service';
 import { DateTimeService } from './shared/services/datetime.service';
@@ -84,15 +84,10 @@ export class RootModule {
 
                 const userConfigurationServiceProxy: UserConfigurationServiceProxy = injector.get(UserConfigurationServiceProxy);
                 const authenticationService: AuthenticationService = injector.get(AuthenticationService);
-                const localizationService: LocalizationService = injector.get(LocalizationService);
-                const permissionService: PermissionCheckerService = injector.get(PermissionCheckerService);
-                const settingsClientService: SettingsClientService = injector.get(SettingsClientService);
-                const catalogsCustomService: CatalogsCustomService = injector.get(CatalogsCustomService);
-                const dateTimeService: DateTimeService = injector.get(DateTimeService);
+                
                 const titleService: TitleService = injector.get(TitleService);
                 const versionCheckService: VersionCheckService = injector.get(VersionCheckService);
-                const settingsService: SettingsService = injector.get(SettingsService);
-                const config: PrimeNGConfig = injector.get(PrimeNGConfig);
+
 
                 AppConsts.isHost = Utils.isHost(authenticationService);
                 titleService.setTitle(AppConsts.appTitle);
@@ -102,59 +97,7 @@ export class RootModule {
                 })).toPromise();
 
                 promiseUserConfiguration.then((result2) => {
-                    AppConsts.multiTenancy = result2.multiTenancyConfig.enabled;
-
-                    if (AppConsts.multiTenancy) {
-                        const subdomainTenancyNameFinder = new SubdomainTenancyNameFinder();
-
-                        const tenancyName = subdomainTenancyNameFinder.getCurrentTenancyNameOrNull(result.appBaseUrl);
-
-                        AppConsts.tenancyName = (tenancyName !== null && tenancyName.toLowerCase() === 'www' ? null : tenancyName);
-
-                        if (tenancyName === null) {
-                            AppConsts.appBaseUrl = result.appBaseUrl.replace(AppConsts.tenancyNamePlaceHolderInUrl + '.', '');
-                        } else {
-                            AppConsts.appBaseUrl = result.appBaseUrl.replace(AppConsts.tenancyNamePlaceHolderInUrl, tenancyName);
-                        }
-                    } else {
-                        AppConsts.tenancyName = result2.multiTenancyConfig.tenancyNameDefault;
-                        AppConsts.appBaseUrl = result.appBaseUrl;
-                    }
-
-                    AppConsts.appBaseUrl = Utils.normalizeAppBaseUrl(AppConsts.appBaseUrl);
-
-                    localizationService.localization = result2.localization;
-                    permissionService.permission = result2.permission;
-                    settingsClientService.settings = result2.settingsClient;
-                    catalogsCustomService.catalogs = result2.catalogsCustom;
-                    settingsService.passwordComplexity = result2.passwordComplexity;
-
-                    moment.locale(result2.localization.currentLanguage.name);
-
-                    dateTimeService.setTimeZone(settingsClientService.getSetting(AppSettings.timeZone));
-
-                    AppConsts.appDatetimeControlsLocale = {
-                        firstDayOfWeek: 0,
-                        dayNames: moment.weekdays(),
-                        dayNamesShort: moment.weekdaysShort(),
-                        dayNamesMin: moment.weekdaysMin(),
-                        monthNames: moment.months(),
-                        monthNamesShort: moment.monthsShort(),
-                        today: localizationService.l('Today'),
-                        clear: localizationService.l('Clear'),
-                        dateFormat: 'dd/mm/yy'
-                    };
-
-                    config.setTranslation({
-                        dayNames: moment.weekdays(),
-                        dayNamesShort: moment.weekdaysShort(),
-                        dayNamesMin: moment.weekdaysMin(),
-                        monthNames: moment.months(),
-                        monthNamesShort: moment.monthsShort(),
-                        today: localizationService.l('Today'),
-                        clear: localizationService.l('Clear'),
-                        dateFormat: 'dd/mm/yy'
-                    });
+                    RootModule.proccessUserConfiguration(injector, result, result2);
 
                     resolve(true);
                 });
@@ -166,5 +109,69 @@ export class RootModule {
                 return Promise.all(promises);
             });
         })
+    }
+
+    private static proccessUserConfiguration(injector: Injector, result: any, result2: UserConfigurationResponse) {
+        const localizationService: LocalizationService = injector.get(LocalizationService);
+        const permissionService: PermissionCheckerService = injector.get(PermissionCheckerService);
+        const settingsClientService: SettingsClientService = injector.get(SettingsClientService);
+        const catalogsCustomService: CatalogsCustomService = injector.get(CatalogsCustomService);
+        const dateTimeService: DateTimeService = injector.get(DateTimeService);
+        const settingsService: SettingsService = injector.get(SettingsService);
+        const config: PrimeNGConfig = injector.get(PrimeNGConfig);
+
+        AppConsts.multiTenancy = result2.multiTenancyConfig.enabled;
+
+        if (AppConsts.multiTenancy) {
+            const subdomainTenancyNameFinder = new SubdomainTenancyNameFinder();
+
+            const tenancyName = subdomainTenancyNameFinder.getCurrentTenancyNameOrNull(result.appBaseUrl);
+
+            AppConsts.tenancyName = (tenancyName !== null && tenancyName.toLowerCase() === 'www' ? null : tenancyName);
+
+            if (tenancyName === null) {
+                AppConsts.appBaseUrl = result.appBaseUrl.replace(AppConsts.tenancyNamePlaceHolderInUrl + '.', '');
+            } else {
+                AppConsts.appBaseUrl = result.appBaseUrl.replace(AppConsts.tenancyNamePlaceHolderInUrl, tenancyName);
+            }
+        } else {
+            AppConsts.tenancyName = result2.multiTenancyConfig.tenancyNameDefault;
+            AppConsts.appBaseUrl = result.appBaseUrl;
+        }
+
+        AppConsts.appBaseUrl = Utils.normalizeAppBaseUrl(AppConsts.appBaseUrl);
+
+        localizationService.localization = result2.localization;
+        permissionService.permission = result2.permission;
+        settingsClientService.settings = result2.settingsClient;
+        catalogsCustomService.catalogs = result2.catalogsCustom;
+        settingsService.passwordComplexity = result2.passwordComplexity;
+
+        moment.locale(result2.localization.currentLanguage.name);
+
+        dateTimeService.setTimeZone(settingsClientService.getSetting(AppSettings.timeZone));
+
+        AppConsts.appDatetimeControlsLocale = {
+            firstDayOfWeek: 0,
+            dayNames: moment.weekdays(),
+            dayNamesShort: moment.weekdaysShort(),
+            dayNamesMin: moment.weekdaysMin(),
+            monthNames: moment.months(),
+            monthNamesShort: moment.monthsShort(),
+            today: localizationService.l('Today'),
+            clear: localizationService.l('Clear'),
+            dateFormat: 'dd/mm/yy'
+        };
+
+        config.setTranslation({
+            dayNames: moment.weekdays(),
+            dayNamesShort: moment.weekdaysShort(),
+            dayNamesMin: moment.weekdaysMin(),
+            monthNames: moment.months(),
+            monthNamesShort: moment.monthsShort(),
+            today: localizationService.l('Today'),
+            clear: localizationService.l('Clear'),
+            dateFormat: 'dd/mm/yy'
+        });
     }
 }
