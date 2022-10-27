@@ -1,13 +1,11 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import * as moment from 'moment';
 import 'moment-duration-format';
 import 'moment-timezone';
 import { finalize } from 'rxjs/operators';
 import { AppComponentBase } from 'src/app/app-component-base';
-import { FormService } from '../../../shared/services/form.service';
-import { AuditLogServiceProxy, AuditLogGetListQuery, AuditLogListResponse } from 'src/shared/service-proxies/service-proxies';
-import * as moment from 'moment';
+import { AuditLogGetListQuery, AuditLogListResponse, AuditLogServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { AppComponent } from '../../app.component';
 
 @Component({
@@ -213,9 +211,6 @@ export class SampleChartsComponent extends AppComponentBase implements OnInit {
     }
 
     selectData(event) {
-        const self = this;
-
-        const dt = event.element; // [event.element._index];
-        console.log(dt);
+        // Empty
     }
 }

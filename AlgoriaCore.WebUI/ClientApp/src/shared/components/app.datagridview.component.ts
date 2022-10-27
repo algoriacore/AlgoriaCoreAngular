@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, HostListener, Injector, Input, OnDestroy, OnInit, TemplateRef } from '@angular/core';
+import { AfterContentInit, Component, HostListener, Injector, Input, OnInit, TemplateRef } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import { AppComponentBase } from '../../app/app-component-base';
 
@@ -7,7 +7,7 @@ import { AppComponentBase } from '../../app/app-component-base';
     templateUrl: 'app.datagridview.component.html'
 })
 
-export class AppDataGridViewComponent extends AppComponentBase implements OnInit, OnDestroy, AfterContentInit {
+export class AppDataGridViewComponent extends AppComponentBase implements OnInit, AfterContentInit {
 
     @Input()
     private tableTemplate: TemplateRef<any>;
@@ -42,8 +42,6 @@ export class AppDataGridViewComponent extends AppComponentBase implements OnInit
         self.tableDesign = window.innerWidth <= 640 ? 2 : 1;
     }
 
-    ngOnDestroy() {}
-
     ngAfterContentInit() {
         const self = this;
 
@@ -60,8 +58,6 @@ export class AppDataGridViewComponent extends AppComponentBase implements OnInit
         } else {
             self.query.sorting = value;
         }
-
-        self.getList();
     }
 
     changeTableDesign(tableDesign: number) {
@@ -74,9 +70,5 @@ export class AppDataGridViewComponent extends AppComponentBase implements OnInit
         } else {
             self.dataViewLayout = 'list';
         }
-
-        self.getList();
     }
-
-    getList(): void {}
 }

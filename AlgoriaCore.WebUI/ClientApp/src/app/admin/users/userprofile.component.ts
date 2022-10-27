@@ -1,8 +1,8 @@
-import { AfterContentInit, Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { FileUpload } from 'primeng/fileupload';
 import { Message } from 'primeng/api';
+import { FileUpload } from 'primeng/fileupload';
 import { finalize } from 'rxjs/operators';
 import { AppComponentBase } from 'src/app/app-component-base';
 import { AppConsts } from '../../../shared/AppConsts';
@@ -18,7 +18,6 @@ import {
 } from '../../../shared/service-proxies/service-proxies';
 import { DateTimeService } from '../../../shared/services/datetime.service';
 import { AppComponent } from '../../app.component';
-import { AfterViewInit } from '@angular/core';
 
 @Component({
     templateUrl: './userprofile.component.html'
@@ -156,9 +155,6 @@ export class UserProfileComponent extends AppComponentBase implements OnInit {
 
     updateLocalImageProfile(): void {
         this.urlLogo = this.getBaseServiceUrl() + '/api/User/GetPictureProfile?id=' + this.model.id + '&v' + (new Date().getTime());
-
-        // El siguiente método invocado está en el AppComponentBase
-        this.updateImageProfile();
     }
 
     save(): void {

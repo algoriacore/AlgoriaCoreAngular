@@ -60,13 +60,6 @@
 
                     <div class="field sm:col-8 md:col-9 lg:col-9">
                         <label for="body">{{l('EmailTemplates.BodyForm')}}</label>
-                        <!--<ck-editor name="body"
-                           formControlName="body"
-                           skin="moono-lisa"
-                           language="es-MX"
-                           [fullPage]="true"
-                           [config]="{ height: 320 }">
-                </ck-editor>-->
                         <app-editor [formControl]="f['body']" id="body" [style]="{'height':'320px'}"></app-editor>
                     </div>
 

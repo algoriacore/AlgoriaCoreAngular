@@ -41,7 +41,9 @@ export class PasswordFieldComponent implements ControlValueAccessor {
     }
 
     // not used, used for touch input
-    public registerOnTouched() { }
+    public registerOnTouched() {
+        // Empty
+    }
 
     onChange(event) {
         const self = this;

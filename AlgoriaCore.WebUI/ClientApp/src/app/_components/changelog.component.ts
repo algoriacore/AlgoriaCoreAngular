@@ -2,11 +2,10 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { LazyLoadEvent } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { first } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { AppComponentBase, PagedTableSummary } from 'src/app/app-component-base';
 import { ChangeLogForListResponse, ChangeLogGetListQuery, ChangeLogServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { StringsHelper } from '../../shared/helpers/StringsHelper';
-import { finalize } from 'rxjs/operators';
 
 @Component({
     templateUrl: 'changelog.component.html',
@@ -86,7 +85,12 @@ export class ChangeLogComponent extends AppComponentBase implements OnInit {
     loadData(event: LazyLoadEvent) {
         const self = this;
 
-        self.query.sorting = event.sortField ? (event.sortField + ' ' + (event.sortOrder === 1 ? 'ASC' : 'DESC')) : '';
+        if (event.sortField) {
+            self.query.sorting = event.sortField + ' ' + (event.sortOrder === 1 ? 'ASC' : 'DESC');
+        } else {
+            self.query.sorting = '';
+        }
+
         self.query.pageNumber = 1 + (event.first / event.rows);
         self.query.pageSize = event.rows;
         self.getList();

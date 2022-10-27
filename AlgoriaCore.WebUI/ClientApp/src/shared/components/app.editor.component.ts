@@ -56,7 +56,10 @@ export class AppEditorComponent extends AppComponentBase implements AfterViewIni
         this.propagateChange = fn;
     }
 
-    registerOnTouched() { }
+    // not used, used for touch input
+    public registerOnTouched() {
+        // Empty
+    }
 
     transformStyle(style: any): string {
         let styleStr = '';
@@ -95,8 +98,6 @@ export class AppEditorComponent extends AppComponentBase implements AfterViewIni
                 this.innerHTML = 'HTML';
                 this.classList.remove('fa');
                 this.classList.remove('fa-eye');
-                // quill.root.innerHTML = htmlEditor.value;
-                // quill.root.innerHTML = htmlEditor.value.replace(/\n/g, '').replace(/ /g, '&nbsp;').replace(/\t/g, '&#9;');
                 quill.root.innerHTML = htmlEditor.value.replace(/\n/g, '');
                 quill.container.removeChild(htmlEditor);
             } else {
@@ -105,8 +106,6 @@ export class AppEditorComponent extends AppComponentBase implements AfterViewIni
                 this.classList.add('fa-eye');
                 htmlEditor = document.createElement('textarea');
                 htmlEditor.className = 'ql-html-editor';
-                // htmlEditor.value = quill.root.innerHTML;
-                // htmlEditor.value = quill.root.innerHTML.replace(/\n\n/g, '\n').replace(/ /g, '&nbsp;').replace(/\t/g, '&#9;');
                 htmlEditor.value = quill.root.innerHTML.replace(/\n\n/g, '\n');
                 quill.container.appendChild(htmlEditor);
 

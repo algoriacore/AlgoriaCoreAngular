@@ -1,15 +1,13 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewInit, Component, Injector, Input, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { MenuItem } from 'primeng/api/menuitem';
+import { ScrollPanel } from 'primeng/scrollpanel';
+import { AppConsts } from 'src/shared/AppConsts';
+import { AppPermissions } from '../shared/AppPermissions';
+import { CatalogsCustomService } from '../shared/services/catalogscustom.service';
 import { AppComponentBase } from './app-component-base';
 import { AppComponent } from './app.component';
-import { AppConsts } from 'src/shared/AppConsts';
-import { ProcessesService } from 'src/shared/services/processes.service';
-import { Router } from '@angular/router';
-import { ScrollPanel } from 'primeng/scrollpanel';
-import { MenuItem } from 'primeng/api/menuitem';
-import { AppPermissions } from '../shared/AppPermissions';
-import { CatalogCustomServiceProxy } from '../shared/service-proxies/service-proxies';
-import { CatalogsCustomService } from '../shared/services/catalogscustom.service';
 
 @Component({
     selector: 'app-menu',
@@ -26,7 +24,6 @@ export class AppMenuComponent extends AppComponentBase implements OnInit, AfterV
     constructor(
         injector: Injector,
         public app: AppComponent,
-        private processesService: ProcessesService,
         private catalogsCustomService: CatalogsCustomService) {
         super(injector);
     }
@@ -136,67 +133,9 @@ export class AppMenuComponent extends AppComponentBase implements OnInit, AfterV
                     { label: this.l('Examples.PEditor'), icon: 'pi pi-tag', routerLink: ['/app/examples/peditor'] }
                 ]
             },
-            this.getTemplatesSectionMenu(),
             this.getQuestionnairesSectionMenu(),
             this.getCatalogsCustomSectionMenu()
         ];
-    }
-
-    getTemplatesSectionMenu(): any {
-        const self = this;
-        const items = [];
-
-        items.push({
-            label: self.l('Templates.Configuration'),
-            icon: 'fa fa-fw fa-clone',
-            routerLink: ['/app/processes/templates'],
-            permissionName: 'Pages.Processes.Templates'
-        });
-
-        for (const template of self.processesService.templates) {
-            if (template.hasSecurity && template.isActivity) {
-                items.push({
-                    label: template.namePlural,
-                    items: [
-                        {
-                            label: self.l('Processes.ViewType.Own'),
-                            routerLink: ['/app/processes', template.id, 'own'],
-                            permissionName: AppPermissions.calculatePermissionNameForProcess(
-                                AppPermissions.processes, template.id, self.app.currentUser.tenantId),
-                            reloadAlways: true
-                        },
-                        {
-                            label: self.l('Processes.ViewType.OwnPendings'),
-                            routerLink: ['/app/processes', template.id, 'ownpendings'],
-                            permissionName: AppPermissions.calculatePermissionNameForProcess(
-                                AppPermissions.processes, template.id, self.app.currentUser.tenantId),
-                            reloadAlways: true
-                        },
-                        {
-                            label: self.l('Processes.ViewType.Normal'),
-                            routerLink: ['/app/processes', template.id],
-                            permissionName: AppPermissions.calculatePermissionNameForProcess(
-                                AppPermissions.processes, template.id, self.app.currentUser.tenantId),
-                            reloadAlways: true
-                        }
-                    ]
-                });
-            } else {
-                items.push({
-                    label: template.namePlural,
-                    routerLink: ['/app/processes', template.id],
-                    permissionName: AppPermissions.calculatePermissionNameForProcess(
-                        AppPermissions.processes, template.id, self.app.currentUser.tenantId),
-                    reloadAlways: true
-                });
-            }
-        }
-
-        return {
-            label: self.l('Templates'),
-            icon: 'fa fa-fw fa-clone',
-            items: items
-        };
     }
 
     getQuestionnairesSectionMenu(): any {
@@ -421,9 +360,7 @@ export class AppSubMenuComponent extends AppComponentBase {
 
     checkChildMenuItemPermission(menuItem): boolean {
 
-        for (let i = 0; i < menuItem.items.length; i++) {
-            const subMenuItem = menuItem.items[i];
-
+        for (const subMenuItem of menuItem.items) {
             if (subMenuItem.permissionName && this.permission.isGranted(subMenuItem.permissionName) && subMenuItem.visible !== false) {
                 return true;
             }

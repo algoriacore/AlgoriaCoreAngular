@@ -3,7 +3,7 @@
     <div class="grid" [style.display]="isReady && !isSeeAttachments ? 'block': 'none'">
         <div class="col-12" style="border: solid 1px #c8c8c8; border-bottom: 0px;">
             <div style="float: left; display: inline;">
-                <h5><i class="fa fa-fw fa-commenting" (mouseenter)="op.show($event)"></i>&nbsp;{{chatRoom.name}}</h5>
+                <h5><i class="fa fa-fw fa-commenting" aria-hidden="true" (mouseenter)="op.show($event)"></i>&nbsp;{{chatRoom.name}}</h5>
             </div>
             <div style="float: right; display: inline;">
                 <p-button type="button" label="{{l('Files')}}" (onClick)="openAttachmentWindow(attachmentWindow, $event)"></p-button>
@@ -47,7 +47,7 @@
 </app-blockable-div>
 
 <p-blockUI [target]="pblockableDiv" [blocked]="blocked">
-    <i class="fa fa-circle-o-notch" style="position:absolute;top:50%;left:50%;font-size: 60px;font-weight: bold"></i>
+    <i class="fa fa-circle-o-notch" aria-hidden="true" style="position:absolute;top:50%;left:50%;font-size: 60px;font-weight: bold"></i>
 </p-blockUI>
 
 <p-overlayPanel #op [showCloseIcon]="true" [dismissable]="true">
@@ -65,5 +65,5 @@
 </p-overlayPanel>
 
 <p-blockUI [target]="attachmentWindowBlockable" [blocked]="attachmentWindowBlocked">
-    <i class="fa fa-circle-o-notch" style="position:absolute;top:50%;left:50%;font-size: 60px;font-weight: bold"></i>
+    <i class="fa fa-circle-o-notch" aria-hidden="true" style="position:absolute;top:50%;left:50%;font-size: 60px;font-weight: bold"></i>
 </p-blockUI>

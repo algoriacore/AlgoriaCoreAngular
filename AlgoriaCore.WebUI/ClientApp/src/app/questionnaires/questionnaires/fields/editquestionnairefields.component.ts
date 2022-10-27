@@ -65,17 +65,82 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
     ngOnInit() {
         const self = this;
 
+        self.model = new QuestionnaireFieldResponse();
+        self.model.options = [];
+        self.options = [];
+
         if (self.modalConfig.data.field) {
             self.model = self.modalConfig.data.field;
             self.options = self.modalConfig.data.field.options;
-        } else {
-            self.model = new QuestionnaireFieldResponse();
-            self.model.options = [];
-            self.options = [];
         }
 
         self.questionnaire = self.modalConfig.data.questionnaire;
         self.questionnaireSectionDesc = self.modalConfig.data.section.name;
+
+        self.fillCombos();
+        self.prepareLabels();
+        self.prepareForm();
+
+        if (self.modalConfig.data.field) {
+            self.setFieldData(self.modalConfig.data.field);
+        } else {
+            self.getCatalogCustomCombo();
+            self.getFieldNextOrder();
+        }
+    }
+
+    setFieldData(field: any): void {
+        const self = this;
+
+        if (self.model.catalogCustom) {
+            self.getCatalogCustomCombo(new ComboboxItemDto({
+                value: self.model.catalogCustom.catalogCustom,
+                label: self.model.catalogCustom.catalogCustomDesc
+            }), self.model.catalogCustom.fieldName);
+        } else {
+            self.getCatalogCustomCombo();
+        }
+
+        self.f.name.setValue(self.model.name);
+        self.f.fieldType.setValue(self.model.fieldType.toString());
+
+        self.onChangeFieldType();
+
+        self.f.fieldSize.setValue(self.model.fieldSize);
+        self.f.fieldControl.setValue(self.model.fieldControl.toString());
+
+        self.onChangeHasKeyFilter();
+
+        self.f.inputMask.setValue(self.model.inputMask);
+        self.f.hasKeyFilter.setValue(self.model.hasKeyFilter);
+        self.f.keyFilter.setValue(self.model.hasKeyFilter ? self.model.keyFilter : null);
+        self.f.isRequired.setValue(self.model.isRequired);
+        self.f.order.setValue(self.model.order);
+
+        if (self.model.customProperties && (self.model.fieldType === QuestionnaireFieldType.Integer
+            || self.model.fieldType === QuestionnaireFieldType.Decimal
+            || self.model.fieldType === QuestionnaireFieldType.Currency
+            || self.model.fieldType === QuestionnaireFieldType.Multivalue)) {
+
+            if (self.model.fieldType === QuestionnaireFieldType.Currency) {
+                self.f.currency.setValue(self.model.customProperties.currency);
+                self.f.locale.setValue(self.model.customProperties.locale);
+            }
+
+            self.f.minValue.setValue(self.model.customProperties.minValue);
+            self.f.maxValue.setValue(self.model.customProperties.maxValue);
+
+            if (self.model.fieldType !== QuestionnaireFieldType.Multivalue) {
+                self.f.useGrouping.setValue(self.model.customProperties.useGrouping);
+            }
+        }
+    }
+
+    fillCombos(): void {
+        const self = this;
+
+        self.fieldTypeCombo = [];
+        self.fieldControlCombo = [];
 
         self.fieldTypeCombo.push(new ComboboxItemDto({
             value: '1', label: self.l('QuestionnaireFields.QuestionnaireField.TypeBoolean')
@@ -171,57 +236,6 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
         self.fieldControlCombo.push(new ComboboxItemDto({
             value: '61', label: self.l('QuestionnaireFields.QuestionnaireField.ControlAutocompleteDynamic')
         }));
-
-        self.prepareLabels();
-        self.prepareForm();
-
-        if (self.modalConfig.data.field) {
-            if (self.model.catalogCustom) {
-                self.getCatalogCustomCombo(new ComboboxItemDto({
-                    value: self.model.catalogCustom.catalogCustom,
-                    label: self.model.catalogCustom.catalogCustomDesc
-                }), self.model.catalogCustom.fieldName);
-            } else {
-                self.getCatalogCustomCombo();
-            }
-
-            self.f.name.setValue(self.model.name);
-            self.f.fieldType.setValue(self.model.fieldType.toString());
-
-            self.onChangeFieldType();
-
-            self.f.fieldSize.setValue(self.model.fieldSize);
-            self.f.fieldControl.setValue(self.model.fieldControl.toString());
-
-            self.onChangeHasKeyFilter();
-
-            self.f.inputMask.setValue(self.model.inputMask);
-            self.f.hasKeyFilter.setValue(self.model.hasKeyFilter);
-            self.f.keyFilter.setValue(self.model.hasKeyFilter ? self.model.keyFilter : null);
-            self.f.isRequired.setValue(self.model.isRequired);
-            self.f.order.setValue(self.model.order);
-
-            if (self.model.customProperties && (self.model.fieldType === QuestionnaireFieldType.Integer
-                || self.model.fieldType === QuestionnaireFieldType.Decimal
-                || self.model.fieldType === QuestionnaireFieldType.Currency
-                || self.model.fieldType === QuestionnaireFieldType.Multivalue)) {
-
-                if (self.model.fieldType === QuestionnaireFieldType.Currency) {
-                    self.f.currency.setValue(self.model.customProperties.currency);
-                    self.f.locale.setValue(self.model.customProperties.locale);
-                }
-
-                self.f.minValue.setValue(self.model.customProperties.minValue);
-                self.f.maxValue.setValue(self.model.customProperties.maxValue);
-
-                if (self.model.fieldType !== QuestionnaireFieldType.Multivalue) {
-                    self.f.useGrouping.setValue(self.model.customProperties.useGrouping);
-                }
-            }
-        } else {
-            self.getCatalogCustomCombo();
-            self.getFieldNextOrder();
-        }
     }
 
     prepareLabels() {
@@ -333,7 +347,88 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
             return;
         }
 
+        const errors = self.getFieldDuplicatedErrors();
+
+        if (errors.length > 0) {
+            self.formService.showErrorsFromMessages(errors);
+            return;
+        }
+
+        self.model.name = self.f.name.value;
+        self.model.fieldType = Number(self.f.fieldType.value);
+        self.model.fieldSize = self.getFieldSize();
+        self.model.fieldControl = self.f.fieldControl.value;
+        self.model.inputMask = self.f.inputMask.value;
+        self.model.hasKeyFilter = self.f.hasKeyFilter.value;
+        self.model.keyFilter = self.f.hasKeyFilter.value ? self.f.keyFilter.value : null;
+        self.model.isRequired = self.f.isRequired.value;
+        self.model.order = self.f.order.value;
+
+        self.model.catalogCustom = self.getFieldCatalogCustom();
+        self.model.customProperties = self.getFieldCustomProperties();
+        self.model.options = self.mustFieldControlHaveOptions(self.f.fieldControl.value) ? self.options : [];
+
+        self.saved.push(self.model);
+
+        if (self.modalConfig.data.field) {
+            self.return();
+        } else {
+            self.activateNewMode();
+        }
+    }
+
+    getFieldSize(): number {
+        const self = this;
+
+        return self.f.fieldType.value === QuestionnaireFieldType.Text.toString()
+            || self.f.fieldType.value === QuestionnaireFieldType.Decimal.toString()
+            || self.f.fieldType.value === QuestionnaireFieldType.Currency.toString() ? self.f.fieldSize.value : null;
+    }
+
+    getFieldCatalogCustom(): QuestionnaireCatalogCustomResponse {
+        const self = this;
+        let catalogCustom = null;
+
+        if (self.f.fieldType.value === QuestionnaireFieldType.CatalogCustom.toString()) {
+            catalogCustom = new QuestionnaireCatalogCustomResponse({
+                catalogCustom: self.f.catalogCustomFieldRelationCatalogCustom.value,
+                fieldName: self.f.catalogCustomFieldRelationCatalogCustomField.value
+            });
+        }
+
+        return catalogCustom;
+    }
+
+    getFieldCustomProperties(): QuestionnaireCustomPropertiesResponse {
+        const self = this;
+        let customProperties = null;
+
+        if (self.f.fieldType.value === QuestionnaireFieldType.Integer.toString()
+            || self.f.fieldType.value === QuestionnaireFieldType.Decimal.toString()
+            || self.f.fieldType.value === QuestionnaireFieldType.Currency.toString()
+            || self.f.fieldType.value === QuestionnaireFieldType.Multivalue.toString()) {
+            customProperties = new QuestionnaireCustomPropertiesResponse();
+
+            if (self.f.fieldType.value === QuestionnaireFieldType.Currency.toString()) {
+                customProperties.currency = self.f.currency.value;
+                customProperties.locale = self.f.locale.value;
+            }
+
+            customProperties.minValue = self.f.minValue.value;
+            customProperties.maxValue = self.f.maxValue.value;
+
+            if (self.f.fieldType.value !== QuestionnaireFieldType.Multivalue.toString()) {
+                customProperties.useGrouping = self.f.useGrouping.value;
+            }
+        }
+
+        return customProperties;
+    }
+
+    getFieldDuplicatedErrors(): any[] {
+        const self = this;
         const errors = [];
+
         let fields = self.model.name ? self.modalConfig.data.fields
             .filter(p => p.name && p.name.toLowerCase() !== self.model.name.toLowerCase())
             : self.modalConfig.data.fields.filter(p => p.name);
@@ -348,62 +443,7 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
             errors.push(self.l('TemplateFields.TemplateField.DuplicatedOrder'));
         }
 
-        if (errors.length > 0) {
-            self.formService.showErrorsFromMessages(errors);
-            return;
-        }
-
-        self.model.name = self.f.name.value;
-        self.model.fieldType = Number(self.f.fieldType.value);
-        self.model.fieldSize = self.f.fieldType.value === QuestionnaireFieldType.Text.toString()
-            || self.f.fieldType.value === QuestionnaireFieldType.Decimal.toString()
-            || self.f.fieldType.value === QuestionnaireFieldType.Currency.toString() ? self.f.fieldSize.value : null;
-        self.model.fieldControl = self.f.fieldControl.value;
-        self.model.inputMask = self.f.inputMask.value;
-        self.model.hasKeyFilter = self.f.hasKeyFilter.value;
-        self.model.keyFilter = self.f.hasKeyFilter.value ? self.f.keyFilter.value : null;
-        self.model.isRequired = self.f.isRequired.value;
-        self.model.order = self.f.order.value;
-
-        if (self.f.fieldType.value === QuestionnaireFieldType.CatalogCustom.toString()) {
-            self.model.catalogCustom = new QuestionnaireCatalogCustomResponse({
-                catalogCustom: self.f.catalogCustomFieldRelationCatalogCustom.value,
-                fieldName: self.f.catalogCustomFieldRelationCatalogCustomField.value
-            });
-        } else if (self.modalConfig.data.field) {
-            self.model.catalogCustom = null;
-        }
-
-        if (self.f.fieldType.value === QuestionnaireFieldType.Integer.toString()
-            || self.f.fieldType.value === QuestionnaireFieldType.Decimal.toString()
-            || self.f.fieldType.value === QuestionnaireFieldType.Currency.toString()
-            || self.f.fieldType.value === QuestionnaireFieldType.Multivalue.toString()) {
-            self.model.customProperties = new QuestionnaireCustomPropertiesResponse();
-
-            if (self.f.fieldType.value === QuestionnaireFieldType.Currency.toString()) {
-                self.model.customProperties.currency = self.f.currency.value;
-                self.model.customProperties.locale = self.f.locale.value;
-            }
-
-            self.model.customProperties.minValue = self.f.minValue.value;
-            self.model.customProperties.maxValue = self.f.maxValue.value;
-
-            if (self.f.fieldType.value !== QuestionnaireFieldType.Multivalue.toString()) {
-                self.model.customProperties.useGrouping = self.f.useGrouping.value;
-            }
-        } else {
-            self.model.customProperties = null;
-        }
-
-        self.model.options = self.mustFieldControlHaveOptions(self.f.fieldControl.value) ? self.options : [];
-
-        self.saved.push(self.model);
-
-        if (self.modalConfig.data.field) {
-            self.return();
-        } else {
-            self.activateNewMode();
-        }
+        return errors;
     }
 
     onChangeFieldType(): void {
@@ -522,11 +562,13 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
                 if (currentItem && !data.some(p => p.value === currentItem.value)) {
                     data.push(currentItem);
 
-                    data = data.sort((a, b) =>
-                        a.label.toLowerCase() > b.label.toLowerCase() ? 1
-                            : a.label.toLowerCase() < b.label.toLowerCase() ? - 1
-                                : 0
-                    );
+                    data = data.sort((a, b) => {
+                        if (a.label.toLowerCase() > b.label.toLowerCase()) {
+                            return 1;
+                        }
+
+                        return a.label.toLowerCase() < b.label.toLowerCase() ? - 1 : 0;
+                    });
                 }
 
                 self.catalogCustomCombo = data;
@@ -640,8 +682,6 @@ export class EditQuestionnaireFieldsComponent extends AppComponentBase implement
     }
 
     mustFieldControlHaveOptions(fieldControl: number): boolean {
-        const self = this;
-
         if (fieldControl) {
             const fieldControlStr = fieldControl.toString();
 

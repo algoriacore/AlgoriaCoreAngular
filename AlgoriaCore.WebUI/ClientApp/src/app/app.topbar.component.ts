@@ -62,17 +62,6 @@ export class AppTopBarComponent extends AppComponentBase {
             .pipe(first())
             .subscribe(
                 data => {
-                    const WeatherMsg = [];
-                    data.forEach((element) => {
-                        const newWeather = {
-                            severity: 'success',
-                            summary: 'Servicio',
-                            detail: 'Fecha: ' + element.dateFormatted + ', Temperatura: ' + element.temperatureC +
-                                ', Está: ' + element.summary
-                        };
-                        WeatherMsg.push(newWeather);
-                    });
-
                     this.notify.success('¡Ejecutó el servicio!', 'Okkk!!');
                 },
                 error => {

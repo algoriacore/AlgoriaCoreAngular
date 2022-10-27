@@ -1,37 +1,35 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DialogService } from 'primeng/dynamicdialog';
+import { CKEditorModule } from 'ngx-ckeditor';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { BlockUIModule } from 'primeng/blockui';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
+import { ChartModule } from 'primeng/chart';
+import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
-import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { MenuModule } from 'primeng/menu';
 import { TableModule } from 'primeng/table';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { VirtualScrollerModule } from 'primeng/virtualscroller';
 import { DialogCustomService } from 'src/shared/services/dialog.custom.service';
+import { SharedModule } from '../../shared/shared.module';
 import { UtilsModule } from '../../shared/utils/utils.module';
+import { SampleChartsComponent } from './charts/samplecharts.component';
+import { SampleChatLogComponent } from './chat/chatlog/samplechatlog.component';
 import { SampleChatComponent } from './chat/samplechat.component';
 import { SampleChatFindUsersComponent } from './chat/samplechat.findusers.component';
+import { SampleArrobarComponent } from './ckeditor/samplearrobar.component';
 import { ExamplesRoutingModule } from './examples-routing.module';
+import { SampleMultiselectComponent } from './multiselect/samplemultiselect.component';
+import { SampleNumbersComponent } from './numbers/samplenumbers.component';
 import { SampleLogComponent } from './samplelog/samplelog.component';
 import { EditSamplesDateDataComponent } from './samplesdatedata/editsamplesdatedata.component';
 import { SamplesDateDataComponent } from './samplesdatedata/samplesdatedata.component';
-import { SampleNumbersComponent } from './numbers/samplenumbers.component';
-import { SampleMultiselectComponent } from './multiselect/samplemultiselect.component';
-import { AutoCompleteModule } from 'primeng/autocomplete';
-import { ChartModule } from 'primeng/chart';
-import { CheckboxModule } from 'primeng/checkbox';
-import { SampleChartsComponent } from './charts/samplecharts.component';
-import { SampleArrobarComponent } from './ckeditor/samplearrobar.component';
-import { CKEditorModule } from 'ngx-ckeditor';
-import { SharedModule } from '../../shared/shared.module';
-import { SampleChatLogComponent } from './chat/chatlog/samplechatlog.component';
-import { SamplePEditorComponent } from './peditor/samplepeditor.component';
 
 @NgModule({
     imports: [

@@ -28,18 +28,16 @@ export class ErrorInterceptor implements HttpInterceptor {
         }),
         catchError((err: any) => {
             // Verify if is error 401. Then logout
-            if (this.route.snapshot.children[0] && !this.route.snapshot.children[0].url[0].path.includes('account')) {
-                if (err.status === 401) {
-                    // auto logout if 401 response returned from api
-                    this.authenticationService = this.injector.get(AuthenticationService);
-                    this.authenticationService.logout();
-                }
+            if (this.route.snapshot.children[0] && !this.route.snapshot.children[0].url[0].path.includes('account')
+                && err.status === 401) {
+                // auto logout if 401 response returned from api
+                this.authenticationService = this.injector.get(AuthenticationService);
+                this.authenticationService.logout();
             }
 
             // Check if it's an error we must process
             if (!request.url.startsWith(AppConsts.appVersionUrl)) {
-                if (err.status === 400 || err.status === 403 || err.status === 404 || err.status === 422 ||
-                        err.status === 406 || err.status === 409 || err.status === 500) {
+                if (this.isAnErrorWeMustProcess(err)) {
                     // Check if header has the 'errormessage' node
                     if (err.headers.get('errormessage')) {
                         const obj = JSON.parse(decodeURIComponent(escape(atob(err.headers.get('errormessage')))));
@@ -62,6 +60,11 @@ export class ErrorInterceptor implements HttpInterceptor {
             return throwError(err);
         })
         );
+    }
+
+    isAnErrorWeMustProcess(err: any): boolean {
+        return err.status === 400 || err.status === 403 || err.status === 404 || err.status === 422 ||
+            err.status === 406 || err.status === 409 || err.status === 500;
     }
 
     handleErrorResponse(err: any) {

@@ -78,7 +78,6 @@ export class AppComponent extends AppComponentBase implements AfterViewInit, Aft
 
     ngAfterViewInit(): void {
         const self = this;
-        // SignalRHelper.initSignalR(() => { /*this._chatSignalrService.init();*/ });
 
         this.chatSignalrService.init();
         this.versionCheckService.initVersionCheck();
@@ -223,11 +222,6 @@ export class AppComponent extends AppComponentBase implements AfterViewInit, Aft
     }
 
     onChatbarMenuButtonClick(event) {
-        /* this.topbarItemClick = true;
-        this.topbarMenuActive = !this.topbarMenuActive;
-
-        this.hideOverlayMenu();
-        */
         this.router.navigate(['/app/examples/samplechat']);
 
         event.preventDefault();

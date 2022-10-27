@@ -1,5 +1,4 @@
-import { Injector } from '@angular/core';
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { AppComponentBase } from './app-component-base';
 
 @Component({

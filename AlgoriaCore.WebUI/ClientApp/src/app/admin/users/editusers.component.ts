@@ -191,9 +191,11 @@ export class EditUsersComponent extends AppComponentBase implements OnInit {
 
                 if (self.model) {
                     const lista = [];
-                    for (let i = 0; i < self.model.rolList.length; i++) {
-                        lista.push(self.model.rolList[i].roleName);
+
+                    for (const rol of self.model.rolList) {
+                        lista.push(rol.roleName);
                     }
+
                     self.f.roles.setValue(lista);
                 }
             });
@@ -205,8 +207,8 @@ export class EditUsersComponent extends AppComponentBase implements OnInit {
         const list = [];
 
         if (self.f.roles.value && self.f.roles.value.length) {
-            for (let i = 0; i < self.f.roles.value.length; i++) {
-                list.push(self.f.roles.value[i]);
+            for (const rol of self.f.roles.value) {
+                list.push(rol);
             }
         }
 

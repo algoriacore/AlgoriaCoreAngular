@@ -2,7 +2,7 @@ import { Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/cor
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TreeNode } from 'primeng/api';
-import { finalize, first } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { AppComponentBase } from 'src/app/app-component-base';
 import {
     Permission,
@@ -181,16 +181,17 @@ export class EditRolesComponent extends AppComponentBase implements OnInit {
 
         if (nodo.children != null && nodo.children.length > 0) {
             json['expanded'] = true;
-            for (let i = 0; i < nodo.children.length; i++) {
-                json['children'].push(self.createTreeNode(nodo.children[i]));
+
+            for (const child of nodo.children) {
+                json['children'].push(self.createTreeNode(child));
             }
         } else {
             json['icon'] = 'fa fa-file-o';
         }
 
         if (self.model && self.model.permisoList) {
-            for (let i = 0; i < self.model.permisoList.length; i++) {
-                if (self.model.permisoList[i].name === nodo.name) {
+            for (const permiso of self.model.permisoList) {
+                if (permiso.name === nodo.name) {
                     self.selectedNodes.push(json);
                 }
             }
@@ -205,8 +206,8 @@ export class EditRolesComponent extends AppComponentBase implements OnInit {
         const list = [];
 
         if (self.selectedNodes !== null && self.selectedNodes.length > 0) {
-            for (let i = 0; i < self.selectedNodes.length; i++) {
-                list.push(self.selectedNodes[i].data);
+            for (const selectedNode of self.selectedNodes) {
+                list.push(selectedNode.data);
             }
         }
 

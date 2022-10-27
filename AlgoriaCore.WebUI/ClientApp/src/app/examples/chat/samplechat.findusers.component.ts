@@ -1,8 +1,10 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
+import { LazyLoadEvent } from 'primeng/api/lazyloadevent';
+import { MenuItem } from 'primeng/api/menuitem';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { finalize, first } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { AppComponentBase } from 'src/app/app-component-base';
 import {
     AuditLogListResponse,
@@ -10,8 +12,6 @@ import {
     UserListResponse,
     UserServiceProxy
 } from 'src/shared/service-proxies/service-proxies';
-import { MenuItem } from 'primeng/api/menuitem';
-import { LazyLoadEvent } from 'primeng/api/lazyloadevent';
 
 @Component({
     templateUrl: './samplechat.findusers.component.html',
@@ -111,7 +111,13 @@ export class SampleChatFindUsersComponent extends AppComponentBase implements On
 
         self.query.pageNumber = 1 + (event.first / event.rows);
         self.query.pageSize = event.rows;
-        self.query.sorting = event.sortField ? (event.sortField + ' ' + (event.sortOrder === 1 ? 'ASC' : 'DESC')) : '';
+
+        if (event.sortField) {
+            self.query.sorting = event.sortField + ' ' + (event.sortOrder === 1 ? 'ASC' : 'DESC');
+        } else {
+            self.query.sorting = '';
+        }
+
         self.getUsers();
     }
 

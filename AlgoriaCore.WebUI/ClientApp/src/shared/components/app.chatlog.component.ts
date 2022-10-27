@@ -1,30 +1,25 @@
-import { Component, Injector, OnDestroy, OnInit, ElementRef, ViewChild, AfterViewInit, Input, Renderer2 } from '@angular/core';
-import { AppComponentBase } from '../../app/app-component-base';
-import {
-    UserServiceProxy,
-    ChatRoomServiceProxy,
-    ChatRoomChatGetListQuery,
-    ChatRoomChatForListResponse,
-    ChatRoomChatCreateCommand,
-    ChatRoomResponse,
-    ChatRoomGetOrCreateCommand,
-    FileServiceProxy,
-    ChatRoomChatFileCreateCommand,
-    ChatRoomChatFileResponse
-} from '../service-proxies/service-proxies';
-import { finalize } from 'rxjs/operators';
-import { DateTimeService } from '../services/datetime.service';
-import { AppComponent } from '../../app/app.component';
-import { StringsHelper } from '../helpers/StringsHelper';
-import { FileService } from '../services/file.service';
+import { AfterViewInit, Component, ElementRef, Injector, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FileUpload } from 'primeng/fileupload';
+import { finalize } from 'rxjs/operators';
+import { AppComponentBase } from '../../app/app-component-base';
+import { AppComponent } from '../../app/app.component';
 import { AppConsts } from '../AppConsts';
+import { StringsHelper } from '../helpers/StringsHelper';
+import {
+    ChatRoomChatCreateCommand, ChatRoomChatFileCreateCommand,
+    ChatRoomChatFileResponse, ChatRoomChatForListResponse,
+    ChatRoomChatGetListQuery, ChatRoomGetOrCreateCommand,
+    ChatRoomResponse, ChatRoomServiceProxy,
+    FileServiceProxy, UserServiceProxy
+} from '../service-proxies/service-proxies';
+import { DateTimeService } from '../services/datetime.service';
+import { FileService } from '../services/file.service';
 
 @Component({
     selector: 'app-chatlog',
     templateUrl: 'app.chatlog.component.html'
 })
-export class AppChatLogComponent extends AppComponentBase implements OnInit, AfterViewInit, OnDestroy {
+export class AppChatLogComponent extends AppComponentBase implements OnInit, AfterViewInit {
 
     @Input() chatRoomId: string;
     @Input() name: string;
@@ -118,18 +113,12 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
         self.getMessages();
     }
 
-    ngOnDestroy() {
-        const self = this;
-    }
-
     getChatRoom(): void {
         const self = this;
 
-        // self.blocked = true;
         self.app.blocked = true;
 
         self.service.getChatRoomByChatRoomId(self.chatRoomId)
-            // .pipe(finalize(() => { self.blocked = false; }))
             .pipe(finalize(() => {
                 self.app.blocked = false;
             }))
@@ -156,20 +145,11 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
             baseHref: StringsHelper.addToEndIfNotExist(AppConsts.appBaseUrl, '/'),
             height: '400px',
             removePlugins: 'elementspath',
-            // removePlugins: 'uploadimage,uploadwidget,widget,tableselection,
-            // pastetext, pastefromword, clipboard, toolbar, elementspath',
-            // removePlugins: 'uploadwidget,widget,tableselection,pastetext,
-            // pastefromword, clipboard, toolbar, elementspath',
             fullPage: false,
             toolbarCanCollapse: false,
             toolbarStartupExpanded: false,
             resize_enabled: false, // eslint-disable-line @typescript-eslint/naming-convention
             readOnly: true,
-            // toolbar: [],
-            // stylesSet: 'my_styles',
-            // contentsCss: [
-            // 'http://localhost:4200/app/examples/samplechat/node_modules/font-awesome/css/font-awesome.min.css
-            // '],
             extraAllowedContent: {
                 a: {
                     attributes: 'data-*'
@@ -180,10 +160,6 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
                 instanceReady: function (evt) {
                     evt.editor.setReadOnly();
                     document.getElementById(evt.editor.id + '_top').style.display = 'none';
-                    // console.log(evt.editor);
-                    // evt.editor.stylesSet.add('my_styles', [
-                    //    { name: 'Attachment Icon', element: 'div', styles: { color: 'Blue' } }
-                    // ]);
                 },
                 contentDom: function (contentDom) {
                     const editable = contentDom.editor.editable();
@@ -272,34 +248,14 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
 
         self.currentModeObject.addedToTheEnd = true;
         instance.setData(instance.getData() + content);
-
-        // console.log(instance);
-        // instance.setReadOnly(false);
-
-        // var sel = instance.getSelection();
-        // var range = sel.getRanges()[0];
-
-        // // no range, means the editor is empty. Select the range.
-        // if (!range) {
-        //    range = instance.createRange();
-        //    range.selectNodeContents(instance.editable());
-        //    sel.selectRanges([range]);
-        // }
-
-        // instance.insertHtml(content, range);
-        // instance.setReadOnly(true);
-
-        // instance.document.$.body.childNodes[0].appendChild(content);
     }
 
     getMessages(): void {
         const self = this;
 
-        // self.blocked = true;
         self.app.blocked = true;
 
         self.service.getChatRoomChatList(self.currentModeObject.query)
-            // .pipe(finalize(() => { self.blocked = false; }))
             .pipe(finalize(() => {
                 self.app.blocked = false;
             }))
@@ -422,7 +378,6 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
             if (self.chatRoom.id) {
                 self.sendMessageAux(ckeInputMessageInstance);
             } else {
-                // self.blocked = true;
                 self.app.blocked = true;
 
                 self.service.getOrCreateChatRoom(new ChatRoomGetOrCreateCommand({
@@ -430,7 +385,6 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
                     name: self.name,
                     description: self.description
                 }))
-                    // .pipe(finalize(() => { self.blocked = false; }))
                     .pipe(finalize(() => {
                         self.app.blocked = false;
                     }))
@@ -519,11 +473,9 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
             target = target.parentElement;
         }
 
-        // self.blocked = true;
         self.app.blocked = true;
 
         self.fileService.getFileB64(target.getAttribute('data-file'))
-            // .pipe(finalize(() => { self.blocked = false; }))
             .pipe(finalize(() => {
                 self.app.blocked = false;
             }))
@@ -556,11 +508,9 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
     getAttachments(): void {
         const self = this;
 
-        // self.attachmentWindowBlocked = true;
         self.app.blocked = true;
 
         self.service.getChatRoomChatList(self.currentAttachmentModeObject.query)
-            // .pipe(finalize(() => { self.attachmentWindowBlocked = false; }))
             .pipe(finalize(() => {
                 self.app.blocked = false;
             }))
