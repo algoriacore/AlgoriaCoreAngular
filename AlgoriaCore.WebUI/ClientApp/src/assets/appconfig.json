@@ -1,6 +1,7 @@
 {
     "remoteServiceBaseUrl": "http://localhost:51023",
-    "appBaseUrl": "http://localhost:4200",
+    "_appBaseUrl": "http://localhost:4200",
+    "appBaseUrl": "http://{TENANCY_NAME}.algoria.mx:8089/algoriacoreapp",
     "appTitle": "Algoria Core App",
     "appPrefix": "app-core",
     "googleAPIKey": "AIzaSyDjmJcT-ZUS4ME1w4EvBzu8mEve54YOPmg",

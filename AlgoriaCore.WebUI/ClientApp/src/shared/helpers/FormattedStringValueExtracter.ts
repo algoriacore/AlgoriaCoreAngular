@@ -1,5 +1,3 @@
-// import * as _ from 'lodash';
-
 // eslint-disable-next-line no-shadow
 enum FormatStringTokenType {
     ConstantText,
@@ -92,13 +90,12 @@ class FormatStringTokenizer {
 
         return tokens;
     }
-
 }
 
 export class FormattedStringValueExtracter {
 
     extract(str: string, format: string): ExtractionResult {
-        if (str === format) { // TODO: think on that!
+        if (str === format) {
             return new ExtractionResult(true);
         }
 
@@ -109,31 +106,10 @@ export class FormattedStringValueExtracter {
         }
 
         const result = new ExtractionResult(true);
+        str = this.processStr(str, result, formatTokens);
 
-        for (let i = 0; i < formatTokens.length; i++) {
-            const currentToken = formatTokens[i];
-            const previousToken = i > 0 ? formatTokens[i - 1] : null;
-
-            if (currentToken.type === FormatStringTokenType.ConstantText) {
-                if (i === 0) {
-                    if (str.indexOf(currentToken.text) !== 0) {
-                        result.isMatch = false;
-                        return result;
-                    }
-
-                    str = str.substr(currentToken.text.length, str.length - currentToken.text.length);
-                } else {
-                    const matchIndex = str.indexOf(currentToken.text);
-
-                    if (matchIndex < 0) {
-                        result.isMatch = false;
-                        return result;
-                    }
-
-                    result.matches.push({ name: previousToken.text, value: str.substr(0, matchIndex) });
-                    str = str.substring(0, matchIndex + currentToken.text.length);
-                }
-            }
+        if (!result.isMatch) {
+            return result;
         }
 
         const lastToken = formatTokens[formatTokens.length - 1]; // Last
@@ -154,10 +130,44 @@ export class FormattedStringValueExtracter {
 
         const values = [];
 
-        for (let i = 0; i < result.matches.length; i++) {
-            values.push(result.matches[i].value);
+        for (const match of result.matches) {
+            values.push(match.value);
         }
 
         return values;
+    }
+
+    private processStr(value: string, result: ExtractionResult, formatTokens: FormatStringToken[]): string {
+        let str = value;
+        let previousToken = null;
+
+        for (let i = 0; i < formatTokens.length; i++) {
+            const currentToken = formatTokens[i];
+
+            if (currentToken.type === FormatStringTokenType.ConstantText) {
+                if (i === 0) {
+                    if (str.indexOf(currentToken.text) !== 0) {
+                        result.isMatch = false;
+                        break;
+                    }
+
+                    str = str.substring(currentToken.text.length);
+                } else {
+                    const matchIndex = str.indexOf(currentToken.text);
+
+                    if (matchIndex < 0) {
+                        result.isMatch = false;
+                        break;
+                    }
+
+                    result.matches.push({ name: previousToken.text, value: str.substring(0, matchIndex) });
+                    str = str.substring(0, matchIndex + currentToken.text.length);
+                }
+            }
+
+            previousToken = formatTokens[i];
+        }
+
+        return str;
     }
 }
