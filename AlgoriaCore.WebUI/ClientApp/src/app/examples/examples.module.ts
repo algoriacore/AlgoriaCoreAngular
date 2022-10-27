@@ -31,6 +31,7 @@ import { SampleArrobarComponent } from './ckeditor/samplearrobar.component';
 import { CKEditorModule } from 'ngx-ckeditor';
 import { SharedModule } from '../../shared/shared.module';
 import { SampleChatLogComponent } from './chat/chatlog/samplechatlog.component';
+import { SamplePEditorComponent } from './peditor/samplepeditor.component';
 
 @NgModule({
     imports: [
@@ -66,7 +67,8 @@ import { SampleChatLogComponent } from './chat/chatlog/samplechatlog.component';
         SampleNumbersComponent,
         SampleMultiselectComponent,
         SampleChartsComponent,
-        SampleArrobarComponent
+        SampleArrobarComponent,
+        SamplePEditorComponent
     ],
     providers: [
         DialogService,

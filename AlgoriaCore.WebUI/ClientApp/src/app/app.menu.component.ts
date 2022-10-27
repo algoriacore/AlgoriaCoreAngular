@@ -132,7 +132,8 @@ export class AppMenuComponent extends AppComponentBase implements OnInit, AfterV
                     { label: this.l('Examples.Numbers'), icon: 'pi pi-percentage', routerLink: ['/app/examples/sampleNumbers'] },
                     { label: this.l('Examples.Autocomplete'), icon: 'pi pi-pencil', routerLink: ['/app/examples/autocomplete'] },
                     { label: this.l('Examples.Charts'), icon: 'pi pi-chart-bar', routerLink: ['/app/examples/charts'] },
-                    { label: this.l('Examples.Arrobar'), icon: 'pi pi-tag', routerLink: ['/app/examples/arrobar'] }
+                    { label: this.l('Examples.Arrobar'), icon: 'pi pi-tag', routerLink: ['/app/examples/arrobar'] },
+                    { label: this.l('Examples.PEditor'), icon: 'pi pi-tag', routerLink: ['/app/examples/peditor'] }
                 ]
             },
             this.getTemplatesSectionMenu(),
