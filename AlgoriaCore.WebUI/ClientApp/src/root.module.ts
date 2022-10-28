@@ -126,7 +126,6 @@ export class RootModule {
 
         if (AppConsts.multiTenancy) {
             const subdomainTenancyNameFinder = new SubdomainTenancyNameFinder();
-
             const tenancyName = subdomainTenancyNameFinder.getCurrentTenancyNameOrNull(result.appBaseUrl);
 
             AppConsts.tenancyName = (tenancyName !== null && tenancyName.toLowerCase() === 'www' ? null : tenancyName);

@@ -151,7 +151,7 @@ export class FormattedStringValueExtracter {
                         break;
                     }
 
-                    str = str.substring(currentToken.text.length, str.length - currentToken.text.length);
+                    str = str.substring(currentToken.text.length);
                 } else {
                     const matchIndex = str.indexOf(currentToken.text);
 
