@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import 'moment-duration-format';
 import 'moment-timezone';
@@ -7,10 +7,15 @@ import { AppComponentBase } from 'src/app/app-component-base';
 import { UserServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { AppComponent } from '../../app.component';
 
+import Mention from 'quill-mention'
+import { Editor } from 'primeng/editor';
+
 @Component({
     templateUrl: './samplepeditor.component.html'
 })
 export class SamplePEditorComponent extends AppComponentBase implements OnInit {
+
+    @ViewChild('editor', { static: true }) editor: Editor;
 
     form: FormGroup;
 
@@ -20,6 +25,13 @@ export class SamplePEditorComponent extends AppComponentBase implements OnInit {
     heading: any;
     config: any;
     content: any;
+
+    quillInstance: any;
+    mentions: Mention;
+    atValues: any;
+    hashValues: any;
+
+    savedData: any;
 
     constructor(
         injector: Injector,
@@ -39,7 +51,81 @@ export class SamplePEditorComponent extends AppComponentBase implements OnInit {
         const self = this;
 
         self.prepareForm();
-        self.configEditor();
+    }
+
+    editorOnInit(event: any) {
+        const self = this;
+
+        self.quillInstance = event.editor;
+        self.mentions = new Mention(self.quillInstance, {
+            mentionDenotationChars: ['@', '#'],
+            source: function (searchTerm, renderList, mentionChar) {
+                let values = [];
+
+                if (mentionChar === '@') {
+
+                    self.userService.getUserAutocompleteList(searchTerm)
+                        .pipe(finalize(() => {
+                            self.app.blocked = false;
+                        }))
+                        .subscribe(data => {
+                            for (let i = 0, len = data.length; i < len; i++) {
+                                values.push({
+                                    id: data[i].id,
+                                    value: (data[i].login + ' ' + data[i].fullName)
+                                });
+                            }
+                            renderList(values, searchTerm);
+                        });
+
+
+                } else if (mentionChar === '#') {
+                    self.userService.getUserAutocompleteList(searchTerm)
+                        .pipe(finalize(() => {
+                            self.app.blocked = false;
+                        }))
+                        .subscribe(data => {
+                            for (let i = 0, len = data.length; i < len; i++) {
+                                values.push({
+                                    id: data[i].id,
+                                    value: data[i].fullName
+                                });
+                            }
+                            renderList(values, searchTerm);
+                        });
+                }
+            }
+        });
+    }
+
+    getMentions(): void {
+        const self = this;
+
+        console.log(self.quillInstance.editor.delta);
+        console.log(self.quillInstance);
+        console.log(self.quillInstance.getContents());
+    }
+
+    saveContent(): void {
+        const self = this;
+
+        const data = JSON.stringify(self.quillInstance.getContents());
+        self.savedData = data;
+
+        console.log(data);
+    }
+
+    setContent(): void {
+        const self = this;
+
+        const data = JSON.parse(self.savedData);
+        self.quillInstance.setContents(data);
+
+        console.log(data);
+    }
+
+    getHashtags(): void {
+        const self = this;
     }
 
     prepareForm() {
@@ -58,50 +144,5 @@ export class SamplePEditorComponent extends AppComponentBase implements OnInit {
             multiple: [[]],
             selectedValue: [[]]
         });
-    }
-
-    verify(): void {
-        const self = this;
-
-        console.log(self.f.editorValue.value);
-    }
-
-    search(opts: any, callback: any): void {
-        const self = this;
-
-        self.app.blocked = true;
-
-        self.userService.getUserAutocompleteList(opts.query)
-            .pipe(finalize(() => {
-                self.app.blocked = false;
-            }))
-            .subscribe(data => {
-                callback(data);
-            });
-    }
-
-    configEditor(): void {
-        const self = this;
-
-        const search = (opts, callback) => {
-            self.userService.getUserForEditorAutocompleteList(opts.query)
-                .pipe(finalize(() => { }))
-                .subscribe(data => {
-                    callback(data);
-                });
-        };
-
-        self.config = {
-            extraPlugins: 'mentions,autocomplete',
-            mentions: [{
-                feed: search,
-                itemTemplate: '<li data-id="{id}">' +
-                    '<div class="username">{login}</div>' +
-                    '<div class="fullname">{fullName}</div>' +
-                    '</li>',
-                outputTemplate: '<a href="">@{login}</a><span>&nbsp;</span>',
-                minChars: 1
-            }]
-        };
     }
 }

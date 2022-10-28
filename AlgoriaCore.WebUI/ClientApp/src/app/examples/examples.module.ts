@@ -11,6 +11,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
+import { EditorModule } from 'primeng/editor';
 import { InputTextModule } from 'primeng/inputtext';
 import { MenuModule } from 'primeng/menu';
 import { TableModule } from 'primeng/table';
@@ -27,6 +28,7 @@ import { SampleArrobarComponent } from './ckeditor/samplearrobar.component';
 import { ExamplesRoutingModule } from './examples-routing.module';
 import { SampleMultiselectComponent } from './multiselect/samplemultiselect.component';
 import { SampleNumbersComponent } from './numbers/samplenumbers.component';
+import { SamplePEditorComponent } from './peditor/samplepeditor.component';
 import { SampleLogComponent } from './samplelog/samplelog.component';
 import { EditSamplesDateDataComponent } from './samplesdatedata/editsamplesdatedata.component';
 import { SamplesDateDataComponent } from './samplesdatedata/samplesdatedata.component';
@@ -53,6 +55,7 @@ import { SamplesDateDataComponent } from './samplesdatedata/samplesdatedata.comp
         CheckboxModule,
         ChartModule,
         CKEditorModule,
+        EditorModule,
         SharedModule
     ],
     declarations: [

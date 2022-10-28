@@ -6,7 +6,9 @@
                 {{l('Examples.Arrobar')}}
             </h3>
             <div class="form-toolbar">
-                <p-button type="button" label="Verificar" (onClick)="verify()"></p-button>
+                <p-button type="button" label="Guardar" (onClick)="saveContent()"></p-button>
+                <p-button type="button" label="Restaurar" (onClick)="setContent()"></p-button>
+                <p-button type="button" label="Verificar" (onClick)="getMentions()"></p-button>
             </div>
         </div>
 
@@ -14,8 +16,11 @@
             <div class="card">
 
                 <div class="p-fluid">
-                    <p-editor name="editor1"
-                               formControlName="editorValue">
+                    <p-editor #editor
+                                name="editor1"
+                               formControlName="editorValue"
+                               (onInit)="editorOnInit($event)"
+                               [style]="{'height':'320px'}">
                     </p-editor>
                 </div>
             </div>
