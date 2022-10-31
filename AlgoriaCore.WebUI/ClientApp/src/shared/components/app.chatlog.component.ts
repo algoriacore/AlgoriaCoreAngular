@@ -35,6 +35,7 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
     configInputMessageObject: any;
 
     isReady = false;
+    blocked = false;
 
     chatRoom = new ChatRoomResponse;
     usersMentioned = [];
