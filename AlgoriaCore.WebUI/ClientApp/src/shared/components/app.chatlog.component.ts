@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Injector, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Injector, Input, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FileUpload } from 'primeng/fileupload';
 import { finalize } from 'rxjs/operators';
 import { AppComponentBase } from '../../app/app-component-base';
@@ -15,9 +15,14 @@ import {
 import { DateTimeService } from '../services/datetime.service';
 import { FileService } from '../services/file.service';
 
+import Mention from 'quill-mention'
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { LazyLoadEvent } from 'primeng/api';
+
 @Component({
     selector: 'app-chatlog',
-    templateUrl: 'app.chatlog.component.html'
+    templateUrl: 'app.chatlog.component.html',
+    encapsulation: ViewEncapsulation.None,
 })
 export class AppChatLogComponent extends AppComponentBase implements OnInit, AfterViewInit {
 
@@ -29,6 +34,7 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
     @ViewChild('ckeInputMessage', { static: false }) ckeInputMessage: ElementRef;
     @ViewChild('fileUpload') fileUpload: FileUpload;
     @ViewChild('attachmentWindowList', { static: false }) attachmentWindowList: ElementRef;
+    @ViewChild('chatContent', { static: false }) chatContent: ElementRef;
 
     configContentAreaObject: any;
     configInputMessageObject: any;
@@ -46,32 +52,48 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
     };
     currentAttachmentModeObject: any;
 
-    templateCurrentUser = '<div style="text-align: right; float: right; clear: both;">'
-        + '<div style = "margin-bottom: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold;" > '
-        + '<div style="display: inline-block; absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);">'
-        + '<span>{1} {2}</span>'
+    templateCurrentUser = '<div class="chatitem"> '
+        + '<div style="width:90px;display:inline-block;float:left;">'
+        + '<img src="{0}" alt="" style="border-radius: 64px; width: 64px; height: 64px;" />'
         + '</div>'
-        + '<img src="{0}" alt = "" style="border-radius: 32px; width: 32px; height: 32px;" />'
+        + '<div class="chatitem-content">'
+        + '<div class="chatitem-title-name">{1}</div>'
+        + '<div class="chatitem-title-sep"></div>'
+        + '<div class="chatitem-title-user">{2}</div>'
+        + '<div class="chatitem-title-sep"></div>'
+        + '<div class="chatitem-title-time">{3}</div>'
+        + '<div class="chatitem-text">{4}{5}</div>'
         + '</div>'
-        + '<div style="margin-bottom:10px; margin-right:32px; background-color: #F6F7FB; border: solid 1px #C8C8C8; '
-        + 'border-radius: 10px; padding: 10px; padding - bottom: 0px; padding - top: 0px; ">{3}{4}</div></div>';
+        + '</div>';
 
-    templateOtherUser = '<div style="text-align: left; float: left; clear: both;"><div style="margin-bottom: 10px; '
-        + 'font-family: Arial, Helvetica, sans - serif; font - size: 12px; font - weight: bold; ">'
-        + '<img src="{0}" alt = "" style="border-radius: 32px; width: 32px; height: 32px;" />'
-        + '<div style="display: inline-block; absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);">'
-        + '<span>{1} {2}</span>'
+    templateOtherUser = '<div class="chatitem"> '
+        + '<div style="width:90px;display:inline-block;float:left;">'
+        + '<img src="{0}" alt="" style="border-radius: 64px; width: 64px; height: 64px;" />'
         + '</div>'
+        + '<div class="chatitem-content">'
+        + '<div class="chatitem-title-name">{1}</div>'
+        + '<div class="chatitem-title-user">{2}}</div>'
+        + '<div class="chatitem-title-time">{3}</div>'
+        + '<div class="chatitem-text">{4}{5}</div>'
         + '</div>'
-        + '<div style="margin-bottom:10px; margin-left:32px; background-color: #F6F7FB; border: solid 1px #C8C8C8; '
-        + 'border-radius: 10px; padding: 10px; padding - bottom: 0px; padding - top: 0px; ">{3}{4}</div></div>';
+        + '</div>';
 
-    templateAttachment = '<div><a href="#" data-file={0} data-file-name="{1}" data-file-extension="{2}">'
-        + '<img src = "{3}" alt = "" style = "height: 32px; cursor: pointer; display: inline; margin-right: 5px;" /> { 4} < /a></div > ';
+    templateAttachment = '<div><span class="chatitem-file" data-file={0} data-file-name="{1}" data-file-extension="{2}" (onClick)="downloadAttachedFile($event)">'
+        + '<img src="{3}" alt="" style="height: 32px; cursor: pointer; display: inline; margin-right: 5px;"/> {4} </span></div > ';
+
+    rawTextChat: string;
+    chatHTML: SafeHtml;
 
     // Attachment Window
     attachmentWindowBlocked = false;
     isAttachmentWindowOpen = false;
+
+    quillInstance: any;
+    quillContentInstance: any;
+    mentions: Mention;
+
+    allMessages = Array.from({ length: 10000 });
+    messagesCount = 0;
 
     constructor(
         injector: Injector,
@@ -81,7 +103,8 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
         private app: AppComponent,
         private fileLocalService: FileService,
         private fileService: FileServiceProxy,
-        private renderer: Renderer2
+        private renderer: Renderer2,
+        private sanitizer: DomSanitizer
     ) {
         super(injector);
     }
@@ -101,7 +124,7 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
 
         self.initializeCurrentAttachmentModeObject();
         self.configContentArea();
-        self.configInputMessage();
+        // self.configInputMessage();
     }
 
     ngAfterViewInit(): void {
@@ -110,7 +133,6 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
         self.getChatRoom();
         self.isReady = true;
         self.currentModeObject.cke = self.ckeContentArea;
-        self.getMessages();
     }
 
     getChatRoom(): void {
@@ -166,9 +188,9 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
 
                     for (const element of editable.editor.document.$.links) {
                         if (element.hasAttribute('data-file')) {
-                            element.addEventListener('click', function (event) {
-                                self.downloadAttachedFile(event);
-                            });
+                            // element.addEventListener('click', function (event) {
+                            //    self.downloadAttachedFile(event);
+                            // });
                         }
                     }
 
@@ -188,7 +210,7 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
 
                         if (scrollTop <= 200) {
                             if (self.currentModeObject.query.skip < self.currentModeObject.totalMessages && self.blocked !== true) {
-                                self.getMessages();
+                                // self.getMessages();
                                 self.currentModeObject.lastScrollTop = scrollTop;
                             }
                         }
@@ -198,60 +220,97 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
         };
     }
 
-    configInputMessage(): void {
+    editorOnInit(event: any) {
         const self = this;
 
-        const search = (opts, callback) => {
-            self.userService.getUserForEditorAutocompleteList(opts.query)
-                .pipe(finalize(() => { }))
-                .subscribe(data => {
-                    callback(data);
-                });
-        };
+        self.quillInstance = event.editor;
+        self.mentions = new Mention(self.quillInstance, {
+            mentionDenotationChars: ['@', '#'],
+            source: function (searchTerm, renderList, mentionChar) {
+                let values = [];
 
-        self.configInputMessageObject = {
-            height: '100px',
-            extraPlugins: 'mentions,autocomplete',
-            fullPage: false,
-            toolbarCanCollapse: true,
-            toolbarStartupExpanded: false,
-            removePlugins: 'elementspath',
-            resize_enabled: false, // eslint-disable-line @typescript-eslint/naming-convention
-            extraAllowedContent: {
-                a: {
-                    attributes: 'data-*'
+                if (mentionChar === '@') {
+
+                    self.userService.getUserAutocompleteList(searchTerm)
+                        .pipe(finalize(() => {
+                            self.app.blocked = false;
+                        }))
+                        .subscribe(data => {
+                            for (let i = 0, len = data.length; i < len; i++) {
+                                values.push({
+                                    id: data[i].id,
+                                    value: (data[i].login + ' ' + data[i].fullName)
+                                });
+                            }
+                            renderList(values, searchTerm);
+                        });
+
+
+                } else if (mentionChar === '#') {
+                    self.userService.getUserAutocompleteList(searchTerm)
+                        .pipe(finalize(() => {
+                            self.app.blocked = false;
+                        }))
+                        .subscribe(data => {
+                            for (let i = 0, len = data.length; i < len; i++) {
+                                values.push({
+                                    id: data[i].id,
+                                    value: data[i].fullName
+                                });
+                            }
+                            renderList(values, searchTerm);
+                        });
                 }
-            },
-            mentions: [{
-                feed: search,
-                itemTemplate: '<li data-id="{id}">' +
-                    '<div class="username">{login}</div>' +
-                    '<div class="fullname">{fullName}</div>' +
-                    '</li>',
-                outputTemplate: '<a href="" title="{fullName}" data-mention="@{login}" data-user-id="{id}">@{login}</a>&nbsp;',
-                minChars: 1
-            }]
-        };
+            }
+        });
+    }
+
+    contentAreaOnInit(event: any) {
+        const self = this;
+
+        self.quillContentInstance = event.editor;
+        self.quillContentInstance.disable();
     }
 
     addContent(content: string): void {
         const self = this;
-        const instance = self.currentModeObject.cke['instance'];
+        // const instance = self.quillContentInstance; // self.currentModeObject.cke['instance'];
 
-        self.currentModeObject.addedToTheEnd = false;
-        instance.setData(content + instance.getData());
+        // self.currentModeObject.addedToTheEnd = false;
+
+        // const delta = instance.clipboard.convert(content);
+        // instance.setContents(delta, 'silent');
+        self.rawTextChat = content + self.rawTextChat;
+        self.rawTextChat = self.rawTextChat.replace('?<span', '<span');
+        self.rawTextChat = self.rawTextChat.replace('span>?', 'span>');
+        self.chatHTML = self.sanitizer.bypassSecurityTrustHtml(self.rawTextChat);
     }
 
     addContentToTheEnd(content: string): void {
         const self = this;
-        const instance = self.currentModeObject.cke['instance'];
+        // const instance = self.quillContentInstance; // self.currentModeObject.cke['instance'];
 
-        self.currentModeObject.addedToTheEnd = true;
-        instance.setData(instance.getData() + content);
+        // self.currentModeObject.addedToTheEnd = true;
+
+        // const delta = instance.clipboard.convert(content);
+        // instance.setContents(delta, 'silent');
+
+        self.rawTextChat = self.rawTextChat + content;
+        self.rawTextChat = self.rawTextChat.replace('?<span', '<span');
+        self.rawTextChat = self.rawTextChat.replace('span>?', 'span>');
+        self.chatHTML = self.sanitizer.bypassSecurityTrustHtml(self.rawTextChat);
     }
 
-    getMessages(): void {
+    loadMessages(event: LazyLoadEvent): void {
         const self = this;
+
+        let pageN = 0;
+        if (event) {
+            pageN = event.first;
+        }
+        console.log(pageN);
+        self.currentModeObject.query.pageNumber = pageN;
+        self.currentModeObject.query.pageSize = 10;
 
         self.app.blocked = true;
 
@@ -260,17 +319,22 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
                 self.app.blocked = false;
             }))
             .subscribe(data => {
-                self.currentModeObject.query.skip += data.items.length;
-                self.currentModeObject.totalMessages = data.totalCount;
 
-                if (self.currentModeObject.totalMessages === 0) {
-                    self.addContentToTheEnd(self.generateEntriesHTMLFromMessages(data.items.reverse()));
-                } else {
-                    self.addContent(self.generateEntriesHTMLFromMessages(data.items.reverse()));
-                }
+                self.messagesCount = data.totalCount;
+                self.allMessages = data.items;
+                //for (let i = 0, len = data.items.length; i < len; i++) {
+                //    self.allMessages.push(data.items[i]);
+                //}
 
-                self.currentModeObject.isFirstLoad = false;
+                console.log(self.allMessages);
+                event.forceUpdate();
             });
+    }
+
+    getMessages(): void {
+        const self = this;
+
+        
     }
 
     generateEntriesHTMLFromMessages(messages: ChatRoomChatForListResponse[]): string {
@@ -282,8 +346,9 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
                 message.user === self.app.currentUser.userId ? self.templateCurrentUser : self.templateOtherUser,
                 [
                     self.getUrlUserPicture(message.user),
-                    self.dateTimeService.getDateTimeToDisplay(message.creationTime),
                     message.userDesc,
+                    message.id,
+                    self.dateTimeService.getDateTimeToDisplay(message.creationTime),
                     message.comment,
                     self.getAttachementHTMLSection(message.files)
                 ]
@@ -371,12 +436,11 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
 
     sendMessage(): void {
         const self = this;
-        const ckeInputMessageInstance = self.ckeInputMessage['instance'];
-        const messageStr = ckeInputMessageInstance.getData();
+        const messageStr = self.quillInstance.root.innerHTML;
 
         if (messageStr) {
             if (self.chatRoom.id) {
-                self.sendMessageAux(ckeInputMessageInstance);
+                self.sendMessageAux();
             } else {
                 self.app.blocked = true;
 
@@ -390,15 +454,15 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
                     }))
                     .subscribe(data => {
                         self.chatRoom = data;
-                        self.sendMessageAux(ckeInputMessageInstance);
+                        self.sendMessageAux();
                     });
             }
         }
     }
 
-    sendMessageAux(ckeInputMessageInstance: any): void {
+    sendMessageAux(): void {
         const self = this;
-        const messageStr = ckeInputMessageInstance.getData();
+        const messageStr = self.quillInstance.root.innerHTML;
 
         if (messageStr) {
             const taggedUsers = [];
@@ -407,11 +471,15 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
             let promise;
             let pointPosition;
 
-            for (const element of ckeInputMessageInstance.document.$.links) {
-                if (element.hasAttribute('data-mention')) {
-                    taggedUsers.push(element.getAttribute('data-user-id'));
+            const delta = self.quillInstance.getContents();
+            for (const element of delta.ops) {
+                if (element.insert.mention) {
+                    taggedUsers.push(element.insert.mention.id);
                 }
             }
+
+            console.log(taggedUsers);
+            console.log(messageStr);
 
             for (const file of self.fileUpload.files) {
                 promise = self.fileLocalService.getBase64(file);
@@ -457,7 +525,8 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
                             files: data.files
                         })]));
 
-                        ckeInputMessageInstance.setData('');
+                        // ckeInputMessageInstance.setData('');
+                        self.quillInstance.setContents('');
                     }, error => {
                         self.fileUpload.clear();
                     });

@@ -10,6 +10,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
 import { DropdownModule } from 'primeng/dropdown';
+import { EditorModule } from 'primeng/editor';
 import { FileUploadModule } from 'primeng/fileupload';
 import { GMapModule } from 'primeng/gmap';
 import { InputMaskModule } from 'primeng/inputmask';
@@ -29,6 +30,7 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { SidebarModule } from 'primeng/sidebar';
 import { TableModule } from 'primeng/table';
 import { VirtualScrollerModule } from 'primeng/virtualscroller';
+import { ScrollerModule } from 'primeng/scroller';
 import { TextNumberComponent } from './components/algoria/app.textnumber.component';
 import { AppAlertComponent } from './components/app.alert.component';
 import { BlockableDivComponent } from './components/app.blockable.component';
@@ -61,9 +63,11 @@ import { SharedRoutingModule } from './shared-routing.module';
         TableModule,
         InputTextModule,
         VirtualScrollerModule,
+        ScrollerModule,
         MenubarModule,
         InputTextareaModule,
         CKEditorModule,
+        EditorModule,
         FileUploadModule,
         PanelModule,
         OverlayPanelModule,

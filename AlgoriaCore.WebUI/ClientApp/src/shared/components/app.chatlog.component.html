@@ -1,3 +1,62 @@
+
+<style>
+
+    .chatbox {
+        height: 320px;
+        background: #fff;
+        border: 1px solid #dee2e6;
+        overflow: scroll;
+    }
+
+    .chatitem {
+        margin-top: 30px;
+        padding: 20px;
+        overflow: hidden;
+        font-family: arial, helvetica;
+        color: #333;
+        text-shadow: 0.1em 0em 0.3em #bbb;
+    }
+    .chatitem-content {
+        display:inline-block;
+    }
+
+    .chatitem-title-name {
+        font-weight: bold;
+        display: inline-block;
+        margin-bottom:5px;
+    }
+    .chatitem-title-user {
+        display: inline-block;
+        margin-bottom: 5px;
+    }
+    .chatitem-title-time {
+        display: inline-block;
+        margin-bottom: 5px;
+    }
+    .chatitem-title-sep {
+        display: inline-block;
+        content: " ";
+        background: #ccc;
+        width: 6px;
+        height: 6px;
+        margin: 0px 15px;
+        border-radius: 6px;
+        margin-bottom: 5px;
+    }
+
+    .chatitem-text{
+
+    }
+    .chatitem-text p {
+        margin:0;
+    }
+
+    .chatitem-file{
+        cursor:pointer;
+    }
+
+</style>
+
 <app-blockable-div #pblockableDiv>
 
     <div class="grid" [style.display]="isReady && !isSeeAttachments ? 'block': 'none'">
@@ -12,10 +71,46 @@
         </div>
         <div class="col-12" style="padding: 0px;">
             <div style="width: 100%;">
-                <ck-editor #ckeContentArea skin="moono-lisa"
-                           language="es-MX"
-                           [config]="configContentAreaObject">
-                </ck-editor>
+                <!--<ck-editor #ckeContentArea skin="moono-lisa"
+               language="es-MX"
+               [config]="configContentAreaObject">
+    </ck-editor>-->
+                <!--<p-editor #ckeContentArea
+              name="contentArea"
+              (onInit)="contentAreaOnInit($event)"
+              [style]="{'height':'320px'}">
+    </p-editor>-->
+                <!--<div #chatContent id="chatContent"
+         class="chatbox"
+         (scroll)="onScroll($event)"
+         [innerHTML]="chatHTML">-->
+
+                <div class="chatbox">
+                    <p-virtualScroller [value]="allMessages" scrollHeight="500px" [itemSize]="150"
+                                [lazy]="true" (onLazyLoad)="loadMessages($event)">
+                        <ng-template pTemplate="item" let-msg>
+                        
+                            <div class="chatitem">
+                                <!--<div style="width:90px;display:inline-block;float:left;">
+                                    <img src="{{getUrlUserPicture(msg.user)}}" alt="" style="border-radius: 64px; width: 64px; height: 64px;" />
+                                </div>-->
+                                <div class="chatitem-content">
+                                    <div class="chatitem-title-name">{{msg.userDesc}}</div>
+                                    <div class="chatitem-title-sep"></div>
+                                    <div class="chatitem-title-user">{{msg.id}}</div>
+                                    <div class="chatitem-title-sep"></div>
+                                    <div class="chatitem-title-user">{{dateTimeService.getDateTimeToDisplay(msg.creationTime)}}</div>
+                                    <div class="chatitem-text">{{msg.comment}}{{getAttachementHTMLSection(msg.files)}}</div>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <!--<ng-template pTemplate="loader" let-scrollOptions="options">
+                            <p [ngClass]="{'odd': options.odd}" style="height: 50px;">
+                                Loading...
+                            </p>
+                        </ng-template>-->
+                    </p-virtualScroller>
+                </div>
             </div>
         </div>
         <div class="col-12" style="border: solid 1px #c8c8c8; border-bottom: 0px; border-top: 0px;">
@@ -34,10 +129,11 @@
         <div class="col-12" style="padding: 0px;">
             <div class="p-inputgroup">
                 <div style="width: 100%;">
-                    <ck-editor #ckeInputMessage skin="moono-lisa"
-                               language="es-MX"
-                               [config]="configInputMessageObject">
-                    </ck-editor>
+                    <p-editor #ckeInputMessage
+                              name="editor1"
+                              (onInit)="editorOnInit($event)"
+                              [style]="{'height':'120px'}">
+                    </p-editor>
                 </div>
                 <button pButton pRipple type="button" icon="fa fa-paper-plane" style="max-width: 80px; min-width: 60px;" (click)="sendMessage()"></button>
             </div>

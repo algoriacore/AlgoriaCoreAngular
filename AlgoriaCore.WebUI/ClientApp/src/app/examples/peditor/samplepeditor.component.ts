@@ -28,8 +28,6 @@ export class SamplePEditorComponent extends AppComponentBase implements OnInit {
 
     quillInstance: any;
     mentions: Mention;
-    atValues: any;
-    hashValues: any;
 
     savedData: any;
 
@@ -104,6 +102,8 @@ export class SamplePEditorComponent extends AppComponentBase implements OnInit {
         console.log(self.quillInstance.editor.delta);
         console.log(self.quillInstance);
         console.log(self.quillInstance.getContents());
+
+        console.log(self.quillInstance.root.innerHTML);
     }
 
     saveContent(): void {
