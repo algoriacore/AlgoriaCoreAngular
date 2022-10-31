@@ -7,7 +7,7 @@ import { AppComponentBase } from 'src/app/app-component-base';
 import { UserServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { AppComponent } from '../../app.component';
 
-import Mention from 'quill-mention'
+import Mention from 'quill-mention';
 import { Editor } from 'primeng/editor';
 
 @Component({
@@ -58,7 +58,7 @@ export class SamplePEditorComponent extends AppComponentBase implements OnInit {
         self.mentions = new Mention(self.quillInstance, {
             mentionDenotationChars: ['@', '#'],
             source: function (searchTerm, renderList, mentionChar) {
-                let values = [];
+                const values = [];
 
                 if (mentionChar === '@') {
 

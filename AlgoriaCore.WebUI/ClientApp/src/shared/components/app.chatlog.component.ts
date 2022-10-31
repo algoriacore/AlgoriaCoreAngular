@@ -15,8 +15,7 @@ import {
 import { DateTimeService } from '../services/datetime.service';
 import { FileService } from '../services/file.service';
 
-import Mention from 'quill-mention'
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import Mention from 'quill-mention';
 
 @Component({
     selector: 'app-chatlog',
@@ -122,8 +121,7 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
         self.mentions = new Mention(self.quillInstance, {
             mentionDenotationChars: ['@', '#'],
             source: function (searchTerm, renderList, mentionChar) {
-                let values = [];
-
+                const values = [];
                 if (mentionChar === '@') {
 
                     self.userService.getUserAutocompleteList(searchTerm)
@@ -225,7 +223,9 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
             try {
                 const newPos = self.chatbox.nativeElement.scrollHeight - self.lastScrollHeight;
                 self.chatbox.nativeElement.scrollTo(0, newPos);
-            } catch (err) { console.log(err); }
+            } catch (err) {
+                console.log(err);
+            }
         }, 0);
     }
 
