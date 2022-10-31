@@ -2675,6 +2675,65 @@ export class ChatRoomServiceProxy {
         return _observableOf(null as any);
     }
 
+    getChatRoomChatForLogList(request: ChatRoomChatGetForLogListQuery): Observable<ChatRoomChatForListResponse[]> {
+        let url_ = this.baseUrl + "/api/chatroom/getchatroomchatforloglist";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetChatRoomChatForLogList(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetChatRoomChatForLogList(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ChatRoomChatForListResponse[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ChatRoomChatForListResponse[]>;
+        }));
+    }
+
+    protected processGetChatRoomChatForLogList(response: HttpResponseBase): Observable<ChatRoomChatForListResponse[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ChatRoomChatForListResponse.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
     createChatRoomChat(dto: ChatRoomChatCreateCommand): Observable<ChatRoomChatResponse> {
         let url_ = this.baseUrl + "/api/chatroom/createchatroomchat";
         url_ = url_.replace(/[?&]$/, "");
@@ -12876,6 +12935,42 @@ export interface IChatRoomChatGetListQuery extends IPageListByDto {
     chatRoomId?: string | undefined;
     skip: number;
     onlyFiles: boolean;
+}
+
+export class ChatRoomChatGetForLogListQuery implements IChatRoomChatGetForLogListQuery {
+    lastId?: number | undefined;
+
+    constructor(data?: IChatRoomChatGetForLogListQuery) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.lastId = _data["lastId"];
+        }
+    }
+
+    static fromJS(data: any): ChatRoomChatGetForLogListQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new ChatRoomChatGetForLogListQuery();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["lastId"] = this.lastId;
+        return data;
+    }
+}
+
+export interface IChatRoomChatGetForLogListQuery {
+    lastId?: number | undefined;
 }
 
 export class ChatRoomChatResponse implements IChatRoomChatResponse {

@@ -17,6 +17,7 @@ import { MenuModule } from 'primeng/menu';
 import { TableModule } from 'primeng/table';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { VirtualScrollerModule } from 'primeng/virtualscroller';
+import { ScrollerModule } from 'primeng/scroller';
 import { DialogCustomService } from 'src/shared/services/dialog.custom.service';
 import { SharedModule } from '../../shared/shared.module';
 import { UtilsModule } from '../../shared/utils/utils.module';
@@ -49,6 +50,7 @@ import { SamplesDateDataComponent } from './samplesdatedata/samplesdatedata.comp
         ToggleButtonModule,
         DropdownModule,
         VirtualScrollerModule,
+        ScrollerModule,
         ExamplesRoutingModule,
         UtilsModule,
         AutoCompleteModule,

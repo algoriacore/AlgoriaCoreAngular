@@ -71,46 +71,38 @@
         </div>
         <div class="col-12" style="padding: 0px;">
             <div style="width: 100%;">
-                <!--<ck-editor #ckeContentArea skin="moono-lisa"
-               language="es-MX"
-               [config]="configContentAreaObject">
-    </ck-editor>-->
-                <!--<p-editor #ckeContentArea
-              name="contentArea"
-              (onInit)="contentAreaOnInit($event)"
-              [style]="{'height':'320px'}">
-    </p-editor>-->
-                <!--<div #chatContent id="chatContent"
-         class="chatbox"
-         (scroll)="onScroll($event)"
-         [innerHTML]="chatHTML">-->
 
-                <div class="chatbox">
-                    <p-virtualScroller [value]="allMessages" scrollHeight="500px" [itemSize]="150"
-                        [lazy]="true" (onLazyLoad)="loadMessages($event)">
-                        <ng-template pTemplate="item" let-msg>
-
-                            <div class="chatitem">
-                                <div style="width:90px;display:inline-block;float:left;">
-                                    <img src="{{getUrlUserPicture(msg.user)}}" alt="" style="border-radius: 64px; width: 64px; height: 64px;" />
-                                </div>
-                                <div class="chatitem-content">
-                                    <div class="chatitem-title-name">{{msg.userDesc}}</div>
-                                    <div class="chatitem-title-sep"></div>
-                                    <div class="chatitem-title-user">{{msg.id}}</div>
-                                    <div class="chatitem-title-sep"></div>
-                                    <div class="chatitem-title-user">{{dateTimeService.getDateTimeToDisplay(msg.creationTime)}}</div>
-                                    <div class="chatitem-text">{{msg.comment}}{{getAttachementHTMLSection(msg.files)}}</div>
+                <div #chatbox id="chatbox" class="chatbox">
+                    <div class="chatitem" *ngFor="let msg of allMessages">
+                        <div style="width:90px;display:inline-block;float:left;">
+                            <img src="{{getUrlUserPicture(msg.user)}}" alt="" style="border-radius: 64px; width: 64px; height: 64px;" />
+                        </div>
+                        <div class="chatitem-content">
+                            <div class="chatitem-title-name">{{msg.userDesc}}</div>
+                            <div class="chatitem-title-sep"></div>
+                            <div class="chatitem-title-user">{{msg.id}}</div>
+                            <div class="chatitem-title-sep"></div>
+                            <div class="chatitem-title-user">{{dateTimeService.getDateTimeToDisplay(msg.creationTime)}}</div>
+                            <div class="chatitem-text">
+                                <div [innerHTML]="msg.comment"></div>
+                                <div>
+                                    <div style="margin-top:10px;">
+                                        <div *ngFor="let f of msg.files">
+                                            <span class="chatitem-file" (click)="downloadAttachedFile(f.file,f.fileName,f.fileExtension)">
+                                                <img src="{{getAttachementDownloadIcon(f.fileExtension)}}" alt="" style="height: 32px; cursor: pointer; display: inline; margin-right: 5px;" />
+                                                {{f.fileName + '.' + f.fileExtension}}
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </ng-template>
-                        <ng-template let-car pTemplate="loadingItem">
-                            Loading...
-                        </ng-template>
-                    </p-virtualScroller>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
+
         <div class="col-12" style="border: solid 1px #c8c8c8; border-bottom: 0px; border-top: 0px;">
 
             <p-fileUpload #fileUpload
