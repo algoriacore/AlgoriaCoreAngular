@@ -28,6 +28,7 @@
     .chatitem-title-user {
         display: inline-block;
         margin-bottom: 5px;
+        color: #3e8cfb;
     }
     .chatitem-title-time {
         display: inline-block;
@@ -80,9 +81,9 @@
                         <div class="chatitem-content">
                             <div class="chatitem-title-name">{{msg.userDesc}}</div>
                             <div class="chatitem-title-sep"></div>
-                            <div class="chatitem-title-user">{{msg.id}}</div>
+                            <div class="chatitem-title-user">{{msg.userLogin}}</div>
                             <div class="chatitem-title-sep"></div>
-                            <div class="chatitem-title-user">{{dateTimeService.getDateTimeToDisplay(msg.creationTime)}}</div>
+                            <div class="chatitem-title-time">{{dateTimeService.getDateTimeToDisplay(msg.creationTime)}}</div>
                             <div class="chatitem-text">
                                 <div [innerHTML]="msg.comment"></div>
                                 <div>

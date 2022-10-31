@@ -12788,6 +12788,7 @@ export class ChatRoomChatForListResponse implements IChatRoomChatForListResponse
     creationTime?: moment.Moment | undefined;
     comment?: string | undefined;
     files?: ChatRoomChatFileResponse[] | undefined;
+    userLogin?: string | undefined;
 
     constructor(data?: IChatRoomChatForListResponse) {
         if (data) {
@@ -12811,6 +12812,7 @@ export class ChatRoomChatForListResponse implements IChatRoomChatForListResponse
                 for (let item of _data["files"])
                     this.files!.push(ChatRoomChatFileResponse.fromJS(item));
             }
+            this.userLogin = _data["userLogin"];
         }
     }
 
@@ -12834,6 +12836,7 @@ export class ChatRoomChatForListResponse implements IChatRoomChatForListResponse
             for (let item of this.files)
                 data["files"].push(item.toJSON());
         }
+        data["userLogin"] = this.userLogin;
         return data;
     }
 }
@@ -12846,6 +12849,7 @@ export interface IChatRoomChatForListResponse {
     creationTime?: moment.Moment | undefined;
     comment?: string | undefined;
     files?: ChatRoomChatFileResponse[] | undefined;
+    userLogin?: string | undefined;
 }
 
 export class ChatRoomChatFileResponse implements IChatRoomChatFileResponse {
