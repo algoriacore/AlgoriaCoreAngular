@@ -242,6 +242,15 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
         self.loadMessages();
     }
 
+    sanitizeComments(comments: string): string {
+        comments = comments ? comments : '';
+
+        return comments.replace('?<span', '<span')
+            .replace('/span>?', '/span>')
+            .replace('? <span', '<span')
+            .replace('/span> ?', '/span>');
+    }
+
     getUrlUserPicture(user: number): string {
         const self = this;
 

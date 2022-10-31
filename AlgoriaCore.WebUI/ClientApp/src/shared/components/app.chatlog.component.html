@@ -85,7 +85,7 @@
                             <div class="chatitem-title-sep"></div>
                             <div class="chatitem-title-time">{{dateTimeService.getDateTimeToDisplay(msg.creationTime)}}</div>
                             <div class="chatitem-text">
-                                <div [innerHTML]="msg.comment"></div>
+                                <div [innerHTML]="sanitizeComments(msg.comment)"></div>
                                 <div>
                                     <div style="margin-top:10px;">
                                         <div *ngFor="let f of msg.files">
