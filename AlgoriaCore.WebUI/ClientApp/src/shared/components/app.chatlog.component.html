@@ -87,13 +87,14 @@
 
                 <div class="chatbox">
                     <p-virtualScroller [value]="allMessages" scrollHeight="500px" [itemSize]="150"
-                                [lazy]="true" (onLazyLoad)="loadMessages($event)">
+                                       [rows]="10" [totalRecords]="messagesCount"
+                                       [lazy]="true" (onLazyLoad)="loadMessages($event)">
                         <ng-template pTemplate="item" let-msg>
-                        
+
                             <div class="chatitem">
-                                <!--<div style="width:90px;display:inline-block;float:left;">
+                                <div style="width:90px;display:inline-block;float:left;">
                                     <img src="{{getUrlUserPicture(msg.user)}}" alt="" style="border-radius: 64px; width: 64px; height: 64px;" />
-                                </div>-->
+                                </div>
                                 <div class="chatitem-content">
                                     <div class="chatitem-title-name">{{msg.userDesc}}</div>
                                     <div class="chatitem-title-sep"></div>
@@ -104,11 +105,9 @@
                                 </div>
                             </div>
                         </ng-template>
-                        <!--<ng-template pTemplate="loader" let-scrollOptions="options">
-                            <p [ngClass]="{'odd': options.odd}" style="height: 50px;">
-                                Loading...
-                            </p>
-                        </ng-template>-->
+                        <ng-template let-car pTemplate="loadingItem">
+                            Loading...
+                        </ng-template>
                     </p-virtualScroller>
                 </div>
             </div>

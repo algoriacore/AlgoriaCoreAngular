@@ -92,7 +92,7 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
     quillContentInstance: any;
     mentions: Mention;
 
-    allMessages = Array.from({ length: 10000 });
+    allMessages = [];
     messagesCount = 0;
 
     constructor(
