@@ -467,7 +467,7 @@ export class AppQuestionnaireComponent implements OnInit {
                     data = self.dateTimeService.getTimeToSaveServer(fieldValue).format('HH:mm');
                     break;
                 case QuestionnaireFieldType.Multivalue:
-                    data[field.fieldName] = fieldValue.map(p => field.options.find(q => q.value === Number(p)));
+                    data = fieldValue.map(p => field.options.find(q => q.value === Number(p)));
                     break;
                 case QuestionnaireFieldType.CatalogCustom:
                     if (field.fieldControl === QuestionnaireFieldControl.Autocomplete) {
