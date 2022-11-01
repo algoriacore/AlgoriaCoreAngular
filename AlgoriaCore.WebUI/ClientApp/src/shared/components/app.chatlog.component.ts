@@ -1,9 +1,18 @@
-import { AfterViewInit, Component, ElementRef, Injector, Input, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    Injector,
+    Input,
+    OnInit,
+    Renderer2,
+    ViewChild,
+    ViewEncapsulation
+} from '@angular/core';
 import { FileUpload } from 'primeng/fileupload';
 import { finalize } from 'rxjs/operators';
 import { AppComponentBase } from '../../app/app-component-base';
 import { AppComponent } from '../../app/app.component';
-import { StringsHelper } from '../helpers/StringsHelper';
 import {
     ChatRoomChatCreateCommand, ChatRoomChatFileCreateCommand,
     ChatRoomChatForListResponse,
@@ -16,6 +25,7 @@ import { DateTimeService } from '../services/datetime.service';
 import { FileService } from '../services/file.service';
 
 import Mention from 'quill-mention';
+import { Menu } from 'primeng/menu';
 
 @Component({
     selector: 'app-chatlog',
@@ -29,10 +39,8 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
     @Input() description: string;
 
     @ViewChild('fileUpload') fileUpload: FileUpload;
-    @ViewChild('attachmentWindowList', { static: false }) attachmentWindowList: ElementRef;
     @ViewChild('chatbox', { static: false }) chatbox: ElementRef;
-
-    configInputMessageObject: any;
+    @ViewChild('messageFilesMenu', { static: false }) messageFilesMenu: Menu;
 
     isReady = false;
     blocked = false;
@@ -50,9 +58,13 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
     quillInstance: any;
     quillContentInstance: any;
     mentions: Mention;
+    mensajeCapturado: string;
 
     allMessages: ChatRoomChatForListResponse[] = [];
     messagesCount = 0;
+    selectedMessage: ChatRoomChatForListResponse = new ChatRoomChatForListResponse();
+    allMessagesFiles: ChatRoomChatForListResponse[] = [];
+    scrollingAllFiles = false;
 
     lastChatId = 0;
     loadingScroll = false;
@@ -173,6 +185,7 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
         self.loadingScroll = true;
 
         const req = new ChatRoomChatGetForLogListQuery();
+        req.chatRoomId = self.chatRoomId;
         req.lastId = self.lastChatId;
 
         self.service.getChatRoomChatForLogList(req)
@@ -248,10 +261,8 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
     sanitizeComments(comments: string): string {
         comments = comments ? comments : '';
 
-        return comments.replace('?<span', '<span')
-            .replace('/span>?', '/span>')
-            .replace('? <span', '<span')
-            .replace('/span> ?', '/span>');
+        return comments.replace(/\?\s*\<span/gm, '<span')
+            .replace(/\/span>\s*\?/gm, '/span>');
     }
 
     getUrlUserPicture(user: number): string {
@@ -311,7 +322,7 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
 
     sendMessage(): void {
         const self = this;
-        const messageStr = self.quillInstance.root.innerHTML;
+        const messageStr = self.mensajeCapturado;
 
         if (messageStr) {
             if (self.chatRoom.id) {
@@ -337,7 +348,7 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
 
     sendMessageAux(): void {
         const self = this;
-        const messageStr = self.quillInstance.root.innerHTML;
+        const messageStr = self.mensajeCapturado;
 
         if (messageStr) {
             const taggedUsers = [];
@@ -401,12 +412,21 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
                         // self.currentModeObject.query.skip++;
                         self.fileUpload.clear();
 
-                        self.quillInstance.setContents('');
+                        self.mensajeCapturado = null;
+
                     }, error => {
                         self.fileUpload.clear();
                     });
             });
         }
+    }
+
+    createAndShowMenuFiles(event: any, rowData: any): void {
+        const self = this;
+
+        self.selectedMessage = rowData;
+
+        self.messageFilesMenu.toggle(event);
     }
 
     downloadAttachedFile(uuid: string, fileName: string, fileExtension: string): void {
@@ -444,6 +464,37 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
         self.currentAttachmentModeObject.query.sorting = 'CreationTime DESC';
     }
 
+    openAttachmentWindow(attachmentWindow: any, event): void {
+        const self = this;
+
+        if (!self.isAttachmentWindowOpen) {
+            self.initializeCurrentAttachmentModeObject();
+            self.getAttachments();
+            attachmentWindow.show(event);
+        }
+    }
+
+    onScrollAttachmentWindow(event: any): void {
+        const self = this;
+
+        if (self.scrollingAllFiles) {
+            return;
+        }
+
+        const scrollTop = event.target.scrollTop;
+
+        if (event.target.scrollHeight - scrollTop - 500 <= 100) {
+            if (self.currentAttachmentModeObject.query.skip < self.currentAttachmentModeObject.totalMessages
+                && self.attachmentWindowBlocked !== true) {
+
+                self.scrollingAllFiles = true;
+
+                self.getAttachments();
+                self.currentAttachmentModeObject.lastScrollTop = scrollTop;
+            }
+        }
+    }
+
     getAttachments(): void {
         const self = this;
 
@@ -457,83 +508,16 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
                 self.currentAttachmentModeObject.query.skip += data.items.length;
                 self.currentAttachmentModeObject.totalMessages = data.totalCount;
 
-                self.getAttachmentItemHTML(data.items);
+                for (let i = 0, len = data.items.length; i < len; i++) {
+                    if (data.items[i].files.length > 0) {
+                        const ex = self.allMessagesFiles.find(m => m.id === data.items[i].id);
+                        if (!ex) {
+                            self.allMessagesFiles.push(data.items[i]);
+                        }
+                    }
+                }
+
+                self.scrollingAllFiles = false;
             });
-    }
-
-    getAttachmentItemHTML(messages: ChatRoomChatForListResponse[]): void {
-        const self = this;
-        let dvUser;
-        let dvFileSection;
-        let dvFile;
-        let dvFileA;
-        let dvFileImg;
-        let dvFileAText;
-
-        for (const message of messages) {
-            dvUser = self.renderer.createElement('div');
-            dvFileSection = self.renderer.createElement('div');
-
-            dvUser.innerHTML = StringsHelper.formatString(
-                '{0} {1}',
-                [
-                    self.dateTimeService.getDateTimeToDisplay(message.creationTime),
-                    message.userDesc
-                ]);
-
-            dvUser.style = 'font-weight: 700;';
-            dvFileSection.style = 'margin-top: 10px; margin-bottom: 30px;';
-
-            self.renderer.appendChild(self.attachmentWindowList.nativeElement, dvUser);
-            self.renderer.appendChild(self.attachmentWindowList.nativeElement, dvFileSection);
-
-            for (const file of message.files) {
-                dvFile = self.renderer.createElement('div');
-                dvFileA = self.renderer.createElement('a');
-                dvFileImg = self.renderer.createElement('img');
-                dvFileAText = self.renderer.createText(file.fileName + '.' + file.fileExtension);
-
-                dvFileA.style = 'cursor: pointer;';
-                dvFileImg.style = 'height: 32px; cursor: pointer; display: inline; margin-right: 5px;';
-
-                self.renderer.setAttribute(dvFileA, 'data-file', file.file);
-                self.renderer.setAttribute(dvFileA, 'data-file-name', file.fileName);
-                self.renderer.setAttribute(dvFileA, 'data-file-extension', file.fileExtension);
-                self.renderer.setAttribute(dvFileImg, 'src', self.getAttachementDownloadIcon(file.fileExtension));
-
-                self.renderer.listen(dvFileA, 'click', function (event) {
-                    self.downloadAttachedFile(file.file, file.fileName, file.fileExtension);
-                });
-
-                self.renderer.appendChild(dvFileSection, dvFile);
-                self.renderer.appendChild(dvFile, dvFileA);
-                self.renderer.appendChild(dvFileA, dvFileImg);
-                self.renderer.appendChild(dvFileA, dvFileAText);
-            }
-        }
-    }
-
-    openAttachmentWindow(attachmentWindow: any, event): void {
-        const self = this;
-
-        if (!self.isAttachmentWindowOpen) {
-            self.initializeCurrentAttachmentModeObject();
-            self.attachmentWindowList.nativeElement.innerHTML = '';
-            self.getAttachments();
-            attachmentWindow.show(event);
-        }
-    }
-
-    onScrollAttachmentWindow(event: any): void {
-        const self = this;
-        const scrollTop = event.target.scrollTop;
-
-        if (event.target.scrollHeight - scrollTop - 500 <= 100) {
-            if (self.currentAttachmentModeObject.query.skip < self.currentAttachmentModeObject.totalMessages
-                && self.attachmentWindowBlocked !== true) {
-                self.getAttachments();
-                self.currentAttachmentModeObject.lastScrollTop = scrollTop;
-            }
-        }
     }
 }

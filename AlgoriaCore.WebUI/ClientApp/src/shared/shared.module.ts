@@ -20,6 +20,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { LightboxModule } from 'primeng/lightbox';
 import { ListboxModule } from 'primeng/listbox';
+import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
@@ -65,6 +66,7 @@ import { SharedRoutingModule } from './shared-routing.module';
         VirtualScrollerModule,
         ScrollerModule,
         MenubarModule,
+        MenuModule,
         InputTextareaModule,
         CKEditorModule,
         EditorModule,

@@ -12942,6 +12942,7 @@ export interface IChatRoomChatGetListQuery extends IPageListByDto {
 }
 
 export class ChatRoomChatGetForLogListQuery implements IChatRoomChatGetForLogListQuery {
+    chatRoomId?: string | undefined;
     lastId?: number | undefined;
 
     constructor(data?: IChatRoomChatGetForLogListQuery) {
@@ -12955,6 +12956,7 @@ export class ChatRoomChatGetForLogListQuery implements IChatRoomChatGetForLogLis
 
     init(_data?: any) {
         if (_data) {
+            this.chatRoomId = _data["chatRoomId"];
             this.lastId = _data["lastId"];
         }
     }
@@ -12968,12 +12970,14 @@ export class ChatRoomChatGetForLogListQuery implements IChatRoomChatGetForLogLis
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["chatRoomId"] = this.chatRoomId;
         data["lastId"] = this.lastId;
         return data;
     }
 }
 
 export interface IChatRoomChatGetForLogListQuery {
+    chatRoomId?: string | undefined;
     lastId?: number | undefined;
 }
 
