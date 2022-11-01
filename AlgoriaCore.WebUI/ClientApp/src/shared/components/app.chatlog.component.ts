@@ -182,6 +182,9 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
             .subscribe(data => {
 
                 if (data.length <= 0) {
+                    // En este punto la bandera "loadingScroll" quedará establecida en "true"
+                    // por lo tanto ya no se ejecutará el método que trae los mensajes anteriores..
+                    // es decir, se ha llegado al inicio del chat..
                     return;
                 }
 
@@ -389,7 +392,8 @@ export class AppChatLogComponent extends AppComponentBase implements OnInit, Aft
                             creationTime: data.creationTime,
                             files: data.files,
                             user: data.user,
-                            userDesc: data.userDesc
+                            userDesc: data.userDesc,
+                            userLogin: data.userLogin
                         }));
 
                         self.scrollToBottom();
