@@ -97,7 +97,7 @@ export class SampleChatComponent extends AppComponentBase implements OnInit {
             }
 
             user.messages = user.messages || [];
-            user.messages.push(message);
+            user.messages = user.messages.concat([message]);
 
             const tmp = user.messages.slice(0, user.messages.length);
 
@@ -453,8 +453,8 @@ export class SampleChatComponent extends AppComponentBase implements OnInit {
 
         if (self.selectedUser.id) {
             setTimeout(function () {
-                self.virtualScroller.scrollToIndex(self.selectedUser.messages.length);
-            }, 1000);
+                self.virtualScroller.scrollToIndex(self.selectedUser.messages.length, 'smooth');
+            }, 500);
         }
     }
 }
