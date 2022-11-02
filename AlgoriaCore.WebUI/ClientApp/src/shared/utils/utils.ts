@@ -7,7 +7,7 @@ export class Utils {
     }
 
     public static isNullOrWhiteSpace(value: any): boolean {
-        return this.isNullOrUndefined(value) || value.toString().trim() === '';
+        return this.isNullOrUndefined(value) || (typeof(value) === 'string' && value.trim() === '');
     }
 
     public static isHost(authenticationService: AuthenticationService): boolean {

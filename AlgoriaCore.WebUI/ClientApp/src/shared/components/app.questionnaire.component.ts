@@ -343,7 +343,7 @@ export class AppQuestionnaireComponent implements OnInit {
         const self = this;
         let res = value;
 
-        if (Utils.isNullOrWhiteSpace(value)) {
+        if (!Utils.isNullOrWhiteSpace(value)) {
             res = self.transformFieldValueToDisplayAux(value, field, new NumberFormatter());
         }
 
