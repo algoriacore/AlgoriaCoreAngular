@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DiagramModule } from '@syncfusion/ej2-angular-diagrams';
 import { CKEditorModule } from 'ngx-ckeditor';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { BlockUIModule } from 'primeng/blockui';
@@ -14,10 +15,10 @@ import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { EditorModule } from 'primeng/editor';
 import { InputTextModule } from 'primeng/inputtext';
 import { MenuModule } from 'primeng/menu';
+import { ScrollerModule } from 'primeng/scroller';
 import { TableModule } from 'primeng/table';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { VirtualScrollerModule } from 'primeng/virtualscroller';
-import { ScrollerModule } from 'primeng/scroller';
 import { DialogCustomService } from 'src/shared/services/dialog.custom.service';
 import { SharedModule } from '../../shared/shared.module';
 import { UtilsModule } from '../../shared/utils/utils.module';
@@ -26,6 +27,7 @@ import { SampleChatLogComponent } from './chat/chatlog/samplechatlog.component';
 import { SampleChatComponent } from './chat/samplechat.component';
 import { SampleChatFindUsersComponent } from './chat/samplechat.findusers.component';
 import { SampleArrobarComponent } from './ckeditor/samplearrobar.component';
+import { SampleDiagramComponent } from './diagrams/samplediagram.component';
 import { ExamplesRoutingModule } from './examples-routing.module';
 import { SampleMultiselectComponent } from './multiselect/samplemultiselect.component';
 import { SampleNumbersComponent } from './numbers/samplenumbers.component';
@@ -58,7 +60,8 @@ import { SamplesDateDataComponent } from './samplesdatedata/samplesdatedata.comp
         ChartModule,
         CKEditorModule,
         EditorModule,
-        SharedModule
+        SharedModule,
+        DiagramModule
     ],
     declarations: [
         SamplesDateDataComponent,
@@ -71,7 +74,8 @@ import { SamplesDateDataComponent } from './samplesdatedata/samplesdatedata.comp
         SampleMultiselectComponent,
         SampleChartsComponent,
         SampleArrobarComponent,
-        SamplePEditorComponent
+        SamplePEditorComponent,
+        SampleDiagramComponent
     ],
     providers: [
         DialogService,

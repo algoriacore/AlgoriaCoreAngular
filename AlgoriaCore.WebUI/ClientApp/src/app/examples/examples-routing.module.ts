@@ -10,6 +10,7 @@ import { SampleChartsComponent } from './charts/samplecharts.component';
 import { SampleArrobarComponent } from './ckeditor/samplearrobar.component';
 import { SampleChatLogComponent } from './chat/chatlog/samplechatlog.component';
 import { SamplePEditorComponent } from './peditor/samplepeditor.component';
+import { SampleDiagramComponent } from './diagrams/samplediagram.component';
 
 const routes: Routes = [
 
@@ -23,7 +24,8 @@ const routes: Routes = [
     { path: 'autocomplete', component: SampleMultiselectComponent },
     { path: 'charts', component: SampleChartsComponent },
     { path: 'arrobar', component: SampleArrobarComponent },
-    { path: 'peditor', component: SamplePEditorComponent }
+    { path: 'peditor', component: SamplePEditorComponent },
+    { path: 'diagram', component: SampleDiagramComponent }
 ];
 
 @NgModule({
