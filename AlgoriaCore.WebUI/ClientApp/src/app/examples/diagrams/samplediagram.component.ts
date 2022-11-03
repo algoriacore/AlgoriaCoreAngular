@@ -25,7 +25,7 @@ export class SampleDiagramComponent extends AppComponentBase implements OnInit {
             id: 'Condition', offsetY: 250, annotations: [{ content: 'i < 10?' }],
             shape: { type: 'Flow', shape: 'Decision' },
             // Creation of ports
-            ports: [{ offset: { x: 0, y: 0.5 }, id: "port1" }, { offset: { x: 1, y: 0.5 }, id: "port2" }]
+            ports: [{ offset: { x: 0, y: 0.5 }, id: 'port1' }, { offset: { x: 1, y: 0.5 }, id: 'port2' }]
         },
         {
             id: 'Print', offsetY: 350, annotations: [{ content: 'print(\'Hello!!\');' }],
@@ -34,12 +34,12 @@ export class SampleDiagramComponent extends AppComponentBase implements OnInit {
         {
             id: 'Increment', offsetY: 450, annotations: [{ content: 'i++;' }],
             shape: { type: 'Flow', shape: 'Process' },
-            ports: [{ offset: { x: 0, y: 0.5 }, id: "port1" }, { offset: { x: 1, y: 0.5 }, id: "port2" }]
+            ports: [{ offset: { x: 0, y: 0.5 }, id: 'port1' }, { offset: { x: 1, y: 0.5 }, id: 'port2' }]
         },
         {
             id: 'End', offsetY: 550, annotations: [{ content: 'End' }],
             shape: { type: 'Flow', shape: 'Terminator' },
-            ports: [{ offset: { x: 0, y: 0.5 }, id: "port1" }, { offset: { x: 1, y: 0.5 }, id: "port2" }]
+            ports: [{ offset: { x: 0, y: 0.5 }, id: 'port1' }, { offset: { x: 1, y: 0.5 }, id: 'port2' }]
         }
     ];
 
@@ -82,7 +82,7 @@ export class SampleDiagramComponent extends AppComponentBase implements OnInit {
     }
 
     public nodeDefaults(obj: NodeModel): NodeModel {
-        let node: NodeModel = {};
+        const node: NodeModel = {};
 
         node.height = 50;
         node.width = 140;
