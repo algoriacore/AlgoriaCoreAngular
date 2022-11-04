@@ -15621,7 +15621,7 @@ export class MailTemplateCreateCommand implements IMailTemplateCreateCommand {
     blindCopyTo?: string | undefined;
     subject?: string | undefined;
     body?: string | undefined;
-    isActive?: boolean | undefined;
+    isActive!: boolean;
 
     constructor(data?: IMailTemplateCreateCommand) {
         if (data) {
@@ -15677,7 +15677,7 @@ export interface IMailTemplateCreateCommand {
     blindCopyTo?: string | undefined;
     subject?: string | undefined;
     body?: string | undefined;
-    isActive?: boolean | undefined;
+    isActive: boolean;
 }
 
 export class MailTemplateUpdateCommand implements IMailTemplateUpdateCommand {
@@ -15690,7 +15690,7 @@ export class MailTemplateUpdateCommand implements IMailTemplateUpdateCommand {
     blindCopyTo?: string | undefined;
     subject?: string | undefined;
     body?: string | undefined;
-    isActive?: boolean | undefined;
+    isActive!: boolean;
 
     constructor(data?: IMailTemplateUpdateCommand) {
         if (data) {
@@ -15749,7 +15749,7 @@ export interface IMailTemplateUpdateCommand {
     blindCopyTo?: string | undefined;
     subject?: string | undefined;
     body?: string | undefined;
-    isActive?: boolean | undefined;
+    isActive: boolean;
 }
 
 export class MailTemplateForEditResponse implements IMailTemplateForEditResponse {
@@ -17301,7 +17301,7 @@ export class RolCreateCommand implements IRolCreateCommand {
     id!: number;
     name?: string | undefined;
     displayName?: string | undefined;
-    isActive?: boolean | undefined;
+    isActive!: boolean;
     grantedPermissionNames?: string[] | undefined;
 
     constructor(data?: IRolCreateCommand) {
@@ -17353,7 +17353,7 @@ export interface IRolCreateCommand {
     id: number;
     name?: string | undefined;
     displayName?: string | undefined;
-    isActive?: boolean | undefined;
+    isActive: boolean;
     grantedPermissionNames?: string[] | undefined;
 }
 
@@ -17361,8 +17361,8 @@ export class RolUpdateCommand implements IRolUpdateCommand {
     id!: number;
     name?: string | undefined;
     displayName?: string | undefined;
-    isActive?: boolean | undefined;
-    isDeleted?: boolean | undefined;
+    isActive!: boolean;
+    isDeleted!: boolean;
     grantedPermissionNames?: string[] | undefined;
 
     constructor(data?: IRolUpdateCommand) {
@@ -17416,8 +17416,8 @@ export interface IRolUpdateCommand {
     id: number;
     name?: string | undefined;
     displayName?: string | undefined;
-    isActive?: boolean | undefined;
-    isDeleted?: boolean | undefined;
+    isActive: boolean;
+    isDeleted: boolean;
     grantedPermissionNames?: string[] | undefined;
 }
 
