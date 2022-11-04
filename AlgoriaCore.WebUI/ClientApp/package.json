@@ -29,7 +29,6 @@
     "@fullcalendar/core": "5.11.0",
     "@fullcalendar/daygrid": "5.11.0",
     "@fullcalendar/timegrid": "5.11.0",
-    "@syncfusion/ej2-angular-diagrams": "^20.3.50",
     "@types/moment-duration-format": "2.2.3",
     "@typescript-eslint/eslint-plugin-tslint": "5.30.7",
     "chart.js": "3.8.0",
