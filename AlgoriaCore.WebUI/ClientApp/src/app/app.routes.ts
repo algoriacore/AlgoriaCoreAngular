@@ -30,10 +30,6 @@ export const AppRoutes: ModuleWithProviders<any> = RouterModule.forRoot([{
             loadChildren: () => import('../app/examples/examples.module').then(m => m.ExamplesModule)
         },
         {
-            path: 'processes',
-            loadChildren: () => import('../app/processes/processes.module').then(m => m.ProcessesModule)
-        },
-        {
             path: 'chatrooms',
             loadChildren: () => import('../app/chatrooms/chatrooms.module').then(m => m.ChatRoomsModule)
         },

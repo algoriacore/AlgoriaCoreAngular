@@ -3,7 +3,7 @@
         <img alt="Logo" id="topbar-logo" src="assets/layout/images/logo-algoria.svg">
     </a>
     <a href="#" class="layout-menu-button" (click)="app.onMenuButtonClick($event)">
-        <i class="pi pi-bars"></i>
+        <i class="pi pi-bars" aria-hidden="true"></i>
     </a>
 
     <span [ngClass]="{ 'layout-topbar-text-light': app.topbarColor == 'layout-topbar-dark', 'layout-topbar-text-dark': app.topbarColor != 'layout-topbar-dark'}" *ngIf="app.currentUser.isImpersonalized">({{l('Impersonalized')}})</span>
@@ -62,7 +62,7 @@
     <ul class="layout-topbar-icons">
         <li>
             <a href="#" (click)="app.onNotificationsClick($event)">
-                <i class="pi pi-bell"></i>
+                <i class="pi pi-bell" aria-hidden="true"></i>
             </a>
         </li>
 

@@ -218,7 +218,13 @@ export class CatalogsCustomImplComponent extends AppComponentBase implements OnI
 
         self.query.pageNumber = 1 + (event.first / event.rows);
         self.query.pageSize = event.rows;
-        self.query.sorting = event.sortField ? (event.sortField + ' ' + (event.sortOrder === 1 ? 'ASC' : 'DESC')) : '_id DESC';
+
+        if (event.sortField) {
+            self.query.sorting = event.sortField + ' ' + (event.sortOrder === 1 ? 'ASC' : 'DESC');
+        } else {
+            self.query.sorting = '_id DESC';
+        }
+
         self.getList();
     }
 

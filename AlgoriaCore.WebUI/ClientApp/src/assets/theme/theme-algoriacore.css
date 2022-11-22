@@ -807,9 +807,10 @@ p-inputnumber.ng-dirty.ng-invalid > .p-inputnumber > .p-inputtext {
   border-radius: 50%;
   transition-duration: 0.2s;
 }
-.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider:before {
-  transform: translateX(1.25rem);
-}
+    .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider:before {
+        transform: translateX(1.25rem);
+        background: #ffffff;
+    }
 .p-inputswitch.p-focus .p-inputswitch-slider {
   outline: 0 none;
   outline-offset: 0;
@@ -820,9 +821,6 @@ p-inputnumber.ng-dirty.ng-invalid > .p-inputnumber > .p-inputtext {
 }
 .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
   background: #61B5A1;
-}
-.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider:before {
-  background: #ffffff;
 }
 .p-inputswitch.p-inputswitch-checked:not(.p-disabled):hover .p-inputswitch-slider {
   background: #7eadcd;
@@ -1478,10 +1476,10 @@ p-togglebutton.ng-dirty.ng-invalid > .p-togglebutton.p-button {
         height: 2rem;
         width: 2rem;
     }
-.p-button.p-button-sm {
-  font-size: 0.875rem;
-  padding: 0.4375rem 0.875rem;
-}
+    .p-button.p-button-sm {
+        font-size: 0.875rem;
+        padding: 0.375rem 0.875rem;
+    }
 .p-button.p-button-sm .p-button-icon {
   font-size: 0.875rem;
 }
@@ -2165,19 +2163,19 @@ p-togglebutton.ng-dirty.ng-invalid > .p-togglebutton.p-button {
   outline-offset: 0;
   box-shadow: 0 0 0 0.2rem #d6e5ef;
 }
-.fc .fc-toolbar .fc-button .fc-icon-chevron-left {
-  font-family: "PrimeIcons" !important;
-  text-indent: 0;
-  font-size: 1rem;
-}
+    .fc .fc-toolbar .fc-button .fc-icon-chevron-left {
+        font-family: PrimeIcons, sans-serif !important;
+        text-indent: 0;
+        font-size: 1rem;
+    }
 .fc .fc-toolbar .fc-button .fc-icon-chevron-left:before {
   content: "";
 }
-.fc .fc-toolbar .fc-button .fc-icon-chevron-right {
-  font-family: "PrimeIcons" !important;
-  text-indent: 0;
-  font-size: 1rem;
-}
+    .fc .fc-toolbar .fc-button .fc-icon-chevron-right {
+        font-family: PrimeIcons, sans-serif !important;
+        text-indent: 0;
+        font-size: 1rem;
+    }
 .fc .fc-toolbar .fc-button .fc-icon-chevron-right:before {
   content: "";
 }
@@ -3166,12 +3164,11 @@ p-togglebutton.ng-dirty.ng-invalid > .p-togglebutton.p-button {
         width: 2rem;
         height: 2rem;
         color: #61B5A1;
-        border: 0 none;
         background: transparent;
+        border: 2px solid #61B5A1;
         border-radius: 50%;
         transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
         margin-right: 0.5rem;
-        border: 2px solid #61B5A1;
         padding: 14px !important;
     }
 /*.p-dialog .p-dialog-header .p-dialog-header-icon:enabled:hover {
@@ -4081,7 +4078,6 @@ p-togglebutton.ng-dirty.ng-invalid > .p-togglebutton.p-button {
 }
 
 .p-steps .p-steps-item .p-menuitem-link {
-  background: transparent;
   transition: box-shadow 0.2s;
   border-radius: 3px;
   background: #ffffff;
@@ -5018,8 +5014,4 @@ sub {
 
 .row-inactive {
     color: rgba(0,0,0,.15) !important;
-}
-
-.p-button.p-button-sm {
-    padding: 0.375rem;
 }

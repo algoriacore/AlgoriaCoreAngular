@@ -9,6 +9,7 @@ import { SampleMultiselectComponent } from './multiselect/samplemultiselect.comp
 import { SampleChartsComponent } from './charts/samplecharts.component';
 import { SampleArrobarComponent } from './ckeditor/samplearrobar.component';
 import { SampleChatLogComponent } from './chat/chatlog/samplechatlog.component';
+import { SamplePEditorComponent } from './peditor/samplepeditor.component';
 
 const routes: Routes = [
 
@@ -21,7 +22,8 @@ const routes: Routes = [
     { path: 'sampleNumbers', component: SampleNumbersComponent },
     { path: 'autocomplete', component: SampleMultiselectComponent },
     { path: 'charts', component: SampleChartsComponent },
-    { path: 'arrobar', component: SampleArrobarComponent }
+    { path: 'arrobar', component: SampleArrobarComponent },
+    { path: 'peditor', component: SamplePEditorComponent }
 ];
 
 @NgModule({

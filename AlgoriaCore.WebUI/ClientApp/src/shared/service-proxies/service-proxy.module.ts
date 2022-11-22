@@ -27,8 +27,6 @@ import * as ApiServiceProxies from './service-proxies';
         ApiServiceProxies.HelpServiceProxy,
         ApiServiceProxies.SettingClientServiceProxy,
         ApiServiceProxies.SampleLogServiceProxy,
-        ApiServiceProxies.TemplatesServiceProxy,
-        ApiServiceProxies.ProcessServiceProxy,
         ApiServiceProxies.ChatRoomServiceProxy,
         ApiServiceProxies.MailServiceMailServiceProxy,
         ApiServiceProxies.MailServiceMailConfigServiceProxy,

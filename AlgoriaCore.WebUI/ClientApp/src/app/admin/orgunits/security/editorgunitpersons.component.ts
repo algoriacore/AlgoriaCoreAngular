@@ -137,7 +137,12 @@ export class EditOrgUnitPersonsComponent extends AppComponentBase implements OnI
     loadData(event: LazyLoadEvent) {
         const self = this;
 
-        self.query.sorting = event.sortField ? (event.sortField + ' ' + (event.sortOrder === 1 ? 'ASC' : 'DESC')) : '';
+        if (event.sortField) {
+            self.query.sorting = event.sortField + ' ' + (event.sortOrder === 1 ? 'ASC' : 'DESC');
+        } else {
+            self.query.sorting = '';
+        }
+
         self.query.pageNumber = 1 + (event.first / event.rows);
         self.query.pageSize = event.rows;
         self.getList();

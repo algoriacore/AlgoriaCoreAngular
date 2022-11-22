@@ -2,7 +2,7 @@ import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
-import { LazyLoadEvent, MenuItem } from 'primeng/api';
+import { MenuItem } from 'primeng/api';
 import { Menu } from 'primeng/menu';
 import { VirtualScroller } from 'primeng/virtualscroller';
 import { finalize } from 'rxjs/operators';
@@ -95,13 +95,12 @@ export class SampleChatComponent extends AppComponentBase implements OnInit {
             if (!user) {
                 return;
             }
-            // console.log('onMessageReceived2.add');
-            user.messages = user.messages || [];
 
-            // var msg = new ChatMessageListResponse(message);
-            user.messages.push(message);
+            user.messages = user.messages || [];
+            user.messages = user.messages.concat([message]);
 
             const tmp = user.messages.slice(0, user.messages.length);
+
             user.messages = tmp;
 
             const isCurrentChatUser = self.selectedUser !== null && self.selectedUser.friendTenantId === user.friendTenantId &&
@@ -110,7 +109,6 @@ export class SampleChatComponent extends AppComponentBase implements OnInit {
             if (message.side === self.chatMessageSide.Receiver) {
                 user.unreadMessageCount += 1;
                 message.readState = self.chatMessageReadState.Unread;
-                self.triggerUnreadMessageCountChangeEvent();
 
                 if (isCurrentChatUser) {
                     self.markAllUnreadMessagesOfUserAsRead(user);
@@ -169,7 +167,6 @@ export class SampleChatComponent extends AppComponentBase implements OnInit {
             }
 
             user.unreadMessageCount = 0;
-            self.triggerUnreadMessageCountChangeEvent();
         });
     }
 
@@ -185,12 +182,10 @@ export class SampleChatComponent extends AppComponentBase implements OnInit {
             .subscribe(data => {
                 self.userFriendship = (data.items as ChatFriendDto[]);
 
-                for (let i = 0; i < self.userFriendship.length; i++) {
-                    self.userFriendship[i].friendProfilePictureUrl = this.getBaseServiceUrl() + '/api/User/GetPictureProfile?id=' +
-                        self.userFriendship[i].friendUserId + '&v' + (new Date().getTime());
+                for (const userFriendship of self.userFriendship) {
+                    userFriendship.friendProfilePictureUrl = this.getBaseServiceUrl() + '/api/User/GetPictureProfile?id=' +
+                        userFriendship.friendUserId + '&v' + (new Date().getTime());
                 }
-
-                self.triggerUnreadMessageCountChangeEvent();
             });
     }
 
@@ -216,12 +211,6 @@ export class SampleChatComponent extends AppComponentBase implements OnInit {
             self.f.message.setValue('');
             self.sendingMessage = false;
         });
-    }
-
-    loadData(event: LazyLoadEvent) {
-        // const self = this;
-
-        console.log('loadData');
     }
 
     search(): void {
@@ -461,28 +450,11 @@ export class SampleChatComponent extends AppComponentBase implements OnInit {
 
     scrollToBottom(): void {
         const self = this;
-        console.log('scrollToBottom');
+
         if (self.selectedUser.id) {
-            console.log('scrollToBottom todo');
             setTimeout(function () {
-                console.log('scrollTo scrolling');
-                // self.virtualScroller.scrollTo(self.selectedUser.messages.length);
-                // self.virtualScroller.scroller.scrollTo({ top: self.selectedUser.messages.length });
-                self.virtualScroller.scrollToIndex(self.selectedUser.messages.length);
-                console.log('scrollTo scrolled');
-            }, 1000);
+                self.virtualScroller.scrollToIndex(self.selectedUser.messages.length, 'smooth');
+            }, 500);
         }
-    }
-
-    triggerUnreadMessageCountChangeEvent(): void {
-    /*
-        const self = this;
-
-        let totalUnreadMessageCount = 0;
-
-        if (self.userFriendship) {
-            totalUnreadMessageCount = _.reduce(self.userFriendship, (memo, friend) => memo + friend.unreadMessageCount, 0);
-        }
-        */
     }
 }

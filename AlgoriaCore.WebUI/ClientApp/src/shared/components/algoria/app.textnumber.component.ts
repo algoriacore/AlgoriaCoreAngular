@@ -1,14 +1,9 @@
-import { SafeStyle, DomSanitizer } from '@angular/platform-browser';
 import {
-    APP_INITIALIZER,
-    Component,
-    ElementRef,
-    Input,
-    forwardRef,
-    AfterViewInit,
-    OnChanges
+    AfterViewInit, Component,
+    ElementRef, forwardRef, Input, OnChanges
 } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import { NumberFormatter } from 'src/shared/utils/numberformatter.class';
 
 @Component({
@@ -18,7 +13,7 @@ import { NumberFormatter } from 'src/shared/utils/numberformatter.class';
                 [name]="name"
                 [style]="styleAttribute"
                 [maxLength]="maxlength"
-                [readonly]="readOnly !== undefined"
+                [readonly]="readOnly !== undefined && readOnly !== false"
                 [value]="formattedNumber"
                 (keydown)="onkeypress($event)"
                 (focus)="onFocus($event)"
@@ -103,7 +98,9 @@ export class TextNumberComponent implements ControlValueAccessor, AfterViewInit,
     }
 
     // not used, used for touch input
-    public registerOnTouched() { }
+    public registerOnTouched() {
+        // Empty
+    }
 
     ngOnChanges(changes): void {
         if (changes.useMilesSep || changes.decs) {
@@ -131,18 +128,7 @@ export class TextNumberComponent implements ControlValueAccessor, AfterViewInit,
             permitidos.push(190);
         }
 
-        if (permitidos.indexOf(kc) !== -1 ||
-            // Allow: Ctrl+A
-            (kc === 65 && e.ctrlKey === true) ||
-            // Allow: Ctrl+C
-            (kc === 67 && e.ctrlKey === true) ||
-            // Allow: Ctrl+V
-            (kc === 86 && e.ctrlKey === true) ||
-            // Allow: Ctrl+X
-            (kc === 88 && e.ctrlKey === true) ||
-            // Allow: home, end, left, right
-            (kc >= 35 && kc <= 39)) {
-
+        if (this.isInPermitidos(permitidos, e, kc)) {
             if (kc === 190 && valor.indexOf('.') >= 0) {
                 e.preventDefault();
             }
@@ -159,6 +145,20 @@ export class TextNumberComponent implements ControlValueAccessor, AfterViewInit,
         if ((e.shiftKey || (kc < 48 || kc > 57)) && (kc < 96 || kc > 105)) {
             e.preventDefault();
         }
+    }
+
+    isInPermitidos(permitidos: any[], e: any, kc: any): boolean {
+        return permitidos.indexOf(kc) !== -1 ||
+            // Allow: Ctrl+A
+            (kc === 65 && e.ctrlKey === true) ||
+            // Allow: Ctrl+C
+            (kc === 67 && e.ctrlKey === true) ||
+            // Allow: Ctrl+V
+            (kc === 86 && e.ctrlKey === true) ||
+            // Allow: Ctrl+X
+            (kc === 88 && e.ctrlKey === true) ||
+            // Allow: home, end, left, right
+            (kc >= 35 && kc <= 39);
     }
 
     onFocus(event) {
@@ -237,7 +237,7 @@ export class TextNumberComponent implements ControlValueAccessor, AfterViewInit,
         }
 
         this.value = this.numberFormatter.round(parseFloat(valor), decs);
-        this.formattedNumber = this.numberFormatter.format(this.value, decs); // this.format(this.value, decs);
+        this.formattedNumber = this.numberFormatter.format(this.value, decs);
 
         if (!this.formattedNumber) {
             this.formattedNumber = '';
@@ -293,25 +293,6 @@ export class TextNumberComponent implements ControlValueAccessor, AfterViewInit,
 
         return valor.toString().replace(/,/gi, '');
     }
-
-    // private round(value, nDecimals): string {
-
-    //    const num = value;
-    //    if (!('' + num).includes('e')) {
-    //        const esx = +(Math.round(parseFloat(num.toString() + 'e+' + nDecimals)) + 'e-' + nDecimals);
-    //        return esx.toString();
-    //    } else {
-    //        const arr = ('' + num).split('e');
-    //        let sig = '';
-    //        if (+arr[1] + nDecimals > 0) {
-    //            sig = '+';
-    //        }
-
-    //        const esx = +(Math.round(parseFloat(+arr[0] + 'e' + sig + (+arr[1] + nDecimals))) + 'e-' + nDecimals);
-
-    //        return esx.toString();
-    //    }
-    // }
 
     private isAllowEmptyEnabled(): boolean {
         return (this.allowEmpty && this.allowEmpty.toLowerCase().trim() === 'true');

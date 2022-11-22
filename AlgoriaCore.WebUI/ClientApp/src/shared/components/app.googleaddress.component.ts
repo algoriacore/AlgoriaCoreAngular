@@ -1,14 +1,9 @@
-import { SafeStyle, DomSanitizer } from '@angular/platform-browser';
 import {
-    APP_INITIALIZER,
-    Component,
-    ElementRef,
-    Input,
-    forwardRef,
-    AfterViewInit,
-    OnChanges
+    AfterViewInit, Component,
+    ElementRef, forwardRef, Input, OnChanges
 } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-google-address',
@@ -91,7 +86,9 @@ export class GoogleAddressComponent implements ControlValueAccessor, AfterViewIn
     }
 
     // not used, used for touch input
-    public registerOnTouched() { }
+    public registerOnTouched() {
+        // Empty
+    }
 
     ngOnChanges(changes): void {
         if (changes.style) {

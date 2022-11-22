@@ -117,7 +117,12 @@ export class OrgUnitsComponent extends AppComponentBase implements OnInit {
     loadNodes(event: any) {
         const self = this;
 
-        self.query.sorting = event.sortField ? (event.sortField + ' ' + (event.sortOrder === 1 ? 'ASC' : 'DESC')) : '';
+        if (event.sortField) {
+            self.query.sorting = event.sortField + ' ' + (event.sortOrder === 1 ? 'ASC' : 'DESC');
+        } else {
+            self.query.sorting = '';
+        }
+
         self.query.pageNumber = 1 + (event.first / event.rows);
         self.query.pageSize = event.rows;
 
@@ -156,7 +161,7 @@ export class OrgUnitsComponent extends AppComponentBase implements OnInit {
             node.expanded = expand;
 
             for (const cn of node.children) {
-                this.expandChildren(cn);
+                self.expandChildren(cn);
             }
         }
     }

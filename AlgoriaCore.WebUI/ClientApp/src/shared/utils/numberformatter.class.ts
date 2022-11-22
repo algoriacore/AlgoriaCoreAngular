@@ -1,3 +1,5 @@
+import { Utils } from './utils';
+
 export class NumberFormatter {
 
     // métodos privados
@@ -5,7 +7,7 @@ export class NumberFormatter {
 
         let valor: any = '';
 
-        if (value === undefined || value === null) {
+        if (Utils.isNullOrUndefined(value)) {
             value = '0';
         }
 
@@ -24,62 +26,35 @@ export class NumberFormatter {
 
         const vals = valor.toString();
         const partes = vals.split('.');
-        let entero = '';
-        let nDecimals = -1;
-        let cont = 0;
-
-        for (let i = partes[0].length - 1; i >= 0; i--) {
-            cont++;
-            entero = partes[0][i] + entero;
-
-            // Si es el tercer carácter, se le pone una coma
-            if (cont % 3 === 0 && i > 0) {
-                entero = ',' + entero;
-            }
-        }
+        const entero = this.getEntero(partes[0]);
 
         // Decimales default
+        let nDecimals = -1;
         let strDecs = '';
+
         for (let j = 1; j <= nDecs; j++) {
             strDecs += '0';
         }
 
         if (nDecimals === -1) {
-            if (partes[1] !== null && partes[1] !== undefined) {
+            if (!Utils.isNullOrUndefined(partes[1])) {
                 nDecimals = partes[1];
             }
+        } else if (!Utils.isNullOrUndefined(partes[1])) {
+            nDecimals = partes[1];
+            nDecimals = parseInt((nDecimals + strDecs).substring(0, nDecimals), 10);
         } else {
-            if (partes[1] !== null && partes[1] !== undefined) {
-                nDecimals = partes[1];
-                nDecimals = parseInt((nDecimals + strDecs).substring(0, nDecimals), 10);
-            } else {
-                nDecimals += parseInt(strDecs, 10);
-            }
+            nDecimals += parseInt(strDecs, 10);
         }
 
-        let resp = '';
-        if (nDecimals === -1 || nDecimals === 0) {
-            resp = entero;
-        } else {
-            resp = entero + '.' + nDecimals;
-        }
+        let resp = nDecimals === -1 || nDecimals === 0 ? entero : entero + '.' + nDecimals;
 
         // Rellenar con ceros los decimales que falten al final..
-        if (nDecs > 0) {
-            if (resp.indexOf('.') < 0) {
-                resp += ('.' + strDecs);
-            } else {
-                let so = resp.substring(resp.indexOf('.'));
-                so = so.replace('.', '');
-
-                for (let i = (so.length + 1); i <= nDecs; i++) {
-                    resp += '0';
-                }
-            }
-        }
+        resp = this.fillDecimals(resp, nDecs, strDecs);
 
         const esNegativo = (valor < 0);
-        if (esNegativo === true) {
+
+        if (esNegativo) {
             resp = '-' + resp;
         }
 
@@ -104,5 +79,42 @@ export class NumberFormatter {
 
             return esx.toString();
         }
+    }
+
+    private getEntero(value: string): string {
+        let entero = '';
+        let cont = 0;
+
+        for (let i = value.length - 1; i >= 0; i--) {
+            cont++;
+            entero = value[i] + entero;
+
+            // Si es el tercer carácter, se le pone una coma
+            if (cont % 3 === 0 && i > 0) {
+                entero = ',' + entero;
+            }
+        }
+
+        return entero;
+    }
+
+    private fillDecimals(value: string, nDecs: any, strDecs: string): string {
+        let resp = value;
+
+        if (nDecs > 0) {
+            if (resp.indexOf('.') < 0) {
+                resp += ('.' + strDecs);
+            } else {
+                let so = resp.substring(resp.indexOf('.'));
+
+                so = so.replace('.', '');
+
+                for (let i = (so.length + 1); i <= nDecs; i++) {
+                    resp += '0';
+                }
+            }
+        }
+
+        return resp;
     }
 }

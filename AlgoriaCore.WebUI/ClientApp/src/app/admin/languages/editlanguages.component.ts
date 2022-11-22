@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api/lazyloadevent';
@@ -198,9 +198,7 @@ export class EditLanguagesComponent extends AppComponentBase implements OnInit {
 
         self.filteredLanguageCombo = [];
 
-        for (let i = 0; i < self.model.languageCombo.length; i++) {
-            const item = self.model.languageCombo[i];
-
+        for (const item of self.model.languageCombo) {
             if (item.label.toLowerCase().indexOf(event.query.toLowerCase()) === 0) {
                 this.filteredLanguageCombo.push(item);
             }
@@ -258,7 +256,12 @@ export class EditLanguagesComponent extends AppComponentBase implements OnInit {
     loadData(event: LazyLoadEvent) {
         const self = this;
 
-        self.query.sorting = event.sortField ? (event.sortField + ' ' + (event.sortOrder === 1 ? 'ASC' : 'DESC')) : '';
+        if (event.sortField) {
+            self.query.sorting = event.sortField + ' ' + (event.sortOrder === 1 ? 'ASC' : 'DESC');
+        } else {
+            self.query.sorting = '';
+        }
+
         self.query.pageNumber = 1 + (event.first / event.rows);
         self.query.pageSize = event.rows;
 

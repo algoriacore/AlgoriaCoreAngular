@@ -45,7 +45,6 @@
                     <div class="new-message" *ngIf="selectedUser.state == friendshipState.Accepted">
                         <textarea formControlName="message" id="message" placeholder="{{l('Chat.TypeAMessageHere')}}" (keydown.Enter)="sendMessage()" maxlength="4096"></textarea>
                         <div class="new-message-footer">
-
                             <a class="new-message-send" (click)="sendMessage()" *ngIf="selectedUser.id">Send</a>
                         </div>
                     </div>

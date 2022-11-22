@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ConfirmationService, LazyLoadEvent, MenuItem } from 'primeng/api';
+import { LazyLoadEvent, MenuItem } from 'primeng/api';
 import { finalize } from 'rxjs/operators';
 import { AppComponentBase, PagedTableSummary } from 'src/app/app-component-base';
 import {
@@ -51,6 +51,7 @@ export class SamplesDateDataComponent extends AppComponentBase implements OnInit
         return this.form.controls;
 
     }
+
     ngOnInit() {
         const self = this;
 
@@ -113,7 +114,12 @@ export class SamplesDateDataComponent extends AppComponentBase implements OnInit
 
         self.query.pageNumber = 1 + (event.first / event.rows);
         self.query.pageSize = event.rows;
-        self.query.sorting = event.sortField ? (event.sortField + ' ' + (event.sortOrder === 1 ? 'ASC' : 'DESC')) : '';
+
+        if (event.sortField) {
+            self.query.sorting = event.sortField + ' ' + (event.sortOrder === 1 ? 'ASC' : 'DESC');
+        } else {
+            self.query.sorting = '';
+        }
 
         self.getList();
     }

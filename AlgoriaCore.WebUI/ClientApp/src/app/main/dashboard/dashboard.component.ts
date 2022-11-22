@@ -11,6 +11,6 @@ export class DashboardComponent extends AppComponentBase implements OnInit {
     }
 
     ngOnInit() {
-        const self = this;
+        // Intentional
     }
 }

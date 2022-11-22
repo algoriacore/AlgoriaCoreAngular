@@ -1,9 +1,75 @@
+
+<style>
+
+    .chatbox {
+        height: 320px;
+        background: #fff;
+        border: 1px solid #dee2e6;
+        overflow: scroll;
+    }
+
+    .chatitem {
+        margin-top: 30px;
+        padding: 20px;
+        overflow: hidden;
+    }
+    .chatitem-content {
+        display:inline-block;
+    }
+
+    .chatitem-title-name {
+        font-weight: bold;
+        display: inline-block;
+        margin-bottom:5px;
+    }
+    .chatitem-title-user {
+        display: inline-block;
+        margin-bottom: 5px;
+        color: #3e8cfb;
+    }
+    .chatitem-title-time {
+        display: inline-block;
+        margin-bottom: 5px;
+    }
+    .chatitem-title-files {
+        display: inline-block;
+        margin-bottom: 5px;
+        cursor:pointer;
+    }
+    .chatitem-title-sep {
+        display: inline-block;
+        content: " ";
+        background: #ccc;
+        width: 6px;
+        height: 6px;
+        margin: 0px 15px;
+        border-radius: 6px;
+        margin-bottom: 5px;
+    }
+
+    .chatitem-text{
+
+    }
+    .chatitem-text p {
+        margin:0;
+    }
+
+    .chatitem-file{
+        cursor:pointer;
+        padding:5px;
+    }
+    .chatitem-file:hover{
+        background:#eaeaea;
+    }
+
+</style>
+
 <app-blockable-div #pblockableDiv>
 
     <div class="grid" [style.display]="isReady && !isSeeAttachments ? 'block': 'none'">
         <div class="col-12" style="border: solid 1px #c8c8c8; border-bottom: 0px;">
             <div style="float: left; display: inline;">
-                <h5><i class="fa fa-fw fa-commenting" (mouseenter)="op.show($event)"></i>&nbsp;{{chatRoom.name}}</h5>
+                <h5><i class="fa fa-fw fa-commenting" aria-hidden="true" (mouseenter)="op.show($event)"></i>&nbsp;{{chatRoom.name}}</h5>
             </div>
             <div style="float: right; display: inline;">
                 <p-button type="button" label="{{l('Files')}}" (onClick)="openAttachmentWindow(attachmentWindow, $event)"></p-button>
@@ -12,12 +78,41 @@
         </div>
         <div class="col-12" style="padding: 0px;">
             <div style="width: 100%;">
-                <ck-editor #ckeContentArea skin="moono-lisa"
-                           language="es-MX"
-                           [config]="configContentAreaObject">
-                </ck-editor>
+
+                <div #chatbox id="chatbox" class="chatbox">
+                    <div class="chatitem" *ngFor="let msg of allMessages">
+                        <div style="width:90px;display:inline-block;float:left;">
+                            <img src="{{getUrlUserPicture(msg.user)}}" alt="" style="border-radius: 64px; width: 64px; height: 64px;" />
+                        </div>
+                        <div class="chatitem-content">
+                            <div class="chatitem-title-name">{{msg.userDesc}}</div>
+                            <div class="chatitem-title-sep"></div>
+                            <div class="chatitem-title-user">{{msg.userLogin}}</div>
+                            <div class="chatitem-title-sep"></div>
+                            <div class="chatitem-title-time">{{dateTimeService.getDateTimeToDisplay(msg.creationTime)}}</div>
+                            <div class="chatitem-title-sep" *ngIf="msg.files.length>0"></div>
+                            <div class="chatitem-title-files" *ngIf="msg.files.length>0"><i class="pi pi-paperclip"
+                                (click)="createAndShowMenuFiles($event,msg);"></i></div>
+                            <div class="chatitem-text">
+                                <div [innerHTML]="sanitizeComments(msg.comment)"></div>
+                                <!--<div>
+                                    <div style="margin-top:10px;">
+                                        <div *ngFor="let f of msg.files">
+                                            <span class="chatitem-file" (click)="downloadAttachedFile(f.file,f.fileName,f.fileExtension)">
+                                                <img src="{{getAttachementDownloadIcon(f.fileExtension)}}" alt="" style="height: 32px; cursor: pointer; display: inline; margin-right: 5px;" />
+                                                {{f.fileName + '.' + f.fileExtension}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
+
         <div class="col-12" style="border: solid 1px #c8c8c8; border-bottom: 0px; border-top: 0px;">
 
             <p-fileUpload #fileUpload
@@ -34,12 +129,19 @@
         <div class="col-12" style="padding: 0px;">
             <div class="p-inputgroup">
                 <div style="width: 100%;">
-                    <ck-editor #ckeInputMessage skin="moono-lisa"
-                               language="es-MX"
-                               [config]="configInputMessageObject">
-                    </ck-editor>
+                    <p-editor #ckeInputMessage
+                              name="editor1"
+                              [(ngModel)]="mensajeCapturado"
+                              (onInit)="editorOnInit($event)"
+                              [style]="{'height':'120px'}">
+                    </p-editor>
                 </div>
-                <button pButton pRipple type="button" icon="fa fa-paper-plane" style="max-width: 80px; min-width: 60px;" (click)="sendMessage()"></button>
+                <button pButton pRipple
+                        type="button"
+                        icon="fa fa-paper-plane"
+                        style="max-width: 80px; min-width: 60px;"
+                        (click)="sendMessage()"
+                        [disabled]="!mensajeCapturado"></button>
             </div>
         </div>
     </div>
@@ -47,7 +149,7 @@
 </app-blockable-div>
 
 <p-blockUI [target]="pblockableDiv" [blocked]="blocked">
-    <i class="fa fa-circle-o-notch" style="position:absolute;top:50%;left:50%;font-size: 60px;font-weight: bold"></i>
+    <i class="fa fa-circle-o-notch" aria-hidden="true" style="position:absolute;top:50%;left:50%;font-size: 60px;font-weight: bold"></i>
 </p-blockUI>
 
 <p-overlayPanel #op [showCloseIcon]="true" [dismissable]="true">
@@ -58,12 +160,43 @@
     {{dateTimeService.getDateTimeToDisplay(chatRoom.creationTime)}}
 </p-overlayPanel>
 
-<p-overlayPanel #attachmentWindow [showCloseIcon]="true" [dismissable]="true" (onShow)="isAttachmentWindowOpen = true" (onHide)="isAttachmentWindowOpen = false">
+<p-overlayPanel #attachmentWindow [dismissable]="true" (onShow)="isAttachmentWindowOpen=true" (onHide)="isAttachmentWindowOpen=false">
     <app-blockable-div #attachmentWindowBlockable>
-        <div #attachmentWindowList style="width: 350px; max-height: 500px; overflow-y: auto;" (scroll)="onScrollAttachmentWindow($event);"></div>
-    </app-blockable-div>
+        <div #attachmentWindowList style="width: 350px; max-height: 500px; overflow-y: auto;" (scroll)="onScrollAttachmentWindow($event);">
+
+            <div class="chatitem" *ngFor="let msg of allMessagesFiles">
+                <div class="chatitem-content">
+                    <div class="chatitem-title-time">{{dateTimeService.getDateTimeToDisplay(msg.creationTime)}}</div>
+                    <div class="chatitem-title-sep"></div>
+                    <div class="chatitem-title-user">{{msg.userLogin}}</div>
+                    <div class="chatitem-title-sep"></div>
+                    <div class="chatitem-title-name">{{msg.userDesc}}</div>
+
+                    <div *ngFor="let f of msg.files" (click)="downloadAttachedFile(f.file,f.fileName,f.fileExtension)" class="chatitem-file">
+                        <span>
+                            <img src="{{getAttachementDownloadIcon(f.fileExtension)}}" alt="" style="height: 32px; cursor: pointer; display: inline; margin-right: 5px;" />
+                            {{f.fileName + '.' + f.fileExtension}}
+                        </span>
+                    </div>
+                </div>
+                </div>
+            </div>
+</app-blockable-div>
 </p-overlayPanel>
 
 <p-blockUI [target]="attachmentWindowBlockable" [blocked]="attachmentWindowBlocked">
-    <i class="fa fa-circle-o-notch" style="position:absolute;top:50%;left:50%;font-size: 60px;font-weight: bold"></i>
+    <i class="fa fa-circle-o-notch" aria-hidden="true" style="position:absolute;top:50%;left:50%;font-size: 60px;font-weight: bold"></i>
 </p-blockUI>
+
+<p-overlayPanel #messageFilesMenu [dismissable]="true">
+    <app-blockable-div>
+        <div style="width: 400px; max-height: 500px; overflow-y: auto;">
+            <div *ngFor="let f of selectedMessage.files" (click)="downloadAttachedFile(f.file,f.fileName,f.fileExtension)" class="chatitem-file">
+                <span>
+                    <img src="{{getAttachementDownloadIcon(f.fileExtension)}}" alt="" style="height: 32px; cursor: pointer; display: inline; margin-right: 5px;" />
+                    {{f.fileName + '.' + f.fileExtension}}
+                </span>
+            </div>
+        </div>
+    </app-blockable-div>
+</p-overlayPanel>

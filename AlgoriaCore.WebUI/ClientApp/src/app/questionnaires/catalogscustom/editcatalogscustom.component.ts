@@ -169,9 +169,9 @@ export class EditCatalogsCustomComponent extends AppComponentBase implements OnI
         const list: string[] = [];
 
         if (self.selectedNodes !== null && self.selectedNodes.length > 0) {
-            for (let i = 0; i < self.selectedNodes.length; i++) {
-                if (self.selectedNodes[i].data) {
-                    list.push(self.selectedNodes[i].data);
+            for (const selectedNode of self.selectedNodes) {
+                if (selectedNode.data) {
+                    list.push(selectedNode.data);
                 }
             }
         }

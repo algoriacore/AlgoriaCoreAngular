@@ -5,7 +5,7 @@
             <h3>
                 {{l('Questionnaires')}}
                 <p-button type="button" styleClass="p-button-text algoria-button-help" icon="pi pi-info-circle"
-                          (onClick)="helpOnScreenService.show('QUESTIONNAIRES.VIEW', true)"></p-button>
+                          (onClick)="helpOnScreenService.show('QUESTIONNAIRES.QUESTIONNAIRES.VIEW', true)"></p-button>
             </h3>
             <div class="form-toolbar">
                 <p-button *ngIf="permissions.create" type="button" label="{{l('Create')}}" (onClick)="create()"></p-button>
@@ -28,7 +28,7 @@
                             </div>
                             <div class="col-12 sm:col-5 md:col-4 lg:col-3">
                                 <span class="p-input-icon-left">
-                                    <i class="pi pi-search"></i>
+                                    <i class="pi pi-search" aria-hidden="true"></i>
                                     <input type="text" pInputText placeholder="{{l('SearchDots')}}" formControlName="filterText" (keydown.enter)="filterSearch($event)" />
                                 </span>
                             </div>

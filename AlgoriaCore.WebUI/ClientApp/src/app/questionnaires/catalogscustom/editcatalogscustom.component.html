@@ -5,12 +5,11 @@
             <h3>
                 {{l('CatalogsCustom.CatalogCustom')}}
                 <p-button type="button" styleClass="p-button-text algoria-button-help" icon="pi pi-info-circle"
-                          (onClick)="helpOnScreenService.show('CATALOGSCUSTOM.FORM', true)"></p-button>
+                          (onClick)="helpOnScreenService.show('CATALOGSCUSTOM.CATALOGSCUSTOM.FORM', true)"></p-button>
             </h3>
             <div class="form-toolbar">
                 <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
                 <p-button type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
-                <!--<p-button *ngIf="id && (permissions.create || permissions.edit)" type="button" label="{{model.isTableGenerated ? l('CatalogsCustom.CatalogCustom.RegenerateCollection') : l('CatalogsCustom.CatalogCustom.GenerateCollection')}}" (onClick)="generate()"></p-button>-->
             </div>
         </div>
 

@@ -4,7 +4,7 @@ import { LazyLoadEvent } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { finalize } from 'rxjs/operators';
 import { AppComponentBase, PagedTableSummary } from 'src/app/app-component-base';
-import { UserListResponse, UserServiceProxy, UserGetListQuery } from 'src/shared/service-proxies/service-proxies';
+import { UserGetListQuery, UserListResponse, UserServiceProxy } from 'src/shared/service-proxies/service-proxies';
 
 @Component({
     templateUrl: './selectusers.component.html',
@@ -94,11 +94,17 @@ export class SelectUsersComponent extends AppComponentBase implements OnInit {
 
         self.query.pageNumber = 1 + (event.first / event.rows);
         self.query.pageSize = event.rows;
-        self.query.sorting = event.sortField ? (event.sortField + ' ' + (event.sortOrder === 1 ? 'ASC' : 'DESC')) : '';
+
+        if (event.sortField) {
+            self.query.sorting = event.sortField + ' ' + (event.sortOrder === 1 ? 'ASC' : 'DESC');
+        } else {
+            self.query.sorting = 'creationTime DESC';
+        }
+
         self.getList();
     }
 
-    select(rowData: UserListResponse): void {
+    select(event: any, rowData: UserListResponse): void {
         const self = this;
 
         self.return(rowData);
