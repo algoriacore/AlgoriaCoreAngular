@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CKEditorModule } from 'ngx-ckeditor';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { BlockUIModule } from 'primeng/blockui';
 import { ButtonModule } from 'primeng/button';
@@ -68,7 +67,6 @@ import { SharedRoutingModule } from './shared-routing.module';
         MenubarModule,
         MenuModule,
         InputTextareaModule,
-        CKEditorModule,
         EditorModule,
         FileUploadModule,
         PanelModule,

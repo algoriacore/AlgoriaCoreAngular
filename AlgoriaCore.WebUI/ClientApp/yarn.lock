@@ -6343,13 +6343,6 @@
   "resolved" "https://registry.npmjs.org/neo-async/-/neo-async-2.6.2.tgz"
   "version" "2.6.2"
 
-"ngx-ckeditor@12.0.0":
-  "integrity" "sha512-QyPTD8Ux29Ml0aS2pRVjco4lcF0fB6d9zwW3btAAGzgpyBeKE4BhKRwT+ejfZVK7BZzvx9DhwFr/AyxkIpEeiA=="
-  "resolved" "https://registry.npmjs.org/ngx-ckeditor/-/ngx-ckeditor-12.0.0.tgz"
-  "version" "12.0.0"
-  dependencies:
-    "tslib" "^2.0.0"
-
 "node-addon-api@^3.2.1":
   "integrity" "sha512-mmcei9JghVNDYydghQmeDX8KoAm0FAiYyIcUt/N4nhyAipB17pllZQDOJD2fotxABnt4Mdz+dKTO7eftLg4d0A=="
   "resolved" "https://registry.npmjs.org/node-addon-api/-/node-addon-api-3.2.1.tgz"

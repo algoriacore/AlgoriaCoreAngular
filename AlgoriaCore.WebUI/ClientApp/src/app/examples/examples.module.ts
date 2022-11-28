@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CKEditorModule } from 'ngx-ckeditor';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { BlockUIModule } from 'primeng/blockui';
 import { ButtonModule } from 'primeng/button';
@@ -25,7 +24,6 @@ import { SampleChartsComponent } from './charts/samplecharts.component';
 import { SampleChatLogComponent } from './chat/chatlog/samplechatlog.component';
 import { SampleChatComponent } from './chat/samplechat.component';
 import { SampleChatFindUsersComponent } from './chat/samplechat.findusers.component';
-import { SampleArrobarComponent } from './ckeditor/samplearrobar.component';
 import { ExamplesRoutingModule } from './examples-routing.module';
 import { SampleMultiselectComponent } from './multiselect/samplemultiselect.component';
 import { SampleNumbersComponent } from './numbers/samplenumbers.component';
@@ -56,7 +54,6 @@ import { SamplesDateDataComponent } from './samplesdatedata/samplesdatedata.comp
         AutoCompleteModule,
         CheckboxModule,
         ChartModule,
-        CKEditorModule,
         EditorModule,
         SharedModule
     ],
@@ -70,7 +67,6 @@ import { SamplesDateDataComponent } from './samplesdatedata/samplesdatedata.comp
         SampleNumbersComponent,
         SampleMultiselectComponent,
         SampleChartsComponent,
-        SampleArrobarComponent,
         SamplePEditorComponent
     ],
     providers: [

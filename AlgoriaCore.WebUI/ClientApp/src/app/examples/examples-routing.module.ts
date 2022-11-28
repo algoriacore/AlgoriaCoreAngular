@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SamplesDateDataComponent } from './samplesdatedata/samplesdatedata.component';
-import { EditSamplesDateDataComponent } from './samplesdatedata/editsamplesdatedata.component';
-import { SampleChatComponent } from './chat/samplechat.component';
-import { SampleLogComponent } from './samplelog/samplelog.component';
-import { SampleNumbersComponent } from './numbers/samplenumbers.component';
-import { SampleMultiselectComponent } from './multiselect/samplemultiselect.component';
 import { SampleChartsComponent } from './charts/samplecharts.component';
-import { SampleArrobarComponent } from './ckeditor/samplearrobar.component';
 import { SampleChatLogComponent } from './chat/chatlog/samplechatlog.component';
+import { SampleChatComponent } from './chat/samplechat.component';
+import { SampleMultiselectComponent } from './multiselect/samplemultiselect.component';
+import { SampleNumbersComponent } from './numbers/samplenumbers.component';
 import { SamplePEditorComponent } from './peditor/samplepeditor.component';
+import { SampleLogComponent } from './samplelog/samplelog.component';
+import { EditSamplesDateDataComponent } from './samplesdatedata/editsamplesdatedata.component';
+import { SamplesDateDataComponent } from './samplesdatedata/samplesdatedata.component';
 
 const routes: Routes = [
 
@@ -22,7 +21,6 @@ const routes: Routes = [
     { path: 'sampleNumbers', component: SampleNumbersComponent },
     { path: 'autocomplete', component: SampleMultiselectComponent },
     { path: 'charts', component: SampleChartsComponent },
-    { path: 'arrobar', component: SampleArrobarComponent },
     { path: 'peditor', component: SamplePEditorComponent }
 ];
 

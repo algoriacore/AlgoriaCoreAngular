@@ -3,7 +3,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JsonpModule } from '@angular/http';
-import { CKEditorModule } from 'ngx-ckeditor';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { AvatarModule } from 'primeng/avatar';
@@ -112,7 +111,6 @@ import { UserProfileComponent } from './users/userprofile.component';
         DataViewModule,
         PanelModule,
         SharedModule,
-        CKEditorModule,
         TagModule,
         AdminRoutingModule,
         PasswordModule,
