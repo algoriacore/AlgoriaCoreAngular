@@ -160,20 +160,23 @@ export class EmailGroupsComponent extends AppComponentBase implements OnInit {
 
         self.alertService.confirm(
             self.l('EmailGroups.SelectMessage', '"' + dto.displayName + '"'), self.l('Confirmation'),
-            function () {
-                const cmd = new MailGroupCheckCommand();
-                cmd.id = dto.id;
+            function (res) {
 
-                self.app.blocked = true;
+                if (res) {
+                    const cmd = new MailGroupCheckCommand();
+                    cmd.id = dto.id;
 
-                self.mailGroupService.checkMailGroup(cmd)
-                    .pipe(finalize(() => {
-                        self.app.blocked = false;
-                    }))
-                    .subscribe(data => {
-                        self.notify.success(self.l('SavedSuccessfully'), self.l('Success'));
-                        self.getList();
-                    });
+                    self.app.blocked = true;
+
+                    self.mailGroupService.checkMailGroup(cmd)
+                        .pipe(finalize(() => {
+                            self.app.blocked = false;
+                        }))
+                        .subscribe(data => {
+                            self.notify.success(self.l('SavedSuccessfully'), self.l('Success'));
+                            self.getList();
+                        });
+                }
             }
         );
     }
@@ -183,20 +186,22 @@ export class EmailGroupsComponent extends AppComponentBase implements OnInit {
 
         self.alertService.confirm(
             self.l('EmailGroups.UnSelectMessage', '"' + dto.displayName + '"'),
-            function () {
-                const cmd = new MailGroupUnCheckCommand();
-                cmd.id = dto.id;
+            function (res) {
+                if (res === true) {
+                    const cmd = new MailGroupUnCheckCommand();
+                    cmd.id = dto.id;
 
-                self.app.blocked = true;
+                    self.app.blocked = true;
 
-                self.mailGroupService.unCheckMailGroup(cmd)
-                    .pipe(finalize(() => {
-                        self.app.blocked = false;
-                    }))
-                    .subscribe(data => {
-                        self.notify.success(self.l('SavedSuccessfully'), self.l('Success'));
-                        self.getList();
-                    });
+                    self.mailGroupService.unCheckMailGroup(cmd)
+                        .pipe(finalize(() => {
+                            self.app.blocked = false;
+                        }))
+                        .subscribe(data => {
+                            self.notify.success(self.l('SavedSuccessfully'), self.l('Success'));
+                            self.getList();
+                        });
+                }
             }
         );
     }

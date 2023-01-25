@@ -137,17 +137,19 @@ export class SamplesDateDataComponent extends AppComponentBase implements OnInit
 
         self.alertService.confirm(
             self.l('ConfirmationSoftDeleteRecordMessage'), self.l('Confirmation'),
-            function () {
-                self.app.blocked = true;
+            function (res) {
+                if (res === true) {
+                    self.app.blocked = true;
 
-                self.service.deleteSampleDateData(id)
-                    .pipe(finalize(() => {
-                        self.app.blocked = false;
-                    }))
-                    .subscribe(data => {
-                        self.notify.success(self.l('RecordDeletedSuccessful'), self.l('Success'));
-                        self.getList();
-                    });
+                    self.service.deleteSampleDateData(id)
+                        .pipe(finalize(() => {
+                            self.app.blocked = false;
+                        }))
+                        .subscribe(data => {
+                            self.notify.success(self.l('RecordDeletedSuccessful'), self.l('Success'));
+                            self.getList();
+                        });
+                }
             }
         );
     }

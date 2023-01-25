@@ -154,17 +154,19 @@ export class UsersComponent extends AppComponentBase implements OnInit {
             type: 'confirm',
             message: self.l('Users.ConfirmationUnlockedMessage', rowData.fullName),
             header: self.l('Confirmation'),
-            accept: function () {
-                self.app.blocked = true;
+            accept: function (res) {
+                if (res === true) {
+                    self.app.blocked = true;
 
-                self.userService.unlockUser(rowData.id)
-                    .pipe(finalize(() => {
-                        self.app.blocked = false;
-                    }))
-                    .subscribe(data => {
-                        self.notify.success(self.l('Users.UserSuccessfullyUnlocked'), self.l('Success'));
-                        self.getList();
-                    });
+                    self.userService.unlockUser(rowData.id)
+                        .pipe(finalize(() => {
+                            self.app.blocked = false;
+                        }))
+                        .subscribe(data => {
+                            self.notify.success(self.l('Users.UserSuccessfullyUnlocked'), self.l('Success'));
+                            self.getList();
+                        });
+                }
             },
             cancelTitle: this.localization.l('Cancel'),
             acceptTitle: this.localization.l('Unlock'),
@@ -179,17 +181,19 @@ export class UsersComponent extends AppComponentBase implements OnInit {
             type: 'confirm',
             message: self.l('Users.ConfirmationLockedMessage', rowData.fullName),
             header: self.l('Confirmation'),
-            accept: function () {
-                self.app.blocked = true;
+            accept: function (res) {
+                if (res === true) {
+                    self.app.blocked = true;
 
-                self.userService.lockUser(rowData.id)
-                    .pipe(finalize(() => {
-                        self.app.blocked = false;
-                    }))
-                    .subscribe(data => {
-                        self.notify.success(self.l('Users.UserSuccessfullyLocked'), self.l('Success'));
-                        self.getList();
-                    });
+                    self.userService.lockUser(rowData.id)
+                        .pipe(finalize(() => {
+                            self.app.blocked = false;
+                        }))
+                        .subscribe(data => {
+                            self.notify.success(self.l('Users.UserSuccessfullyLocked'), self.l('Success'));
+                            self.getList();
+                        });
+                }
             },
             cancelTitle: this.localization.l('Cancel'),
             acceptTitle: this.localization.l('Lock'),
@@ -202,20 +206,22 @@ export class UsersComponent extends AppComponentBase implements OnInit {
 
         self.alertService.confirmDelete(
             self.l('ConfirmationDeleteRecordWithNameMessage', rowData.fullName), self.l('Confirmation'),
-            function () {
-                const cmd = new UserDeleteCommand();
+            function (res) {
+                if (res === true) {
+                    const cmd = new UserDeleteCommand();
 
-                cmd.id = rowData.id;
-                self.app.blocked = true;
+                    cmd.id = rowData.id;
+                    self.app.blocked = true;
 
-                self.userService.deleteUser(cmd)
-                    .pipe(finalize(() => {
-                        self.app.blocked = false;
-                    }))
-                    .subscribe(data => {
-                        self.notify.success(self.l('RecordSoftDeleted'), self.l('Success'));
-                        self.getList();
-                    });
+                    self.userService.deleteUser(cmd)
+                        .pipe(finalize(() => {
+                            self.app.blocked = false;
+                        }))
+                        .subscribe(data => {
+                            self.notify.success(self.l('RecordSoftDeleted'), self.l('Success'));
+                            self.getList();
+                        });
+                }
             }
         );
     }

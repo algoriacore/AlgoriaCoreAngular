@@ -191,8 +191,10 @@ export class UserProfileComponent extends AppComponentBase implements OnInit {
                 self.notify.success(self.l('SavedSuccessfully'), self.l('Success'));
                 this.urlLogoTemp = null;
 
-                self.alertService.confirm(self.l('Users.Profile.ReloadMessage'), function () {
-                    window.location.reload();
+                self.alertService.confirm(self.l('Users.Profile.ReloadMessage'), function (res) {
+                    if (res === true) {
+                        window.location.reload();
+                    }
                 });
             });
     }

@@ -66,12 +66,31 @@ export class AppAlertComponent extends AppComponentBase implements OnInit, OnDes
         }
 
         this.closeEvent = null;
-        this.display = false;
         this.message = {};
     }
 
     onConfirmReject(): void {
 
+        if (this.message.accept) {
+            this.acceptEvent = new EventEmitter<any>();
+            this.acceptEvent.subscribe(this.message.accept);
+            this.acceptEvent.emit(false);
+        }
+
+        this.destroy();
+    }
+
+    onConfirmAccept(): void {
+        if (this.message.accept) {
+            this.acceptEvent = new EventEmitter<any>();
+            this.acceptEvent.subscribe(this.message.accept);
+            this.acceptEvent.emit(true);
+        }
+
+        this.destroy();
+    }
+
+    destroy(): void {
         if (this.acceptEvent) {
             this.acceptEvent.unsubscribe();
             this.acceptEvent = null;
@@ -79,15 +98,6 @@ export class AppAlertComponent extends AppComponentBase implements OnInit, OnDes
 
         this.displayConfirmation = false;
         this.message = {};
-    }
-
-    onConfirmAccept(): void {
-        if (this.message.accept) {
-            this.acceptEvent = new EventEmitter<any>();
-            this.acceptEvent.subscribe(this.message.accept);
-            this.acceptEvent.emit(null);
-        }
-        this.onConfirmReject();
     }
 
     processMessage(message: string): string {

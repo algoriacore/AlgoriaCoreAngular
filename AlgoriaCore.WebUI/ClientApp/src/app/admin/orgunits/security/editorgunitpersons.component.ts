@@ -152,17 +152,19 @@ export class EditOrgUnitPersonsComponent extends AppComponentBase implements OnI
         const self = this;
 
         self.alertService.confirm(self.l('ConfirmationSoftDeleteRecordMessage'), self.l('Confirmation'),
-            function () {
-                self.blockedDocument = true;
+            function (res) {
+                if (res === true) {
+                    self.blockedDocument = true;
 
-                self.service.deleteOrgUnitUser(id)
-                    .pipe(finalize(() => {
-                        self.blockedDocument = false;
-                    }))
-                    .subscribe(data => {
-                        self.notify.success(self.l('RecordDeletedSuccessful'), self.l('Success'));
-                        self.getList();
-                    });
+                    self.service.deleteOrgUnitUser(id)
+                        .pipe(finalize(() => {
+                            self.blockedDocument = false;
+                        }))
+                        .subscribe(data => {
+                            self.notify.success(self.l('RecordDeletedSuccessful'), self.l('Success'));
+                            self.getList();
+                        });
+                }
             });
     }
 

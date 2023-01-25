@@ -136,17 +136,19 @@ export class QuestionnairesComponent extends AppComponentBase implements OnInit 
         const self = this;
 
         self.alertService.confirm(self.l('ConfirmationSoftDeleteRecordMessage'), self.l('Confirmation'),
-            function () {
-                self.app.blocked = true;
+            function (res) {
+                if (res === true) {
+                    self.app.blocked = true;
 
-                self.service.deleteQuestionnaire(id)
-                    .pipe(finalize(() => {
-                        self.app.blocked = false;
-                    }))
-                    .subscribe(data => {
-                        self.notify.success(self.l('RecordDeletedSuccessful'), self.l('Success'));
-                        self.getList();
-                    });
+                    self.service.deleteQuestionnaire(id)
+                        .pipe(finalize(() => {
+                            self.app.blocked = false;
+                        }))
+                        .subscribe(data => {
+                            self.notify.success(self.l('RecordDeletedSuccessful'), self.l('Success'));
+                            self.getList();
+                        });
+                }
             });
     }
 }

@@ -54,7 +54,7 @@ export class AlertService {
         this.subject.next({ type: type, title: messageTitle, text: messageText, close: callback });
     }
 
-    custom(messageTitle: string, messageText: string, callback?: () => void, keepAfterNavigationChange = false) {
+    custom(messageTitle: string, messageText: string, callback?: (result: boolean) => void, keepAfterNavigationChange = false) {
         this.keepAfterNavigationChange = keepAfterNavigationChange;
         this.subject.next({ type: 'custom', title: messageTitle, text: messageText, close: callback });
     }

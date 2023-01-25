@@ -176,17 +176,19 @@ export class EditOrgUnitsComponent extends AppComponentBase implements OnInit {
         const self = this;
 
         self.alertService.confirm(self.l('ConfirmationSoftDeleteRecordMessage'), self.l('Confirmation'),
-            function () {
-                self.app.blocked = true;
+            function (res) {
+                if (res === true) {
+                    self.app.blocked = true;
 
-                self.service.deleteOrgUnitUser(id)
-                    .pipe(finalize(() => {
-                        self.app.blocked = false;
-                    }))
-                    .subscribe(data => {
-                        self.notify.success(self.l('RecordDeletedSuccessful'), self.l('Success'));
-                        self.getUserList();
-                    });
+                    self.service.deleteOrgUnitUser(id)
+                        .pipe(finalize(() => {
+                            self.app.blocked = false;
+                        }))
+                        .subscribe(data => {
+                            self.notify.success(self.l('RecordDeletedSuccessful'), self.l('Success'));
+                            self.getUserList();
+                        });
+                }
             });
     }
 
