@@ -2,7 +2,6 @@ import * as ngCommon from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { JsonpModule } from '@angular/http';
 import { BlockUIModule } from 'primeng/blockui';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -25,7 +24,6 @@ import { ResetPasswordComponent } from './password/resetpassword.component';
         ngCommon.CommonModule,
         FormsModule,
         HttpClientModule,
-        JsonpModule,
         ReactiveFormsModule,
         InputTextModule,
         ButtonModule,

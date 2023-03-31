@@ -2,7 +2,6 @@ import * as ngCommon from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { JsonpModule } from '@angular/http';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { AvatarModule } from 'primeng/avatar';
@@ -79,11 +78,8 @@ import { UserProfileComponent } from './users/userprofile.component';
         ngCommon.CommonModule,
         FormsModule,
         HttpClientModule,
-        JsonpModule,
         ReactiveFormsModule,
-
         UtilsModule,
-
         BlockUIModule,
         ButtonModule,
         CalendarModule,
