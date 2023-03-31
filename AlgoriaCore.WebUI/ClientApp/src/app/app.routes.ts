@@ -46,4 +46,5 @@ export const AppRoutes: ModuleWithProviders<any> = RouterModule.forRoot([{
             loadChildren: () => import('../app/catalogscustomimpl/catalogscustomimpl.module').then(m => m.CatalogsCustomImplModule)
         }
     ]
-}], { relativeLinkResolution: 'legacy' });
+// }], { relativeLinkResolution: 'legacy' });
+}]);

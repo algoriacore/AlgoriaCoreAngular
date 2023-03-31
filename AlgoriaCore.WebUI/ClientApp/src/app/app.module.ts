@@ -17,7 +17,7 @@ import { CarouselModule } from 'primeng/carousel';
 import { ChartModule } from 'primeng/chart';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ChipsModule } from 'primeng/chips';
-import { CodeHighlighterModule } from 'primeng/codehighlighter';
+// import { CodeHighlighterModule } from 'primeng/codehighlighter';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ContextMenuModule } from 'primeng/contextmenu';
@@ -107,7 +107,7 @@ import { JwtInterceptor } from './_helpers/jwt.interceptor';
         ChartModule,
         CheckboxModule,
         ChipsModule,
-        CodeHighlighterModule,
+        // CodeHighlighterModule,
         ConfirmDialogModule,
         ColorPickerModule,
         ContextMenuModule,

@@ -34,7 +34,7 @@
                 ],
                 "styles": [
                     "node_modules/primeng/resources/primeng.min.css",
-                    "node_modules/fullcalendar/main.min.css",
+                    // "node_modules/fullcalendar/main.min.css",
                     "node_modules/quill/dist/quill.snow.css",
                     "node_modules/font-awesome/css/font-awesome.min.css",
                     "node_modules/primeicons/primeicons.css",
@@ -46,7 +46,7 @@
                 "scripts": [
                     "node_modules/moment/moment.js",
                     "node_modules/chart.js/dist/Chart.js",
-                    "node_modules/fullcalendar/main.js",
+                    // "node_modules/fullcalendar/main.js",
                     "node_modules/prismjs/prism.js",
                     "node_modules/quill/dist/quill.js"
                 ],
