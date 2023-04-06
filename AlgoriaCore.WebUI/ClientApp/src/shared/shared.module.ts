@@ -48,6 +48,8 @@ import { GoogleMapAddressModalComponent } from './components/googlemapaddressmod
 import { SelectUsersComponent } from './components/selectusers.component';
 import { NativeElementInjectorDirective } from './directives/NativeElementInjectorDirective ';
 import { SharedRoutingModule } from './shared-routing.module';
+import { AppViewConfigComponent } from './components/app.viewconfig.component';
+import { OrderListModule } from 'primeng/orderlist';
 
 @NgModule({
     imports: [
@@ -85,7 +87,8 @@ import { SharedRoutingModule } from './shared-routing.module';
         RadioButtonModule,
         AutoCompleteModule,
         DropdownModule,
-        SharedRoutingModule
+        SharedRoutingModule,
+        OrderListModule
     ],
     declarations: [
         AppAlertComponent,
@@ -103,7 +106,8 @@ import { SharedRoutingModule } from './shared-routing.module';
         AppPreloaderComponent,
         AppQuestionnaireComponent,
         AppCustomCodeComponent,
-        NativeElementInjectorDirective
+        NativeElementInjectorDirective,
+        AppViewConfigComponent
     ],
     entryComponents: [
         GoogleMapAddressModalComponent
@@ -123,7 +127,8 @@ import { SharedRoutingModule } from './shared-routing.module';
         AppPreloaderComponent,
         AppQuestionnaireComponent,
         AppCustomCodeComponent,
-        NativeElementInjectorDirective
+        NativeElementInjectorDirective,
+        AppViewConfigComponent
     ]
 })
 export class SharedModule { }

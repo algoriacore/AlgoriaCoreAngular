@@ -63,6 +63,9 @@
 }
 
 @media screen and (min-width: $lg) and (max-width: $xl - 1) {
+    .d-lg-50 {
+        width: 50% !important;
+    }
     .d-lg-70 {
         width: 70% !important;
     }

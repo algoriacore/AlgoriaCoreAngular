@@ -91,6 +91,10 @@ export abstract class AppComponentBase {
         return cols.find(p => p.field === field).header;
     }
 
+    isActiveColumn(cols: any[], field: string): boolean {
+        return cols.some(p => p.field === field && p.isActive !== false);
+    }
+
     downloadTempFile(file: any): void {
         const url = this.getBaseServiceUrl() + '/api/File/DownloadTempFile?fileType=' +
             file.fileType + '&fileToken=' + file.fileToken + '&fileName=' + file.fileName;

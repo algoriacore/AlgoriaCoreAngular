@@ -26,9 +26,9 @@ export class FileService {
         return bytes.map((byte, i) => binaryString.charCodeAt(i));
     }
 
-    createAndDownloadBlobFile(body: Uint8Array, filename: string, extension: string) {
+    createAndDownloadBlobFile(body: Uint8Array, filename: string, extension?: string) {
         const blob = new Blob([body]);
-        const fileName = `${filename}.${extension}`;
+        const fileName = extension ? `${filename}.${extension}` : filename;
 
         if (navigator['msSaveBlob']) {
             // IE 10+
@@ -48,7 +48,7 @@ export class FileService {
         }
     }
 
-    createAndDownloadBlobFileFromBase64(base64: string, filename: string, extension: string) {
+    createAndDownloadBlobFileFromBase64(base64: string, filename: string, extension?: string) {
         const self = this;
 
         const arrayBuffer = self.base64ToArrayBuffer(base64);

@@ -3,12 +3,16 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LazyLoadEvent, MenuItem } from 'primeng/api';
 import { finalize } from 'rxjs/operators';
+import { AppSettingsClient } from '../../../shared/AppSettingsClient';
 import {
     UserDeleteCommand,
+    UserExportQuery,
     UserGetListQuery,
     UserListResponse,
     UserServiceProxy
 } from '../../../shared/service-proxies/service-proxies';
+import { FileService } from '../../../shared/services/file.service';
+import { SettingsClientService } from '../../../shared/services/settingsclient.service';
 import { AppComponentBase, PagedTableSummary } from '../../app-component-base';
 import { AppComponent } from '../../app.component';
 import { AuthenticationService } from '../../_services/authentication.service';
@@ -36,13 +40,17 @@ export class UsersComponent extends AppComponentBase implements OnInit {
 
     permissions: any;
 
+    AppSettingsClient = AppSettingsClient;
+
     constructor(
         injector: Injector,
         private formBuilder: FormBuilder,
         private router: Router,
         private userService: UserServiceProxy,
         private authenticationService: AuthenticationService,
-        private app: AppComponent
+        private app: AppComponent,
+        private settingsClient: SettingsClientService,
+        private fileService: FileService
     ) {
         super(injector);
     }
@@ -72,14 +80,20 @@ export class UsersComponent extends AppComponentBase implements OnInit {
             filterText: [filters.filter]
         });
 
-        self.cols = [
-            { field: 'id', header: self.l('Id'), width: '100px' },
-            { field: 'login', header: self.l('Users.UserNameColGrid') },
-            { field: 'fullName', header: self.l('Users.NameColGrid') },
-            { field: 'emailAddress', header: self.l('Users.EmailAddressColGrid') },
-            { field: 'isActiveDesc', header: self.l('IsActive'), width: '100px' },
-            { field: 'userLockedDesc', header: self.l('Users.Locked'), width: '120px' }
-        ];
+        const settingViewConfig = self.settingsClient.getSetting(AppSettingsClient.ViewUsersConfig);
+
+        if (settingViewConfig) {
+            self.cols = JSON.parse(settingViewConfig);
+        } else {
+            self.cols = [
+                { field: 'id', header: self.l('Id'), width: '100px', isActive: true },
+                { field: 'login', header: self.l('Users.UserNameColGrid'), isActive: true },
+                { field: 'fullName', header: self.l('Users.NameColGrid'), isActive: true },
+                { field: 'emailAddress', header: self.l('Users.EmailAddressColGrid'), isActive: true },
+                { field: 'isActiveDesc', header: self.l('IsActive'), width: '100px', isActive: true },
+                { field: 'userLockedDesc', header: self.l('Users.Locked'), width: '120px', isActive: true }
+            ];
+        }
 
         self.query.pageSize = 10;
         self.query.sorting = 'Id';
@@ -275,5 +289,35 @@ export class UsersComponent extends AppComponentBase implements OnInit {
         }
 
         return self.getGrantedMenuItems(ll);
+    }
+
+    configurateView(settingViewConfigName: string): void {
+        const self = this;
+        const callback = (response: any[]) => {
+            if (response) {
+                self.cols = response;
+            }
+        };
+
+        self.app.configurateView(settingViewConfigName, self.cols, callback);
+    }
+
+    exportView(): void {
+        const self = this;
+        const query = new UserExportQuery();
+
+        query.filter = self.f.filterText.value;
+        query.viewColumnsConfigJSON = JSON.stringify(self.cols);
+        query.isPaged = false;
+
+        self.app.blocked = true;
+
+        self.userService.exportUser(query)
+            .pipe(finalize(() => {
+                self.app.blocked = false;
+            }))
+            .subscribe(file => {
+                self.fileService.createAndDownloadBlobFileFromBase64(file.fileBase64, file.fileName);
+            });
     }
 }

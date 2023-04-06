@@ -8,6 +8,7 @@ import { SettingsClientService } from '../shared/services/settingsclient.service
 import { VersionCheckService } from '../shared/services/version.check.service';
 import { AppComponentBase } from './app-component-base';
 import { AuthenticationService } from './_services/authentication.service';
+import { AppViewConfigComponent } from '../shared/components/app.viewconfig.component';
 
 @Component({
     templateUrl: './app.component.html'
@@ -230,5 +231,28 @@ export class AppComponent extends AppComponentBase implements AfterViewInit, Aft
     redirectTo(commands: any[]): void {
         this.router.navigateByUrl('/app/dummy', { skipLocationChange: true }).then(() =>
             this.router.navigate(commands));
+    }
+
+    configurateView(settingViewConfigName: string, cols: any[], callback?: (response: any[]) => void): void {
+        const self = this;
+        const ref = self.dialogService.open(AppViewConfigComponent, {
+            styleClass: 'd-xl-40 d-lg-50 d-md d-sm',
+            header: self.l('Views.Configurate'),
+            showHeader: true,
+            closeOnEscape: false,
+            closable: false,
+            dismissableMask: false,
+            footer: 'DUMMY',
+            data: {
+                settingViewConfigName: settingViewConfigName,
+                cols: cols
+            }
+        });
+
+        ref.onClose.subscribe((response: any[]) => {
+            if (callback) {
+                callback(response);
+            }
+        });
     }
 }

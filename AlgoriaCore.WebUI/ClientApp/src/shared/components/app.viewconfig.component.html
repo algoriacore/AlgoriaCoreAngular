@@ -1,0 +1,34 @@
+    <div class="grid">
+
+        <div class="col-12">
+
+            <p-table [value]="cols">
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th style="width:3rem"></th>
+                        <th>
+                            {{l('Views.Columns.Column')}}
+                        </th>
+                        <th>
+                            {{l('Views.Columns.ShowColumn')}}
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns" let-index="rowIndex">
+                    <tr [pReorderableRow]="index">
+                        <td>
+                            <span class="pi pi-bars" pReorderableRowHandle></span>
+                        </td>
+                        <td>
+                            {{rowData.header}}
+                        </td>
+                        <td>
+                            <p-checkbox [(ngModel)]="rowData.isActive" [binary]="true" [ngModelOptions]="{standalone: true}"></p-checkbox>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+        </div>
+
+</div>

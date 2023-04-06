@@ -72,6 +72,7 @@ import { TenantComponent } from './tenants/tenant.component';
 import { EditUsersComponent } from './users/editusers.component';
 import { UsersComponent } from './users/user.component';
 import { UserProfileComponent } from './users/userprofile.component';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @NgModule({
     imports: [
@@ -114,7 +115,8 @@ import { UserProfileComponent } from './users/userprofile.component';
         SplitButtonModule,
         SpeedDialModule,
         TooltipModule,
-        AvatarModule
+        AvatarModule,
+        MultiSelectModule
     ],
     declarations: [
         RolesComponent,
