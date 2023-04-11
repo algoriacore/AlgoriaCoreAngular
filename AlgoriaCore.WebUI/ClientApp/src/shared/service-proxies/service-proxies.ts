@@ -8046,6 +8046,58 @@ export class UserServiceProxy {
         return _observableOf(null as any);
     }
 
+    exportCSVUser(query: UserExportCSVQuery): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/user/exportcsvuser";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(query);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportCSVUser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportCSVUser(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportCSVUser(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
     getUserAutocompleteList(term: string | null | undefined): Observable<UserListResponse[]> {
         let url_ = this.baseUrl + "/api/user/getuserautocompletelist?";
         if (term !== undefined && term !== null)
@@ -19737,6 +19789,43 @@ export class UserExportQuery extends PageListByDto implements IUserExportQuery {
 }
 
 export interface IUserExportQuery extends IPageListByDto {
+    tenant?: number | undefined;
+    viewColumnsConfigJSON?: string | undefined;
+}
+
+export class UserExportCSVQuery extends PageListByDto implements IUserExportCSVQuery {
+    tenant?: number | undefined;
+    viewColumnsConfigJSON?: string | undefined;
+
+    constructor(data?: IUserExportCSVQuery) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.tenant = _data["tenant"];
+            this.viewColumnsConfigJSON = _data["viewColumnsConfigJSON"];
+        }
+    }
+
+    static override fromJS(data: any): UserExportCSVQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserExportCSVQuery();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tenant"] = this.tenant;
+        data["viewColumnsConfigJSON"] = this.viewColumnsConfigJSON;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface IUserExportCSVQuery extends IPageListByDto {
     tenant?: number | undefined;
     viewColumnsConfigJSON?: string | undefined;
 }

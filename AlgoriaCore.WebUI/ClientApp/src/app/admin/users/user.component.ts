@@ -6,6 +6,7 @@ import { finalize } from 'rxjs/operators';
 import { AppSettingsClient } from '../../../shared/AppSettingsClient';
 import {
     UserDeleteCommand,
+    UserExportCSVQuery,
     UserExportQuery,
     UserGetListQuery,
     UserListResponse,
@@ -41,6 +42,8 @@ export class UsersComponent extends AppComponentBase implements OnInit {
     permissions: any;
 
     AppSettingsClient = AppSettingsClient;
+
+    exportMenuItems: MenuItem[];
 
     constructor(
         injector: Injector,
@@ -98,6 +101,8 @@ export class UsersComponent extends AppComponentBase implements OnInit {
         self.query.pageSize = 10;
         self.query.sorting = 'Id';
         self.query.pageNumber = 1;
+
+        self.setUpExportMenu();
     }
 
     filterSearch(event: any): void {
@@ -302,6 +307,29 @@ export class UsersComponent extends AppComponentBase implements OnInit {
         self.app.configurateView(settingViewConfigName, self.cols, callback);
     }
 
+    // Export view
+
+    setUpExportMenu(): void {
+        const self = this;
+
+        self.exportMenuItems = [
+            {
+                label: self.l('Views.Export.CSV'),
+                icon: 'pi pi-file',
+                command: () => {
+                    self.exportViewToCSV();
+                }
+            },
+            {
+                label: self.l('Views.Export.Excel'),
+                icon: 'pi pi-file-excel',
+                command: () => {
+                    self.exportView();
+                }
+            }
+        ];
+    }
+
     exportView(): void {
         const self = this;
         const query = new UserExportQuery();
@@ -313,6 +341,25 @@ export class UsersComponent extends AppComponentBase implements OnInit {
         self.app.blocked = true;
 
         self.userService.exportUser(query)
+            .pipe(finalize(() => {
+                self.app.blocked = false;
+            }))
+            .subscribe(file => {
+                self.fileService.createAndDownloadBlobFileFromBase64(file.fileBase64, file.fileName);
+            });
+    }
+
+    exportViewToCSV(): void {
+        const self = this;
+        const query = new UserExportCSVQuery();
+
+        query.filter = self.f.filterText.value;
+        query.viewColumnsConfigJSON = JSON.stringify(self.cols);
+        query.isPaged = false;
+
+        self.app.blocked = true;
+
+        self.userService.exportCSVUser(query)
             .pipe(finalize(() => {
                 self.app.blocked = false;
             }))
