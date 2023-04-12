@@ -4,9 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { finalize, first } from 'rxjs/operators';
 import { AppComponentBase } from 'src/app/app-component-base';
 import {
-    RolForListActiveResponse,
-    RolGetForListActiveQuery,
-    RolServiceProxy,
+    RoleForListActiveResponse,
+    RoleGetForListActiveQuery,
+    RoleServiceProxy,
     UserCreateCommand,
     UserForEditResponse,
     UserGetForEditQuery,
@@ -25,7 +25,7 @@ export class EditUsersComponent extends AppComponentBase implements OnInit {
 
     id?: number = null;
     model: UserForEditResponse;
-    roleList: RolForListActiveResponse[] = [];
+    roleList: RoleForListActiveResponse[] = [];
     isactive: boolean;
 
     constructor(
@@ -34,7 +34,7 @@ export class EditUsersComponent extends AppComponentBase implements OnInit {
         private activatedRoute: ActivatedRoute,
         private router: Router,
         private userService: UserServiceProxy,
-        private rolService: RolServiceProxy,
+        private roleService: RoleServiceProxy,
         private changeLogService: ChangeLogService,
         private app: AppComponent
     ) {
@@ -184,7 +184,7 @@ export class EditUsersComponent extends AppComponentBase implements OnInit {
     getRoles(): void {
         const self = this;
 
-        self.rolService.getRolListActive(new RolGetForListActiveQuery())
+        self.roleService.getRoleListActive(new RoleGetForListActiveQuery())
             .pipe(first())
             .subscribe(data => {
                 self.roleList = data;

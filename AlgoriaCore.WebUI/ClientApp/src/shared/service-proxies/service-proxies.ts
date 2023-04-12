@@ -6466,7 +6466,7 @@ export class RegisterServiceProxy {
 }
 
 @Injectable()
-export class RolServiceProxy {
+export class RoleServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -6476,8 +6476,8 @@ export class RolServiceProxy {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://localhost:51023";
     }
 
-    getRolList(query: RolGetListQuery): Observable<PagedResultDtoOfRolForListResponse> {
-        let url_ = this.baseUrl + "/api/rol/getrollist";
+    getRoleList(query: RoleGetListQuery): Observable<PagedResultDtoOfRoleForListResponse> {
+        let url_ = this.baseUrl + "/api/role/getrolelist";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(query);
@@ -6493,20 +6493,20 @@ export class RolServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetRolList(response_);
+            return this.processGetRoleList(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetRolList(response_ as any);
+                    return this.processGetRoleList(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<PagedResultDtoOfRolForListResponse>;
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfRoleForListResponse>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<PagedResultDtoOfRolForListResponse>;
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfRoleForListResponse>;
         }));
     }
 
-    protected processGetRolList(response: HttpResponseBase): Observable<PagedResultDtoOfRolForListResponse> {
+    protected processGetRoleList(response: HttpResponseBase): Observable<PagedResultDtoOfRoleForListResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -6517,7 +6517,7 @@ export class RolServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfRolForListResponse.fromJS(resultData200);
+            result200 = PagedResultDtoOfRoleForListResponse.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -6528,8 +6528,8 @@ export class RolServiceProxy {
         return _observableOf(null as any);
     }
 
-    get(dto: RolGetByIdQuery): Observable<RolResponse> {
-        let url_ = this.baseUrl + "/api/rol/get";
+    get(dto: RoleGetByIdQuery): Observable<RoleResponse> {
+        let url_ = this.baseUrl + "/api/role/get";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(dto);
@@ -6551,14 +6551,14 @@ export class RolServiceProxy {
                 try {
                     return this.processGet(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<RolResponse>;
+                    return _observableThrow(e) as any as Observable<RoleResponse>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<RolResponse>;
+                return _observableThrow(response_) as any as Observable<RoleResponse>;
         }));
     }
 
-    protected processGet(response: HttpResponseBase): Observable<RolResponse> {
+    protected processGet(response: HttpResponseBase): Observable<RoleResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -6569,7 +6569,7 @@ export class RolServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = RolResponse.fromJS(resultData200);
+            result200 = RoleResponse.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -6580,8 +6580,8 @@ export class RolServiceProxy {
         return _observableOf(null as any);
     }
 
-    createRol(dto: RolCreateCommand): Observable<number> {
-        let url_ = this.baseUrl + "/api/rol/createrol";
+    createRole(dto: RoleCreateCommand): Observable<number> {
+        let url_ = this.baseUrl + "/api/role/createrole";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(dto);
@@ -6597,11 +6597,11 @@ export class RolServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreateRol(response_);
+            return this.processCreateRole(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processCreateRol(response_ as any);
+                    return this.processCreateRole(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<number>;
                 }
@@ -6610,7 +6610,7 @@ export class RolServiceProxy {
         }));
     }
 
-    protected processCreateRol(response: HttpResponseBase): Observable<number> {
+    protected processCreateRole(response: HttpResponseBase): Observable<number> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -6633,8 +6633,8 @@ export class RolServiceProxy {
         return _observableOf(null as any);
     }
 
-    updateRol(dto: RolUpdateCommand): Observable<number> {
-        let url_ = this.baseUrl + "/api/rol/updaterol";
+    updateRole(dto: RoleUpdateCommand): Observable<number> {
+        let url_ = this.baseUrl + "/api/role/updaterole";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(dto);
@@ -6650,11 +6650,11 @@ export class RolServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUpdateRol(response_);
+            return this.processUpdateRole(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processUpdateRol(response_ as any);
+                    return this.processUpdateRole(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<number>;
                 }
@@ -6663,7 +6663,7 @@ export class RolServiceProxy {
         }));
     }
 
-    protected processUpdateRol(response: HttpResponseBase): Observable<number> {
+    protected processUpdateRole(response: HttpResponseBase): Observable<number> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -6686,8 +6686,8 @@ export class RolServiceProxy {
         return _observableOf(null as any);
     }
 
-    deleteRol(dto: RolDeleteCommand): Observable<number> {
-        let url_ = this.baseUrl + "/api/rol/deleterol";
+    deleteRole(dto: RoleDeleteCommand): Observable<number> {
+        let url_ = this.baseUrl + "/api/role/deleterole";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(dto);
@@ -6703,11 +6703,11 @@ export class RolServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDeleteRol(response_);
+            return this.processDeleteRole(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processDeleteRol(response_ as any);
+                    return this.processDeleteRole(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<number>;
                 }
@@ -6716,7 +6716,7 @@ export class RolServiceProxy {
         }));
     }
 
-    protected processDeleteRol(response: HttpResponseBase): Observable<number> {
+    protected processDeleteRole(response: HttpResponseBase): Observable<number> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -6739,8 +6739,8 @@ export class RolServiceProxy {
         return _observableOf(null as any);
     }
 
-    getRolForEdit(dto: RolGetForEditQuery): Observable<RolForEditReponse> {
-        let url_ = this.baseUrl + "/api/rol/getrolforedit";
+    getRoleForEdit(dto: RoleGetForEditQuery): Observable<RoleForEditReponse> {
+        let url_ = this.baseUrl + "/api/role/getroleforedit";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(dto);
@@ -6756,20 +6756,20 @@ export class RolServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetRolForEdit(response_);
+            return this.processGetRoleForEdit(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetRolForEdit(response_ as any);
+                    return this.processGetRoleForEdit(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<RolForEditReponse>;
+                    return _observableThrow(e) as any as Observable<RoleForEditReponse>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<RolForEditReponse>;
+                return _observableThrow(response_) as any as Observable<RoleForEditReponse>;
         }));
     }
 
-    protected processGetRolForEdit(response: HttpResponseBase): Observable<RolForEditReponse> {
+    protected processGetRoleForEdit(response: HttpResponseBase): Observable<RoleForEditReponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -6780,7 +6780,7 @@ export class RolServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = RolForEditReponse.fromJS(resultData200);
+            result200 = RoleForEditReponse.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -6791,8 +6791,8 @@ export class RolServiceProxy {
         return _observableOf(null as any);
     }
 
-    getRolListActive(query: RolGetForListActiveQuery): Observable<RolForListActiveResponse[]> {
-        let url_ = this.baseUrl + "/api/rol/getrollistactive";
+    getRoleListActive(query: RoleGetForListActiveQuery): Observable<RoleForListActiveResponse[]> {
+        let url_ = this.baseUrl + "/api/role/getrolelistactive";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(query);
@@ -6808,20 +6808,20 @@ export class RolServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetRolListActive(response_);
+            return this.processGetRoleListActive(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetRolListActive(response_ as any);
+                    return this.processGetRoleListActive(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<RolForListActiveResponse[]>;
+                    return _observableThrow(e) as any as Observable<RoleForListActiveResponse[]>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<RolForListActiveResponse[]>;
+                return _observableThrow(response_) as any as Observable<RoleForListActiveResponse[]>;
         }));
     }
 
-    protected processGetRolListActive(response: HttpResponseBase): Observable<RolForListActiveResponse[]> {
+    protected processGetRoleListActive(response: HttpResponseBase): Observable<RoleForListActiveResponse[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -6835,7 +6835,7 @@ export class RolServiceProxy {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(RolForListActiveResponse.fromJS(item));
+                    result200!.push(RoleForListActiveResponse.fromJS(item));
             }
             else {
                 result200 = <any>null;
@@ -17218,11 +17218,11 @@ export interface ITenantConfirmRegistrationCommand {
     code?: string | undefined;
 }
 
-export class PagedResultDtoOfRolForListResponse implements IPagedResultDtoOfRolForListResponse {
+export class PagedResultDtoOfRoleForListResponse implements IPagedResultDtoOfRoleForListResponse {
     totalCount!: number;
-    items?: RolForListResponse[] | undefined;
+    items?: RoleForListResponse[] | undefined;
 
-    constructor(data?: IPagedResultDtoOfRolForListResponse) {
+    constructor(data?: IPagedResultDtoOfRoleForListResponse) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -17237,14 +17237,14 @@ export class PagedResultDtoOfRolForListResponse implements IPagedResultDtoOfRolF
             if (Array.isArray(_data["items"])) {
                 this.items = [] as any;
                 for (let item of _data["items"])
-                    this.items!.push(RolForListResponse.fromJS(item));
+                    this.items!.push(RoleForListResponse.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): PagedResultDtoOfRolForListResponse {
+    static fromJS(data: any): PagedResultDtoOfRoleForListResponse {
         data = typeof data === 'object' ? data : {};
-        let result = new PagedResultDtoOfRolForListResponse();
+        let result = new PagedResultDtoOfRoleForListResponse();
         result.init(data);
         return result;
     }
@@ -17261,19 +17261,19 @@ export class PagedResultDtoOfRolForListResponse implements IPagedResultDtoOfRolF
     }
 }
 
-export interface IPagedResultDtoOfRolForListResponse {
+export interface IPagedResultDtoOfRoleForListResponse {
     totalCount: number;
-    items?: RolForListResponse[] | undefined;
+    items?: RoleForListResponse[] | undefined;
 }
 
-export class RolForListResponse implements IRolForListResponse {
+export class RoleForListResponse implements IRoleForListResponse {
     id!: number;
     name?: string | undefined;
     displayName?: string | undefined;
     isActive?: boolean | undefined;
     isActiveDesc?: string | undefined;
 
-    constructor(data?: IRolForListResponse) {
+    constructor(data?: IRoleForListResponse) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -17292,9 +17292,9 @@ export class RolForListResponse implements IRolForListResponse {
         }
     }
 
-    static fromJS(data: any): RolForListResponse {
+    static fromJS(data: any): RoleForListResponse {
         data = typeof data === 'object' ? data : {};
-        let result = new RolForListResponse();
+        let result = new RoleForListResponse();
         result.init(data);
         return result;
     }
@@ -17310,7 +17310,7 @@ export class RolForListResponse implements IRolForListResponse {
     }
 }
 
-export interface IRolForListResponse {
+export interface IRoleForListResponse {
     id: number;
     name?: string | undefined;
     displayName?: string | undefined;
@@ -17318,9 +17318,9 @@ export interface IRolForListResponse {
     isActiveDesc?: string | undefined;
 }
 
-export class RolGetListQuery extends PageListByDto implements IRolGetListQuery {
+export class RoleGetListQuery extends PageListByDto implements IRoleGetListQuery {
 
-    constructor(data?: IRolGetListQuery) {
+    constructor(data?: IRoleGetListQuery) {
         super(data);
     }
 
@@ -17328,9 +17328,9 @@ export class RolGetListQuery extends PageListByDto implements IRolGetListQuery {
         super.init(_data);
     }
 
-    static override fromJS(data: any): RolGetListQuery {
+    static override fromJS(data: any): RoleGetListQuery {
         data = typeof data === 'object' ? data : {};
-        let result = new RolGetListQuery();
+        let result = new RoleGetListQuery();
         result.init(data);
         return result;
     }
@@ -17342,10 +17342,10 @@ export class RolGetListQuery extends PageListByDto implements IRolGetListQuery {
     }
 }
 
-export interface IRolGetListQuery extends IPageListByDto {
+export interface IRoleGetListQuery extends IPageListByDto {
 }
 
-export class RolResponse implements IRolResponse {
+export class RoleResponse implements IRoleResponse {
     id!: number;
     tenantId?: number | undefined;
     name?: string | undefined;
@@ -17353,7 +17353,7 @@ export class RolResponse implements IRolResponse {
     isActive?: boolean | undefined;
     isDeleted?: boolean | undefined;
 
-    constructor(data?: IRolResponse) {
+    constructor(data?: IRoleResponse) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -17373,9 +17373,9 @@ export class RolResponse implements IRolResponse {
         }
     }
 
-    static fromJS(data: any): RolResponse {
+    static fromJS(data: any): RoleResponse {
         data = typeof data === 'object' ? data : {};
-        let result = new RolResponse();
+        let result = new RoleResponse();
         result.init(data);
         return result;
     }
@@ -17392,7 +17392,7 @@ export class RolResponse implements IRolResponse {
     }
 }
 
-export interface IRolResponse {
+export interface IRoleResponse {
     id: number;
     tenantId?: number | undefined;
     name?: string | undefined;
@@ -17401,10 +17401,10 @@ export interface IRolResponse {
     isDeleted?: boolean | undefined;
 }
 
-export class RolGetByIdQuery implements IRolGetByIdQuery {
+export class RoleGetByIdQuery implements IRoleGetByIdQuery {
     id!: number;
 
-    constructor(data?: IRolGetByIdQuery) {
+    constructor(data?: IRoleGetByIdQuery) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -17419,9 +17419,9 @@ export class RolGetByIdQuery implements IRolGetByIdQuery {
         }
     }
 
-    static fromJS(data: any): RolGetByIdQuery {
+    static fromJS(data: any): RoleGetByIdQuery {
         data = typeof data === 'object' ? data : {};
-        let result = new RolGetByIdQuery();
+        let result = new RoleGetByIdQuery();
         result.init(data);
         return result;
     }
@@ -17433,18 +17433,18 @@ export class RolGetByIdQuery implements IRolGetByIdQuery {
     }
 }
 
-export interface IRolGetByIdQuery {
+export interface IRoleGetByIdQuery {
     id: number;
 }
 
-export class RolCreateCommand implements IRolCreateCommand {
+export class RoleCreateCommand implements IRoleCreateCommand {
     id!: number;
     name?: string | undefined;
     displayName?: string | undefined;
     isActive!: boolean;
     grantedPermissionNames?: string[] | undefined;
 
-    constructor(data?: IRolCreateCommand) {
+    constructor(data?: IRoleCreateCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -17467,9 +17467,9 @@ export class RolCreateCommand implements IRolCreateCommand {
         }
     }
 
-    static fromJS(data: any): RolCreateCommand {
+    static fromJS(data: any): RoleCreateCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new RolCreateCommand();
+        let result = new RoleCreateCommand();
         result.init(data);
         return result;
     }
@@ -17489,7 +17489,7 @@ export class RolCreateCommand implements IRolCreateCommand {
     }
 }
 
-export interface IRolCreateCommand {
+export interface IRoleCreateCommand {
     id: number;
     name?: string | undefined;
     displayName?: string | undefined;
@@ -17497,7 +17497,7 @@ export interface IRolCreateCommand {
     grantedPermissionNames?: string[] | undefined;
 }
 
-export class RolUpdateCommand implements IRolUpdateCommand {
+export class RoleUpdateCommand implements IRoleUpdateCommand {
     id!: number;
     name?: string | undefined;
     displayName?: string | undefined;
@@ -17505,7 +17505,7 @@ export class RolUpdateCommand implements IRolUpdateCommand {
     isDeleted!: boolean;
     grantedPermissionNames?: string[] | undefined;
 
-    constructor(data?: IRolUpdateCommand) {
+    constructor(data?: IRoleUpdateCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -17529,9 +17529,9 @@ export class RolUpdateCommand implements IRolUpdateCommand {
         }
     }
 
-    static fromJS(data: any): RolUpdateCommand {
+    static fromJS(data: any): RoleUpdateCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new RolUpdateCommand();
+        let result = new RoleUpdateCommand();
         result.init(data);
         return result;
     }
@@ -17552,7 +17552,7 @@ export class RolUpdateCommand implements IRolUpdateCommand {
     }
 }
 
-export interface IRolUpdateCommand {
+export interface IRoleUpdateCommand {
     id: number;
     name?: string | undefined;
     displayName?: string | undefined;
@@ -17561,10 +17561,10 @@ export interface IRolUpdateCommand {
     grantedPermissionNames?: string[] | undefined;
 }
 
-export class RolDeleteCommand implements IRolDeleteCommand {
+export class RoleDeleteCommand implements IRoleDeleteCommand {
     id!: number;
 
-    constructor(data?: IRolDeleteCommand) {
+    constructor(data?: IRoleDeleteCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -17579,9 +17579,9 @@ export class RolDeleteCommand implements IRolDeleteCommand {
         }
     }
 
-    static fromJS(data: any): RolDeleteCommand {
+    static fromJS(data: any): RoleDeleteCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new RolDeleteCommand();
+        let result = new RoleDeleteCommand();
         result.init(data);
         return result;
     }
@@ -17593,19 +17593,19 @@ export class RolDeleteCommand implements IRolDeleteCommand {
     }
 }
 
-export interface IRolDeleteCommand {
+export interface IRoleDeleteCommand {
     id: number;
 }
 
-export class RolForEditReponse implements IRolForEditReponse {
+export class RoleForEditReponse implements IRoleForEditReponse {
     id!: number;
     tenantId?: number | undefined;
     name?: string | undefined;
     displayName?: string | undefined;
     isActive?: boolean | undefined;
-    permisoList?: RolPermisoResponse[] | undefined;
+    permissionList?: RolePermisoResponse[] | undefined;
 
-    constructor(data?: IRolForEditReponse) {
+    constructor(data?: IRoleForEditReponse) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -17621,17 +17621,17 @@ export class RolForEditReponse implements IRolForEditReponse {
             this.name = _data["name"];
             this.displayName = _data["displayName"];
             this.isActive = _data["isActive"];
-            if (Array.isArray(_data["permisoList"])) {
-                this.permisoList = [] as any;
-                for (let item of _data["permisoList"])
-                    this.permisoList!.push(RolPermisoResponse.fromJS(item));
+            if (Array.isArray(_data["permissionList"])) {
+                this.permissionList = [] as any;
+                for (let item of _data["permissionList"])
+                    this.permissionList!.push(RolePermisoResponse.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): RolForEditReponse {
+    static fromJS(data: any): RoleForEditReponse {
         data = typeof data === 'object' ? data : {};
-        let result = new RolForEditReponse();
+        let result = new RoleForEditReponse();
         result.init(data);
         return result;
     }
@@ -17643,29 +17643,29 @@ export class RolForEditReponse implements IRolForEditReponse {
         data["name"] = this.name;
         data["displayName"] = this.displayName;
         data["isActive"] = this.isActive;
-        if (Array.isArray(this.permisoList)) {
-            data["permisoList"] = [];
-            for (let item of this.permisoList)
-                data["permisoList"].push(item.toJSON());
+        if (Array.isArray(this.permissionList)) {
+            data["permissionList"] = [];
+            for (let item of this.permissionList)
+                data["permissionList"].push(item.toJSON());
         }
         return data;
     }
 }
 
-export interface IRolForEditReponse {
+export interface IRoleForEditReponse {
     id: number;
     tenantId?: number | undefined;
     name?: string | undefined;
     displayName?: string | undefined;
     isActive?: boolean | undefined;
-    permisoList?: RolPermisoResponse[] | undefined;
+    permissionList?: RolePermisoResponse[] | undefined;
 }
 
-export class RolPermisoResponse implements IRolPermisoResponse {
+export class RolePermisoResponse implements IRolePermisoResponse {
     id!: number;
     name?: string | undefined;
 
-    constructor(data?: IRolPermisoResponse) {
+    constructor(data?: IRolePermisoResponse) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -17681,9 +17681,9 @@ export class RolPermisoResponse implements IRolPermisoResponse {
         }
     }
 
-    static fromJS(data: any): RolPermisoResponse {
+    static fromJS(data: any): RolePermisoResponse {
         data = typeof data === 'object' ? data : {};
-        let result = new RolPermisoResponse();
+        let result = new RolePermisoResponse();
         result.init(data);
         return result;
     }
@@ -17696,15 +17696,15 @@ export class RolPermisoResponse implements IRolPermisoResponse {
     }
 }
 
-export interface IRolPermisoResponse {
+export interface IRolePermisoResponse {
     id: number;
     name?: string | undefined;
 }
 
-export class RolGetForEditQuery implements IRolGetForEditQuery {
+export class RoleGetForEditQuery implements IRoleGetForEditQuery {
     id!: number;
 
-    constructor(data?: IRolGetForEditQuery) {
+    constructor(data?: IRoleGetForEditQuery) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -17719,9 +17719,9 @@ export class RolGetForEditQuery implements IRolGetForEditQuery {
         }
     }
 
-    static fromJS(data: any): RolGetForEditQuery {
+    static fromJS(data: any): RoleGetForEditQuery {
         data = typeof data === 'object' ? data : {};
-        let result = new RolGetForEditQuery();
+        let result = new RoleGetForEditQuery();
         result.init(data);
         return result;
     }
@@ -17733,16 +17733,16 @@ export class RolGetForEditQuery implements IRolGetForEditQuery {
     }
 }
 
-export interface IRolGetForEditQuery {
+export interface IRoleGetForEditQuery {
     id: number;
 }
 
-export class RolForListActiveResponse implements IRolForListActiveResponse {
+export class RoleForListActiveResponse implements IRoleForListActiveResponse {
     id!: number;
     name?: string | undefined;
     displayName?: string | undefined;
 
-    constructor(data?: IRolForListActiveResponse) {
+    constructor(data?: IRoleForListActiveResponse) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -17759,9 +17759,9 @@ export class RolForListActiveResponse implements IRolForListActiveResponse {
         }
     }
 
-    static fromJS(data: any): RolForListActiveResponse {
+    static fromJS(data: any): RoleForListActiveResponse {
         data = typeof data === 'object' ? data : {};
-        let result = new RolForListActiveResponse();
+        let result = new RoleForListActiveResponse();
         result.init(data);
         return result;
     }
@@ -17775,15 +17775,15 @@ export class RolForListActiveResponse implements IRolForListActiveResponse {
     }
 }
 
-export interface IRolForListActiveResponse {
+export interface IRoleForListActiveResponse {
     id: number;
     name?: string | undefined;
     displayName?: string | undefined;
 }
 
-export class RolGetForListActiveQuery implements IRolGetForListActiveQuery {
+export class RoleGetForListActiveQuery implements IRoleGetForListActiveQuery {
 
-    constructor(data?: IRolGetForListActiveQuery) {
+    constructor(data?: IRoleGetForListActiveQuery) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -17795,9 +17795,9 @@ export class RolGetForListActiveQuery implements IRolGetForListActiveQuery {
     init(_data?: any) {
     }
 
-    static fromJS(data: any): RolGetForListActiveQuery {
+    static fromJS(data: any): RoleGetForListActiveQuery {
         data = typeof data === 'object' ? data : {};
-        let result = new RolGetForListActiveQuery();
+        let result = new RoleGetForListActiveQuery();
         result.init(data);
         return result;
     }
@@ -17808,7 +17808,7 @@ export class RolGetForListActiveQuery implements IRolGetForListActiveQuery {
     }
 }
 
-export interface IRolGetForListActiveQuery {
+export interface IRoleGetForListActiveQuery {
 }
 
 export class WeatherForecast implements IWeatherForecast {

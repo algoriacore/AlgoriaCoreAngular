@@ -7,11 +7,11 @@ import { AppComponentBase } from 'src/app/app-component-base';
 import {
     Permission,
     PermissionServiceProxy,
-    RolCreateCommand,
-    RolForEditReponse,
-    RolGetForEditQuery,
-    RolServiceProxy,
-    RolUpdateCommand
+    RoleCreateCommand,
+    RoleForEditReponse,
+    RoleGetForEditQuery,
+    RoleServiceProxy,
+    RoleUpdateCommand
 } from '../../../shared/service-proxies/service-proxies';
 import { AppComponent } from '../../app.component';
 import { ChangeLogService } from '../../_services/changelog.service';
@@ -27,7 +27,7 @@ export class EditRolesComponent extends AppComponentBase implements OnInit {
     treeNodes: TreeNode[] = [];
     selectedNodes: TreeNode[] = [];
     id?: number = null;
-    model: RolForEditReponse;
+    model: RoleForEditReponse;
     isActive: boolean;
 
     constructor(
@@ -35,7 +35,7 @@ export class EditRolesComponent extends AppComponentBase implements OnInit {
         private formBuilder: FormBuilder,
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private rolService: RolServiceProxy,
+        private roleService: RoleServiceProxy,
         private permissionService: PermissionServiceProxy,
         private changeLogService: ChangeLogService,
         private app: AppComponent
@@ -66,12 +66,12 @@ export class EditRolesComponent extends AppComponentBase implements OnInit {
 
     getForEdit(id: number): void {
         const self = this;
-        const query = new RolGetForEditQuery();
+        const query = new RoleGetForEditQuery();
 
         query.id = self.id;
         self.app.blocked = true;
 
-        self.rolService.getRolForEdit(query)
+        self.roleService.getRoleForEdit(query)
             .pipe(finalize(() => {
                 self.app.blocked = false;
             }))
@@ -91,7 +91,7 @@ export class EditRolesComponent extends AppComponentBase implements OnInit {
         const self = this;
 
         if (self.id) {
-            const updateCmd = new RolUpdateCommand();
+            const updateCmd = new RoleUpdateCommand();
 
             updateCmd.id = self.model.id;
             updateCmd.name = self.f.name.value;
@@ -101,7 +101,7 @@ export class EditRolesComponent extends AppComponentBase implements OnInit {
 
             self.app.blocked = true;
 
-            self.rolService.updateRol(updateCmd)
+            self.roleService.updateRole(updateCmd)
                 .pipe(finalize(() => {
                     self.app.blocked = false;
                 }))
@@ -110,7 +110,7 @@ export class EditRolesComponent extends AppComponentBase implements OnInit {
                     self.return();
                 });
         } else {
-            const createCmd = new RolCreateCommand();
+            const createCmd = new RoleCreateCommand();
 
             createCmd.name = self.f.name.value;
             createCmd.displayName = self.f.displayName.value;
@@ -119,7 +119,7 @@ export class EditRolesComponent extends AppComponentBase implements OnInit {
 
             self.app.blocked = true;
 
-            self.rolService.createRol(createCmd)
+            self.roleService.createRole(createCmd)
                 .pipe(finalize(() => {
                     self.app.blocked = false;
                 }))
@@ -189,8 +189,8 @@ export class EditRolesComponent extends AppComponentBase implements OnInit {
             json['icon'] = 'fa fa-file-o';
         }
 
-        if (self.model && self.model.permisoList) {
-            for (const permiso of self.model.permisoList) {
+        if (self.model && self.model.permissionList) {
+            for (const permiso of self.model.permissionList) {
                 if (permiso.name === nodo.name) {
                     self.selectedNodes.push(json);
                 }

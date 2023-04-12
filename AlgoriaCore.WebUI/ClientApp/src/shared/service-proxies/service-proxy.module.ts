@@ -8,7 +8,7 @@ import * as ApiServiceProxies from './service-proxies';
         ApiServiceProxies.LanguageServiceProxy,
         ApiServiceProxies.PermissionServiceProxy,
         ApiServiceProxies.RegisterServiceProxy,
-        ApiServiceProxies.RolServiceProxy,
+        ApiServiceProxies.RoleServiceProxy,
         ApiServiceProxies.SampleDataServiceProxy,
         ApiServiceProxies.TenantServiceProxy,
         ApiServiceProxies.UserServiceProxy,

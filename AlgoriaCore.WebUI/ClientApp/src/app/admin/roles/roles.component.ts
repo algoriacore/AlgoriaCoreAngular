@@ -4,10 +4,10 @@ import { Router } from '@angular/router';
 import { LazyLoadEvent, MenuItem } from 'primeng/api';
 import { finalize } from 'rxjs/operators';
 import {
-    RolDeleteCommand,
-    RolForListResponse,
-    RolGetListQuery,
-    RolServiceProxy
+    RoleDeleteCommand,
+    RoleForListResponse,
+    RoleGetListQuery,
+    RoleServiceProxy
 } from '../../../shared/service-proxies/service-proxies';
 import { AppComponentBase, PagedTableSummary } from '../../app-component-base';
 import { AppComponent } from '../../app.component';
@@ -23,13 +23,13 @@ export class RolesComponent extends AppComponentBase implements OnInit {
 
     form: FormGroup;
 
-    data: RolForListResponse[];
+    data: RoleForListResponse[];
     pagedTableSummary: PagedTableSummary = new PagedTableSummary();
 
     cols: any[];
     selectedItem: any;
     items: MenuItem[];
-    query: RolGetListQuery = new RolGetListQuery();
+    query: RoleGetListQuery = new RoleGetListQuery();
 
     browserStorageTableKey: string;
     browserStorageTableFilterKey = 'table-role-filters';
@@ -40,7 +40,7 @@ export class RolesComponent extends AppComponentBase implements OnInit {
         injector: Injector,
         private formBuilder: FormBuilder,
         private router: Router,
-        private rolService: RolServiceProxy,
+        private roleService: RoleServiceProxy,
         private changeLogService: ChangeLogService,
         private app: AppComponent
     ) {
@@ -99,7 +99,7 @@ export class RolesComponent extends AppComponentBase implements OnInit {
 
         self.app.blocked = true;
 
-        self.rolService.getRolList(self.query)
+        self.roleService.getRoleList(self.query)
             .pipe(finalize(() => {
                 self.app.blocked = false;
             }))
@@ -137,19 +137,19 @@ export class RolesComponent extends AppComponentBase implements OnInit {
         this.router.navigate(['/app/admin/roles/edit', id]);
     }
 
-    delete(rowData: RolForListResponse): void {
+    delete(rowData: RoleForListResponse): void {
         const self = this;
 
         self.alertService.confirmDelete(
             self.l('ConfirmationDeleteRecordWithNameMessage', rowData.displayName), self.l('Confirmation'),
             function () {
-                const cmd = new RolDeleteCommand();
+                const cmd = new RoleDeleteCommand();
 
                 cmd.id = rowData.id;
 
                 self.app.blocked = true;
 
-                self.rolService.deleteRol(cmd)
+                self.roleService.deleteRole(cmd)
                     .pipe(finalize(() => {
                         self.app.blocked = false;
                     }))

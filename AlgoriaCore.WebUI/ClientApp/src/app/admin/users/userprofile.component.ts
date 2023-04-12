@@ -10,7 +10,7 @@ import { AppSettings } from '../../../shared/AppSettings';
 import {
     ComboboxItemDto,
     FileServiceProxy,
-    RolForListActiveResponse,
+    RoleForListActiveResponse,
     UserForEditResponse,
     UserProfileQuery,
     UserServiceProxy,
@@ -30,7 +30,7 @@ export class UserProfileComponent extends AppComponentBase implements OnInit {
 
     id?: number = null;
     model: UserForEditResponse;
-    roleList: RolForListActiveResponse[] = [];
+    roleList: RoleForListActiveResponse[] = [];
     isactive: boolean;
     uploadedFiles: any[] = [];
     msgs: Message[];
