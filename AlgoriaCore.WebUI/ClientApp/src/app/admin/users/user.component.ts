@@ -326,6 +326,13 @@ export class UsersComponent extends AppComponentBase implements OnInit {
                 command: () => {
                     self.exportView();
                 }
+            },
+            {
+                label: self.l('Views.Export.PDF'),
+                icon: 'pi pi-file-pdf',
+                command: () => {
+                    self.exportViewToPDF();
+                }
             }
         ];
     }
@@ -366,5 +373,9 @@ export class UsersComponent extends AppComponentBase implements OnInit {
             .subscribe(file => {
                 self.fileService.createAndDownloadBlobFileFromBase64(file.fileBase64, file.fileName);
             });
+    }
+
+    exportViewToPDF(): void {
+        // const self = this;
     }
 }
