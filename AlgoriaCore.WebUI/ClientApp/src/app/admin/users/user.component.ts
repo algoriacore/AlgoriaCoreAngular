@@ -7,6 +7,7 @@ import { AppSettingsClient } from '../../../shared/AppSettingsClient';
 import {
     UserDeleteCommand,
     UserExportCSVQuery,
+    UserExportPDFQuery,
     UserExportQuery,
     UserGetListQuery,
     UserListResponse,
@@ -83,26 +84,70 @@ export class UsersComponent extends AppComponentBase implements OnInit {
             filterText: [filters.filter]
         });
 
-        const settingViewConfig = self.settingsClient.getSetting(AppSettingsClient.ViewUsersConfig);
-
-        if (settingViewConfig) {
-            self.cols = JSON.parse(settingViewConfig);
-        } else {
-            self.cols = [
-                { field: 'id', header: self.l('Id'), width: '100px', isActive: true },
-                { field: 'login', header: self.l('Users.UserNameColGrid'), isActive: true },
-                { field: 'fullName', header: self.l('Users.NameColGrid'), isActive: true },
-                { field: 'emailAddress', header: self.l('Users.EmailAddressColGrid'), isActive: true },
-                { field: 'isActiveDesc', header: self.l('IsActive'), width: '100px', isActive: true },
-                { field: 'userLockedDesc', header: self.l('Users.Locked'), width: '120px', isActive: true }
-            ];
-        }
+        self.setColumns();
 
         self.query.pageSize = 10;
         self.query.sorting = 'Id';
         self.query.pageNumber = 1;
 
         self.setUpExportMenu();
+    }
+
+    setColumns(): void {
+        const self = this;
+        const settingViewConfig = self.settingsClient.getSetting(AppSettingsClient.ViewUsersConfig);
+
+        if (settingViewConfig) {
+            self.cols = self.parseColumnsFromJSON(settingViewConfig);
+        } else {
+            self.cols = self.getDefaultColumns();
+        }
+    }
+
+    getDefaultColumns(): any[] {
+        const self = this;
+
+        return [
+            {
+                field: 'id',
+                header: self.l('Id'),
+                headerLanguageLabel: 'Id',
+                width: '100px',
+                isActive: true
+            },
+            {
+                field: 'login',
+                header: self.l('Users.UserNameColGrid'),
+                headerLanguageLabel: 'Users.UserNameColGrid',
+                isActive: true
+            },
+            {
+                field: 'fullName',
+                header: self.l('Users.NameColGrid'),
+                headerLanguageLabel: 'Users.NameColGrid',
+                isActive: true
+            },
+            {
+                field: 'emailAddress',
+                header: self.l('Users.EmailAddressColGrid'),
+                headerLanguageLabel: 'Users.EmailAddressColGrid',
+                isActive: true
+            },
+            {
+                field: 'isActiveDesc',
+                header: self.l('IsActive'),
+                headerLanguageLabel: 'IsActive',
+                width: '100px',
+                isActive: true
+            },
+            {
+                field: 'userLockedDesc',
+                header: self.l('Users.Locked'),
+                headerLanguageLabel: 'Users.Locked',
+                width: '120px',
+                isActive: true
+            }
+        ];
     }
 
     filterSearch(event: any): void {
@@ -376,6 +421,21 @@ export class UsersComponent extends AppComponentBase implements OnInit {
     }
 
     exportViewToPDF(): void {
-        // const self = this;
+        const self = this;
+        const query = new UserExportPDFQuery();
+
+        query.filter = self.f.filterText.value;
+        query.viewColumnsConfigJSON = JSON.stringify(self.cols);
+        query.isPaged = false;
+
+        self.app.blocked = true;
+
+        self.userService.exportPDFUser(query)
+            .pipe(finalize(() => {
+                self.app.blocked = false;
+            }))
+            .subscribe(file => {
+                self.fileService.createAndDownloadBlobFileFromBase64(file.fileBase64, file.fileName);
+            });
     }
 }

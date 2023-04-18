@@ -23,14 +23,25 @@
 
                     <ng-template pTemplate="caption">
                         <div class="grid p-fluid">
-                            <div class="col-12 sm:col-7 md:col-8 lg:col-9">
+                            <div class="col-12 sm:col-6 md:col-6 lg:col-7">
                                 <h5>{{l('Helps')}}</h5>
                             </div>
-                            <div class="col-12 sm:col-5 md:col-4 lg:col-3">
-                                <span class="p-input-icon-left">
-                                    <i class="pi pi-search" aria-hidden="true"></i>
-                                    <input type="text" pInputText placeholder="{{l('SearchDots')}}" formControlName="filterText" (keydown.enter)="filterSearch($event)" />
-                                </span>
+                            <div class="col-12 sm:col-6 md:col-6 lg:col-5">
+                                <div class="flex">
+                                    <div class="flex-grow-1 flex align-items-right justify-content-right mt-2 mb-2 mr-2">
+                                        <span class="p-input-icon-left">
+                                            <i class="pi pi-search" aria-hidden="true"></i>
+                                            <input type="text" pInputText placeholder="{{l('SearchDots')}}" formControlName="filterText" (keydown.enter)="filterSearch($event)" />
+                                        </span>
+                                    </div>
+                                    <div class="flex-none flex align-items-right justify-content-right">
+                                        <p-splitButton icon="pi pi-file" class="p-button-sm mt-2 mb-2 mr-2" (onClick)="exportViewToCSV()" [model]="exportMenuItems"
+                                                       pTooltip="{{l('Views.Export')}}" tooltipPosition="top"></p-splitButton>
+                                    </div>
+                                    <div class="flex-none flex align-items-right justify-content-right">
+                                        <button pButton pRipple icon="pi pi-cog" class="p-button-sm mt-2 mb-2" (click)="configurateView(AppSettingsClient.ViewHelpsConfig)" pTooltip="{{l('Views.Configurate')}}" tooltipPosition="top"></button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </ng-template>
@@ -38,11 +49,13 @@
                     <ng-template pTemplate="header" let-columns>
                         <tr>
                             <th scope="col" style="width:140px;">{{l('Actions')}}</th>
-                            <th scope="col" *ngFor="let col of columns" [pSortableColumn]="col.field"
-                                [style.width]="col.width">
-                                {{col.header}}
-                                <p-sortIcon [field]="col.field"></p-sortIcon>
-                            </th>
+                            <ng-template ngFor let-col [ngForOf]="columns">
+                                <th *ngIf="col.isActive !== false" scope="col" [pSortableColumn]="col.field"
+                                    [style.width]="col.width">
+                                    {{col.header}}
+                                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                                </th>
+                            </ng-template>
                         </tr>
                     </ng-template>
 
@@ -54,30 +67,33 @@
                                     <button pButton pRipple [disabled]="!permissions.delete" icon="pi pi-trash" class="p-button-sm p-button-danger mr-2" (click)="delete(rowData.id)" pTooltip="{{l('Delete')}}" tooltipPosition="top"></button>
                                 </div>
                             </td>
-                            <td>
-                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'id')}}</span>
-                                <div class="p-column-content">{{rowData.id}}</div>
-                            </td>
-                            <td>
-                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'languageDesc')}}</span>
-                                <div class="p-column-content">{{rowData.languageDesc}}</div>
-                            </td>
-                            <td>
-                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'key')}}</span>
-                                <div class="p-column-content">{{rowData.key}}</div>
-                            </td>
-                            <td>
-                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'displayName')}}</span>
-                                <div class="p-column-content">{{rowData.displayName}}</div>
-                            </td>
-                            <td>
-                                <span class="p-column-title">{{getHeaderTitleColumn(columns, 'isActiveDesc')}}</span>
-                                <div class="p-column-content p-text-center">
-                                    <span *ngIf="rowData.isActive" class="p-false-button p-false-button-sm-size">{{rowData.isActiveDesc}}</span>
-                                    <span *ngIf="!rowData.isActive" class="p-false-button p-false-button-default p-false-button-sm-size">{{rowData.isActiveDesc}}</span>
-                                </div>
-                            </td>
-
+                            <ng-template ngFor let-col [ngForOf]="columns">
+                                <td *ngIf="col.isActive !== false">
+                                    <ng-container *ngIf="col.field === 'id'">
+                                        <span class="p-column-title">{{col.header}}</span>
+                                        <div class="p-column-content">{{rowData[col.field]}}</div>
+                                    </ng-container>
+                                    <ng-container *ngIf="col.field === 'languageDesc'">
+                                        <span class="p-column-title">{{col.header}}</span>
+                                        <div class="p-column-content">{{rowData[col.field]}}</div>
+                                    </ng-container>
+                                    <ng-container *ngIf="col.field === 'key'">
+                                        <span class="p-column-title">{{col.header}}</span>
+                                        <div class="p-column-content">{{rowData[col.field]}}</div>
+                                    </ng-container>
+                                    <ng-container *ngIf="col.field === 'displayName'">
+                                        <span class="p-column-title">{{col.header}}</span>
+                                        <div class="p-column-content">{{rowData[col.field]}}</div>
+                                    </ng-container>
+                                    <ng-container *ngIf="col.field === 'isActiveDesc'">
+                                        <span class="p-column-title">{{col.header}}</span>
+                                        <div class="p-column-content p-text-center">
+                                            <span *ngIf="rowData.isActive" class="p-false-button p-false-button-sm-size">{{rowData.isActiveDesc}}</span>
+                                            <span *ngIf="!rowData.isActive" class="p-false-button p-false-button-default p-false-button-sm-size">{{rowData.isActiveDesc}}</span>
+                                        </div>
+                                    </ng-container>
+                                </td>
+                            </ng-template>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="paginatorleft"></ng-template>

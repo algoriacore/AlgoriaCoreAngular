@@ -23,6 +23,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { PanelModule } from 'primeng/panel';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { SpinnerModule } from 'primeng/spinner';
+import { SplitButtonModule } from 'primeng/splitbutton';
 import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
 import { TooltipModule } from 'primeng/tooltip';
@@ -67,7 +68,8 @@ import { EditMailServiceMailConfigComponent } from './mailservicemailconfig/edit
         CalendarModule,
         AutoCompleteModule,
         SharedModule,
-        MailGrpcServiceRoutingModule
+        MailGrpcServiceRoutingModule,
+        SplitButtonModule
     ],
     declarations: [
         MailServiceMailComponent,

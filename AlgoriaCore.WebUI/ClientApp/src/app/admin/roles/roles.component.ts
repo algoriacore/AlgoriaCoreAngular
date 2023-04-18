@@ -3,12 +3,18 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LazyLoadEvent, MenuItem } from 'primeng/api';
 import { finalize } from 'rxjs/operators';
+import { AppSettingsClient } from '../../../shared/AppSettingsClient';
 import {
     RoleDeleteCommand,
+    RoleExportCSVQuery,
+    RoleExportPDFQuery,
+    RoleExportQuery,
     RoleForListResponse,
     RoleGetListQuery,
     RoleServiceProxy
 } from '../../../shared/service-proxies/service-proxies';
+import { FileService } from '../../../shared/services/file.service';
+import { SettingsClientService } from '../../../shared/services/settingsclient.service';
 import { AppComponentBase, PagedTableSummary } from '../../app-component-base';
 import { AppComponent } from '../../app.component';
 import { ChangeLogService } from '../../_services/changelog.service';
@@ -36,13 +42,18 @@ export class RolesComponent extends AppComponentBase implements OnInit {
 
     permissions: any;
 
+    AppSettingsClient = AppSettingsClient;
+    exportMenuItems: MenuItem[];
+
     constructor(
         injector: Injector,
         private formBuilder: FormBuilder,
         private router: Router,
         private roleService: RoleServiceProxy,
         private changeLogService: ChangeLogService,
-        private app: AppComponent
+        private app: AppComponent,
+        private fileService: FileService,
+        private settingsClient: SettingsClientService
     ) {
         super(injector);
     }
@@ -52,6 +63,7 @@ export class RolesComponent extends AppComponentBase implements OnInit {
         return this.form.controls;
 
     }
+
     ngOnInit() {
         const self = this;
 
@@ -70,16 +82,56 @@ export class RolesComponent extends AppComponentBase implements OnInit {
             filterText: [filters.filter]
         });
 
-        self.cols = [
-            { field: 'id', header: self.l('Id'),  width: '100px' },
-            { field: 'name', header: self.l('Roles.NameColGrid') },
-            { field: 'displayName', header: self.l('Roles.DisplayNameColGrid') },
-            { field: 'isActiveDesc', header: self.l('IsActive'), width: '100px'  }
-        ];
+        self.setColumns();
+        self.setUpExportMenu();
 
         self.query.pageSize = 10;
         self.query.sorting = 'Id';
         self.query.pageNumber = 1;
+    }
+
+    setColumns(): void {
+        const self = this;
+        const settingViewConfig = self.settingsClient.getSetting(AppSettingsClient.ViewRolesConfig);
+
+        if (settingViewConfig) {
+            self.cols = self.parseColumnsFromJSON(settingViewConfig);
+        } else {
+            self.cols = self.getDefaultColumns();
+        }
+    }
+
+    getDefaultColumns(): any[] {
+        const self = this;
+
+        return [
+            {
+                field: 'id',
+                header: self.l('Id'),
+                headerLanguageLabel: 'Id',
+                width: '100px',
+                isActive: true
+            },
+            {
+                field: 'name',
+                header: self.l('Roles.NameColGrid'),
+                headerLanguageLabel: 'Roles.NameColGrid',
+                isActive: true
+            },
+            {
+                field: 'displayName',
+                header: self.l('Roles.DisplayNameColGrid'),
+                headerLanguageLabel: 'Roles.DisplayNameColGrid',
+                isActive: true
+            },
+            {
+                field: 'isActiveDesc',
+                header: self.l('IsActive'),
+                headerLanguageLabel: 'IsActive',
+                width: '100px',
+                isActive: true
+            }
+        ];
     }
 
     filterSearch(event: any): void {
@@ -165,5 +217,103 @@ export class RolesComponent extends AppComponentBase implements OnInit {
         const self = this;
 
         self.changeLogService.open('Role', id);
+    }
+
+    configurateView(settingViewConfigName: string): void {
+        const self = this;
+        const callback = (response: any[]) => {
+            if (response) {
+                self.cols = response;
+            }
+        };
+
+        self.app.configurateView(settingViewConfigName, self.cols, callback);
+    }
+
+    // Export view
+
+    setUpExportMenu(): void {
+        const self = this;
+
+        self.exportMenuItems = [
+            {
+                label: self.l('Views.Export.CSV'),
+                icon: 'pi pi-file',
+                command: () => {
+                    self.exportViewToCSV();
+                }
+            },
+            {
+                label: self.l('Views.Export.Excel'),
+                icon: 'pi pi-file-excel',
+                command: () => {
+                    self.exportView();
+                }
+            },
+            {
+                label: self.l('Views.Export.PDF'),
+                icon: 'pi pi-file-pdf',
+                command: () => {
+                    self.exportViewToPDF();
+                }
+            }
+        ];
+    }
+
+    exportView(): void {
+        const self = this;
+        const query = new RoleExportQuery();
+
+        query.filter = self.f.filterText.value;
+        query.viewColumnsConfigJSON = JSON.stringify(self.cols);
+        query.isPaged = false;
+
+        self.app.blocked = true;
+
+        self.roleService.exportRole(query)
+            .pipe(finalize(() => {
+                self.app.blocked = false;
+            }))
+            .subscribe(file => {
+                self.fileService.createAndDownloadBlobFileFromBase64(file.fileBase64, file.fileName);
+            });
+    }
+
+    exportViewToCSV(): void {
+        const self = this;
+        const query = new RoleExportCSVQuery();
+
+        query.filter = self.f.filterText.value;
+        query.viewColumnsConfigJSON = JSON.stringify(self.cols);
+        query.isPaged = false;
+
+        self.app.blocked = true;
+
+        self.roleService.exportCSVRole(query)
+            .pipe(finalize(() => {
+                self.app.blocked = false;
+            }))
+            .subscribe(file => {
+                self.fileService.createAndDownloadBlobFileFromBase64(file.fileBase64, file.fileName);
+            });
+    }
+
+    exportViewToPDF(): void {
+        const self = this;
+        const query = new RoleExportPDFQuery();
+
+        query.filter = self.f.filterText.value;
+        query.viewColumnsConfigJSON = JSON.stringify(self.cols);
+        query.isPaged = false;
+
+        self.app.blocked = true;
+
+        self.roleService.exportPDFRole(query)
+            .pipe(finalize(() => {
+                self.app.blocked = false;
+            }))
+            .subscribe(file => {
+                self.fileService.createAndDownloadBlobFileFromBase64(file.fileBase64, file.fileName);
+            });
     }
 }

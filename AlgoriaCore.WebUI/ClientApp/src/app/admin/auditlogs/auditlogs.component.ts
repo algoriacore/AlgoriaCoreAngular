@@ -1,9 +1,13 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LazyLoadEvent } from 'primeng/api';
+import { LazyLoadEvent, MenuItem } from 'primeng/api';
 import { finalize } from 'rxjs/operators';
+import { AppSettingsClient } from '../../../shared/AppSettingsClient';
 import {
+    AuditLogExportCSVQuery,
+    AuditLogExportPDFQuery,
+    AuditLogExportQuery,
     AuditLogGetExcelQuery,
     AuditLogGetListQuery,
     AuditLogListResponse,
@@ -14,6 +18,8 @@ import {
     TenantServiceProxy
 } from '../../../shared/service-proxies/service-proxies';
 import { DateTimeService } from '../../../shared/services/datetime.service';
+import { FileService } from '../../../shared/services/file.service';
+import { SettingsClientService } from '../../../shared/services/settingsclient.service';
 import { AppComponentBase, PagedTableSummary } from '../../app-component-base';
 import { AppComponent } from '../../app.component';
 import { AuditLogsDetailComponent } from './auditlogsdetail.component';
@@ -41,14 +47,18 @@ export class AuditLogsComponent extends AppComponentBase implements OnInit {
     isHost = false;
     filteredTenants: TenantListResponse[] = [];
 
+    AppSettingsClient = AppSettingsClient;
+    exportMenuItems: MenuItem[];
+
     constructor(
         injector: Injector,
         public app: AppComponent,
         private formBuilder: FormBuilder,
-        private router: Router,
         private auditLogService: AuditLogServiceProxy,
         private dateTimeService: DateTimeService,
-        private tenantService: TenantServiceProxy
+        private tenantService: TenantServiceProxy,
+        private fileService: FileService,
+        private settingsClient: SettingsClientService
     ) {
         super(injector);
     }
@@ -78,38 +88,8 @@ export class AuditLogsComponent extends AppComponentBase implements OnInit {
             filteredTenant: [{ value: null, disabled: true }]
         });
 
-        self.cols = [
-            {
-                field: 'executionTime', header: self.l('AuditLogs.ExecutionTimeColGrid'), width: '160px', sorting: true, visible: true,
-                getDataValue: (rowData: AuditLogListResponse) =>
-                    self.dateTimeService.getDateTimeToDisplay(rowData.executionTime, 'YYYY-MM-DD HH:mm:ss')
-            },
-            {
-                field: 'executionDuration',
-                header: self.l('AuditLogs.ExecutionDurationColGrid'),
-                width: '90px',
-                sorting: true,
-                visible: true
-            },
-            {
-                field: 'serviceName',
-                header: self.l('AuditLogs.ServiceColGrid'),
-                width: '300px',
-                sorting: false,
-                visible: true
-            },
-            { field: 'tenantName', header: self.l('AuditLogs.TenantColGrid'), width: '250px', sorting: false, visible: self.isHost },
-            { field: 'userName', header: self.l('AuditLogs.UserNameColGrid'), width: '150px', sorting: true, visible: true },
-            {
-                field: 'clientIpAddress',
-                header: self.l('AuditLogs.ClientIpAddressColGrid'),
-                width: '150px',
-                sorting: false,
-                visible: true
-            },
-            { field: 'clientName', header: self.l('AuditLogs.ClientNameColGrid'), width: '150px', sorting: false, visible: true },
-            { field: 'browserInfo', header: self.l('AuditLogs.BrowserColGrid'), width: '900px', sorting: false, visible: true }
-        ];
+        self.setColumns();
+        self.setUpExportMenu();
 
         const jsonErrorStateList = [];
 
@@ -133,6 +113,90 @@ export class AuditLogsComponent extends AppComponentBase implements OnInit {
         self.query.pageNumber = 1;
     }
 
+    setColumns(): void {
+        const self = this;
+        const settingViewConfig = self.settingsClient.getSetting(AppSettingsClient.ViewAuditLogConfig);
+
+        if (settingViewConfig) {
+            self.cols = self.parseColumnsFromJSON(settingViewConfig);
+        } else {
+            self.cols = self.getDefaultColumns();
+        }
+    }
+
+    getDefaultColumns(): any[] {
+        const self = this;
+
+        return [
+            {
+                field: 'executionTime',
+                header: self.l('AuditLogs.ExecutionTimeColGrid'),
+                headerLanguageLabel: 'AuditLogs.ExecutionTimeColGrid',
+                width: '160px',
+                sorting: true,
+                isActive: true,
+                getDataValue: (rowData: AuditLogListResponse) =>
+                    self.dateTimeService.getDateTimeToDisplay(rowData.executionTime, 'YYYY-MM-DD HH:mm:ss')
+            },
+            {
+                field: 'executionDuration',
+                header: self.l('AuditLogs.ExecutionDurationColGrid'),
+                headerLanguageLabel: 'AuditLogs.ExecutionDurationColGrid',
+                width: '90px',
+                sorting: true,
+                isActive: true
+            },
+            {
+                field: 'serviceName',
+                header: self.l('AuditLogs.ServiceColGrid'),
+                headerLanguageLabel: 'AuditLogs.ServiceColGrid',
+                width: '300px',
+                sorting: false,
+                isActive: true
+            },
+            {
+                field: 'tenantName',
+                header: self.l('AuditLogs.TenantColGrid'),
+                headerLanguageLabel: 'AuditLogs.TenantColGrid',
+                width: '250px',
+                sorting: false,
+                isActive: self.isHost
+            },
+            {
+                field: 'userName',
+                header: self.l('AuditLogs.UserNameColGrid'),
+                headerLanguageLabel: 'AuditLogs.UserNameColGrid',
+                width: '150px',
+                sorting: true,
+                isActive: true
+            },
+            {
+                field: 'clientIpAddress',
+                header: self.l('AuditLogs.ClientIpAddressColGrid'),
+                headerLanguageLabel: 'AuditLogs.ClientIpAddressColGrid',
+                width: '150px',
+                sorting: false,
+                isActive: true
+            },
+            {
+                field: 'clientName',
+                header: self.l('AuditLogs.ClientNameColGrid'),
+                headerLanguageLabel: 'AuditLogs.ClientNameColGrid',
+                width: '150px',
+                sorting: false,
+                isActive: true
+            },
+            {
+                field: 'browserInfo',
+                header: self.l('AuditLogs.BrowserColGrid'),
+                headerLanguageLabel: 'AuditLogs.BrowserColGrid',
+                width: '900px',
+                sorting: false,
+                isActive: true
+            }
+        ];
+    }
+
     filterSearch(): void {
         const self = this;
 
@@ -142,22 +206,7 @@ export class AuditLogsComponent extends AppComponentBase implements OnInit {
     getAuditLogs(): void {
         const self = this;
 
-        const startDate = self.f.rangeDates.value !== null &&
-            self.f.rangeDates.value[0] !== null ? self.f.rangeDates.value[0] : self.dateTimeService.getCurrentDateTimeToDate();
-        const endDate = self.f.rangeDates.value !== null && self.f.rangeDates.value[1] !== null ? self.f.rangeDates.value[1] : startDate;
-
-        self.query.filter = self.f.filterText.value;
-        self.query.startDate = self.dateTimeService.getDateTimeToSaveServer(startDate).startOf('day');
-        self.query.endDate = self.dateTimeService.getDateTimeToSaveServer(endDate).endOf('day');
-        self.query.userName = self.f.userName.value;
-        self.query.serviceName = self.f.serviceName.value;
-        self.query.minExecutionDuration = self.f.minExecutionDuration.value;
-        self.query.maxExecutionDuration = self.f.maxExecutionDuration.value;
-        self.query.methodName = self.f.methodName.value;
-        self.query.severity = self.f.severity.value;
-        self.query.browserInfo = self.f.browser.value;
-        self.query.onlyHost = self.f.onlyHost.value;
-        self.query.tenantId = self.f.filteredTenant.value !== null ? self.f.filteredTenant.value.id : null;
+        self.setViewQuery(self.query);
 
         self.app.blocked = true;
 
@@ -171,6 +220,27 @@ export class AuditLogsComponent extends AppComponentBase implements OnInit {
                 // Calculate paged table summary
                 self.pagedTableSummary = self.getPagedTableSummay(data.totalCount, self.query.pageNumber, self.query.pageSize);
             });
+    }
+
+    setViewQuery(query: any): void {
+        const self = this;
+
+        const startDate = self.f.rangeDates.value !== null &&
+            self.f.rangeDates.value[0] !== null ? self.f.rangeDates.value[0] : self.dateTimeService.getCurrentDateTimeToDate();
+        const endDate = self.f.rangeDates.value !== null && self.f.rangeDates.value[1] !== null ? self.f.rangeDates.value[1] : startDate;
+
+        query.filter = self.f.filterText.value;
+        query.startDate = self.dateTimeService.getDateTimeToSaveServer(startDate).startOf('day');
+        query.endDate = self.dateTimeService.getDateTimeToSaveServer(endDate).endOf('day');
+        query.userName = self.f.userName.value;
+        query.serviceName = self.f.serviceName.value;
+        query.minExecutionDuration = self.f.minExecutionDuration.value;
+        query.maxExecutionDuration = self.f.maxExecutionDuration.value;
+        query.methodName = self.f.methodName.value;
+        query.severity = self.f.severity.value;
+        query.browserInfo = self.f.browser.value;
+        query.onlyHost = self.f.onlyHost.value;
+        query.tenantId = self.f.filteredTenant.value !== null ? self.f.filteredTenant.value.id : null;
     }
 
     loadData(event: LazyLoadEvent) {
@@ -261,5 +331,106 @@ export class AuditLogsComponent extends AppComponentBase implements OnInit {
         } else {
             self.f.filteredTenant.enable();
         }
+    }
+
+    configurateView(settingViewConfigName: string): void {
+        const self = this;
+        const callback = (response: any[]) => {
+            if (response) {
+                self.cols = response;
+            }
+        };
+
+        self.app.configurateView(settingViewConfigName, self.cols, callback);
+    }
+
+    // Export view
+
+    setUpExportMenu(): void {
+        const self = this;
+
+        self.exportMenuItems = [
+            {
+                label: self.l('Views.Export.CSV'),
+                icon: 'pi pi-file',
+                command: () => {
+                    self.exportViewToCSV();
+                }
+            },
+            {
+                label: self.l('Views.Export.Excel'),
+                icon: 'pi pi-file-excel',
+                command: () => {
+                    self.exportView();
+                }
+            },
+            {
+                label: self.l('Views.Export.PDF'),
+                icon: 'pi pi-file-pdf',
+                command: () => {
+                    self.exportViewToPDF();
+                }
+            }
+        ];
+    }
+
+    exportView(): void {
+        const self = this;
+        const query = new AuditLogExportQuery();
+
+        self.setViewQuery(query);
+
+        query.viewColumnsConfigJSON = JSON.stringify(self.cols);
+        query.isPaged = false;
+
+        self.app.blocked = true;
+
+        self.auditLogService.exportAuditLog(query)
+            .pipe(finalize(() => {
+                self.app.blocked = false;
+            }))
+            .subscribe(file => {
+                self.fileService.createAndDownloadBlobFileFromBase64(file.fileBase64, file.fileName);
+            });
+    }
+
+    exportViewToCSV(): void {
+        const self = this;
+        const query = new AuditLogExportCSVQuery();
+
+        self.setViewQuery(query);
+
+        query.viewColumnsConfigJSON = JSON.stringify(self.cols);
+        query.isPaged = false;
+
+        self.app.blocked = true;
+
+        self.auditLogService.exportCSVAuditLog(query)
+            .pipe(finalize(() => {
+                self.app.blocked = false;
+            }))
+            .subscribe(file => {
+                self.fileService.createAndDownloadBlobFileFromBase64(file.fileBase64, file.fileName);
+            });
+    }
+
+    exportViewToPDF(): void {
+        const self = this;
+        const query = new AuditLogExportPDFQuery();
+
+        self.setViewQuery(query);
+
+        query.viewColumnsConfigJSON = JSON.stringify(self.cols);
+        query.isPaged = false;
+
+        self.app.blocked = true;
+
+        self.auditLogService.exportPDFAuditLog(query)
+            .pipe(finalize(() => {
+                self.app.blocked = false;
+            }))
+            .subscribe(file => {
+                self.fileService.createAndDownloadBlobFileFromBase64(file.fileBase64, file.fileName);
+            });
     }
 }

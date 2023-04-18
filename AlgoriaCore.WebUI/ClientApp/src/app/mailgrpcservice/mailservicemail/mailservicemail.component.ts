@@ -6,6 +6,9 @@ import { finalize } from 'rxjs/operators';
 import { AppComponentBase, PagedTableSummary } from 'src/app/app-component-base';
 import { AppComponent } from 'src/app/app.component';
 import {
+    MailServiceMailExportCSVQuery,
+    MailServiceMailExportPDFQuery,
+    MailServiceMailExportQuery,
     MailServiceMailGetListQuery,
     MailServiceMailListResponse,
     MailServiceMailServiceProxy,
@@ -14,6 +17,9 @@ import {
     TenantServiceProxy
 } from 'src/shared/service-proxies/service-proxies';
 import { DateTimeService } from 'src/shared/services/datetime.service';
+import { AppSettingsClient } from '../../../shared/AppSettingsClient';
+import { FileService } from '../../../shared/services/file.service';
+import { SettingsClientService } from '../../../shared/services/settingsclient.service';
 
 @Component({
     templateUrl: './mailservicemail.component.html',
@@ -42,6 +48,9 @@ export class MailServiceMailComponent extends AppComponentBase implements OnInit
     filteredTenants: TenantListResponse[] = [];
     advancedFiltersAreShown = false;
 
+    AppSettingsClient = AppSettingsClient;
+    exportMenuItems: MenuItem[];
+
     constructor(
         injector: Injector,
         public app: AppComponent,
@@ -49,7 +58,9 @@ export class MailServiceMailComponent extends AppComponentBase implements OnInit
         private router: Router,
         private service: MailServiceMailServiceProxy,
         private dateTimeService: DateTimeService,
-        private tenantService: TenantServiceProxy
+        private tenantService: TenantServiceProxy,
+        private fileService: FileService,
+        private settingsClient: SettingsClientService
     ) {
         super(injector);
     }
@@ -81,18 +92,67 @@ export class MailServiceMailComponent extends AppComponentBase implements OnInit
             filteredTenant: [{ value: null, disabled: true }]
         });
 
-        self.cols = [
-            { field: 'status', header: this.l('MailServiceMailStatuss.MailServiceMailStatus'), width: '70px;' },
-            { field: 'mailServiceRequestDate', header: this.l('MailServiceMails.MailServiceMail.MailServiceRequest') },
-            { field: 'isLocalConfigDesc', header: this.l('MailServiceMails.MailServiceMail.IsLocalConfig') },
-            { field: 'sendto', header: this.l('MailServiceMails.MailServiceMail.Sendto') },
-            { field: 'copyTo', header: this.l('MailServiceMails.MailServiceMail.CopyTo') },
-            { field: 'subject', header: this.l('MailServiceMails.MailServiceMail.Subject') }
-        ];
+        self.setColumns();
+        self.setUpExportMenu();
 
         self.query.pageSize = 10;
         self.query.sorting = 'id';
         self.query.pageNumber = 1;
+    }
+
+    setColumns(): void {
+        const self = this;
+        const settingViewConfig = self.settingsClient.getSetting(AppSettingsClient.ViewLogMailServicEmailConfig);
+
+        if (settingViewConfig) {
+            self.cols = self.parseColumnsFromJSON(settingViewConfig);
+        } else {
+            self.cols = self.getDefaultColumns();
+        }
+    }
+
+    getDefaultColumns(): any[] {
+        const self = this;
+
+        return [
+            {
+                field: 'status',
+                header: self.l('MailServiceMailStatuss.MailServiceMailStatus'),
+                headerLanguageLabel: 'MailServiceMailStatuss.MailServiceMailStatus',
+                width: '70px',
+                isActive: true
+            },
+            {
+                field: 'mailServiceRequestDate',
+                header: self.l('MailServiceMails.MailServiceMail.MailServiceRequest'),
+                headerLanguageLabel: 'MailServiceMails.MailServiceMail.MailServiceRequest',
+                isActive: true
+            },
+            {
+                field: 'isLocalConfigDesc',
+                header: self.l('MailServiceMails.MailServiceMail.IsLocalConfig'),
+                headerLanguageLabel: 'MailServiceMails.MailServiceMail.IsLocalConfig',
+                isActive: true
+            },
+            {
+                field: 'sendto',
+                header: self.l('MailServiceMails.MailServiceMail.Sendto'),
+                headerLanguageLabel: 'MailServiceMails.MailServiceMail.Sendto',
+                isActive: true
+            },
+            {
+                field: 'copyTo',
+                header: self.l('MailServiceMails.MailServiceMail.CopyTo'),
+                headerLanguageLabel: 'MailServiceMails.MailServiceMail.Sendto',
+                isActive: true
+            },
+            {
+                field: 'subject',
+                header: self.l('MailServiceMails.MailServiceMail.Subject'),
+                headerLanguageLabel: 'MailServiceMails.MailServiceMail.Subject',
+                isActive: true
+            }
+        ];
     }
 
     filterSearch(event: any): void {
@@ -171,6 +231,134 @@ export class MailServiceMailComponent extends AppComponentBase implements OnInit
         } else {
             self.f.filteredTenant.enable();
         }
+    }
+
+    configurateView(settingViewConfigName: string): void {
+        const self = this;
+        const callback = (response: any[]) => {
+            if (response) {
+                self.cols = response;
+            }
+        };
+
+        self.app.configurateView(settingViewConfigName, self.cols, callback);
+    }
+
+    // Export view
+
+    setUpExportMenu(): void {
+        const self = this;
+
+        self.exportMenuItems = [
+            {
+                label: self.l('Views.Export.CSV'),
+                icon: 'pi pi-file',
+                command: () => {
+                    self.exportViewToCSV();
+                }
+            },
+            {
+                label: self.l('Views.Export.Excel'),
+                icon: 'pi pi-file-excel',
+                command: () => {
+                    self.exportView();
+                }
+            },
+            {
+                label: self.l('Views.Export.PDF'),
+                icon: 'pi pi-file-pdf',
+                command: () => {
+                    self.exportViewToPDF();
+                }
+            }
+        ];
+    }
+
+    exportView(): void {
+        const self = this;
+        const query = new MailServiceMailExportQuery();
+
+        const startDate = self.f.rangeDates.value !== null &&
+            self.f.rangeDates.value[0] !== null ? self.f.rangeDates.value[0] : self.dateTimeService.getCurrentDateTimeToDate();
+        const endDate = self.f.rangeDates.value !== null && self.f.rangeDates.value[1] !== null ? self.f.rangeDates.value[1] : startDate;
+
+        query.filter = self.f.filterText.value;
+        query.startDate = self.dateTimeService.getDateTimeToSaveServer(startDate).startOf('day');
+        query.endDate = self.dateTimeService.getDateTimeToSaveServer(endDate).endOf('day');
+        query.onlyHost = self.f.onlyHost.value;
+        query.tenantId = self.f.filteredTenant.value !== null ? self.f.filteredTenant.value.id : null;
+
+        query.filter = self.f.filterText.value;
+        query.viewColumnsConfigJSON = JSON.stringify(self.cols);
+        query.isPaged = false;
+
+        self.app.blocked = true;
+
+        self.service.exportMailServiceMail(query)
+            .pipe(finalize(() => {
+                self.app.blocked = false;
+            }))
+            .subscribe(file => {
+                self.fileService.createAndDownloadBlobFileFromBase64(file.fileBase64, file.fileName);
+            });
+    }
+
+    exportViewToCSV(): void {
+        const self = this;
+        const query = new MailServiceMailExportCSVQuery();
+
+        const startDate = self.f.rangeDates.value !== null &&
+            self.f.rangeDates.value[0] !== null ? self.f.rangeDates.value[0] : self.dateTimeService.getCurrentDateTimeToDate();
+        const endDate = self.f.rangeDates.value !== null && self.f.rangeDates.value[1] !== null ? self.f.rangeDates.value[1] : startDate;
+
+        query.filter = self.f.filterText.value;
+        query.startDate = self.dateTimeService.getDateTimeToSaveServer(startDate).startOf('day');
+        query.endDate = self.dateTimeService.getDateTimeToSaveServer(endDate).endOf('day');
+        query.onlyHost = self.f.onlyHost.value;
+        query.tenantId = self.f.filteredTenant.value !== null ? self.f.filteredTenant.value.id : null;
+
+        query.filter = self.f.filterText.value;
+        query.viewColumnsConfigJSON = JSON.stringify(self.cols);
+        query.isPaged = false;
+
+        self.app.blocked = true;
+
+        self.service.exportCSVMailServiceMail(query)
+            .pipe(finalize(() => {
+                self.app.blocked = false;
+            }))
+            .subscribe(file => {
+                self.fileService.createAndDownloadBlobFileFromBase64(file.fileBase64, file.fileName);
+            });
+    }
+
+    exportViewToPDF(): void {
+        const self = this;
+        const query = new MailServiceMailExportPDFQuery();
+
+        const startDate = self.f.rangeDates.value !== null &&
+            self.f.rangeDates.value[0] !== null ? self.f.rangeDates.value[0] : self.dateTimeService.getCurrentDateTimeToDate();
+        const endDate = self.f.rangeDates.value !== null && self.f.rangeDates.value[1] !== null ? self.f.rangeDates.value[1] : startDate;
+
+        query.filter = self.f.filterText.value;
+        query.startDate = self.dateTimeService.getDateTimeToSaveServer(startDate).startOf('day');
+        query.endDate = self.dateTimeService.getDateTimeToSaveServer(endDate).endOf('day');
+        query.onlyHost = self.f.onlyHost.value;
+        query.tenantId = self.f.filteredTenant.value !== null ? self.f.filteredTenant.value.id : null;
+
+        query.filter = self.f.filterText.value;
+        query.viewColumnsConfigJSON = JSON.stringify(self.cols);
+        query.isPaged = false;
+
+        self.app.blocked = true;
+
+        self.service.exportPDFMailServiceMail(query)
+            .pipe(finalize(() => {
+                self.app.blocked = false;
+            }))
+            .subscribe(file => {
+                self.fileService.createAndDownloadBlobFileFromBase64(file.fileBase64, file.fileName);
+            });
     }
 }
 

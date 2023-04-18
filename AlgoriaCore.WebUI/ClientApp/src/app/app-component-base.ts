@@ -95,6 +95,19 @@ export abstract class AppComponentBase {
         return cols.some(p => p.field === field && p.isActive !== false);
     }
 
+    parseColumnsFromJSON(json: string): any[] {
+        const self = this;
+        const cols = JSON.parse(json);
+
+        for (const col of cols) {
+            if (col.headerLanguageLabel) {
+                col.header = self.l(col.headerLanguageLabel);
+            }
+        }
+
+        return cols;
+    }
+
     downloadTempFile(file: any): void {
         const url = this.getBaseServiceUrl() + '/api/File/DownloadTempFile?fileType=' +
             file.fileType + '&fileToken=' + file.fileToken + '&fileName=' + file.fileName;

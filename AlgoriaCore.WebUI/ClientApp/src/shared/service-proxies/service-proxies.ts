@@ -313,6 +313,162 @@ export class MailServiceMailServiceProxy {
         return _observableOf(null as any);
     }
 
+    exportMailServiceMail(query: MailServiceMailExportQuery): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/mailservicemail/exportmailservicemail";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(query);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportMailServiceMail(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportMailServiceMail(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportMailServiceMail(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    exportCSVMailServiceMail(query: MailServiceMailExportCSVQuery): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/mailservicemail/exportcsvmailservicemail";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(query);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportCSVMailServiceMail(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportCSVMailServiceMail(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportCSVMailServiceMail(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    exportPDFMailServiceMail(query: MailServiceMailExportPDFQuery): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/mailservicemail/exportpdfmailservicemail";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(query);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportPDFMailServiceMail(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportPDFMailServiceMail(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportPDFMailServiceMail(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
     getMailServiceMailForEdit(dto: MailServiceMailGetForEditQuery): Observable<MailServiceMailForEditResponse> {
         let url_ = this.baseUrl + "/api/mailservicemail/getmailservicemailforedit";
         url_ = url_.replace(/[?&]$/, "");
@@ -801,6 +957,162 @@ export class AuditLogServiceProxy {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = AuditLogExcelResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    exportAuditLog(query: AuditLogExportQuery): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/auditlog/exportauditlog";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(query);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportAuditLog(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportAuditLog(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportAuditLog(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    exportCSVAuditLog(query: AuditLogExportCSVQuery): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/auditlog/exportcsvauditlog";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(query);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportCSVAuditLog(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportCSVAuditLog(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportCSVAuditLog(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    exportPDFAuditLog(query: AuditLogExportPDFQuery): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/auditlog/exportpdfauditlog";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(query);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportPDFAuditLog(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportPDFAuditLog(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportPDFAuditLog(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3465,6 +3777,162 @@ export class HelpServiceProxy {
         return _observableOf(null as any);
     }
 
+    exportHelp(query: HelpExportQuery): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/help/exporthelp";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(query);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportHelp(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportHelp(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportHelp(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    exportCSVHelp(query: HelpExportCSVQuery): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/help/exportcsvhelp";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(query);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportCSVHelp(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportCSVHelp(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportCSVHelp(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    exportPDFHelp(query: HelpExportPDFQuery): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/help/exportpdfhelp";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(query);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportPDFHelp(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportPDFHelp(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportPDFHelp(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
     getHelp(id: number): Observable<HelpResponse> {
         let url_ = this.baseUrl + "/api/help/gethelp/{id}";
         if (id === undefined || id === null)
@@ -4001,6 +4469,162 @@ export class LanguageServiceProxy {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = PagedResultDtoOfLanguageForListResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    exportLanguage(query: LanguageExportQuery): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/language/exportlanguage";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(query);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportLanguage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportLanguage(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportLanguage(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    exportCSVLanguage(query: LanguageExportCSVQuery): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/language/exportcsvlanguage";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(query);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportCSVLanguage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportCSVLanguage(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportCSVLanguage(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    exportPDFLanguage(query: LanguageExportPDFQuery): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/language/exportpdflanguage";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(query);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportPDFLanguage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportPDFLanguage(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportPDFLanguage(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -6528,6 +7152,162 @@ export class RoleServiceProxy {
         return _observableOf(null as any);
     }
 
+    exportRole(query: RoleExportQuery): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/role/exportrole";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(query);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportRole(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportRole(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportRole(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    exportCSVRole(query: RoleExportCSVQuery): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/role/exportcsvrole";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(query);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportCSVRole(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportCSVRole(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportCSVRole(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    exportPDFRole(query: RoleExportPDFQuery): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/role/exportpdfrole";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(query);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportPDFRole(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportPDFRole(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportPDFRole(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
     get(dto: RoleGetByIdQuery): Observable<RoleResponse> {
         let url_ = this.baseUrl + "/api/role/get";
         url_ = url_.replace(/[?&]$/, "");
@@ -7375,6 +8155,162 @@ export class TenantServiceProxy {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://localhost:51023";
     }
 
+    exportTenant(query: TenantExportQuery): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/tenant/exporttenant";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(query);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportTenant(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportTenant(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportTenant(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    exportCSVTenant(query: TenantExportCSVQuery): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/tenant/exportcsvtenant";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(query);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportCSVTenant(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportCSVTenant(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportCSVTenant(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    exportPDFTenant(query: TenantExportPDFQuery): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/tenant/exportpdftenant";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(query);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportPDFTenant(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportPDFTenant(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportPDFTenant(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
     getTenantById(id: number): Observable<TenantResponse> {
         let url_ = this.baseUrl + "/api/tenant/gettenantbyid/{id}";
         if (id === undefined || id === null)
@@ -8077,6 +9013,58 @@ export class UserServiceProxy {
     }
 
     protected processExportCSVUser(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    exportPDFUser(query: UserExportPDFQuery): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/user/exportpdfuser";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(query);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportPDFUser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportPDFUser(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto>;
+        }));
+    }
+
+    protected processExportPDFUser(response: HttpResponseBase): Observable<FileDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -9355,8 +10343,8 @@ export interface IMailServiceMailListResponse {
 }
 
 export class MailServiceMailGetListQuery extends PageListByDto implements IMailServiceMailGetListQuery {
-    startDate!: moment.Moment;
-    endDate!: moment.Moment;
+    startDate?: moment.Moment | undefined;
+    endDate?: moment.Moment | undefined;
     tenantId?: number | undefined;
     onlyHost?: boolean | undefined;
 
@@ -9393,10 +10381,209 @@ export class MailServiceMailGetListQuery extends PageListByDto implements IMailS
 }
 
 export interface IMailServiceMailGetListQuery extends IPageListByDto {
-    startDate: moment.Moment;
-    endDate: moment.Moment;
+    startDate?: moment.Moment | undefined;
+    endDate?: moment.Moment | undefined;
     tenantId?: number | undefined;
     onlyHost?: boolean | undefined;
+}
+
+export class FileDto implements IFileDto {
+    fileName?: string | undefined;
+    fileType?: string | undefined;
+    fileToken?: string | undefined;
+    fileArray?: string | undefined;
+    fileBase64?: string | undefined;
+
+    constructor(data?: IFileDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fileName = _data["fileName"];
+            this.fileType = _data["fileType"];
+            this.fileToken = _data["fileToken"];
+            this.fileArray = _data["fileArray"];
+            this.fileBase64 = _data["fileBase64"];
+        }
+    }
+
+    static fromJS(data: any): FileDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new FileDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fileName"] = this.fileName;
+        data["fileType"] = this.fileType;
+        data["fileToken"] = this.fileToken;
+        data["fileArray"] = this.fileArray;
+        data["fileBase64"] = this.fileBase64;
+        return data;
+    }
+}
+
+export interface IFileDto {
+    fileName?: string | undefined;
+    fileType?: string | undefined;
+    fileToken?: string | undefined;
+    fileArray?: string | undefined;
+    fileBase64?: string | undefined;
+}
+
+export class MailServiceMailExportQuery extends PageListByDto implements IMailServiceMailExportQuery {
+    startDate?: moment.Moment | undefined;
+    endDate?: moment.Moment | undefined;
+    tenantId?: number | undefined;
+    onlyHost?: boolean | undefined;
+    viewColumnsConfigJSON?: string | undefined;
+
+    constructor(data?: IMailServiceMailExportQuery) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.startDate = _data["startDate"] ? moment(_data["startDate"].toString()) : <any>undefined;
+            this.endDate = _data["endDate"] ? moment(_data["endDate"].toString()) : <any>undefined;
+            this.tenantId = _data["tenantId"];
+            this.onlyHost = _data["onlyHost"];
+            this.viewColumnsConfigJSON = _data["viewColumnsConfigJSON"];
+        }
+    }
+
+    static override fromJS(data: any): MailServiceMailExportQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new MailServiceMailExportQuery();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        data["tenantId"] = this.tenantId;
+        data["onlyHost"] = this.onlyHost;
+        data["viewColumnsConfigJSON"] = this.viewColumnsConfigJSON;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface IMailServiceMailExportQuery extends IPageListByDto {
+    startDate?: moment.Moment | undefined;
+    endDate?: moment.Moment | undefined;
+    tenantId?: number | undefined;
+    onlyHost?: boolean | undefined;
+    viewColumnsConfigJSON?: string | undefined;
+}
+
+export class MailServiceMailExportCSVQuery extends PageListByDto implements IMailServiceMailExportCSVQuery {
+    startDate?: moment.Moment | undefined;
+    endDate?: moment.Moment | undefined;
+    tenantId?: number | undefined;
+    onlyHost?: boolean | undefined;
+    viewColumnsConfigJSON?: string | undefined;
+
+    constructor(data?: IMailServiceMailExportCSVQuery) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.startDate = _data["startDate"] ? moment(_data["startDate"].toString()) : <any>undefined;
+            this.endDate = _data["endDate"] ? moment(_data["endDate"].toString()) : <any>undefined;
+            this.tenantId = _data["tenantId"];
+            this.onlyHost = _data["onlyHost"];
+            this.viewColumnsConfigJSON = _data["viewColumnsConfigJSON"];
+        }
+    }
+
+    static override fromJS(data: any): MailServiceMailExportCSVQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new MailServiceMailExportCSVQuery();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        data["tenantId"] = this.tenantId;
+        data["onlyHost"] = this.onlyHost;
+        data["viewColumnsConfigJSON"] = this.viewColumnsConfigJSON;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface IMailServiceMailExportCSVQuery extends IPageListByDto {
+    startDate?: moment.Moment | undefined;
+    endDate?: moment.Moment | undefined;
+    tenantId?: number | undefined;
+    onlyHost?: boolean | undefined;
+    viewColumnsConfigJSON?: string | undefined;
+}
+
+export class MailServiceMailExportPDFQuery extends PageListByDto implements IMailServiceMailExportPDFQuery {
+    startDate?: moment.Moment | undefined;
+    endDate?: moment.Moment | undefined;
+    tenantId?: number | undefined;
+    onlyHost?: boolean | undefined;
+    viewColumnsConfigJSON?: string | undefined;
+
+    constructor(data?: IMailServiceMailExportPDFQuery) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.startDate = _data["startDate"] ? moment(_data["startDate"].toString()) : <any>undefined;
+            this.endDate = _data["endDate"] ? moment(_data["endDate"].toString()) : <any>undefined;
+            this.tenantId = _data["tenantId"];
+            this.onlyHost = _data["onlyHost"];
+            this.viewColumnsConfigJSON = _data["viewColumnsConfigJSON"];
+        }
+    }
+
+    static override fromJS(data: any): MailServiceMailExportPDFQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new MailServiceMailExportPDFQuery();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        data["tenantId"] = this.tenantId;
+        data["onlyHost"] = this.onlyHost;
+        data["viewColumnsConfigJSON"] = this.viewColumnsConfigJSON;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface IMailServiceMailExportPDFQuery extends IPageListByDto {
+    startDate?: moment.Moment | undefined;
+    endDate?: moment.Moment | undefined;
+    tenantId?: number | undefined;
+    onlyHost?: boolean | undefined;
+    viewColumnsConfigJSON?: string | undefined;
 }
 
 export class MailServiceMailForEditResponse implements IMailServiceMailForEditResponse {
@@ -10183,6 +11370,249 @@ export interface IAuditLogGetExcelQuery extends IPageListByDto {
     maxExecutionDuration?: number | undefined;
     severity?: number | undefined;
     onlyHost?: boolean | undefined;
+}
+
+export class AuditLogExportQuery extends PageListByDto implements IAuditLogExportQuery {
+    startDate!: moment.Moment;
+    endDate!: moment.Moment;
+    userName?: string | undefined;
+    serviceName?: string | undefined;
+    methodName?: string | undefined;
+    browserInfo?: string | undefined;
+    tenantId?: number | undefined;
+    hasException?: boolean | undefined;
+    minExecutionDuration?: number | undefined;
+    maxExecutionDuration?: number | undefined;
+    severity?: number | undefined;
+    onlyHost?: boolean | undefined;
+    viewColumnsConfigJSON?: string | undefined;
+
+    constructor(data?: IAuditLogExportQuery) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.startDate = _data["startDate"] ? moment(_data["startDate"].toString()) : <any>undefined;
+            this.endDate = _data["endDate"] ? moment(_data["endDate"].toString()) : <any>undefined;
+            this.userName = _data["userName"];
+            this.serviceName = _data["serviceName"];
+            this.methodName = _data["methodName"];
+            this.browserInfo = _data["browserInfo"];
+            this.tenantId = _data["tenantId"];
+            this.hasException = _data["hasException"];
+            this.minExecutionDuration = _data["minExecutionDuration"];
+            this.maxExecutionDuration = _data["maxExecutionDuration"];
+            this.severity = _data["severity"];
+            this.onlyHost = _data["onlyHost"];
+            this.viewColumnsConfigJSON = _data["viewColumnsConfigJSON"];
+        }
+    }
+
+    static override fromJS(data: any): AuditLogExportQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new AuditLogExportQuery();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        data["userName"] = this.userName;
+        data["serviceName"] = this.serviceName;
+        data["methodName"] = this.methodName;
+        data["browserInfo"] = this.browserInfo;
+        data["tenantId"] = this.tenantId;
+        data["hasException"] = this.hasException;
+        data["minExecutionDuration"] = this.minExecutionDuration;
+        data["maxExecutionDuration"] = this.maxExecutionDuration;
+        data["severity"] = this.severity;
+        data["onlyHost"] = this.onlyHost;
+        data["viewColumnsConfigJSON"] = this.viewColumnsConfigJSON;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface IAuditLogExportQuery extends IPageListByDto {
+    startDate: moment.Moment;
+    endDate: moment.Moment;
+    userName?: string | undefined;
+    serviceName?: string | undefined;
+    methodName?: string | undefined;
+    browserInfo?: string | undefined;
+    tenantId?: number | undefined;
+    hasException?: boolean | undefined;
+    minExecutionDuration?: number | undefined;
+    maxExecutionDuration?: number | undefined;
+    severity?: number | undefined;
+    onlyHost?: boolean | undefined;
+    viewColumnsConfigJSON?: string | undefined;
+}
+
+export class AuditLogExportCSVQuery extends PageListByDto implements IAuditLogExportCSVQuery {
+    startDate!: moment.Moment;
+    endDate!: moment.Moment;
+    userName?: string | undefined;
+    serviceName?: string | undefined;
+    methodName?: string | undefined;
+    browserInfo?: string | undefined;
+    tenantId?: number | undefined;
+    hasException?: boolean | undefined;
+    minExecutionDuration?: number | undefined;
+    maxExecutionDuration?: number | undefined;
+    severity?: number | undefined;
+    onlyHost?: boolean | undefined;
+    viewColumnsConfigJSON?: string | undefined;
+
+    constructor(data?: IAuditLogExportCSVQuery) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.startDate = _data["startDate"] ? moment(_data["startDate"].toString()) : <any>undefined;
+            this.endDate = _data["endDate"] ? moment(_data["endDate"].toString()) : <any>undefined;
+            this.userName = _data["userName"];
+            this.serviceName = _data["serviceName"];
+            this.methodName = _data["methodName"];
+            this.browserInfo = _data["browserInfo"];
+            this.tenantId = _data["tenantId"];
+            this.hasException = _data["hasException"];
+            this.minExecutionDuration = _data["minExecutionDuration"];
+            this.maxExecutionDuration = _data["maxExecutionDuration"];
+            this.severity = _data["severity"];
+            this.onlyHost = _data["onlyHost"];
+            this.viewColumnsConfigJSON = _data["viewColumnsConfigJSON"];
+        }
+    }
+
+    static override fromJS(data: any): AuditLogExportCSVQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new AuditLogExportCSVQuery();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        data["userName"] = this.userName;
+        data["serviceName"] = this.serviceName;
+        data["methodName"] = this.methodName;
+        data["browserInfo"] = this.browserInfo;
+        data["tenantId"] = this.tenantId;
+        data["hasException"] = this.hasException;
+        data["minExecutionDuration"] = this.minExecutionDuration;
+        data["maxExecutionDuration"] = this.maxExecutionDuration;
+        data["severity"] = this.severity;
+        data["onlyHost"] = this.onlyHost;
+        data["viewColumnsConfigJSON"] = this.viewColumnsConfigJSON;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface IAuditLogExportCSVQuery extends IPageListByDto {
+    startDate: moment.Moment;
+    endDate: moment.Moment;
+    userName?: string | undefined;
+    serviceName?: string | undefined;
+    methodName?: string | undefined;
+    browserInfo?: string | undefined;
+    tenantId?: number | undefined;
+    hasException?: boolean | undefined;
+    minExecutionDuration?: number | undefined;
+    maxExecutionDuration?: number | undefined;
+    severity?: number | undefined;
+    onlyHost?: boolean | undefined;
+    viewColumnsConfigJSON?: string | undefined;
+}
+
+export class AuditLogExportPDFQuery extends PageListByDto implements IAuditLogExportPDFQuery {
+    startDate!: moment.Moment;
+    endDate!: moment.Moment;
+    userName?: string | undefined;
+    serviceName?: string | undefined;
+    methodName?: string | undefined;
+    browserInfo?: string | undefined;
+    tenantId?: number | undefined;
+    hasException?: boolean | undefined;
+    minExecutionDuration?: number | undefined;
+    maxExecutionDuration?: number | undefined;
+    severity?: number | undefined;
+    onlyHost?: boolean | undefined;
+    viewColumnsConfigJSON?: string | undefined;
+
+    constructor(data?: IAuditLogExportPDFQuery) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.startDate = _data["startDate"] ? moment(_data["startDate"].toString()) : <any>undefined;
+            this.endDate = _data["endDate"] ? moment(_data["endDate"].toString()) : <any>undefined;
+            this.userName = _data["userName"];
+            this.serviceName = _data["serviceName"];
+            this.methodName = _data["methodName"];
+            this.browserInfo = _data["browserInfo"];
+            this.tenantId = _data["tenantId"];
+            this.hasException = _data["hasException"];
+            this.minExecutionDuration = _data["minExecutionDuration"];
+            this.maxExecutionDuration = _data["maxExecutionDuration"];
+            this.severity = _data["severity"];
+            this.onlyHost = _data["onlyHost"];
+            this.viewColumnsConfigJSON = _data["viewColumnsConfigJSON"];
+        }
+    }
+
+    static override fromJS(data: any): AuditLogExportPDFQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new AuditLogExportPDFQuery();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        data["userName"] = this.userName;
+        data["serviceName"] = this.serviceName;
+        data["methodName"] = this.methodName;
+        data["browserInfo"] = this.browserInfo;
+        data["tenantId"] = this.tenantId;
+        data["hasException"] = this.hasException;
+        data["minExecutionDuration"] = this.minExecutionDuration;
+        data["maxExecutionDuration"] = this.maxExecutionDuration;
+        data["severity"] = this.severity;
+        data["onlyHost"] = this.onlyHost;
+        data["viewColumnsConfigJSON"] = this.viewColumnsConfigJSON;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface IAuditLogExportPDFQuery extends IPageListByDto {
+    startDate: moment.Moment;
+    endDate: moment.Moment;
+    userName?: string | undefined;
+    serviceName?: string | undefined;
+    methodName?: string | undefined;
+    browserInfo?: string | undefined;
+    tenantId?: number | undefined;
+    hasException?: boolean | undefined;
+    minExecutionDuration?: number | undefined;
+    maxExecutionDuration?: number | undefined;
+    severity?: number | undefined;
+    onlyHost?: boolean | undefined;
+    viewColumnsConfigJSON?: string | undefined;
 }
 
 export class SessionLoginResponse implements ISessionLoginResponse {
@@ -13749,6 +15179,105 @@ export class HelpGetListQuery extends PageListByDto implements IHelpGetListQuery
 export interface IHelpGetListQuery extends IPageListByDto {
 }
 
+export class HelpExportQuery extends PageListByDto implements IHelpExportQuery {
+    viewColumnsConfigJSON?: string | undefined;
+
+    constructor(data?: IHelpExportQuery) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.viewColumnsConfigJSON = _data["viewColumnsConfigJSON"];
+        }
+    }
+
+    static override fromJS(data: any): HelpExportQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new HelpExportQuery();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["viewColumnsConfigJSON"] = this.viewColumnsConfigJSON;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface IHelpExportQuery extends IPageListByDto {
+    viewColumnsConfigJSON?: string | undefined;
+}
+
+export class HelpExportCSVQuery extends PageListByDto implements IHelpExportCSVQuery {
+    viewColumnsConfigJSON?: string | undefined;
+
+    constructor(data?: IHelpExportCSVQuery) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.viewColumnsConfigJSON = _data["viewColumnsConfigJSON"];
+        }
+    }
+
+    static override fromJS(data: any): HelpExportCSVQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new HelpExportCSVQuery();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["viewColumnsConfigJSON"] = this.viewColumnsConfigJSON;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface IHelpExportCSVQuery extends IPageListByDto {
+    viewColumnsConfigJSON?: string | undefined;
+}
+
+export class HelpExportPDFQuery extends PageListByDto implements IHelpExportPDFQuery {
+    viewColumnsConfigJSON?: string | undefined;
+
+    constructor(data?: IHelpExportPDFQuery) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.viewColumnsConfigJSON = _data["viewColumnsConfigJSON"];
+        }
+    }
+
+    static override fromJS(data: any): HelpExportPDFQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new HelpExportPDFQuery();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["viewColumnsConfigJSON"] = this.viewColumnsConfigJSON;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface IHelpExportPDFQuery extends IPageListByDto {
+    viewColumnsConfigJSON?: string | undefined;
+}
+
 export class HelpResponse implements IHelpResponse {
     id?: number | undefined;
     language!: number;
@@ -14669,6 +16198,105 @@ export class LanguageGetListQuery extends PageListByDto implements ILanguageGetL
 }
 
 export interface ILanguageGetListQuery extends IPageListByDto {
+}
+
+export class LanguageExportQuery extends PageListByDto implements ILanguageExportQuery {
+    viewColumnsConfigJSON?: string | undefined;
+
+    constructor(data?: ILanguageExportQuery) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.viewColumnsConfigJSON = _data["viewColumnsConfigJSON"];
+        }
+    }
+
+    static override fromJS(data: any): LanguageExportQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new LanguageExportQuery();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["viewColumnsConfigJSON"] = this.viewColumnsConfigJSON;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface ILanguageExportQuery extends IPageListByDto {
+    viewColumnsConfigJSON?: string | undefined;
+}
+
+export class LanguageExportCSVQuery extends PageListByDto implements ILanguageExportCSVQuery {
+    viewColumnsConfigJSON?: string | undefined;
+
+    constructor(data?: ILanguageExportCSVQuery) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.viewColumnsConfigJSON = _data["viewColumnsConfigJSON"];
+        }
+    }
+
+    static override fromJS(data: any): LanguageExportCSVQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new LanguageExportCSVQuery();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["viewColumnsConfigJSON"] = this.viewColumnsConfigJSON;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface ILanguageExportCSVQuery extends IPageListByDto {
+    viewColumnsConfigJSON?: string | undefined;
+}
+
+export class LanguageExportPDFQuery extends PageListByDto implements ILanguageExportPDFQuery {
+    viewColumnsConfigJSON?: string | undefined;
+
+    constructor(data?: ILanguageExportPDFQuery) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.viewColumnsConfigJSON = _data["viewColumnsConfigJSON"];
+        }
+    }
+
+    static override fromJS(data: any): LanguageExportPDFQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new LanguageExportPDFQuery();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["viewColumnsConfigJSON"] = this.viewColumnsConfigJSON;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface ILanguageExportPDFQuery extends IPageListByDto {
+    viewColumnsConfigJSON?: string | undefined;
 }
 
 export class LanguageResponse implements ILanguageResponse {
@@ -17345,6 +18973,105 @@ export class RoleGetListQuery extends PageListByDto implements IRoleGetListQuery
 export interface IRoleGetListQuery extends IPageListByDto {
 }
 
+export class RoleExportQuery extends PageListByDto implements IRoleExportQuery {
+    viewColumnsConfigJSON?: string | undefined;
+
+    constructor(data?: IRoleExportQuery) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.viewColumnsConfigJSON = _data["viewColumnsConfigJSON"];
+        }
+    }
+
+    static override fromJS(data: any): RoleExportQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new RoleExportQuery();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["viewColumnsConfigJSON"] = this.viewColumnsConfigJSON;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface IRoleExportQuery extends IPageListByDto {
+    viewColumnsConfigJSON?: string | undefined;
+}
+
+export class RoleExportCSVQuery extends PageListByDto implements IRoleExportCSVQuery {
+    viewColumnsConfigJSON?: string | undefined;
+
+    constructor(data?: IRoleExportCSVQuery) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.viewColumnsConfigJSON = _data["viewColumnsConfigJSON"];
+        }
+    }
+
+    static override fromJS(data: any): RoleExportCSVQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new RoleExportCSVQuery();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["viewColumnsConfigJSON"] = this.viewColumnsConfigJSON;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface IRoleExportCSVQuery extends IPageListByDto {
+    viewColumnsConfigJSON?: string | undefined;
+}
+
+export class RoleExportPDFQuery extends PageListByDto implements IRoleExportPDFQuery {
+    viewColumnsConfigJSON?: string | undefined;
+
+    constructor(data?: IRoleExportPDFQuery) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.viewColumnsConfigJSON = _data["viewColumnsConfigJSON"];
+        }
+    }
+
+    static override fromJS(data: any): RoleExportPDFQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new RoleExportPDFQuery();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["viewColumnsConfigJSON"] = this.viewColumnsConfigJSON;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface IRoleExportPDFQuery extends IPageListByDto {
+    viewColumnsConfigJSON?: string | undefined;
+}
+
 export class RoleResponse implements IRoleResponse {
     id!: number;
     tenantId?: number | undefined;
@@ -18316,6 +20043,105 @@ export interface ISettingClientChangeCommand {
     clientType?: string | undefined;
     name?: string | undefined;
     value?: string | undefined;
+}
+
+export class TenantExportQuery extends PageListByDto implements ITenantExportQuery {
+    viewColumnsConfigJSON?: string | undefined;
+
+    constructor(data?: ITenantExportQuery) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.viewColumnsConfigJSON = _data["viewColumnsConfigJSON"];
+        }
+    }
+
+    static override fromJS(data: any): TenantExportQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new TenantExportQuery();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["viewColumnsConfigJSON"] = this.viewColumnsConfigJSON;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface ITenantExportQuery extends IPageListByDto {
+    viewColumnsConfigJSON?: string | undefined;
+}
+
+export class TenantExportCSVQuery extends PageListByDto implements ITenantExportCSVQuery {
+    viewColumnsConfigJSON?: string | undefined;
+
+    constructor(data?: ITenantExportCSVQuery) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.viewColumnsConfigJSON = _data["viewColumnsConfigJSON"];
+        }
+    }
+
+    static override fromJS(data: any): TenantExportCSVQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new TenantExportCSVQuery();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["viewColumnsConfigJSON"] = this.viewColumnsConfigJSON;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface ITenantExportCSVQuery extends IPageListByDto {
+    viewColumnsConfigJSON?: string | undefined;
+}
+
+export class TenantExportPDFQuery extends PageListByDto implements ITenantExportPDFQuery {
+    viewColumnsConfigJSON?: string | undefined;
+
+    constructor(data?: ITenantExportPDFQuery) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.viewColumnsConfigJSON = _data["viewColumnsConfigJSON"];
+        }
+    }
+
+    static override fromJS(data: any): TenantExportPDFQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new TenantExportPDFQuery();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["viewColumnsConfigJSON"] = this.viewColumnsConfigJSON;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface ITenantExportPDFQuery extends IPageListByDto {
+    viewColumnsConfigJSON?: string | undefined;
 }
 
 export class TenantResponse implements ITenantResponse {
@@ -19704,58 +21530,6 @@ export interface IUserGetListQuery extends IPageListByDto {
     tenant?: number | undefined;
 }
 
-export class FileDto implements IFileDto {
-    fileName?: string | undefined;
-    fileType?: string | undefined;
-    fileToken?: string | undefined;
-    fileArray?: string | undefined;
-    fileBase64?: string | undefined;
-
-    constructor(data?: IFileDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.fileName = _data["fileName"];
-            this.fileType = _data["fileType"];
-            this.fileToken = _data["fileToken"];
-            this.fileArray = _data["fileArray"];
-            this.fileBase64 = _data["fileBase64"];
-        }
-    }
-
-    static fromJS(data: any): FileDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new FileDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["fileName"] = this.fileName;
-        data["fileType"] = this.fileType;
-        data["fileToken"] = this.fileToken;
-        data["fileArray"] = this.fileArray;
-        data["fileBase64"] = this.fileBase64;
-        return data;
-    }
-}
-
-export interface IFileDto {
-    fileName?: string | undefined;
-    fileType?: string | undefined;
-    fileToken?: string | undefined;
-    fileArray?: string | undefined;
-    fileBase64?: string | undefined;
-}
-
 export class UserExportQuery extends PageListByDto implements IUserExportQuery {
     tenant?: number | undefined;
     viewColumnsConfigJSON?: string | undefined;
@@ -19826,6 +21600,43 @@ export class UserExportCSVQuery extends PageListByDto implements IUserExportCSVQ
 }
 
 export interface IUserExportCSVQuery extends IPageListByDto {
+    tenant?: number | undefined;
+    viewColumnsConfigJSON?: string | undefined;
+}
+
+export class UserExportPDFQuery extends PageListByDto implements IUserExportPDFQuery {
+    tenant?: number | undefined;
+    viewColumnsConfigJSON?: string | undefined;
+
+    constructor(data?: IUserExportPDFQuery) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.tenant = _data["tenant"];
+            this.viewColumnsConfigJSON = _data["viewColumnsConfigJSON"];
+        }
+    }
+
+    static override fromJS(data: any): UserExportPDFQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserExportPDFQuery();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tenant"] = this.tenant;
+        data["viewColumnsConfigJSON"] = this.viewColumnsConfigJSON;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface IUserExportPDFQuery extends IPageListByDto {
     tenant?: number | undefined;
     viewColumnsConfigJSON?: string | undefined;
 }
