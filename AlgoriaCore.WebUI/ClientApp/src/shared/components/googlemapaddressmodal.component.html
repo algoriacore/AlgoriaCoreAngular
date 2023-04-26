@@ -3,8 +3,8 @@
 
         <div class="col-12">
             <div style="text-align:right;">
-                <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()" [style.margin-left.px]="10" [disabled]="saving"></p-button>
-                <p-button type="button" label="{{l('Save')}}" (onClick)="save()" [style.margin-left.px]="10" [disabled]="saving"></p-button>
+                <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()" [style.margin-left.px]="10"></p-button>
+                <p-button type="button" label="{{l('Save')}}" (onClick)="save()" [style.margin-left.px]="10"></p-button>
             </div>
         </div>
 
@@ -17,7 +17,9 @@
                 </div>
 
                 <div class="col-12">
-                    <p-gmap [options]="mapOptions" [overlays]="overlays" [style]="{'width':'100%','height':'320px'}" (onMapReady)="setMap($event)" (onMapClick)="handleMapClick($event)"></p-gmap>
+                    <google-map *ngIf="center" width="100%" height="320px" [zoom]="zoom" [center]="center" [options]="mapOptions" (mapClick)="handleMapClick($event)">
+                        <map-marker *ngIf="marker" [position]="marker.position" [draggable]="marker.draggable"></map-marker>
+                    </google-map>
                 </div>
             </div>
 
@@ -25,3 +27,5 @@
 
     </div>
 </form>
+
+<app-preloader [blocked]="blockedDocument"></app-preloader>

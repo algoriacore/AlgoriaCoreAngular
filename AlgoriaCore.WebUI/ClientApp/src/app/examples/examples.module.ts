@@ -31,6 +31,7 @@ import { SamplePEditorComponent } from './peditor/samplepeditor.component';
 import { SampleLogComponent } from './samplelog/samplelog.component';
 import { EditSamplesDateDataComponent } from './samplesdatedata/editsamplesdatedata.component';
 import { SamplesDateDataComponent } from './samplesdatedata/samplesdatedata.component';
+import { SampleGoogleMapsComponent } from './googlemaps/samplegooglemaps.component';
 
 @NgModule({
     imports: [
@@ -67,7 +68,8 @@ import { SamplesDateDataComponent } from './samplesdatedata/samplesdatedata.comp
         SampleNumbersComponent,
         SampleMultiselectComponent,
         SampleChartsComponent,
-        SamplePEditorComponent
+        SamplePEditorComponent,
+        SampleGoogleMapsComponent
     ],
     providers: [
         DialogService,

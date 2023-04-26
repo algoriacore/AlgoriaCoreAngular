@@ -13,7 +13,6 @@ import { CarouselModule } from 'primeng/carousel';
 import { ChartModule } from 'primeng/chart';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ChipsModule } from 'primeng/chips';
-// import { CodeHighlighterModule } from 'primeng/codehighlighter';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { ContextMenuModule } from 'primeng/contextmenu';
@@ -29,7 +28,6 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { LightboxModule } from 'primeng/lightbox';
 import { ListboxModule } from 'primeng/listbox';
 import { MegaMenuModule } from 'primeng/megamenu';
 import { MenuModule } from 'primeng/menu';
@@ -88,7 +86,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
         ChartModule,
         CheckboxModule,
         ChipsModule,
-        // CodeHighlighterModule,
         ConfirmDialogModule,
         ColorPickerModule,
         ContextMenuModule,
@@ -104,7 +101,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
         InputSwitchModule,
         InputTextModule,
         InputTextareaModule,
-        LightboxModule,
         ListboxModule,
         MegaMenuModule,
         MenuModule,

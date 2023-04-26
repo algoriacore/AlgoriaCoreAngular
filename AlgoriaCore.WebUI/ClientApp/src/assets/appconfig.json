@@ -3,7 +3,7 @@
     "appBaseUrl": "http://localhost:4200",
     "appTitle": "Algoria Core App",
     "appPrefix": "app-core",
-    "googleAPIKey": "AIzaSyDjmJcT-ZUS4ME1w4EvBzu8mEve54YOPmg",
+    "googleAPIKey": "AIzaSyBNDjjagfmJtFXxYfe-A8KqvHBgE7xYeuE",
     "timeouts": {
         "default": 30000,
         "urls": [

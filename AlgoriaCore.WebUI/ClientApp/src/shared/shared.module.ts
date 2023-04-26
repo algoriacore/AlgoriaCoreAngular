@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { GoogleMapsModule } from '@angular/google-maps';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { BlockUIModule } from 'primeng/blockui';
 import { ButtonModule } from 'primeng/button';
@@ -11,17 +12,16 @@ import { DividerModule } from 'primeng/divider';
 import { DropdownModule } from 'primeng/dropdown';
 import { EditorModule } from 'primeng/editor';
 import { FileUploadModule } from 'primeng/fileupload';
-import { GMapModule } from 'primeng/gmap';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { LightboxModule } from 'primeng/lightbox';
 import { ListboxModule } from 'primeng/listbox';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { OrderListModule } from 'primeng/orderlist';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { PanelModule } from 'primeng/panel';
 import { PasswordModule } from 'primeng/password';
@@ -44,12 +44,11 @@ import { AppHelpOnScreenComponent } from './components/app.help.onscreen.compone
 import { PasswordFieldComponent } from './components/app.passwordfield.component';
 import { AppPreloaderComponent } from './components/app.preloader.component';
 import { AppQuestionnaireComponent } from './components/app.questionnaire.component';
+import { AppViewConfigComponent } from './components/app.viewconfig.component';
 import { GoogleMapAddressModalComponent } from './components/googlemapaddressmodal.component';
 import { SelectUsersComponent } from './components/selectusers.component';
 import { NativeElementInjectorDirective } from './directives/NativeElementInjectorDirective ';
 import { SharedRoutingModule } from './shared-routing.module';
-import { AppViewConfigComponent } from './components/app.viewconfig.component';
-import { OrderListModule } from 'primeng/orderlist';
 
 @NgModule({
     imports: [
@@ -74,8 +73,6 @@ import { OrderListModule } from 'primeng/orderlist';
         PanelModule,
         OverlayPanelModule,
         InputMaskModule,
-        GMapModule,
-        LightboxModule,
         ScrollPanelModule,
         PasswordModule,
         DividerModule,
@@ -88,7 +85,8 @@ import { OrderListModule } from 'primeng/orderlist';
         AutoCompleteModule,
         DropdownModule,
         SharedRoutingModule,
-        OrderListModule
+        OrderListModule,
+        GoogleMapsModule
     ],
     declarations: [
         AppAlertComponent,

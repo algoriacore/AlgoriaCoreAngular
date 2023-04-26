@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SampleChartsComponent } from './charts/samplecharts.component';
 import { SampleChatLogComponent } from './chat/chatlog/samplechatlog.component';
 import { SampleChatComponent } from './chat/samplechat.component';
+import { SampleGoogleMapsComponent } from './googlemaps/samplegooglemaps.component';
 import { SampleMultiselectComponent } from './multiselect/samplemultiselect.component';
 import { SampleNumbersComponent } from './numbers/samplenumbers.component';
 import { SamplePEditorComponent } from './peditor/samplepeditor.component';
@@ -20,6 +21,7 @@ const routes: Routes = [
     { path: 'samplelog', component: SampleLogComponent },
     { path: 'sampleNumbers', component: SampleNumbersComponent },
     { path: 'autocomplete', component: SampleMultiselectComponent },
+    { path: 'googlemaps', component: SampleGoogleMapsComponent },
     { path: 'charts', component: SampleChartsComponent },
     { path: 'peditor', component: SamplePEditorComponent }
 ];
