@@ -24,11 +24,38 @@ export class BrowserStorageService {
         this.storage.removeItem(this.calculateKey(key));
     }
 
+    removeExact(key: string): void {
+        this.storage.removeItem(key);
+    }
+
     clear(): void {
         this.storage.clear();
+    }
+
+    getAll(): StorageKeys[] {
+        const lenght = this.storage.length;
+
+        const lista: StorageKeys[] = [];
+
+        for (let i = 0, len = lenght; i < len; i++) {
+
+            const actualKey = this.storage.key(i);
+            const actual = new StorageKeys();
+            actual.key = actualKey;
+            actual.value = JSON.parse(this.storage.getItem(actualKey));
+
+            lista.push(actual);
+        }
+
+        return lista;
     }
 
     calculateKey(key: string): string {
         return AppConsts.appPrefix + '-' + key;
     }
+}
+
+export class StorageKeys {
+    key: string;
+    value: any;
 }

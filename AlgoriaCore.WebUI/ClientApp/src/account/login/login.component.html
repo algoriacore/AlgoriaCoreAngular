@@ -1,3 +1,10 @@
+<!--<head>
+    <script src="https://alcdn.msauth.net/browser/2.13.1/js/msal-browser.js"
+            integrity="sha384-7hwr8701w6buPsX92CwuRaz/wQazchgOEq+iLHv0ESavynv6rbYwKImS17wUW3wV"
+            corssorigin="anonymous"></script>
+
+</head>-->
+
 <form [formGroup]="form" class="login" (ngSubmit)="onSubmit()">
     <div class="grid p-ai-stretch vertical-container" style="height: 100vh; margin: 0 !important;">
         <div class="col-12 md:col-6 lg:col-5 p-ai-stretch vertical-container" id="sectionForm">
@@ -7,7 +14,17 @@
                     <img src="assets/layout/images/logo-algoria.svg" class="logo" alt="{{l('LogoApp')}}" />
                     <h3 class="title">{{l("Login.SessionLogin")}}</h3>
                     <div class="p-fluid formgrid grid p-mb-4">
+
                         <div class="field col-12">
+                            <p-button type="button" styleClass="p-button-outlined p-button-secondary" (onClick)="singInMicrosoft()">
+                                <div style="margin:auto;">
+                                   <img src="assets/layout/images/office365.png" style="width:26px;vertical-align:middle;"/>
+                                    <span class="ml-2 font-bold">{{l('Login.LoginMicrosoft')}}</span>
+                                </div>
+                            </p-button>
+                        </div>
+
+                        <div *ngIf="showTenantField" class="field col-12">
                             <label for="tenancyname">{{l('Login.Instance')}}</label>
                             <input type="text" pInputText formControlName="tenancyname" id="tenancyname" autocomplete="off" maxlength="50" />
                             <small *ngIf="submitted && f.tenancyname.invalid" id="tenancyname-error" class="p-error">{{l("RequiredFieldWithoutParameters")}}</small>

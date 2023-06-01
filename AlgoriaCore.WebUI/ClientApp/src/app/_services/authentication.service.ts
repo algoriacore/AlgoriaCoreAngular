@@ -12,6 +12,7 @@ import {
     TenantCreateRegistrationCommand,
     UserChangePasswordCommand,
     UserImpersonalizeQuery,
+    UserLoginMicrosoftQuery,
     UserLoginQuery,
     UserResetPasswordCommand
 } from '../../shared/service-proxies/service-proxies';
@@ -38,6 +39,21 @@ export class AuthenticationService {
 
         return this.authClient.login(userLoginQuery)
             .pipe(map ( user => {
+                if (user && user.token) {
+                    // store user details and jwt token in local storage to keep user logged in between page refreshes
+                    this.browserStorageService.remove('impersonalizedUser');
+                    this.browserStorageService.set('currentUser', JSON.stringify(user));
+                    this.currentUserSubject.next(user);
+                }
+
+                return user;
+            }));
+    }
+
+    public loginMicrosoft(userLoginQuery: UserLoginMicrosoftQuery) {
+
+        return this.authClient.loginByMicrosoft(userLoginQuery)
+            .pipe(map(user => {
                 if (user && user.token) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
                     this.browserStorageService.remove('impersonalizedUser');
@@ -127,8 +143,44 @@ export class AuthenticationService {
         // remove user from local storage to log user out
         this.browserStorageService.remove('impersonalizedUser');
         this.browserStorageService.remove('currentUser');
+        this.logoutMicrosoft();
         this.currentUserSubject.next(null);
         this.router.navigate(['/account/login']);
+    }
+
+    logoutMicrosoft() {
+        const self = this;
+
+        const removeKeys = (keys) => {
+            for (let i = 0, len = keys.length; i < len; i++) {
+                self.browserStorageService.removeExact(keys[i]);
+            }
+        };
+
+        const mainKey = AppConsts.azureLocalStorageKey;
+        const allStorages = this.browserStorageService.getAll();
+        const ex = allStorages.find(m => m.key === mainKey);
+
+        if (ex) {
+            const mainStorage = ex.value;
+            if (mainStorage.idToken) {
+                removeKeys(mainStorage.idToken);
+            }
+            if (mainStorage.accessToken) {
+                removeKeys(mainStorage.accessToken);
+            }
+            if (mainStorage.refreshToken) {
+                removeKeys(mainStorage.refreshToken);
+            }
+
+            removeKeys([mainKey]);
+        }
+
+        const ex2 = allStorages.find(m => m.key === AppConsts.azureMSALAccountKey);
+        if (ex2) {
+            removeKeys(ex2.value);
+            removeKeys([AppConsts.azureMSALAccountKey]);
+        }
     }
 
     private impersonalizeCallback(user: any): any {

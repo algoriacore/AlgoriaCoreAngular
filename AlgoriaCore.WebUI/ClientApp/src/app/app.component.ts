@@ -10,6 +10,14 @@ import { AppComponentBase } from './app-component-base';
 import { AuthenticationService } from './_services/authentication.service';
 import { AppViewConfigComponent } from '../shared/components/app.viewconfig.component';
 
+import { MsalBroadcastService, MsalService, MSAL_GUARD_CONFIG, MsalGuardConfiguration } from '@azure/msal-angular';
+import {
+    EventMessage,
+    EventType,
+    InteractionStatus
+} from '@azure/msal-browser';
+import { filter } from 'rxjs/operators';
+
 @Component({
     templateUrl: './app.component.html'
 })
@@ -47,6 +55,8 @@ export class AppComponent extends AppComponentBase implements AfterViewInit, Aft
 
     blocked: boolean;
 
+    isIframe = false;
+
     constructor(
         private injector: Injector,
         private primengConfig: PrimeNGConfig,
@@ -55,7 +65,9 @@ export class AppComponent extends AppComponentBase implements AfterViewInit, Aft
         private settingsClientService: SettingsClientService,
         private chatSignalrService: ChatSignalrService,
         private versionCheckService: VersionCheckService,
-        private changeDetector: ChangeDetectorRef
+        private changeDetector: ChangeDetectorRef,
+        private authService: MsalService,
+        private msalBroadcastService: MsalBroadcastService
     ) {
         super(injector);
 
@@ -79,6 +91,24 @@ export class AppComponent extends AppComponentBase implements AfterViewInit, Aft
 
     ngAfterViewInit(): void {
         const self = this;
+
+        this.isIframe = window !== window.parent && !window.opener;
+
+        this.msalBroadcastService.msalSubject$
+            .pipe(
+                filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS),
+            )
+            .subscribe((result: EventMessage) => {
+                console.log(result);
+            });
+
+        this.msalBroadcastService.inProgress$
+            .pipe(
+                filter((status: InteractionStatus) => status === InteractionStatus.None)
+            )
+            .subscribe(() => {
+                console.log('Haciendo algo');
+            });
 
         this.chatSignalrService.init();
         this.versionCheckService.initVersionCheck();

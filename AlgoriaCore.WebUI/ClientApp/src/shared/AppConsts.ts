@@ -14,4 +14,11 @@ export class AppConsts {
     static helpOnScreenNamePrefix = 'HelpOnScreen.';
     static timeouts = { default: 30000, urls: [] };
     static frequencyCheckVersion = 30;
+
+    static azureMSALAccountKey = 'msal.account.keys';
+    static azureLocalStorageKey = 'msal.token.keys.e43c2736-6899-4dc0-8470-4b978ef35b2b';
+
+    static azureClientId = 'e43c2736-6899-4dc0-8470-4b978ef35b2b';
+    static azureTenantId = '72e9a344-1f95-4cf5-8fb7-e26b291f7906';
+    static azureRedirectUri = 'http://localhost:4200';
 }

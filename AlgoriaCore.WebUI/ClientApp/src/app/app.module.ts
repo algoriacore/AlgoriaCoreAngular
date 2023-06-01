@@ -85,6 +85,7 @@ import { ChangeLogComponent } from './_components/changelog.component';
 import { ErrorInterceptor } from './_helpers/error.interceptor';
 import { JwtInterceptor } from './_helpers/jwt.interceptor';
 
+
 @NgModule({
     imports: [
         BrowserModule,

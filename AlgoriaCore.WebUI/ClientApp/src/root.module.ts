@@ -1,11 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_INITIALIZER, Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import * as moment from 'moment';
 import 'moment-duration-format';
 import 'moment-timezone';
-import { PrimeNGConfig } from 'primeng/api';
+import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { AppModule } from './app/app.module';
 import { AuthenticationService } from './app/_services/authentication.service';
 import { PermissionCheckerService } from './app/_services/permission.checker.service';
@@ -15,7 +15,7 @@ import { AppConsts } from './shared/AppConsts';
 import { AppSettings } from './shared/AppSettings';
 import { SubdomainTenancyNameFinder } from './shared/helpers/SubdomainTenancyNameFinder';
 import {
-    API_BASE_URL, UserConfigurationGetAllQuery, UserConfigurationResponse, UserConfigurationServiceProxy
+    API_BASE_URL, UserConfigurationGetAllQuery, UserConfigurationResponse, UserConfigurationServiceProxy, UserLoginQuery
 } from './shared/service-proxies/service-proxies';
 import { ServiceProxyModule } from './shared/service-proxies/service-proxy.module';
 import { CatalogsCustomService } from './shared/services/catalogscustom.service';
@@ -27,6 +27,34 @@ import { TitleService } from './shared/services/title.service';
 import { VersionCheckService } from './shared/services/version.check.service';
 import { Utils } from './shared/utils/utils';
 
+import { filter, finalize, takeUntil } from 'rxjs/operators';
+
+import {
+    MSAL_INSTANCE,
+    MSAL_INTERCEPTOR_CONFIG,
+    MsalInterceptorConfiguration,
+    MSAL_GUARD_CONFIG,
+    MsalGuardConfiguration,
+    MsalBroadcastService,
+    MsalService,
+    MsalGuard,
+    MsalRedirectComponent,
+    MsalModule,
+    MsalInterceptor,
+} from '@azure/msal-angular';
+
+import {
+    IPublicClientApplication,
+    PublicClientApplication,
+    BrowserCacheLocation,
+    LogLevel,
+    InteractionType,
+    InteractionStatus
+} from '@azure/msal-browser';
+import { Subject } from 'rxjs';
+import { BrowserStorageService } from './shared/services/storage.service';
+import { Router } from '@angular/router';
+
 export function appInitializerFactory(injector: Injector) {
     return () => RootModule.getAppInitializerFactoryFunction(injector);
 }
@@ -35,13 +63,65 @@ export function getRemoteServiceBaseUrl(): string {
     return AppConsts.remoteServiceBaseUrl;
 }
 
+const GRAPH_ENDPOINT = 'Enter_the_Graph_Endpoint_Herev1.0/me';
+
+const isIE =
+    window.navigator.userAgent.indexOf('MSIE ') > -1 ||
+    window.navigator.userAgent.indexOf('Trident/') > -1;
+
+export function loggerCallback(logLevel: LogLevel, message: string) {
+    console.log(message);
+}
+
+
+export function MSALInstanceFactory(): IPublicClientApplication {
+    return new PublicClientApplication({
+        auth: {
+            clientId: AppConsts.azureClientId,
+            authority: 'https://login.microsoftonline.com/' + AppConsts.azureTenantId,
+            redirectUri: AppConsts.azureRedirectUri,
+        },
+        cache: {
+            cacheLocation: BrowserCacheLocation.LocalStorage,
+            storeAuthStateInCookie: isIE, // set to true for IE 11
+        },
+        system: {
+            loggerOptions: {
+                loggerCallback,
+                logLevel: LogLevel.Info,
+                piiLoggingEnabled: false,
+            },
+        },
+    });
+}
+
+export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
+    const protectedResourceMap = new Map<string, Array<string>>();
+    protectedResourceMap.set(GRAPH_ENDPOINT, ['user.read']);
+
+    return {
+        interactionType: InteractionType.Redirect,
+        protectedResourceMap,
+    };
+}
+
+export function MSALGuardConfigFactory(): MsalGuardConfiguration {
+    return {
+        interactionType: InteractionType.Redirect,
+        authRequest: {
+            scopes: ['user.read'],
+        },
+    };
+}
+
 @NgModule({
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
         AppModule,
         ServiceProxyModule,
-        RootRoutingModule
+        RootRoutingModule,
+        MsalModule
     ],
     declarations: [
         RootComponent
@@ -54,10 +134,31 @@ export function getRemoteServiceBaseUrl(): string {
             useFactory: appInitializerFactory,
             deps: [Injector],
             multi: true
-        }
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: MsalInterceptor,
+            multi: true,
+        },
+        {
+            provide: MSAL_INSTANCE,
+            useFactory: MSALInstanceFactory,
+        },
+        {
+            provide: MSAL_GUARD_CONFIG,
+            useFactory: MSALGuardConfigFactory,
+        },
+        {
+            provide: MSAL_INTERCEPTOR_CONFIG,
+            useFactory: MSALInterceptorConfigFactory,
+        },
+        MsalService,
+        MsalGuard,
+        MsalBroadcastService,
     ],
-    bootstrap: [RootComponent]
+    bootstrap: [RootComponent, MsalRedirectComponent]
 })
+
 export class RootModule {
 
     public static getAppInitializerFactoryFunction(injector: Injector): Promise<boolean> {

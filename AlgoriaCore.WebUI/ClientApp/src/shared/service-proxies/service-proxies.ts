@@ -1235,6 +1235,58 @@ export class AuthServiceProxy {
         return _observableOf(null as any);
     }
 
+    loginByMicrosoft(query: UserLoginMicrosoftQuery): Observable<SessionLoginResponseController> {
+        let url_ = this.baseUrl + "/api/auth/loginbymicrosoft";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(query);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processLoginByMicrosoft(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processLoginByMicrosoft(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SessionLoginResponseController>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SessionLoginResponseController>;
+        }));
+    }
+
+    protected processLoginByMicrosoft(response: HttpResponseBase): Observable<SessionLoginResponseController> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = SessionLoginResponseController.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
     impersonalizeTenant(query: UserImpersonalizeQuery): Observable<SessionLoginResponseController> {
         let url_ = this.baseUrl + "/api/auth/impersonalizetenant";
         url_ = url_.replace(/[?&]$/, "");
@@ -11761,6 +11813,50 @@ export class UserLoginQuery implements IUserLoginQuery {
 export interface IUserLoginQuery {
     userName?: string | undefined;
     password?: string | undefined;
+    tenancyName?: string | undefined;
+}
+
+export class UserLoginMicrosoftQuery implements IUserLoginMicrosoftQuery {
+    token?: string | undefined;
+    userName?: string | undefined;
+    tenancyName?: string | undefined;
+
+    constructor(data?: IUserLoginMicrosoftQuery) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.token = _data["token"];
+            this.userName = _data["userName"];
+            this.tenancyName = _data["tenancyName"];
+        }
+    }
+
+    static fromJS(data: any): UserLoginMicrosoftQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserLoginMicrosoftQuery();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["token"] = this.token;
+        data["userName"] = this.userName;
+        data["tenancyName"] = this.tenancyName;
+        return data;
+    }
+}
+
+export interface IUserLoginMicrosoftQuery {
+    token?: string | undefined;
+    userName?: string | undefined;
     tenancyName?: string | undefined;
 }
 
