@@ -14,6 +14,8 @@ import { SettingsClientService } from '../services/settingsclient.service';
 export class AppViewConfigComponent extends AppComponentBase implements OnInit {
 
     settingViewConfigName: string;
+    originalCols: any[];
+    currentCols: any[] = [];
     cols: any[];
 
     blockedDocument = false;
@@ -32,7 +34,28 @@ export class AppViewConfigComponent extends AppComponentBase implements OnInit {
         const self = this;
 
         self.settingViewConfigName = self.modalConfig.data.settingViewConfigName;
-        self.cols = JSON.parse(JSON.stringify(self.modalConfig.data.cols));
+        self.originalCols = JSON.parse(JSON.stringify(self.modalConfig.data.originalCols));
+        self.cols = self.originalCols.concat([]);
+
+        const settingViewConfig = self.settingsClient.getSetting(self.settingViewConfigName);
+
+        if (settingViewConfig) {
+            self.currentCols = self.parseColumnsFromJSON(settingViewConfig);
+
+            const existingCols = [];
+            const newCols = self.cols.concat([]).filter(p => self.currentCols.findIndex(q => q.field === p.field) < 0);
+
+            for (const col of self.currentCols) {
+                const p = self.cols.find(q => q.field === col.field);
+
+                if (p) {
+                    p.isActive = col.isActive === true;
+                    existingCols.push(p);
+                }
+            }
+
+            self.cols = existingCols.concat(newCols);
+        }
 
         if (self.modalRef) {
             self.initModalMode();

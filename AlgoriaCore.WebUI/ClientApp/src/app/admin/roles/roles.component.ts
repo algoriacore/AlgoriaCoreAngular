@@ -108,26 +108,22 @@ export class RolesComponent extends AppComponentBase implements OnInit {
             {
                 field: 'id',
                 header: self.l('Id'),
-                headerLanguageLabel: 'Id',
                 width: '100px',
                 isActive: true
             },
             {
                 field: 'name',
                 header: self.l('Roles.NameColGrid'),
-                headerLanguageLabel: 'Roles.NameColGrid',
                 isActive: true
             },
             {
                 field: 'displayName',
                 header: self.l('Roles.DisplayNameColGrid'),
-                headerLanguageLabel: 'Roles.DisplayNameColGrid',
                 isActive: true
             },
             {
                 field: 'isActiveDesc',
                 header: self.l('IsActive'),
-                headerLanguageLabel: 'IsActive',
                 width: '100px',
                 isActive: true
             }
@@ -227,7 +223,7 @@ export class RolesComponent extends AppComponentBase implements OnInit {
             }
         };
 
-        self.app.configurateView(settingViewConfigName, self.cols, callback);
+        self.app.configurateView(settingViewConfigName, self.getDefaultColumns(), callback);
     }
 
     // Export view

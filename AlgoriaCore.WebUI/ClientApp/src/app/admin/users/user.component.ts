@@ -111,39 +111,33 @@ export class UsersComponent extends AppComponentBase implements OnInit {
             {
                 field: 'id',
                 header: self.l('Id'),
-                headerLanguageLabel: 'Id',
                 width: '100px',
                 isActive: true
             },
             {
                 field: 'login',
                 header: self.l('Users.UserNameColGrid'),
-                headerLanguageLabel: 'Users.UserNameColGrid',
                 isActive: true
             },
             {
                 field: 'fullName',
                 header: self.l('Users.NameColGrid'),
-                headerLanguageLabel: 'Users.NameColGrid',
                 isActive: true
             },
             {
                 field: 'emailAddress',
                 header: self.l('Users.EmailAddressColGrid'),
-                headerLanguageLabel: 'Users.EmailAddressColGrid',
                 isActive: true
             },
             {
                 field: 'isActiveDesc',
                 header: self.l('IsActive'),
-                headerLanguageLabel: 'IsActive',
                 width: '100px',
                 isActive: true
             },
             {
                 field: 'userLockedDesc',
                 header: self.l('Users.Locked'),
-                headerLanguageLabel: 'Users.Locked',
                 width: '120px',
                 isActive: true
             }
@@ -349,7 +343,7 @@ export class UsersComponent extends AppComponentBase implements OnInit {
             }
         };
 
-        self.app.configurateView(settingViewConfigName, self.cols, callback);
+        self.app.configurateView(settingViewConfigName, self.getDefaultColumns(), callback);
     }
 
     // Export view

@@ -106,26 +106,22 @@ export class TenantComponent extends AppComponentBase implements OnInit {
             {
                 field: 'id',
                 header: self.l('Id'),
-                headerLanguageLabel: 'Id',
                 width: '100px',
                 isActive: true
             },
             {
                 field: 'name',
                 header: self.l('Tenants.NameColGrid'),
-                headerLanguageLabel: 'Tenants.NameColGrid',
                 isActive: true
             },
             {
                 field: 'tenancyName',
                 header: self.l('Tenants.TenancyNameColGrid'),
-                headerLanguageLabel: 'Tenants.TenancyNameColGrid',
                 isActive: true
             },
             {
                 field: 'isActiveDesc',
                 header: self.l('IsActive'),
-                headerLanguageLabel: 'IsActive',
                 width: '100px',
                 isActive: true
             }
@@ -239,7 +235,7 @@ export class TenantComponent extends AppComponentBase implements OnInit {
             }
         };
 
-        self.app.configurateView(settingViewConfigName, self.cols, callback);
+        self.app.configurateView(settingViewConfigName, self.getDefaultColumns(), callback);
     }
 
     // Export view
