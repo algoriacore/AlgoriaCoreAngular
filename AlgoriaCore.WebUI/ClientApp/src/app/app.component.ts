@@ -263,7 +263,7 @@ export class AppComponent extends AppComponentBase implements AfterViewInit, Aft
             this.router.navigate(commands));
     }
 
-    configurateView(settingViewConfigName: string, cols: any[], callback?: (response: any[]) => void): void {
+    configurateView(settingViewConfigName: string, originalCols: any[], callback?: (response: any[]) => void): void {
         const self = this;
         const ref = self.dialogService.open(AppViewConfigComponent, {
             styleClass: 'd-xl-40 d-lg-50 d-md d-sm',
@@ -275,7 +275,7 @@ export class AppComponent extends AppComponentBase implements AfterViewInit, Aft
             footer: 'DUMMY',
             data: {
                 settingViewConfigName: settingViewConfigName,
-                cols: cols
+                originalCols: originalCols
             }
         });
 

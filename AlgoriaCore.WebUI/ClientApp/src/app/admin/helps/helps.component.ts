@@ -104,32 +104,27 @@ export class HelpsComponent extends AppComponentBase implements OnInit {
             {
                 field: 'id',
                 header: self.l('Id'),
-                headerLanguageLabel: 'Id',
                 width: '100px',
                 isActive: true
             },
             {
                 field: 'languageDesc',
                 header: self.l('Helps.Help.Language'),
-                headerLanguageLabel: 'Helps.Help.Language',
                 isActive: true
             },
             {
                 field: 'key',
                 header: self.l('Helps.Help.Key'),
-                headerLanguageLabel: 'Helps.Help.Key',
                 isActive: true
             },
             {
                 field: 'displayName',
                 header: self.l('Roles.DisplayNameColGrid'),
-                headerLanguageLabel: 'Roles.DisplayNameColGrid',
                 isActive: true
             },
             {
                 field: 'isActiveDesc',
                 header: self.l('IsActive'),
-                headerLanguageLabel: 'IsActive',
                 width: '100px',
                 isActive: true
             }
@@ -219,7 +214,7 @@ export class HelpsComponent extends AppComponentBase implements OnInit {
             }
         };
 
-        self.app.configurateView(settingViewConfigName, self.cols, callback);
+        self.app.configurateView(settingViewConfigName, self.getDefaultColumns(), callback);
     }
 
     // Export view

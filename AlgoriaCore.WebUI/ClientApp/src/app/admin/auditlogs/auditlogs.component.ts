@@ -131,7 +131,6 @@ export class AuditLogsComponent extends AppComponentBase implements OnInit {
             {
                 field: 'executionTime',
                 header: self.l('AuditLogs.ExecutionTimeColGrid'),
-                headerLanguageLabel: 'AuditLogs.ExecutionTimeColGrid',
                 width: '160px',
                 sorting: true,
                 isActive: true,
@@ -141,7 +140,6 @@ export class AuditLogsComponent extends AppComponentBase implements OnInit {
             {
                 field: 'executionDuration',
                 header: self.l('AuditLogs.ExecutionDurationColGrid'),
-                headerLanguageLabel: 'AuditLogs.ExecutionDurationColGrid',
                 width: '90px',
                 sorting: true,
                 isActive: true
@@ -149,7 +147,6 @@ export class AuditLogsComponent extends AppComponentBase implements OnInit {
             {
                 field: 'serviceName',
                 header: self.l('AuditLogs.ServiceColGrid'),
-                headerLanguageLabel: 'AuditLogs.ServiceColGrid',
                 width: '300px',
                 sorting: false,
                 isActive: true
@@ -157,7 +154,6 @@ export class AuditLogsComponent extends AppComponentBase implements OnInit {
             {
                 field: 'tenantName',
                 header: self.l('AuditLogs.TenantColGrid'),
-                headerLanguageLabel: 'AuditLogs.TenantColGrid',
                 width: '250px',
                 sorting: false,
                 isActive: self.isHost
@@ -165,7 +161,6 @@ export class AuditLogsComponent extends AppComponentBase implements OnInit {
             {
                 field: 'userName',
                 header: self.l('AuditLogs.UserNameColGrid'),
-                headerLanguageLabel: 'AuditLogs.UserNameColGrid',
                 width: '150px',
                 sorting: true,
                 isActive: true
@@ -173,7 +168,6 @@ export class AuditLogsComponent extends AppComponentBase implements OnInit {
             {
                 field: 'clientIpAddress',
                 header: self.l('AuditLogs.ClientIpAddressColGrid'),
-                headerLanguageLabel: 'AuditLogs.ClientIpAddressColGrid',
                 width: '150px',
                 sorting: false,
                 isActive: true
@@ -181,7 +175,6 @@ export class AuditLogsComponent extends AppComponentBase implements OnInit {
             {
                 field: 'clientName',
                 header: self.l('AuditLogs.ClientNameColGrid'),
-                headerLanguageLabel: 'AuditLogs.ClientNameColGrid',
                 width: '150px',
                 sorting: false,
                 isActive: true
@@ -189,7 +182,6 @@ export class AuditLogsComponent extends AppComponentBase implements OnInit {
             {
                 field: 'browserInfo',
                 header: self.l('AuditLogs.BrowserColGrid'),
-                headerLanguageLabel: 'AuditLogs.BrowserColGrid',
                 width: '900px',
                 sorting: false,
                 isActive: true
@@ -341,7 +333,7 @@ export class AuditLogsComponent extends AppComponentBase implements OnInit {
             }
         };
 
-        self.app.configurateView(settingViewConfigName, self.cols, callback);
+        self.app.configurateView(settingViewConfigName, self.getDefaultColumns(), callback);
     }
 
     // Export view

@@ -118,38 +118,32 @@ export class MailServiceMailComponent extends AppComponentBase implements OnInit
             {
                 field: 'status',
                 header: self.l('MailServiceMailStatuss.MailServiceMailStatus'),
-                headerLanguageLabel: 'MailServiceMailStatuss.MailServiceMailStatus',
                 width: '70px',
                 isActive: true
             },
             {
                 field: 'mailServiceRequestDate',
                 header: self.l('MailServiceMails.MailServiceMail.MailServiceRequest'),
-                headerLanguageLabel: 'MailServiceMails.MailServiceMail.MailServiceRequest',
                 isActive: true
             },
             {
                 field: 'isLocalConfigDesc',
                 header: self.l('MailServiceMails.MailServiceMail.IsLocalConfig'),
-                headerLanguageLabel: 'MailServiceMails.MailServiceMail.IsLocalConfig',
                 isActive: true
             },
             {
                 field: 'sendto',
                 header: self.l('MailServiceMails.MailServiceMail.Sendto'),
-                headerLanguageLabel: 'MailServiceMails.MailServiceMail.Sendto',
                 isActive: true
             },
             {
                 field: 'copyTo',
                 header: self.l('MailServiceMails.MailServiceMail.CopyTo'),
-                headerLanguageLabel: 'MailServiceMails.MailServiceMail.Sendto',
                 isActive: true
             },
             {
                 field: 'subject',
                 header: self.l('MailServiceMails.MailServiceMail.Subject'),
-                headerLanguageLabel: 'MailServiceMails.MailServiceMail.Subject',
                 isActive: true
             }
         ];
@@ -241,7 +235,7 @@ export class MailServiceMailComponent extends AppComponentBase implements OnInit
             }
         };
 
-        self.app.configurateView(settingViewConfigName, self.cols, callback);
+        self.app.configurateView(settingViewConfigName, self.getDefaultColumns(), callback);
     }
 
     // Export view
