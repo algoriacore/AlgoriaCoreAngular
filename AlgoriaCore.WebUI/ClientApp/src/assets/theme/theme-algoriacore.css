@@ -4890,10 +4890,6 @@ sub {
         cursor: none !important;
     }
 
-.p-speeddial-opened .p-speeddial-rotate {
-    transform: none !important;
-}
-
 .p-speeddial-opened .p-speeddial-rotate .p-button-icon {
     transform: rotate(45deg) !important;
 }
