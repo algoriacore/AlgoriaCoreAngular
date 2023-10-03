@@ -121,7 +121,7 @@ export abstract class AppComponentBase {
             }
         }
 
-        return existingCols.concat(newCols);;
+        return existingCols.concat(newCols);
     }
 
     normalizeColumnsFromJSON(json: string, defaultColumns: any[]): any[] {

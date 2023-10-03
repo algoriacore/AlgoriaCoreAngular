@@ -95,7 +95,7 @@
                             </a>
                         </div>
                         <div class="form-toolbar">
-                            <p-button type="button" label="{{l('Refresh')}}" (onClick)="filterSearch()"
+                            <p-button type="submit" label="{{l('Refresh')}}" (onClick)="filterSearch()"
                                       icon="pi pi-refresh" styleClass="p-button-secondary"></p-button>
                         </div>
                     </div>
@@ -120,7 +120,7 @@
                                                        pTooltip="{{l('Views.Export')}}" tooltipPosition="top"></p-splitButton>
                                     </div>
                                     <div class="flex-none flex align-items-right justify-content-right">
-                                        <button pButton pRipple icon="pi pi-cog" class="p-button-sm mt-2 mb-2" (click)="configurateView(AppSettingsClient.ViewAuditLogConfig)" pTooltip="{{l('Views.Configurate')}}" tooltipPosition="top"></button>
+                                        <button type="button" pButton pRipple icon="pi pi-cog" class="p-button-sm mt-2 mb-2" (click)="configurateView(AppSettingsClient.ViewAuditLogConfig)" pTooltip="{{l('Views.Configurate')}}" tooltipPosition="top"></button>
                                     </div>
                                 </div>
                             </div>
@@ -144,7 +144,7 @@
                         <tr [pSelectableRow]="rowData">
                             <td style="width:70px;">
                                 <div>
-                                    <button pButton pRipple icon="pi pi-eye" class="p-button-sm mr-2" (click)="showDetails(rowData)" pTooltip="{{l('AuditLogDetail')}}" tooltipPosition="top"></button>
+                                    <button type="button" pButton pRipple icon="pi pi-eye" class="p-button-sm mr-2" (click)="showDetails(rowData)" pTooltip="{{l('AuditLogDetail')}}" tooltipPosition="top"></button>
                                     <div style="display: inline-block;">
                                         <p *ngIf="rowData.severity == 0">
                                             <em class="pi pi-eye log-color-trace"></em>
