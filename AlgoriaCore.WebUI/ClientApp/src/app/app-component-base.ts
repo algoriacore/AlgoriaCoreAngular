@@ -108,6 +108,28 @@ export abstract class AppComponentBase {
         return cols;
     }
 
+    normalizeColumns(currentColumns: any[], defaultColumns: any[]): any[] {
+        const existingCols = [];
+        const newCols = defaultColumns.concat([]).filter(p => currentColumns.findIndex(q => q.field === p.field) < 0);
+
+        for (const col of currentColumns) {
+            const p = defaultColumns.find(q => q.field === col.field);
+
+            if (p) {
+                p.isActive = col.isActive === true;
+                existingCols.push(p);
+            }
+        }
+
+        return existingCols.concat(newCols);;
+    }
+
+    normalizeColumnsFromJSON(json: string, defaultColumns: any[]): any[] {
+        const self = this;
+
+        return self.normalizeColumns(self.parseColumnsFromJSON(json), defaultColumns);
+    }
+
     downloadTempFile(file: any): void {
         const url = this.getBaseServiceUrl() + '/api/File/DownloadTempFile?fileType=' +
             file.fileType + '&fileToken=' + file.fileToken + '&fileName=' + file.fileName;

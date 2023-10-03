@@ -91,7 +91,7 @@ export class HelpsComponent extends AppComponentBase implements OnInit {
         const settingViewConfig = self.settingsClient.getSetting(AppSettingsClient.ViewHelpsConfig);
 
         if (settingViewConfig) {
-            self.cols = self.parseColumnsFromJSON(settingViewConfig);
+            self.cols = self.normalizeColumnsFromJSON(settingViewConfig, self.getDefaultColumns());
         } else {
             self.cols = self.getDefaultColumns();
         }

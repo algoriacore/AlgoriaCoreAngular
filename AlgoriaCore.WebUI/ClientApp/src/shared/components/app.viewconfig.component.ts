@@ -15,7 +15,6 @@ export class AppViewConfigComponent extends AppComponentBase implements OnInit {
 
     settingViewConfigName: string;
     originalCols: any[];
-    currentCols: any[] = [];
     cols: any[];
 
     blockedDocument = false;
@@ -40,21 +39,7 @@ export class AppViewConfigComponent extends AppComponentBase implements OnInit {
         const settingViewConfig = self.settingsClient.getSetting(self.settingViewConfigName);
 
         if (settingViewConfig) {
-            self.currentCols = self.parseColumnsFromJSON(settingViewConfig);
-
-            const existingCols = [];
-            const newCols = self.cols.concat([]).filter(p => self.currentCols.findIndex(q => q.field === p.field) < 0);
-
-            for (const col of self.currentCols) {
-                const p = self.cols.find(q => q.field === col.field);
-
-                if (p) {
-                    p.isActive = col.isActive === true;
-                    existingCols.push(p);
-                }
-            }
-
-            self.cols = existingCols.concat(newCols);
+            self.cols = self.normalizeColumnsFromJSON(settingViewConfig, self.originalCols);
         }
 
         if (self.modalRef) {

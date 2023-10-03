@@ -95,7 +95,7 @@ export class RolesComponent extends AppComponentBase implements OnInit {
         const settingViewConfig = self.settingsClient.getSetting(AppSettingsClient.ViewRolesConfig);
 
         if (settingViewConfig) {
-            self.cols = self.parseColumnsFromJSON(settingViewConfig);
+            self.cols = self.normalizeColumnsFromJSON(settingViewConfig, self.getDefaultColumns());
         } else {
             self.cols = self.getDefaultColumns();
         }

@@ -118,7 +118,7 @@ export class AuditLogsComponent extends AppComponentBase implements OnInit {
         const settingViewConfig = self.settingsClient.getSetting(AppSettingsClient.ViewAuditLogConfig);
 
         if (settingViewConfig) {
-            self.cols = self.parseColumnsFromJSON(settingViewConfig);
+            self.cols = self.normalizeColumnsFromJSON(settingViewConfig, self.getDefaultColumns());
         } else {
             self.cols = self.getDefaultColumns();
         }
