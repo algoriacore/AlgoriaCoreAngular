@@ -4938,9 +4938,10 @@ sub {
     padding: 0 !important;
 }
 
-.algoria-button-help span {
-    font-size: 1.5rem;
-}
+    .algoria-button-help span {
+        font-size: 1.5rem;
+        padding: 0.2rem;
+    }
 
 .p-field > label + small {
     display: block;
