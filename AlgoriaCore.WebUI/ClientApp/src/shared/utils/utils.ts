@@ -23,4 +23,32 @@ export class Utils {
             return document.location.protocol + '//' + appBaseUrl;
         }
     }
+
+    public static addItemCombo(combo: any[], item: any): any[] {
+        const self = this;
+        let comboAux = combo.concat([]);
+
+        if (!(comboAux.some(p => p.value === item.value))) {
+            comboAux.push(item);
+
+            comboAux = comboAux.sort((a, b) => {
+                const aLabel = a.label.toLowerCase();
+                const bLabel = b.label.toLowerCase();
+
+                if (aLabel > bLabel) {
+                    return 1;
+                } else if (aLabel < bLabel) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
+        }
+
+        return comboAux;
+    }
+
+    public static normalizeTextToHTML(text: string): string {
+        return text ? text.replaceAll('\n', '<br />') : text;
+    }
 }
