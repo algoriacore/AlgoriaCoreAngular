@@ -47,6 +47,7 @@ import { AppQuestionnaireComponent } from './components/app.questionnaire.compon
 import { AppViewConfigComponent } from './components/app.viewconfig.component';
 import { GoogleMapAddressModalComponent } from './components/googlemapaddressmodal.component';
 import { SelectUsersComponent } from './components/selectusers.component';
+import { CharacterCounterDirective } from './directives/CharacterCounterDirective';
 import { NativeElementInjectorDirective } from './directives/NativeElementInjectorDirective ';
 import { SharedRoutingModule } from './shared-routing.module';
 
@@ -105,7 +106,8 @@ import { SharedRoutingModule } from './shared-routing.module';
         AppQuestionnaireComponent,
         AppCustomCodeComponent,
         NativeElementInjectorDirective,
-        AppViewConfigComponent
+        AppViewConfigComponent,
+        CharacterCounterDirective
     ],
     entryComponents: [
         GoogleMapAddressModalComponent
@@ -126,7 +128,8 @@ import { SharedRoutingModule } from './shared-routing.module';
         AppQuestionnaireComponent,
         AppCustomCodeComponent,
         NativeElementInjectorDirective,
-        AppViewConfigComponent
+        AppViewConfigComponent,
+        CharacterCounterDirective
     ]
 })
 export class SharedModule { }

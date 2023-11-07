@@ -179,3 +179,7 @@ app-text-number.ng-dirty.ng-invalid input {
 /*input.form-control-error, app-text-number.form-control-error input, p-inputnumber.form-control-error input, p-calendar.form-control-error input {
     border-color: red;
 }*/
+
+.appCharacterCounter + small {
+    float: right;
+}
