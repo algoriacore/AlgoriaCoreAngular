@@ -50,6 +50,7 @@ import { SelectUsersComponent } from './components/selectusers.component';
 import { CharacterCounterDirective } from './directives/CharacterCounterDirective';
 import { NativeElementInjectorDirective } from './directives/NativeElementInjectorDirective ';
 import { SharedRoutingModule } from './shared-routing.module';
+import { AppPromptComponent } from './components/app.prompt.component';
 
 @NgModule({
     imports: [
@@ -107,7 +108,8 @@ import { SharedRoutingModule } from './shared-routing.module';
         AppCustomCodeComponent,
         NativeElementInjectorDirective,
         AppViewConfigComponent,
-        CharacterCounterDirective
+        CharacterCounterDirective,
+        AppPromptComponent
     ],
     entryComponents: [
         GoogleMapAddressModalComponent
@@ -129,7 +131,8 @@ import { SharedRoutingModule } from './shared-routing.module';
         AppCustomCodeComponent,
         NativeElementInjectorDirective,
         AppViewConfigComponent,
-        CharacterCounterDirective
+        CharacterCounterDirective,
+        AppPromptComponent
     ]
 })
 export class SharedModule { }
