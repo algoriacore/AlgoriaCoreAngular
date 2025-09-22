@@ -12,7 +12,8 @@ import { AccountComponent } from '../account.component';
 
 @Component({
     templateUrl: 'register.component.html',
-    providers: [MessageService]
+    providers: [MessageService],
+    standalone: false
 })
 export class RegisterComponent extends AppComponentBase implements OnInit {
     form: FormGroup;

@@ -127,7 +127,7 @@
 
         </div>
         <div class="col-12" style="padding: 0px;">
-            <div class="p-inputgroup">
+            <p-inputgroup>
                 <div style="width: 100%;">
                     <p-editor #ckeInputMessage
                               name="editor1"
@@ -142,7 +142,7 @@
                         style="max-width: 80px; min-width: 60px;"
                         (click)="sendMessage()"
                         [disabled]="!mensajeCapturado"></button>
-            </div>
+            </p-inputgroup>
         </div>
     </div>
 
@@ -152,15 +152,15 @@
     <i class="fa fa-circle-o-notch" aria-hidden="true" style="position:absolute;top:50%;left:50%;font-size: 60px;font-weight: bold"></i>
 </p-blockUI>
 
-<p-overlayPanel #op [showCloseIcon]="true" [dismissable]="true">
+<p-popover #op [dismissable]="true">
     {{chatRoom.description}}
     <br />
     {{chatRoom.userCreatorDesc}}
     <br />
     {{dateTimeService.getDateTimeToDisplay(chatRoom.creationTime)}}
-</p-overlayPanel>
+</p-popover>
 
-<p-overlayPanel #attachmentWindow [dismissable]="true" (onShow)="isAttachmentWindowOpen=true" (onHide)="isAttachmentWindowOpen=false">
+<p-popover #attachmentWindow [dismissable]="true" (onShow)="isAttachmentWindowOpen=true" (onHide)="isAttachmentWindowOpen=false">
     <app-blockable-div #attachmentWindowBlockable>
         <div #attachmentWindowList style="width: 350px; max-height: 500px; overflow-y: auto;" (scroll)="onScrollAttachmentWindow($event);">
 
@@ -182,13 +182,13 @@
                 </div>
             </div>
 </app-blockable-div>
-</p-overlayPanel>
+</p-popover>
 
 <p-blockUI [target]="attachmentWindowBlockable" [blocked]="attachmentWindowBlocked">
     <i class="fa fa-circle-o-notch" aria-hidden="true" style="position:absolute;top:50%;left:50%;font-size: 60px;font-weight: bold"></i>
 </p-blockUI>
 
-<p-overlayPanel #messageFilesMenu [dismissable]="true">
+<p-popover #messageFilesMenu [dismissable]="true">
     <app-blockable-div>
         <div style="width: 400px; max-height: 500px; overflow-y: auto;">
             <div *ngFor="let f of selectedMessage.files" (click)="downloadAttachedFile(f.file,f.fileName,f.fileExtension)" class="chatitem-file">
@@ -199,4 +199,4 @@
             </div>
         </div>
     </app-blockable-div>
-</p-overlayPanel>
+</p-popover>

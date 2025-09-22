@@ -17,7 +17,8 @@ import { CopyEmailGroupsComponent } from './copyemailgroups.component';
 
 @Component({
     templateUrl: './emailgroups.component.html',
-    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss']
+    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss'],
+    standalone: false
 })
 export class EmailGroupsComponent extends AppComponentBase implements OnInit {
 
@@ -141,6 +142,7 @@ export class EmailGroupsComponent extends AppComponentBase implements OnInit {
         const ref = self.dialogService.open(CopyEmailGroupsComponent, {
             width: '75%',
             showHeader: false,
+            modal: true,
             dismissableMask: false,
             data: new MailGroupForEditResponse({
                 id: record.id,

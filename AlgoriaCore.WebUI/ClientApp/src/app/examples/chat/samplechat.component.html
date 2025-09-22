@@ -19,7 +19,7 @@
             <form [formGroup]="form" (ngSubmit)="sendMessage()">
                 <div class="card chat">
 
-                    <p-virtualScroller #virtualScroller [value]="selectedUser.messages" scrollHeight="500px" [itemSize]="60">
+                    <p-virtualscroller #virtualScroller [items]="selectedUser.messages" scrollHeight="500px" [itemSize]="60">
                             <ng-template let-msg pTemplate="item" let-i="index">
 
                                 <div class="clearfix message-from" *ngIf="msg['side'] == 2">
@@ -40,7 +40,7 @@
                                 </div>
 
                             </ng-template>
-                    </p-virtualScroller>
+                    </p-virtualscroller>
 
                     <div class="new-message" *ngIf="selectedUser.state == friendshipState.Accepted">
                         <textarea formControlName="message" id="message" placeholder="{{l('Chat.TypeAMessageHere')}}" (keydown.Enter)="sendMessage()" maxlength="4096"></textarea>
@@ -66,7 +66,7 @@
                 <div class="col-12 form-title-section">
                     <div class="form-toolbar">
                         <p-button type="button" label="{{l('SearchDots')}}" (onClick)="search()"></p-button>
-                        <p-button type="button" styleClass="p-button-rounded p-button-warning" icon="pi pi-question" (onClick)="helpOnScreenService.show('EXAMPLES.CHAT.FORM', true)"></p-button>
+                        <p-button type="button" severity="warn" [rounded]="true" icon="pi pi-question" (onClick)="helpOnScreenService.show('EXAMPLES.CHAT.FORM', true)"></p-button>
             
                     </div>
                 </div>

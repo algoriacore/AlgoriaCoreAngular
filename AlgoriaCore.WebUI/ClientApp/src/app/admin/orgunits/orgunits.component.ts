@@ -10,7 +10,8 @@ import { EditOrgUnitPersonsComponent } from './security/editorgunitpersons.compo
 
 @Component({
     templateUrl: './orgunits.component.html',
-    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss']
+    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss'],
+    standalone: false
 })
 export class OrgUnitsComponent extends AppComponentBase implements OnInit {
 

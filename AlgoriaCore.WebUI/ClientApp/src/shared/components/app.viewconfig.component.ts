@@ -9,7 +9,8 @@ import { StringsHelper } from '../helpers/StringsHelper';
 import { SettingsClientService } from '../services/settingsclient.service';
 
 @Component({
-    templateUrl: './app.viewconfig.component.html'
+    templateUrl: './app.viewconfig.component.html',
+    standalone: false
 })
 export class AppViewConfigComponent extends AppComponentBase implements OnInit {
 

@@ -1,5 +1,4 @@
 import { Component, ElementRef, HostListener, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Sidebar } from 'primeng/sidebar';
 import { Subscription } from 'rxjs';
 import { AppComponentBase } from '../../app/app-component-base';
 import { AppConsts } from '../AppConsts';
@@ -8,11 +7,11 @@ import { SettingsClientService } from '../services/settingsclient.service';
 
 @Component({
     selector: 'app-help-on-screen',
-    templateUrl: 'app.help.onscreen.component.html'
+    templateUrl: 'app.help.onscreen.component.html',
+    standalone: false
 })
 export class AppHelpOnScreenComponent extends AppComponentBase implements OnInit, OnDestroy {
     @ViewChild('dvContent', { static: false }) dvContent: ElementRef;
-    @ViewChild('navSideBar', { static: false }) navSideBar: Sidebar;
 
     message: any = {};
     visible = false;

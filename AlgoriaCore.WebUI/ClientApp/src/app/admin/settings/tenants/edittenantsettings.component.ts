@@ -16,7 +16,8 @@ import { FormService } from '../../../../shared/services/form.service';
 import { AppComponent } from '../../../app.component';
 
 @Component({
-    templateUrl: './edittenantsettings.component.html'
+    templateUrl: './edittenantsettings.component.html',
+    standalone: false
 })
 export class EditTenantSettingsComponent extends AppComponentBase implements OnInit {
 

@@ -16,7 +16,8 @@ import { AppComponent } from '../../app.component';
 import { ChangeLogService } from '../../_services/changelog.service';
 
 @Component({
-    templateUrl: './edithelps.component.html'
+    templateUrl: './edithelps.component.html',
+    standalone: false
 })
 export class EditHelpsComponent extends AppComponentBase implements OnInit {
 

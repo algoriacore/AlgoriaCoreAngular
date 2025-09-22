@@ -6,7 +6,8 @@ import { FormService } from 'src/shared/services/form.service';
 import { StringsHelper } from '../helpers/StringsHelper';
 
 @Component({
-    templateUrl: './app.prompt.component.html'
+    templateUrl: './app.prompt.component.html',
+    standalone: false
 })
 export class AppPromptComponent extends AppComponentBase implements OnInit {
 

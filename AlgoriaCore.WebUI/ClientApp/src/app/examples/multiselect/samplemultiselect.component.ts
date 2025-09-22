@@ -8,7 +8,8 @@ import { UserListResponse, UserServiceProxy } from 'src/shared/service-proxies/s
 import { AppComponent } from '../../app.component';
 
 @Component({
-    templateUrl: './samplemultiselect.component.html'
+    templateUrl: './samplemultiselect.component.html',
+    standalone: false
 })
 export class SampleMultiselectComponent extends AppComponentBase implements OnInit {
 

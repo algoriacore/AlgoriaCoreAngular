@@ -24,13 +24,14 @@ import {
 import { DateTimeService } from '../services/datetime.service';
 import { FileService } from '../services/file.service';
 
-import Mention from 'quill-mention';
+import { Mention } from 'quill-mention';
 import { Menu } from 'primeng/menu';
 
 @Component({
     selector: 'app-chatlog',
     templateUrl: 'app.chatlog.component.html',
     encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class AppChatLogComponent extends AppComponentBase implements OnInit, AfterViewInit {
 

@@ -10,7 +10,8 @@ import {
 } from 'src/shared/service-proxies/service-proxies';
 
 @Component({
-    templateUrl: './testemailtemplates.component.html'
+    templateUrl: './testemailtemplates.component.html',
+    standalone: false
 })
 export class SendTestEmailTemplatesComponent extends AppComponentBase implements OnInit {
 

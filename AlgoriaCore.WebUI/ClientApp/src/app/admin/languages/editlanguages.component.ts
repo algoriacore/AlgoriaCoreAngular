@@ -1,7 +1,7 @@
 import { Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LazyLoadEvent } from 'primeng/api/lazyloadevent';
+import { LazyLoadEvent } from 'primeng/api';
 import { finalize } from 'rxjs/operators';
 import { AppComponentBase, PagedTableSummary } from 'src/app/app-component-base';
 import {
@@ -16,12 +16,14 @@ import {
     LanguageUpdateCommand
 } from '../../../shared/service-proxies/service-proxies';
 import { FormService } from '../../../shared/services/form.service';
-import { AppComponent } from '../../app.component';
 import { ChangeLogService } from '../../_services/changelog.service';
+import { AppComponent } from '../../app.component';
 import { EditLanguageTextsComponent } from './texts/editlanguagetexts.component';
 
 @Component({
-    templateUrl: './editlanguages.component.html'
+    templateUrl: './editlanguages.component.html',
+    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss'],
+    standalone: false
 })
 export class EditLanguagesComponent extends AppComponentBase implements OnInit {
     @ViewChild('name', { static: false }) inputFocus: ElementRef;
@@ -275,6 +277,7 @@ export class EditLanguagesComponent extends AppComponentBase implements OnInit {
             styleClass: 'd-xl-40 d-lg-70 d-md-75 d-sm',
             showHeader: true,
             header: self.l('Languages.Texts.Text.Edit'),
+            modal: true,
             closeOnEscape: false,
             dismissableMask: false,
             data: new LanguageTextForEditResponse({

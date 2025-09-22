@@ -17,7 +17,8 @@ import { AppComponent } from '../../app.component';
 import { ChangeLogService } from '../../_services/changelog.service';
 
 @Component({
-    templateUrl: './editusers.component.html'
+    templateUrl: './editusers.component.html',
+    standalone: false
 })
 export class EditUsersComponent extends AppComponentBase implements OnInit {
     @ViewChild('name', { static: false }) inputFocus: ElementRef;

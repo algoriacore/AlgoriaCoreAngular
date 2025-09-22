@@ -18,7 +18,8 @@ import { AuditLogListResponse } from 'src/shared/service-proxies/service-proxies
             overflow: auto;
         }
         `
-    ]
+    ],
+    standalone: false
 })
 export class AuditLogsDetailComponent extends AppComponentBase implements OnInit {
 

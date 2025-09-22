@@ -11,7 +11,8 @@ import { AccountComponent } from '../account.component';
 
 @Component({
     templateUrl: 'forgotpassword.component.html',
-    providers: [MessageService]
+    providers: [MessageService],
+    standalone: false
 })
 export class ForgotPasswordComponent extends AppComponentBase implements OnInit {
     form: FormGroup;

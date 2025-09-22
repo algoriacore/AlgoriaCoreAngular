@@ -23,7 +23,8 @@ import { SettingsClientService } from '../../../shared/services/settingsclient.s
 
 @Component({
     templateUrl: './mailservicemail.component.html',
-    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss']
+    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss'],
+    standalone: false
 })
 
 export class MailServiceMailComponent extends AppComponentBase implements OnInit {

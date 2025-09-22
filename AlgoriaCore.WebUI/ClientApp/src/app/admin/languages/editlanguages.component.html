@@ -11,8 +11,8 @@
                 <small>{{l('Languages.Language.Edit')}}</small>
             </div>
             <div class="form-toolbar">
-                <p-button type="button" icon="pi pi-clock" styleClass="p-button-warning" (onClick)="showChangeHistory()" pTooltip="{{l('ShowChangeHistory')}}" tooltipPosition="top" *ngIf="id"></p-button>
-                <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+                <p-button type="button" severity="warn" icon="pi pi-clock" (onClick)="showChangeHistory()" pTooltip="{{l('ShowChangeHistory')}}" tooltipPosition="top" *ngIf="id"></p-button>
+                <p-button type="button" severity="secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
                 <p-button type="button" label="{{l('SaveAndContinue')}}" (onClick)="save()" *ngIf="!id"></p-button>
                 <p-button type="button" label="{{l('Save')}}" (onClick)="save()" *ngIf="id"></p-button>
             </div>
@@ -23,23 +23,26 @@
 
                 <h5>{{l('GeneralData')}}</h5>
 
-                <div class="p-fluid formgrid grid">
-                    <div class="col-12 md:col-9 lg:col-4">
-                        <div class="field">
-                            <label for="name">{{fieldLabels["name"]}}<span class="required"> *</span></label>
-                            <input type="text" #name formControlName="name" id="name" autocomplete="off" maxlength="10" pInputText />
-                        </div>
-                        <div class="field">
-                            <label for="displayName">
-                                {{fieldLabels["displayName"]}}<span class="required"> *</span>
-                            </label>
-                            <input type="text" formControlName="displayName" id="displayName" autocomplete="off" maxlength="100" pInputText />
-                        </div>
-                        <div class="field">
-                            <p-checkbox id="isActive" name="isActive" [formControl]="form.controls['isActive']" value="true" binary="true" label="{{l('IsActive')}}"></p-checkbox>
+                <p-fluid>
+                    <div class="formgrid grid">
+                        <div class="col-12 md:col-9 lg:col-4">
+                            <div class="field">
+                                <label for="name">{{fieldLabels["name"]}}<span class="required"> *</span></label>
+                                <input type="text" #name formControlName="name" id="name" autocomplete="off" maxlength="10" pInputText />
+                            </div>
+                            <div class="field">
+                                <label for="displayName">
+                                    {{fieldLabels["displayName"]}}<span class="required"> *</span>
+                                </label>
+                                <input type="text" formControlName="displayName" id="displayName" autocomplete="off" maxlength="100" pInputText />
+                            </div>
+                            <div class="field-checkbox">
+                                <p-checkbox inputId="isActive" id="isActive" name="isActive" [formControl]="form.controls['isActive']" value="true" binary="true"></p-checkbox>
+                                <label for="isActive" class="ml-2">{{l('IsActive')}}</label>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </p-fluid>
 
             </div>
 
@@ -54,10 +57,10 @@
                                 <h5>{{l('Languages.Texts')}}</h5>
                             </div>
                             <div class="col-12 sm:col-5 md:col-4 lg:col-3">
-                                <span class="p-input-icon-left">
-                                    <i class="pi pi-search" aria-hidden="true"></i>
-                                    <input type="text" pInputText placeholder="{{l('SearchDots')}}" formControlName="filterText" (keydown.enter)="filterSearch($event)" />
-                                </span>
+                                <p-iconfield class="w-full">
+                                    <p-inputicon class="pi pi-search" />
+                                    <input type="text" fluid pInputText placeholder="{{l('SearchDots')}}" formControlName="filterText" (keydown.enter)="filterSearch($event)" />
+                                </p-iconfield>
                             </div>
                         </div>
                     </ng-template>
@@ -76,9 +79,9 @@
                         <tr [pSelectableRow]="rowData">
                             <td>
                                 <div>
-                                    <button pButton pRipple [disabled]="!permissions.edit" icon="pi pi-pencil" class="p-button-sm mr-2" (click)="edit(rowData)" pTooltip="{{l('Edit')}}" tooltipPosition="top"></button>
-                                    <button pButton pRipple icon="pi pi-clock" class="p-button-sm p-button-warning" (click)="showTextChangeHistory(rowData.id)"
-                                            pTooltip="{{l('ShowChangeHistory')}}" tooltipPosition="top" [disabled]="!rowData.id"></button>
+                                    <p-button size="small" [disabled]="!permissions.edit" icon="pi pi-pencil" class="mr-2" (click)="edit(rowData)" pTooltip="{{l('Edit')}}" tooltipPosition="top"></p-button>
+                                    <p-button size="small" severity="warn" icon="pi pi-clock" (click)="showTextChangeHistory(rowData.id)"
+                                            pTooltip="{{l('ShowChangeHistory')}}" tooltipPosition="top" [disabled]="!rowData.id"></p-button>
                                 </div>
                             </td>
                             <td>
@@ -99,8 +102,6 @@
                         <div *ngIf="pagedTableSummary.totalRecords == 0" class="p-text-bold">{{l('RecordsNotFound')}}</div>
                     </ng-template>
                 </p-table>
-
-
 
             </div>
 

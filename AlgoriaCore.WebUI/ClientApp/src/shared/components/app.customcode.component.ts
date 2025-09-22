@@ -6,7 +6,8 @@ import { FormService } from 'src/shared/services/form.service';
 import { StringsHelper } from '../helpers/StringsHelper';
 
 @Component({
-    templateUrl: './app.customcode.component.html'
+    templateUrl: './app.customcode.component.html',
+    standalone: false
 })
 export class AppCustomCodeComponent extends AppComponentBase implements OnInit {
 

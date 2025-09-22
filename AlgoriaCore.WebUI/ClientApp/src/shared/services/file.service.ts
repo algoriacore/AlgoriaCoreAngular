@@ -26,8 +26,8 @@ export class FileService {
         return bytes.map((byte, i) => binaryString.charCodeAt(i));
     }
 
-    createAndDownloadBlobFile(body: Uint8Array, filename: string, extension?: string) {
-        const blob = new Blob([body]);
+    createAndDownloadBlobFile(body: Uint8Array, filename: string, extension?: string): void {
+        const blob = new Blob([body as BlobPart], { type: 'application/octet-stream' });
         const fileName = extension ? `${filename}.${extension}` : filename;
 
         if (navigator['msSaveBlob']) {

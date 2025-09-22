@@ -10,7 +10,8 @@ import { AccountComponent } from '../account.component';
 
 @Component({
     templateUrl: 'resetpassword.component.html',
-    providers: [MessageService]
+    providers: [MessageService],
+    standalone: false
 })
 export class ResetPasswordComponent extends AppComponentBase implements OnInit {
     form: FormGroup;

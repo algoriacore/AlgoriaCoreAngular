@@ -12,17 +12,20 @@
         <div class="col-12">
             <div class="card">
 
-                <div class="p-fluid formgrid grid">
-                    <div class="field col-12 md:col-6">
-                        <label for="name">{{l('Examples.Log.Message')}}<span class="required"> *</span></label>
-                        <input type="text" formControlName="message" id="message" autocomplete="off" maxlength="100" pInputText />
+                <p-fluid>
+                    <div class="formgrid grid">
+                        <div class="field col-12 md:col-6">
+                            <label for="name">{{l('Examples.Log.Message')}}<span class="required"> *</span></label>
+                            <input type="text" formControlName="message" id="message" autocomplete="off" maxlength="100" pInputText />
+                        </div>
+
+                        <div class="field col-12 md:col-6">
+                            <label for="displayName">{{l('Examples.Log.CriticalEmail')}}</label>
+                            <input type="text" formControlName="criticalemail" id="criticalemail" autocomplete="off" maxlength="100" pInputText />
+                        </div>
                     </div>
 
-                    <div class="field col-12 md:col-6">
-                        <label for="displayName">{{l('Examples.Log.CriticalEmail')}}</label>
-                        <input type="text" formControlName="criticalemail" id="criticalemail" autocomplete="off" maxlength="100" pInputText />
-                    </div>
-                </div>
+                </p-fluid>
 
                 <div class="grid">
                     <div class="col-12 form-title-section">

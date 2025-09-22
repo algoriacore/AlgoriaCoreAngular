@@ -23,7 +23,8 @@ import { Subject } from 'rxjs';
 
 @Component({
     templateUrl: 'login.component.html',
-    providers: [MessageService]
+    providers: [MessageService],
+    standalone: false
 })
 export class LoginComponent extends AppComponentBase implements OnInit {
 

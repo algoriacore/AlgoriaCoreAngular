@@ -12,7 +12,8 @@ import { AppComponent } from '../../app.component';
 
 @Component({
     templateUrl: './maintenance.component.html',
-    styleUrls: ['./maintenance.component.less']
+    styleUrls: ['./maintenance.component.less'],
+    standalone: false
 })
 export class MaintenanceComponent extends AppComponentBase implements OnInit {
 

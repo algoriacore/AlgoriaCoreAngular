@@ -5,7 +5,8 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AppComponentBase } from 'src/app/app-component-base';
 
 @Component({
-    templateUrl: './googlemapaddressmodal.component.html'
+    templateUrl: './googlemapaddressmodal.component.html',
+    standalone: false
 })
 export class GoogleMapAddressModalComponent extends AppComponentBase implements OnInit, AfterViewInit {
 

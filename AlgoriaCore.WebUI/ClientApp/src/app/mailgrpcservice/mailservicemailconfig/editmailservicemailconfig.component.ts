@@ -13,7 +13,8 @@ import { AppComponent } from '../../app.component';
 
 @Component({
     selector: 'app-editmailservicemailconfig-form',
-    templateUrl: './editmailservicemailconfig.component.html'
+    templateUrl: './editmailservicemailconfig.component.html',
+    standalone: false
 })
 export class EditMailServiceMailConfigComponent extends AppComponentBase implements OnInit {
 

@@ -6,7 +6,7 @@ import { BlockUIModule } from 'primeng/blockui';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
-import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
 import { SharedModule } from '../shared/shared.module';
@@ -18,6 +18,7 @@ import { RegisterComponent } from './login/register.component';
 import { TenantConfirmRegistrationComponent } from './login/registerconfirm.component';
 import { ForgotPasswordComponent } from './password/forgotpassword.component';
 import { ResetPasswordComponent } from './password/resetpassword.component';
+import { FluidModule } from 'primeng/fluid';
 
 @NgModule({
     imports: [
@@ -28,12 +29,13 @@ import { ResetPasswordComponent } from './password/resetpassword.component';
         InputTextModule,
         ButtonModule,
         PasswordModule,
-        MessagesModule,
+        MessageModule,
         ToastModule,
         AccountRoutingModule,
         SharedModule,
         BlockUIModule,
-        CheckboxModule
+        CheckboxModule,
+        FluidModule
     ],
     declarations: [
         AccountComponent,

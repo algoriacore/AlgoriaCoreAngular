@@ -17,6 +17,7 @@ import { EditMailServiceMailConfigComponent } from '../mailservicemailconfig/edi
 @Component({
     templateUrl: './editmailservicemail.component.html',
     encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class EditMailServiceMailComponent extends AppComponentBase implements OnInit {
 

@@ -21,7 +21,8 @@ import { AuthenticationService } from '../../_services/authentication.service';
 
 @Component({
     templateUrl: './user.component.html',
-    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss']
+    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss'],
+    standalone: false
 })
 export class UsersComponent extends AppComponentBase implements OnInit {
 

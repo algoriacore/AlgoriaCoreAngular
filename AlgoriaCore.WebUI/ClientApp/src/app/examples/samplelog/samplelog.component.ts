@@ -18,7 +18,8 @@ import { FormService } from '../../../shared/services/form.service';
 import { AppComponent } from '../../app.component';
 
 @Component({
-    templateUrl: './samplelog.component.html'
+    templateUrl: './samplelog.component.html',
+    standalone: false
 })
 export class SampleLogComponent extends AppComponentBase implements OnInit {
 

@@ -1,7 +1,6 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Message } from 'primeng/api';
 import { FileUpload } from 'primeng/fileupload';
 import { finalize } from 'rxjs/operators';
 import { AppComponentBase } from 'src/app/app-component-base';
@@ -18,9 +17,11 @@ import {
 } from '../../../shared/service-proxies/service-proxies';
 import { DateTimeService } from '../../../shared/services/datetime.service';
 import { AppComponent } from '../../app.component';
+import { Message } from 'primeng/message';
 
 @Component({
-    templateUrl: './userprofile.component.html'
+    templateUrl: './userprofile.component.html',
+    standalone: false
 })
 export class UserProfileComponent extends AppComponentBase implements OnInit {
 

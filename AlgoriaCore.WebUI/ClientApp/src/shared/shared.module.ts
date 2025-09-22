@@ -5,32 +5,31 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { BlockUIModule } from 'primeng/blockui';
 import { ButtonModule } from 'primeng/button';
-import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
+import { DatePickerModule } from 'primeng/datepicker';
 import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
-import { DropdownModule } from 'primeng/dropdown';
+import { DrawerModule } from 'primeng/drawer';
 import { EditorModule } from 'primeng/editor';
 import { FileUploadModule } from 'primeng/fileupload';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ListboxModule } from 'primeng/listbox';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { OrderListModule } from 'primeng/orderlist';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { PanelModule } from 'primeng/panel';
 import { PasswordModule } from 'primeng/password';
+import { PopoverModule } from 'primeng/popover';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ScrollerModule } from 'primeng/scroller';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
-import { SidebarModule } from 'primeng/sidebar';
+import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
-import { VirtualScrollerModule } from 'primeng/virtualscroller';
+import { TextareaModule } from 'primeng/textarea';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { TextNumberComponent } from './components/algoria/app.textnumber.component';
 import { AppAlertComponent } from './components/app.alert.component';
 import { BlockableDivComponent } from './components/app.blockable.component';
@@ -43,6 +42,7 @@ import { GoogleMapAddressComponent } from './components/app.googlemapaddress.com
 import { AppHelpOnScreenComponent } from './components/app.help.onscreen.component';
 import { PasswordFieldComponent } from './components/app.passwordfield.component';
 import { AppPreloaderComponent } from './components/app.preloader.component';
+import { AppPromptComponent } from './components/app.prompt.component';
 import { AppQuestionnaireComponent } from './components/app.questionnaire.component';
 import { AppViewConfigComponent } from './components/app.viewconfig.component';
 import { GoogleMapAddressModalComponent } from './components/googlemapaddressmodal.component';
@@ -50,7 +50,11 @@ import { SelectUsersComponent } from './components/selectusers.component';
 import { CharacterCounterDirective } from './directives/CharacterCounterDirective';
 import { NativeElementInjectorDirective } from './directives/NativeElementInjectorDirective ';
 import { SharedRoutingModule } from './shared-routing.module';
-import { AppPromptComponent } from './components/app.prompt.component';
+import { FluidModule } from 'primeng/fluid';
+import { InputIconModule } from 'primeng/inputicon';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
 @NgModule({
     imports: [
@@ -60,35 +64,39 @@ import { AppPromptComponent } from './components/app.prompt.component';
 
         DialogModule,
         ButtonModule,
-        SidebarModule,
+        DrawerModule,
         CheckboxModule,
         BlockUIModule,
         TableModule,
         InputTextModule,
-        VirtualScrollerModule,
         ScrollerModule,
         MenubarModule,
         MenuModule,
-        InputTextareaModule,
+        TextareaModule,
         EditorModule,
         FileUploadModule,
         PanelModule,
-        OverlayPanelModule,
+        PopoverModule,
         InputMaskModule,
         ScrollPanelModule,
         PasswordModule,
         DividerModule,
         ListboxModule,
-        CalendarModule,
-        InputSwitchModule,
+        DatePickerModule,
+        ToggleSwitchModule,
         InputNumberModule,
         MultiSelectModule,
         RadioButtonModule,
         AutoCompleteModule,
-        DropdownModule,
+        SelectModule,
         SharedRoutingModule,
         OrderListModule,
-        GoogleMapsModule
+        GoogleMapsModule,
+        FluidModule,
+        IconFieldModule,
+        InputIconModule,
+        InputGroupModule,
+        InputGroupAddonModule
     ],
     declarations: [
         AppAlertComponent,
@@ -110,9 +118,6 @@ import { AppPromptComponent } from './components/app.prompt.component';
         AppViewConfigComponent,
         CharacterCounterDirective,
         AppPromptComponent
-    ],
-    entryComponents: [
-        GoogleMapAddressModalComponent
     ],
     exports: [
         AppAlertComponent,

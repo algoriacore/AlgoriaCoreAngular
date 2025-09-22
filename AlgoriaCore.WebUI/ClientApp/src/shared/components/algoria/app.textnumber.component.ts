@@ -8,7 +8,7 @@ import { NumberFormatter } from 'src/shared/utils/numberformatter.class';
 
 @Component({
     selector: 'app-text-number',
-    template: `<input type="text"
+    template: `<input type="text" fluid
                 [id]="id"
                 [name]="name"
                 [style]="styleAttribute"
@@ -24,7 +24,8 @@ import { NumberFormatter } from 'src/shared/utils/numberformatter.class';
         provide: NG_VALUE_ACCESSOR,
         useExisting: forwardRef(() => TextNumberComponent),
         multi: true,
-    }]
+    }],
+    standalone: false
 })
 
 export class TextNumberComponent implements ControlValueAccessor, AfterViewInit, OnChanges {

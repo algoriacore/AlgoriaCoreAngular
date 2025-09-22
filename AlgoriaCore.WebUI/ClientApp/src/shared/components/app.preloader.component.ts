@@ -16,7 +16,8 @@ import { Component, Input } from '@angular/core';
                 </div>
             </div>
         </div>
-    `
+    `,
+    standalone: false
 })
 export class AppPreloaderComponent {
     @Input() blocked: boolean;

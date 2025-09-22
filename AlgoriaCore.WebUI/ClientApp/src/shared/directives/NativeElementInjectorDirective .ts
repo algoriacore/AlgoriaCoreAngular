@@ -4,7 +4,8 @@ import { NgControl } from '@angular/forms';
 @Directive({
     /* tslint:disable */
     /* eslint-disable */
-    selector: '[formControlName], [formControl]'
+    selector: '[formControlName], [formControl]',
+    standalone: false
 })
 export class NativeElementInjectorDirective implements OnInit {
     constructor(private el: ElementRef, private control: NgControl) { }

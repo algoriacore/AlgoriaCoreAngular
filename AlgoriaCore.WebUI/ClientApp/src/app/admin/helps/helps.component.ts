@@ -19,7 +19,8 @@ import { AppComponent } from '../../app.component';
 
 @Component({
     templateUrl: './helps.component.html',
-    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss']
+    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss'],
+    standalone: false
 })
 export class HelpsComponent extends AppComponentBase implements OnInit {
 

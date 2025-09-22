@@ -22,7 +22,7 @@
                                   (uploadHandler)="myUploader($event)">
                     </p-fileUpload>
                 </div>
-                <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+                <p-button type="button" severity="secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
                 <p-button *ngIf="permissions.create" type="button" label="{{l('Create')}}" (onClick)="create()"></p-button>
             </div>
         </div>
@@ -39,10 +39,12 @@
                                 <h5>{{l('EmailTemplates')}}</h5>
                             </div>
                             <div class="col-12 sm:col-5 md:col-4 lg:col-3">
-                                <span class="p-input-icon-left">
-                                    <i class="pi pi-search" aria-hidden="true"></i>
-                                    <input type="text" pInputText placeholder="{{l('SearchDots')}}" formControlName="filterText" (keydown.enter)="filterSearch($event)" />
-                                </span>
+
+                                <p-iconfield class="w-full">
+                                    <p-inputicon class="pi pi-search" />
+                                    <input type="text" fluid pInputText placeholder="{{l('SearchDots')}}" formControlName="filterText" (keydown.enter)="filterSearch($event)" />
+                                </p-iconfield>
+
                             </div>
                         </div>
                     </ng-template>

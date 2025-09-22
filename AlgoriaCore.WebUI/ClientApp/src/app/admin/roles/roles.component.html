@@ -28,20 +28,21 @@
                             </div>
                             <div class="col-12 sm:col-6 md:col-6 lg:col-5">
                                 <div class="flex">
-                                    <div class="flex-grow-1 flex align-items-right justify-content-right mt-2 mb-2 mr-2">
-                                        <span class="p-input-icon-left">
-                                            <i class="pi pi-search" aria-hidden="true"></i>
-                                            <input type="text" pInputText placeholder="{{l('SearchDots')}}" formControlName="filterText" (keydown.enter)="filterSearch($event)" />
-                                        </span>
+                                    <div class="flex-grow-1 flex align-self-center">
+                                        <p-iconfield class="w-full">
+                                            <p-inputicon class="pi pi-search" />
+                                            <input type="text" fluid pInputText placeholder="{{l('SearchDots')}}" formControlName="filterText" (keydown.enter)="filterSearch($event)" />
+                                        </p-iconfield>
                                     </div>
-                                    <div class="flex-none flex align-items-right justify-content-right">
-                                        <p-splitButton icon="pi pi-file" class="p-button-sm mt-2 mb-2 mr-2" (onClick)="exportViewToCSV()" [model]="exportMenuItems"
-                                                       pTooltip="{{l('Views.Export')}}" tooltipPosition="top"></p-splitButton>
+                                    <div class="flex-none flex align-self-center">
+                                        <p-splitbutton icon="pi pi-file" class="ml-2" (onClick)="exportViewToCSV()" [model]="exportMenuItems"
+                                                       pTooltip="{{l('Views.Export')}}" tooltipPosition="top"></p-splitbutton>
                                     </div>
-                                    <div class="flex-none flex align-items-right justify-content-right">
-                                        <button pButton pRipple icon="pi pi-cog" class="p-button-sm mt-2 mb-2" (click)="configurateView(AppSettingsClient.ViewRolesConfig)" pTooltip="{{l('Views.Configurate')}}" tooltipPosition="top"></button>
+                                    <div class="flex-none flex align-self-center">
+                                        <p-button icon="pi pi-cog" class="ml-2" (click)="configurateView(AppSettingsClient.ViewRolesConfig)" pTooltip="{{l('Views.Configurate')}}" tooltipPosition="top" />
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </ng-template>
@@ -63,9 +64,9 @@
                         <tr [pSelectableRow]="rowData">
                             <td>
                                 <div>
-                                    <button pButton pRipple [disabled]="!permissions.edit" icon="pi pi-pencil" class="p-button-sm mr-2" (click)="edit(rowData.id)" pTooltip="{{l('Edit')}}" tooltipPosition="top"></button>
-                                    <button pButton pRipple [disabled]="!permissions.delete" icon="pi pi-trash" class="p-button-sm p-button-danger mr-2" (click)="delete(rowData)" pTooltip="{{l('Delete')}}" tooltipPosition="top"></button>
-                                    <button pButton pRipple icon="pi pi-clock" class="p-button-sm p-button-warning" (click)="showChangeHistory(rowData.id)" pTooltip="{{l('ShowChangeHistory')}}" tooltipPosition="top"></button>
+                                    <p-button size="small" [disabled]="!permissions.edit" icon="pi pi-pencil" class="mr-2" (click)="edit(rowData.id)" pTooltip="{{l('Edit')}}" tooltipPosition="top"></p-button>
+                                    <p-button size="small" severity="danger" [disabled]="!permissions.delete" icon="pi pi-trash" class="mr-2" (click)="delete(rowData)" pTooltip="{{l('Delete')}}" tooltipPosition="top"></p-button>
+                                    <p-button size="small" severity="warn" icon="pi pi-clock" (click)="showChangeHistory(rowData.id)" pTooltip="{{l('ShowChangeHistory')}}" tooltipPosition="top"></p-button>
                                 </div>
                             </td>
                             <ng-template ngFor let-col [ngForOf]="columns">

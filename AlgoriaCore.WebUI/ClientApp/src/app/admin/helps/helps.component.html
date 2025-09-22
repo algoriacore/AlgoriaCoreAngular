@@ -27,19 +27,20 @@
                                 <h5>{{l('Helps')}}</h5>
                             </div>
                             <div class="col-12 sm:col-6 md:col-6 lg:col-5">
+
                                 <div class="flex">
-                                    <div class="flex-grow-1 flex align-items-right justify-content-right mt-2 mb-2 mr-2">
-                                        <span class="p-input-icon-left">
-                                            <i class="pi pi-search" aria-hidden="true"></i>
-                                            <input type="text" pInputText placeholder="{{l('SearchDots')}}" formControlName="filterText" (keydown.enter)="filterSearch($event)" />
-                                        </span>
+                                    <div class="flex-grow-1 flex align-self-center">
+                                        <p-iconfield class="w-full">
+                                            <p-inputicon class="pi pi-search" />
+                                            <input type="text" fluid pInputText placeholder="{{l('SearchDots')}}" formControlName="filterText" (keydown.enter)="filterSearch($event)" />
+                                        </p-iconfield>
                                     </div>
-                                    <div class="flex-none flex align-items-right justify-content-right">
-                                        <p-splitButton icon="pi pi-file" class="p-button-sm mt-2 mb-2 mr-2" (onClick)="exportViewToCSV()" [model]="exportMenuItems"
-                                                       pTooltip="{{l('Views.Export')}}" tooltipPosition="top"></p-splitButton>
+                                    <div class="flex-none flex align-self-center">
+                                        <p-splitbutton icon="pi pi-file" class="ml-2" (onClick)="exportViewToCSV()" [model]="exportMenuItems"
+                                                       pTooltip="{{l('Views.Export')}}" tooltipPosition="top"></p-splitbutton>
                                     </div>
-                                    <div class="flex-none flex align-items-right justify-content-right">
-                                        <button pButton pRipple icon="pi pi-cog" class="p-button-sm mt-2 mb-2" (click)="configurateView(AppSettingsClient.ViewHelpsConfig)" pTooltip="{{l('Views.Configurate')}}" tooltipPosition="top"></button>
+                                    <div class="flex-none flex align-self-center">
+                                        <p-button icon="pi pi-cog" class="ml-2" (click)="configurateView(AppSettingsClient.ViewHelpsConfig)" pTooltip="{{l('Views.Configurate')}}" tooltipPosition="top" />
                                     </div>
                                 </div>
                             </div>

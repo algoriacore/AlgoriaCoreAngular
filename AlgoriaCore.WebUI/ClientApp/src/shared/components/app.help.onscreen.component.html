@@ -1,7 +1,12 @@
-<p-sidebar #navSideBar *ngIf="message" [(visible)]="visible" position="{{position}}" [showCloseIcon]="false" styleClass="help-on-screen" (onHide)="onHide()" [blockScroll]="true" [style]="{ 'overflow-y': 'auto', 'padding-top': '0px' }">
-    <div class="header">
-        <span class="title">{{l('Help')}}</span>
-        <button pButton pRipple icon="pi pi-times" (click)="hide()" class="close-icon"></button>
-    </div>
+<p-drawer *ngIf="message" [(visible)]="visible" position="{{position}}" [showCloseIcon]="false" styleClass="help-on-screen" (onHide)="onHide()" [blockScroll]="true" [style]="{ 'overflow-y': 'auto', 'padding-top': '0px' }">
+
+    <ng-template #header>
+        <div class="header w-full">
+            <span class="title">{{l('Help')}}</span>
+            <button pButton pRipple icon="pi pi-times" (click)="hide()" class="close-icon"></button>
+        </div>
+    </ng-template>
+
     <div #dvContent class="content"></div>
-</p-sidebar>
+
+</p-drawer>

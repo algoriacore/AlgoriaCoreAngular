@@ -4,17 +4,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { BlockUIModule } from 'primeng/blockui';
 import { ButtonModule } from 'primeng/button';
-import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DropdownModule } from 'primeng/dropdown';
+import { DatePickerModule } from 'primeng/datepicker';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { FileUploadModule } from 'primeng/fileupload';
 import { InputMaskModule } from 'primeng/inputmask';
-import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { ListboxModule } from 'primeng/listbox';
 import { MenuModule } from 'primeng/menu';
@@ -22,10 +19,12 @@ import { MessageModule } from 'primeng/message';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { PanelModule } from 'primeng/panel';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { SpinnerModule } from 'primeng/spinner';
+import { SelectModule } from 'primeng/select';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { TableModule } from 'primeng/table';
-import { TabViewModule } from 'primeng/tabview';
+import { TabsModule } from 'primeng/tabs';
+import { TextareaModule } from 'primeng/textarea';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { TooltipModule } from 'primeng/tooltip';
 import { TreeTableModule } from 'primeng/treetable';
 import { DialogCustomService } from 'src/shared/services/dialog.custom.service';
@@ -35,6 +34,9 @@ import { EditMailServiceMailComponent } from './mailservicemail/editmailservicem
 import { MailServiceMailComponent } from './mailservicemail/mailservicemail.component';
 import { MailServiceMailAttachComponent } from './mailservicemailattach/mailservicemailattach.component';
 import { EditMailServiceMailConfigComponent } from './mailservicemailconfig/editmailservicemailconfig.component';
+import { FluidModule } from 'primeng/fluid';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 
 @NgModule({
     imports: [
@@ -43,7 +45,7 @@ import { EditMailServiceMailConfigComponent } from './mailservicemailconfig/edit
         TooltipModule,
         TreeTableModule,
         TableModule,
-        TabViewModule,
+        TabsModule,
         PanelModule,
         CheckboxModule,
         DynamicDialogModule,
@@ -51,25 +53,27 @@ import { EditMailServiceMailConfigComponent } from './mailservicemailconfig/edit
         RadioButtonModule,
         FormsModule,
         ReactiveFormsModule,
-        DropdownModule,
+        SelectModule,
         InputTextModule,
-        InputTextareaModule,
+        TextareaModule,
         ColorPickerModule,
         FileUploadModule,
-        SpinnerModule,
         BlockUIModule,
         MenuModule,
         KeyFilterModule,
         MessageModule,
         ListboxModule,
-        InputSwitchModule,
+        ToggleSwitchModule,
         InputMaskModule,
         MultiSelectModule,
-        CalendarModule,
+        DatePickerModule,
         AutoCompleteModule,
         SharedModule,
         MailGrpcServiceRoutingModule,
-        SplitButtonModule
+        SplitButtonModule,
+        FluidModule,
+        IconFieldModule,
+        InputIconModule
     ],
     declarations: [
         MailServiceMailComponent,
@@ -80,8 +84,6 @@ import { EditMailServiceMailConfigComponent } from './mailservicemailconfig/edit
     providers: [
         DialogService,
         DialogCustomService
-    ],
-    entryComponents: [
     ]
 })
 export class MailGrpcServiceModule { }

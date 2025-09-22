@@ -21,7 +21,8 @@ import { ChangeLogService } from '../../_services/changelog.service';
 
 @Component({
     templateUrl: './roles.component.html',
-    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss']
+    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss'],
+    standalone: false
 })
 export class RolesComponent extends AppComponentBase implements OnInit {
 
@@ -190,21 +191,23 @@ export class RolesComponent extends AppComponentBase implements OnInit {
 
         self.alertService.confirmDelete(
             self.l('ConfirmationDeleteRecordWithNameMessage', rowData.displayName), self.l('Confirmation'),
-            function () {
-                const cmd = new RoleDeleteCommand();
+            function (resp) {
+                if (resp) {
+                    const cmd = new RoleDeleteCommand();
 
-                cmd.id = rowData.id;
+                    cmd.id = rowData.id;
 
-                self.app.blocked = true;
+                    self.app.blocked = true;
 
-                self.roleService.deleteRole(cmd)
-                    .pipe(finalize(() => {
-                        self.app.blocked = false;
-                    }))
-                    .subscribe(data => {
-                        self.notify.success(self.l('RecordSoftDeleted'), self.l('Success'));
-                        self.getList();
-                    });
+                    self.roleService.deleteRole(cmd)
+                        .pipe(finalize(() => {
+                            self.app.blocked = false;
+                        }))
+                        .subscribe(data => {
+                            self.notify.success(self.l('RecordSoftDeleted'), self.l('Success'));
+                            self.getList();
+                        });
+                }
             }
         );
     }

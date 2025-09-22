@@ -20,7 +20,8 @@ import { ChangeLogService } from '../../_services/changelog.service';
 
 @Component({
     templateUrl: './editorgunits.component.html',
-    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss']
+    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss'],
+    standalone: false
 })
 export class EditOrgUnitsComponent extends AppComponentBase implements OnInit {
 

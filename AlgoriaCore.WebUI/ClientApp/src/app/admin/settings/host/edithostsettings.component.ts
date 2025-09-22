@@ -16,7 +16,8 @@ import { FormService } from '../../../../shared/services/form.service';
 import { AppComponent } from '../../../app.component';
 
 @Component({
-    templateUrl: './edithostsettings.component.html'
+    templateUrl: './edithostsettings.component.html',
+    standalone: false
 })
 export class EditHostSettingsComponent extends AppComponentBase implements OnInit {
     @ViewChild('name', { static: false }) inputFocus: ElementRef;

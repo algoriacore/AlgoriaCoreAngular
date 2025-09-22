@@ -6,7 +6,8 @@ import { QuestionnaireSectionResponse, QuestionnaireServiceProxy } from 'src/sha
 import { FormService } from 'src/shared/services/form.service';
 
 @Component({
-    templateUrl: './editquestionnairesections.component.html'
+    templateUrl: './editquestionnairesections.component.html',
+    standalone: false
 })
 export class EditQuestionnaireSectionsComponent extends AppComponentBase implements OnInit {
 

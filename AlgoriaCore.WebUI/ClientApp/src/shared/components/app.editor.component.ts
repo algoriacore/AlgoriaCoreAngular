@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, forwardRef, Injector, Input, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import * as Quill from 'quill';
+import Quill from 'quill';
 import { AppComponentBase } from '../../app/app-component-base';
 
 @Component({
@@ -12,7 +12,8 @@ import { AppComponentBase } from '../../app/app-component-base';
             useExisting: forwardRef(() => AppEditorComponent),
             multi: true
         }
-    ]
+    ],
+    standalone: false
 })
 
 export class AppEditorComponent extends AppComponentBase implements AfterViewInit, ControlValueAccessor  {
@@ -33,10 +34,15 @@ export class AppEditorComponent extends AppComponentBase implements AfterViewIni
     ) {
         super(injector);
 
-        Quill.register(Quill.import('attributors/style/font'), true);
-        Quill.register(Quill.import('attributors/style/size'), true);
-        Quill.register(Quill.import('attributors/style/align'), true);
-        Quill.register(Quill.import('attributors/style/direction'), true);
+        // Quill.register(Quill.import('attributors/style/font'), true);
+        // Quill.register(Quill.import('attributors/style/size'), true);
+        // Quill.register(Quill.import('attributors/style/align'), true);
+        // Quill.register(Quill.import('attributors/style/direction'), true);
+
+        // Quill.register('attributors/style/font', true);
+        // Quill.register('attributors/style/size', true);
+        // Quill.register('attributors/style/align', true);
+        // Quill.register('attributors/style/direction', true);
     }
 
     propagateChange = (_: any) => { };

@@ -14,7 +14,8 @@ import { AppComponent } from '../../app.component';
 
 @Component({
     templateUrl: './catalogscustom.component.html',
-    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss']
+    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss'],
+    standalone: false
 })
 export class CatalogsCustomComponent extends AppComponentBase implements OnInit {
 

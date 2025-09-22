@@ -10,77 +10,78 @@
                 </h3>
                 <small><span class="p-text-bold">{{l('AuditLogs.Subtitle1')}}</span>{{l('AuditLogs.Subtitle2')}}</small>
             </div>
-            <!--<div class="form-toolbar">
-                <p-button type="button" label="{{l('AuditLogs.ExportToExcel')}}" (onClick)="exportToExcel()" icon="pi pi-file-excel"></p-button>
-            </div>-->
         </div>
 
         <div class="col-12">
             <div class="card">
+                <p-fluid>
 
-                <div class="p-fluid formgrid grid">
-                    <div class="field col-12 md:col-4">
-                        <label for="rangeDates">{{l("AuditLogs.DateRange")}}</label>
-                        <p-calendar formControlName="rangeDates" id="rangeDates" selectionMode="range" showIcon="true"
-                                    [readonlyInput]="true" dateFormat="dd/mm/yy" [locale]="appDatetimeControlsLocale">
-                        </p-calendar>
+                    <div class="formgrid grid">
+                        <div class="field col-12 md:col-4">
+                            <label for="rangeDates">{{l("AuditLogs.DateRange")}}</label>
+                            <p-datepicker formControlName="rangeDates" id="rangeDates" selectionMode="range" showIcon="true"
+                                          [readonlyInput]="true" dateFormat="dd/mm/yy">
+                            </p-datepicker>
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label for="userName">{{l("AuditLogs.UserName")}}</label>
+                            <input type="text" id="userName" formControlName="userName" pInputText />
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label for="input6">{{l("AuditLogs.ErrorState")}}</label>
+                            <p-select [options]="errorStateList" formControlName="severity" id="severity"
+                                      [showClear]="false" placeholder="{{l('Select')}}"></p-select>
+                        </div>
                     </div>
-                    <div class="field col-12 md:col-4">
-                        <label for="userName">{{l("AuditLogs.UserName")}}</label>
-                        <input type="text" id="userName" formControlName="userName" pInputText />
-                    </div>
-                    <div class="field col-12 md:col-4">
-                        <label for="input6">{{l("AuditLogs.ErrorState")}}</label>
-                        <p-dropdown [options]="errorStateList" formControlName="severity" id="severity"
-                                    [showClear]="false" placeholder="{{l('Select')}}"></p-dropdown>
-                    </div>
-                </div>
 
-                <div class="p-fluid formgrid grid" *ngIf="advancedFiltersAreShown">
-                    <div class="field col-12 md:col-4">
-                        <label for="input4">{{l("AuditLogs.Duration")}}</label>
-                        <div class="p-fluid formgrid grid">
-                            <div class="col-12 md:col-6 p-mb-2">
-                                <p-inputNumber [showButtons]="true" id="minExecutionDuration"
-                                               formControlName="minExecutionDuration" [min]="0" [max]="86400000" [maxlength]="8">
-                                </p-inputNumber>
+                    <div class="formgrid grid" *ngIf="advancedFiltersAreShown">
+                        <div class="field col-12 md:col-4">
+                            <label for="input4">{{l("AuditLogs.Duration")}}</label>
+                            <div class="formgrid grid">
+                                <div class="col-12 md:col-6 p-mb-2">
+                                    <p-inputnumber [showButtons]="true" id="minExecutionDuration"
+                                                   formControlName="minExecutionDuration" [min]="0" [max]="86400000">
+                                    </p-inputnumber>
+                                </div>
+                                <div class="col-12 md:col-6">
+                                    <p-inputnumber [showButtons]="true" id="maxExecutionDuration"
+                                                   formControlName="maxExecutionDuration" [min]="0" [max]="86400000">
+                                    </p-inputnumber>
+                                </div>
                             </div>
-                            <div class="col-12 md:col-6">
-                                <p-inputNumber [showButtons]="true" id="maxExecutionDuration"
-                                               formControlName="maxExecutionDuration" [min]="0" [max]="86400000" [maxlength]="8">
-                                </p-inputNumber>
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label for="serviceName">{{l("AuditLogs.Service")}}</label>
+                            <input type="text" id="serviceName" formControlName="serviceName" pInputText />
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label for="methodName">{{l("AuditLogs.Action")}}</label>
+                            <input type="text" id="methodName" formControlName="methodName" pInputText />
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label for="browser">{{l("AuditLogs.Browser")}}</label>
+                            <input type="text" id="browser" formControlName="browser" pInputText />
+                        </div>
+                        <div class="field col-12 md:col-4" *ngIf="isHost">
+                            <label for="tenant">{{l("AuditLogs.Tenant")}}</label>
+                            <p-autoComplete id="acTenant" formControlName="filteredTenant"
+                                            [suggestions]="filteredTenants" (completeMethod)="filterTenant($event)"
+                                            [forceSelection]="true" field="largeName" [size]="30" [minLength]="3"
+                                            [style]="{'margin-bottom':'10px'}" emptyMessage="{{l('RecordsNotFound')}}">
+                            </p-autoComplete>
+                        </div>
+                        <div class="field col-12 md:col-4" *ngIf="isHost">
+                            <label>&nbsp;</label>
+                            <div>
+                                <p-checkbox inputId="onlyHost" id="onlyHost" name="onlyHost" formControlName="onlyHost" value="true"
+                                            binary="true" (click)="onClickOnlyHost()">
+                                </p-checkbox>
+                                <label for="onlyHost" class="ml-2">{{l('AuditLogs.OnlyHost')}}</label>
                             </div>
                         </div>
                     </div>
-                    <div class="field col-12 md:col-4">
-                        <label for="serviceName">{{l("AuditLogs.Service")}}</label>
-                        <input type="text" id="serviceName" formControlName="serviceName" pInputText />
-                    </div>
-                    <div class="field col-12 md:col-4">
-                        <label for="methodName">{{l("AuditLogs.Action")}}</label>
-                        <input type="text" id="methodName" formControlName="methodName" pInputText />
-                    </div>
-                    <div class="field col-12 md:col-4">
-                        <label for="browser">{{l("AuditLogs.Browser")}}</label>
-                        <input type="text" id="browser" formControlName="browser" pInputText />
-                    </div>
-                    <div class="field col-12 md:col-4" *ngIf="isHost">
-                        <label for="tenant">{{l("AuditLogs.Tenant")}}</label>
-                        <p-autoComplete id="acTenant" formControlName="filteredTenant"
-                                        [suggestions]="filteredTenants" (completeMethod)="filterTenant($event)"
-                                        [forceSelection]="true" field="largeName" [size]="30" [minLength]="3"
-                                        [style]="{'margin-bottom':'10px'}" emptyMessage="{{l('RecordsNotFound')}}">
-                        </p-autoComplete>
-                    </div>
-                    <div class="field col-12 md:col-4" *ngIf="isHost">
-                        <label>&nbsp;</label>
-                        <div>
-                            <p-checkbox id="onlyHost" name="onlyHost" formControlName="onlyHost" value="true"
-                                        binary="true" label="{{l('AuditLogs.OnlyHost')}}" (click)="onClickOnlyHost()">
-                            </p-checkbox>
-                        </div>
-                    </div>
-                </div>
+
+                </p-fluid>
 
                 <div class="grid p-mb-3">
                     <div class="col-12 form-title-section">
@@ -112,7 +113,7 @@
                                 <h5>{{l('AuditLogs')}}</h5>
                             </div>
                             <div class="col-12 sm:col-5 md:col-3 lg:col-2">
-                                <div class="flex">
+                                <!--<div class="flex">
                                     <div class="flex-grow-1 flex align-items-right justify-content-right mt-2 mb-2 mr-2">
                                     </div>
                                     <div class="flex-none flex align-items-right justify-content-right">
@@ -121,6 +122,18 @@
                                     </div>
                                     <div class="flex-none flex align-items-right justify-content-right">
                                         <button type="button" pButton pRipple icon="pi pi-cog" class="p-button-sm mt-2 mb-2" (click)="configurateView(AppSettingsClient.ViewAuditLogConfig)" pTooltip="{{l('Views.Configurate')}}" tooltipPosition="top"></button>
+                                    </div>
+                                </div>-->
+
+                                <div class="flex">
+                                    <div class="flex-grow-1 flex">
+                                    </div>
+                                    <div class="flex-none flex align-self-center">
+                                        <p-splitbutton icon="pi pi-file" class="ml-2" (onClick)="exportViewToCSV()" [model]="exportMenuItems"
+                                                       pTooltip="{{l('Views.Export')}}" tooltipPosition="top"></p-splitbutton>
+                                    </div>
+                                    <div class="flex-none flex align-self-center">
+                                        <p-button icon="pi pi-cog" class="ml-2" (click)="configurateView(AppSettingsClient.ViewAuditLogConfig)" pTooltip="{{l('Views.Configurate')}}" tooltipPosition="top" />
                                     </div>
                                 </div>
                             </div>

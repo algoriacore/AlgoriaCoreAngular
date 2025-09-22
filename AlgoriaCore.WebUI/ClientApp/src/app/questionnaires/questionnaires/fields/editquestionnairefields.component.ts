@@ -17,7 +17,8 @@ import {
 import { ControlError, FormService } from 'src/shared/services/form.service';
 
 @Component({
-    templateUrl: './editquestionnairefields.component.html'
+    templateUrl: './editquestionnairefields.component.html',
+    standalone: false
 })
 export class EditQuestionnaireFieldsComponent extends AppComponentBase implements OnInit {
 

@@ -8,8 +8,8 @@
                           (onClick)="helpOnScreenService.show('ADMINISTRATION.HELP.FORM', true)"></p-button>
             </h3>
             <div class="form-toolbar">
-                <p-button type="button" icon="pi pi-clock" styleClass="p-button-warning" (onClick)="showChangeHistory()" pTooltip="{{l('ShowChangeHistory')}}" tooltipPosition="top" *ngIf="id"></p-button>
-                <p-button type="button" styleClass="p-button-secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
+                <p-button type="button" icon="pi pi-clock" severity="warn" (onClick)="showChangeHistory()" pTooltip="{{l('ShowChangeHistory')}}" tooltipPosition="top" *ngIf="id"></p-button>
+                <p-button type="button" severity="secondary" label="{{l('Return')}}" (onClick)="return()"></p-button>
                 <p-button type="button" label="{{l('Save')}}" (onClick)="save()"></p-button>
             </div>
         </div>
@@ -18,15 +18,15 @@
             <div class="card">
                 <h5>{{l('GeneralData')}}</h5>
 
-                <div class="p-fluid">
+                <p-fluid>
 
 
                     <div class="field grid">
                         <label for="language" class="col-12 md:col-4 lg:col-2">{{fieldLabels["language"]}}<span class="required"> *</span></label>
                         <div class="col-12 md:col-8 lg:col-10">
-                            <p-dropdown [options]="languageCombo" formControlName="language"
-                                        placeholder="{{l('Select')}}">
-                            </p-dropdown>
+                            <p-select [options]="languageCombo" formControlName="language"
+                                      placeholder="{{l('Select')}}">
+                            </p-select>
                         </div>
                     </div>
 
@@ -34,11 +34,12 @@
 
                         <label class="col-12 md:col-4 lg:col-2" for="key">{{fieldLabels["key"]}}<span class="required"> *</span></label>
                         <div class="col-12 md:col-8 lg:col-10">
-                            <p-dropdown [options]="keyCombo" formControlName="key" filter="true"
-                                        placeholder="{{l('Select')}}">
-                            </p-dropdown>
+                            <p-select [options]="keyCombo" formControlName="key" filter="true"
+                                      placeholder="{{l('Select')}}">
+                            </p-select>
                         </div>
                     </div>
+
                     <div class="field grid">
 
                         <label class="col-12 md:col-4 lg:col-2" for="displayName">
@@ -51,6 +52,7 @@
                                    maxlength="100" pInputText />
                         </div>
                     </div>
+
                     <div class="field grid">
 
                         <label class="col-12 md:col-4 lg:col-2" for="name">{{l('IsActive')}}</label>
@@ -60,7 +62,7 @@
                         </div>
                     </div>
 
-                </div>
+                </p-fluid>
 
 
             </div>

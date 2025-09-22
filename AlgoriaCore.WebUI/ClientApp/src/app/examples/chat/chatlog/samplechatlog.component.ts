@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { AppComponentBase } from 'src/app/app-component-base';
 
 @Component({
-    templateUrl: './samplechatlog.component.html'
+    templateUrl: './samplechatlog.component.html',
+    standalone: false
 })
 export class SampleChatLogComponent extends AppComponentBase implements OnInit {
 

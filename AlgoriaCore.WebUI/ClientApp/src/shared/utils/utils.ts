@@ -51,4 +51,14 @@ export class Utils {
     public static normalizeTextToHTML(text: string): string {
         return text ? text.replaceAll('\n', '<br />') : text;
     }
+
+    public static isJSON(value: string): boolean {
+        try {
+            JSON.parse(value);
+        } catch (e) {
+            return false;
+        }
+
+        return true;
+    }
 }

@@ -20,7 +20,8 @@ import { EditQuestionnaireFieldsComponent } from './fields/editquestionnairefiel
 import { EditQuestionnaireSectionsComponent } from './sections/editquestionnairesections.component';
 
 @Component({
-    templateUrl: './editquestionnaires.component.html'
+    templateUrl: './editquestionnaires.component.html',
+    standalone: false
 })
 export class EditQuestionnairesComponent extends AppComponentBase implements OnInit {
 

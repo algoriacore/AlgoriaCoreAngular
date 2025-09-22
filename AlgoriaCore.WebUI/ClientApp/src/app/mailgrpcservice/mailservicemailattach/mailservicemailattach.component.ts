@@ -17,7 +17,8 @@ import { AppComponent } from '../../app.component';
 @Component({
     selector: 'app-mailservicemailattach-grid',
     templateUrl: './mailservicemailattach.component.html',
-    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss']
+    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss'],
+    standalone: false
 })
 
 export class MailServiceMailAttachComponent extends AppComponentBase implements OnInit {

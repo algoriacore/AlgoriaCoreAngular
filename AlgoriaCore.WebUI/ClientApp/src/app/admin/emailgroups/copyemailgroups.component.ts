@@ -6,7 +6,8 @@ import { AppComponentBase } from 'src/app/app-component-base';
 import { MailGroupCopyCommand, MailGroupForEditResponse, MailGroupServiceProxy } from 'src/shared/service-proxies/service-proxies';
 
 @Component({
-    templateUrl: './copyemailgroups.component.html'
+    templateUrl: './copyemailgroups.component.html',
+    standalone: false
 })
 export class CopyEmailGroupsComponent extends AppComponentBase implements OnInit {
 

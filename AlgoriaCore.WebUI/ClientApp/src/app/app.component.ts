@@ -1,6 +1,5 @@
 import { AfterContentChecked, AfterViewInit, ChangeDetectorRef, Component, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { PrimeNGConfig } from 'primeng/api';
 import { AppSettings } from '../shared/AppSettings';
 import { SessionLoginResponseController } from '../shared/service-proxies/service-proxies';
 import { ChatSignalrService } from '../shared/services/chatsignalr.service';
@@ -10,16 +9,19 @@ import { AppComponentBase } from './app-component-base';
 import { AuthenticationService } from './_services/authentication.service';
 import { AppViewConfigComponent } from '../shared/components/app.viewconfig.component';
 
-import { MsalBroadcastService, MsalService, MSAL_GUARD_CONFIG, MsalGuardConfiguration } from '@azure/msal-angular';
+import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import {
     EventMessage,
     EventType,
     InteractionStatus
 } from '@azure/msal-browser';
 import { filter } from 'rxjs/operators';
+import { PrimeNG } from 'primeng/config';
+import { Footer } from 'primeng/api';
 
 @Component({
-    templateUrl: './app.component.html'
+    templateUrl: './app.component.html',
+    standalone: false
 })
 export class AppComponent extends AppComponentBase implements AfterViewInit, AfterContentChecked {
 
@@ -59,7 +61,7 @@ export class AppComponent extends AppComponentBase implements AfterViewInit, Aft
 
     constructor(
         private injector: Injector,
-        private primengConfig: PrimeNGConfig,
+        private primengConfig: PrimeNG,
         private authenticationService: AuthenticationService,
         private router: Router,
         private settingsClientService: SettingsClientService,
@@ -81,7 +83,7 @@ export class AppComponent extends AppComponentBase implements AfterViewInit, Aft
         this.lightMenu = true;
         this.lightTopbar = true;
 
-        this.primengConfig.ripple = true;
+        this.primengConfig.ripple.set(true);
         this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
     }
 
@@ -238,8 +240,8 @@ export class AppComponent extends AppComponentBase implements AfterViewInit, Aft
     changeTheme(theme: string) {
         const layoutLink: HTMLLinkElement = <HTMLLinkElement>document.getElementById('layout-css');
         layoutLink.href = 'assets/layout/css/layout-' + theme.split('-')[0] + '.css';
-        const themeLink: HTMLLinkElement = <HTMLLinkElement>document.getElementById('theme-css');
-        themeLink.href = 'assets/theme/' + 'theme-' + theme + '.css';
+        //const themeLink: HTMLLinkElement = <HTMLLinkElement>document.getElementById('theme-css');
+        //themeLink.href = 'assets/theme/' + 'theme-' + theme + '.css';
     }
 
     logoutImpersonalization(event) {
@@ -268,6 +270,7 @@ export class AppComponent extends AppComponentBase implements AfterViewInit, Aft
         const ref = self.dialogService.open(AppViewConfigComponent, {
             styleClass: 'd-xl-40 d-lg-50 d-md d-sm',
             header: self.l('Views.Configurate'),
+            modal: true,
             showHeader: true,
             closeOnEscape: false,
             closable: false,

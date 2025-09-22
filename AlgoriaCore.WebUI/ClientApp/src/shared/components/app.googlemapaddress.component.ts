@@ -7,17 +7,18 @@ import { GoogleMapAddressModalComponent } from './googlemapaddressmodal.componen
 
 @Component({
     selector: 'app-google-map-address',
-    template: `<div class="p-inputgroup">
-               <button pButton type="button" label="Buscar" (click)="search($event)"></button>
-               <input type="text" [id]="id + 'input'" [value]="value" autocomplete="off" [maxLength]="maxlength"
-                [readonly]="true" placeholder="(latitud, longitud)" (change)="onChange($event)" pInputText />
-               <button pButton type="button" icon="fa fa-close" (click)="clear($event)"></button>
-               </div>`,
+    template: `<p-inputgroup>
+                <button pButton type="button" label="Buscar" (click)="search($event)"></button>
+                <input type="text" [id]="id + 'input'" [value]="value" autocomplete="off" [maxLength]="maxlength"
+                    [readonly]="true" placeholder="(latitud, longitud)" (change)="onChange($event)" pInputText />
+                <button pButton type="button" icon="fa fa-close" (click)="clear($event)"></button>
+               </p-inputgroup>`,
     providers: [{
         provide: NG_VALUE_ACCESSOR,
         useExisting: forwardRef(() => GoogleMapAddressComponent),
         multi: true,
-    }]
+    }],
+    standalone: false
 })
 
 export class GoogleMapAddressComponent implements ControlValueAccessor, AfterViewInit, OnChanges {

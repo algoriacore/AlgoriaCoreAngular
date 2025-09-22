@@ -1,8 +1,7 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
-import { LazyLoadEvent } from 'primeng/api/lazyloadevent';
-import { MenuItem } from 'primeng/api/menuitem';
+import { LazyLoadEvent, MenuItem } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { finalize } from 'rxjs/operators';
 import { AppComponentBase } from 'src/app/app-component-base';
@@ -15,7 +14,8 @@ import {
 
 @Component({
     templateUrl: './samplechat.findusers.component.html',
-    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss']
+    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss'],
+    standalone: false
 })
 export class SampleChatFindUsersComponent extends AppComponentBase implements OnInit {
 

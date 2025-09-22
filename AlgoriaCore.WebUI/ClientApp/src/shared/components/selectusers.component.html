@@ -12,10 +12,10 @@
                             <div class="col-12 sm:col-7 md:col-8 lg:col-9">
                             </div>
                             <div class="col-12 sm:col-5 md:col-4 lg:col-3">
-                                <span class="p-input-icon-left">
-                                    <i class="pi pi-search" aria-hidden="true"></i>
-                                    <input type="text" pInputText placeholder="{{l('SearchDots')}}" formControlName="filterText" (keydown.enter)="filterSearch($event)" />
-                                </span>
+                                <p-iconfield class="w-full">
+                                    <p-inputicon class="pi pi-search" />
+                                    <input type="text" fluid pInputText placeholder="{{l('SearchDots')}}" formControlName="filterText" (keydown.enter)="filterSearch($event)" />
+                                </p-iconfield>
                             </div>
                         </div>
                     </ng-template>

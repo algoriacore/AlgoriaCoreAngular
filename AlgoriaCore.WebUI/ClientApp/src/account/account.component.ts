@@ -5,7 +5,8 @@ import { LocalizationService } from 'src/shared/services/localization.service';
 @Component({
     templateUrl: './account.component.html',
     styleUrls: ['../assets/theme/theme-algoriacore.css'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class AccountComponent implements OnInit {
 

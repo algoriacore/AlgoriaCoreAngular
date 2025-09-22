@@ -20,7 +20,8 @@ import { FormService } from '../../../shared/services/form.service';
 import { AppComponent } from '../../app.component';
 
 @Component({
-    templateUrl: './editsamplesdatedata.component.html'
+    templateUrl: './editsamplesdatedata.component.html',
+    standalone: false
 })
 export class EditSamplesDateDataComponent extends AppComponentBase implements OnInit {
 

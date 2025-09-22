@@ -1,21 +1,20 @@
-import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { APP_INITIALIZER, Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import * as moment from 'moment';
 import 'moment-duration-format';
 import 'moment-timezone';
-import { MessageService, PrimeNGConfig } from 'primeng/api';
-import { AppModule } from './app/app.module';
 import { AuthenticationService } from './app/_services/authentication.service';
 import { PermissionCheckerService } from './app/_services/permission.checker.service';
+import { AppModule } from './app/app.module';
 import { RootRoutingModule } from './root-routing.module';
 import { RootComponent } from './root.component';
 import { AppConsts } from './shared/AppConsts';
 import { AppSettings } from './shared/AppSettings';
 import { SubdomainTenancyNameFinder } from './shared/helpers/SubdomainTenancyNameFinder';
 import {
-    API_BASE_URL, UserConfigurationGetAllQuery, UserConfigurationResponse, UserConfigurationServiceProxy, UserLoginQuery
+    API_BASE_URL, UserConfigurationGetAllQuery, UserConfigurationResponse, UserConfigurationServiceProxy
 } from './shared/service-proxies/service-proxies';
 import { ServiceProxyModule } from './shared/service-proxies/service-proxy.module';
 import { CatalogsCustomService } from './shared/services/catalogscustom.service';
@@ -26,34 +25,31 @@ import { SettingsClientService } from './shared/services/settingsclient.service'
 import { TitleService } from './shared/services/title.service';
 import { VersionCheckService } from './shared/services/version.check.service';
 import { Utils } from './shared/utils/utils';
-
-import { filter, finalize, takeUntil } from 'rxjs/operators';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import Aura from '@primeuix/themes/aura';
 
 import {
+    MSAL_GUARD_CONFIG,
     MSAL_INSTANCE,
     MSAL_INTERCEPTOR_CONFIG,
-    MsalInterceptorConfiguration,
-    MSAL_GUARD_CONFIG,
-    MsalGuardConfiguration,
     MsalBroadcastService,
-    MsalService,
     MsalGuard,
-    MsalRedirectComponent,
-    MsalModule,
+    MsalGuardConfiguration,
     MsalInterceptor,
+    MsalInterceptorConfiguration,
+    MsalModule,
+    MsalRedirectComponent,
+    MsalService,
 } from '@azure/msal-angular';
 
 import {
-    IPublicClientApplication,
-    PublicClientApplication,
     BrowserCacheLocation,
-    LogLevel,
+    IPublicClientApplication,
     InteractionType,
-    InteractionStatus
+    LogLevel,
+    PublicClientApplication
 } from '@azure/msal-browser';
-import { Subject } from 'rxjs';
-import { BrowserStorageService } from './shared/services/storage.service';
-import { Router } from '@angular/router';
+import { PrimeNG, providePrimeNG } from 'primeng/config';
 
 export function appInitializerFactory(injector: Injector) {
     return () => RootModule.getAppInitializerFactoryFunction(injector);
@@ -155,6 +151,15 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
         MsalService,
         MsalGuard,
         MsalBroadcastService,
+        provideAnimationsAsync(),
+        providePrimeNG({
+            theme: {
+                preset: Aura,
+                options: {
+                    darkModeSelector: false || 'none'
+                }
+            }
+        })
     ],
     bootstrap: [RootComponent, MsalRedirectComponent]
 })
@@ -221,7 +226,7 @@ export class RootModule {
         const catalogsCustomService: CatalogsCustomService = injector.get(CatalogsCustomService);
         const dateTimeService: DateTimeService = injector.get(DateTimeService);
         const settingsService: SettingsService = injector.get(SettingsService);
-        const config: PrimeNGConfig = injector.get(PrimeNGConfig);
+        const config: PrimeNG = injector.get(PrimeNG);
 
         AppConsts.multiTenancy = result2.multiTenancyConfig.enabled;
 

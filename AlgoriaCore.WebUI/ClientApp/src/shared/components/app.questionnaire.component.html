@@ -17,7 +17,7 @@
                             <input type="text" [formControlName]="field.fieldName" id="{{field.fieldName}}" autocomplete="off" [maxLength]="field.fieldSize" pInputText />
                         </div>
                         <div *ngIf="field.fieldControl === QuestionnaireFieldControl.DropDown">
-                            <p-dropdown [options]="field.optionsCombo" [formControlName]="field.fieldName" filter="true" [showClear]="true" placeholder="{{l('Select')}}" emptyFilterMessage="{{l('RecordsNotFound')}}"></p-dropdown>
+                            <p-select [options]="field.optionsCombo" [formControlName]="field.fieldName" filter="true" [showClear]="true" placeholder="{{l('Select')}}" emptyFilterMessage="{{l('RecordsNotFound')}}"></p-select>
                         </div>
                         <div *ngIf="field.fieldControl === QuestionnaireFieldControl.Listbox">
                             <p-listbox [options]="field.optionsCombo" [formControlName]="field.fieldName"></p-listbox>
@@ -49,13 +49,13 @@
                             <p-multiSelect [options]="field.optionsCombo" [formControlName]="field.fieldName" maxSelectedLabels="10" defaultLabel="{{l('Select')}}" emptyFilterMessage="{{l('RecordsNotFound')}}"></p-multiSelect>
                         </div>
                         <div *ngIf="field.fieldControl === QuestionnaireFieldControl.CalendarBasic">
-                            <p-calendar [formControlName]="field.fieldName" [locale]="appDatetimeControlsLocale" dateFormat="dd/mm/yy" showButtonBar="true"></p-calendar>
+                            <p-datepicker [formControlName]="field.fieldName" dateFormat="dd/mm/yy" showButtonBar="true"></p-datepicker>
                         </div>
                         <div *ngIf="field.fieldControl === QuestionnaireFieldControl.CalendarTime">
-                            <p-calendar [formControlName]="field.fieldName" [locale]="appDatetimeControlsLocale" dateFormat="dd/mm/yy" showButtonBar="true" [showTime]="true"></p-calendar>
+                            <p-datepicker [formControlName]="field.fieldName" dateFormat="dd/mm/yy" showButtonBar="true" [showTime]="true"></p-datepicker>
                         </div>
                         <div *ngIf="field.fieldControl === QuestionnaireFieldControl.CalendarTimeOnly">
-                            <p-calendar [formControlName]="field.fieldName" [timeOnly]="true"></p-calendar>
+                            <p-datepicker [formControlName]="field.fieldName" [timeOnly]="true"></p-datepicker>
                         </div>
                         <div *ngIf="field.fieldControl === QuestionnaireFieldControl.SpinnerFormatInput">
                             <p-inputNumber [showButtons]="true" [formControlName]="field.fieldName" [maxlength]="32"
@@ -107,7 +107,7 @@
                             <app-google-map-address [formControlName]="field.fieldName"></app-google-map-address>
                         </div>
                         <div *ngIf="field.fieldControl === QuestionnaireFieldControl.Autocomplete">
-                            <p-dropdown [formControlName]="field.fieldName" [options]="field.optionsCombo" filter="true" [showClear]="true" placeholder="{{l('Select')}}" emptyFilterMessage="{{l('RecordsNotFound')}}"></p-dropdown>
+                            <p-select [formControlName]="field.fieldName" [options]="field.optionsCombo" filter="true" [showClear]="true" placeholder="{{l('Select')}}" emptyFilterMessage="{{l('RecordsNotFound')}}"></p-select>
                         </div>
                         <div *ngIf="field.fieldControl === QuestionnaireFieldControl.AutocompleteDynamic">
                             <p-autoComplete [formControlName]="field.fieldName" [suggestions]="field.optionsCombo" (completeMethod)="fillAutocompleteDynamic($event, field)" field="label" [forceSelection]="true" [minLength]="3" placeholder="{{l('TypeToSelect')}}" emptyMessage="{{l('RecordsNotFound')}}"></p-autoComplete>

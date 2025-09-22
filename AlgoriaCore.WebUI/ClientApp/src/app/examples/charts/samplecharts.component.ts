@@ -9,7 +9,8 @@ import { AuditLogGetListQuery, AuditLogListResponse, AuditLogServiceProxy } from
 import { AppComponent } from '../../app.component';
 
 @Component({
-    templateUrl: './samplecharts.component.html'
+    templateUrl: './samplecharts.component.html',
+    standalone: false
 })
 export class SampleChartsComponent extends AppComponentBase implements OnInit {
 

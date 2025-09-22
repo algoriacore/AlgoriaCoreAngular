@@ -1,17 +1,18 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewInit, Component, Injector, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuItem } from 'primeng/api/menuitem';
 import { ScrollPanel } from 'primeng/scrollpanel';
 import { AppConsts } from 'src/shared/AppConsts';
 import { AppPermissions } from '../shared/AppPermissions';
 import { CatalogsCustomService } from '../shared/services/catalogscustom.service';
 import { AppComponentBase } from './app-component-base';
 import { AppComponent } from './app.component';
+import { MenuItem } from 'primeng/api';
 
 @Component({
     selector: 'app-menu',
-    templateUrl: './app.menu.component.html'
+    templateUrl: './app.menu.component.html',
+    standalone: false
 })
 export class AppMenuComponent extends AppComponentBase implements OnInit, AfterViewInit {
 
@@ -203,6 +204,7 @@ export class AppMenuComponent extends AppComponentBase implements OnInit, AfterV
 @Component({
     /* eslint-disable @angular-eslint/component-selector */
     selector: '[app-submenu]',
+    standalone: false,
     /* eslint-enable @angular-eslint/component-selector */
     template: `
         <ng-template ngFor let-child let-i="index" [ngForOf]="(root ? item : item.items)">

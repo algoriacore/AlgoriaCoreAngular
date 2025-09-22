@@ -32,7 +32,7 @@
             <div class="p-fluid formgrid grid">
                 <div class="field col-12 md:col-4">
                     <label for="fieldType">{{fieldLabels["fieldType"]}}<span class="required"> *</span></label>
-                    <p-dropdown [options]="fieldTypeCombo" formControlName="fieldType" placeholder="{{l('Select')}}" (onChange)="onChangeFieldType()" appendTo="body" [filter]="true"></p-dropdown>
+                    <p-select [options]="fieldTypeCombo" formControlName="fieldType" placeholder="{{l('Select')}}" (onChange)="onChangeFieldType()" appendTo="body" [filter]="true"></p-select>
                 </div>
                 <div class="field col-12 md:col-4" *ngIf="f.fieldType.value === QuestionnaireFieldType.Text.toString()">
                     <label for="fieldSize">{{fieldLabels["fieldSize"]}}<span class="required"> *</span></label>
@@ -43,7 +43,7 @@
             <div class="p-fluid formgrid grid">
                 <div class="field col-12 md:col-4">
                     <label for="fieldControl">{{fieldLabels["fieldControl"]}}<span class="required"> *</span></label>
-                    <p-dropdown [options]="fieldControlComboFiltered" formControlName="fieldControl" placeholder="{{l('Select')}}" (onChange)="onChangeFieldControl()" appendTo="body"></p-dropdown>
+                    <p-select [options]="fieldControlComboFiltered" formControlName="fieldControl" placeholder="{{l('Select')}}" (onChange)="onChangeFieldControl()" appendTo="body"></p-select>
                 </div>
                 <div class="field col-12 md:col-4" *ngIf="f.fieldControl.value === QuestionnaireFieldControl.InputMask.toString()">
                     <label for="inputMask">{{fieldLabels["inputMask"]}}<span class="required"> *</span></label>
@@ -68,13 +68,13 @@
                     <label for="questionnaireFieldRelationQuestionnaire">
                         {{fieldLabels["catalogCustomFieldRelationQuestionnaire"]}}<span class="required"> *</span>
                     </label>
-                    <p-dropdown [options]="catalogCustomCombo" formControlName="catalogCustomFieldRelationCatalogCustom" placeholder="{{l('Select')}}" (onChange)="onChangeCatalogCustom()" appendTo="body" [filter]="true"></p-dropdown>
+                    <p-select [options]="catalogCustomCombo" formControlName="catalogCustomFieldRelationCatalogCustom" placeholder="{{l('Select')}}" (onChange)="onChangeCatalogCustom()" appendTo="body" [filter]="true"></p-select>
                 </div>
                 <div class="field col-12 md:col-4">
                     <label for="questionnaireFieldRelationQuestionnaireField">
                         {{fieldLabels["catalogCustomFieldRelationQuestionnaireField"]}}<span class="required"> *</span>
                     </label>
-                    <p-dropdown [options]="catalogCustomFieldCombo" formControlName="catalogCustomFieldRelationCatalogCustomField" placeholder="{{l('Select')}}" appendTo="body" [filter]="true"></p-dropdown>
+                    <p-select [options]="catalogCustomFieldCombo" formControlName="catalogCustomFieldRelationCatalogCustomField" placeholder="{{l('Select')}}" appendTo="body" [filter]="true"></p-select>
                 </div>
             </div>
 

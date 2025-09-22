@@ -5,7 +5,8 @@ import { ScrollPanel } from 'primeng/scrollpanel';
 
 @Component({
     selector: 'app-chatbar',
-    templateUrl: './app.chatbar.component.html'
+    templateUrl: './app.chatbar.component.html',
+    standalone: false
 })
 export class AppChatBarComponent extends AppComponentBase implements OnInit, AfterViewInit {
 

@@ -36,7 +36,7 @@
                     </div>
                     <div class="field col-12 md:col-4">
                         <label for="questionnaire">{{fieldLabels["questionnaire"]}}<span class="required">*</span></label>
-                        <p-dropdown [options]="questionnaireCombo" formControlName="questionnaire" placeholder="{{l('Select')}}" (onChange)="onChangeQuestionnaire()" [filter]="true"></p-dropdown>
+                        <p-select [options]="questionnaireCombo" formControlName="questionnaire" placeholder="{{l('Select')}}" (onChange)="onChangeQuestionnaire()" [filter]="true"></p-select>
                     </div>
                     <div class="field col-12 md:col-4" *ngIf="model.id">
                         <label for="userCreator">{{l('CatalogsCustom.CatalogCustom.UserCreator')}}</label>

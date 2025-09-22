@@ -11,7 +11,8 @@ import {
 import { AppComponent } from '../app.component';
 
 @Component({
-    templateUrl: './consultcatalogscustomimpl.component.html'
+    templateUrl: './consultcatalogscustomimpl.component.html',
+    standalone: false
 })
 export class ConsultCatalogsCustomImplComponent extends AppComponentBase implements OnInit {
 

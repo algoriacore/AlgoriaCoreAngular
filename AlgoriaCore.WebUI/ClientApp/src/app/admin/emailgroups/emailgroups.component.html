@@ -25,10 +25,12 @@
                                 <h5>{{l('EmailGroups')}}</h5>
                             </div>
                             <div class="col-12 sm:col-5 md:col-4 lg:col-3">
-                                <span class="p-input-icon-left">
-                                    <i class="pi pi-search" aria-hidden="true"></i>
-                                    <input type="text" pInputText placeholder="{{l('SearchDots')}}" formControlName="filterText" (keydown.enter)="filterSearch($event)" />
-                                </span>
+
+                                <p-iconfield class="w-full">
+                                    <p-inputicon class="pi pi-search" />
+                                    <input type="text" fluid pInputText placeholder="{{l('SearchDots')}}" formControlName="filterText" (keydown.enter)="filterSearch($event)" />
+                                </p-iconfield>
+
                             </div>
                         </div>
                     </ng-template>
@@ -47,9 +49,9 @@
                         <tr [pSelectableRow]="rowData">
                             <td>
                                 <div>
-                                    <button pButton pRipple [disabled]="!permissions.edit" icon="pi pi-pencil" class="p-button-sm mr-2" (click)="edit(rowData.id)" pTooltip="{{l('Edit')}}" tooltipPosition="top"></button>
-                                    <button pButton pRipple [disabled]="!permissions.templates" icon="pi pi-list" class="p-button-sm p-button-warning mr-2" (click)="gotoTemplates(rowData.id)" pTooltip="{{l('EmailGroups.Templates')}}" tooltipPosition="top"></button>
-                                    <p-speedDial [disabled]="!(createMenuItems(rowData).length > 0)" [model]="createMenuItems(rowData)" direction="right" buttonClassName="p-button-sm p-button-normal p-button-warning"></p-speedDial>
+                                    <p-button size="small" [disabled]="!permissions.edit" icon="pi pi-pencil" class="mr-2" (click)="edit(rowData.id)" pTooltip="{{l('Edit')}}" tooltipPosition="top"></p-button>
+                                    <p-button size="small" severity="warn" [disabled]="!permissions.templates" icon="pi pi-list" class="mr-2" (click)="gotoTemplates(rowData.id)" pTooltip="{{l('EmailGroups.Templates')}}" tooltipPosition="top"></p-button>
+                                    <p-speedDial [disabled]="!(createMenuItems(rowData).length > 0)" [model]="createMenuItems(rowData)" direction="right" className="inline normal" buttonClassName="p-button-warn p-button-sm p-button-normal"></p-speedDial>
                                 </div>
                             </td>
                             <td>

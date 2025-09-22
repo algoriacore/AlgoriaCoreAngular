@@ -1,20 +1,22 @@
 <form [formGroup]="form">
     <div class="grid">
         <div class="col-12">
-            <div class="p-fluid formgrid grid">
-                <div class="field col-12">
-                    <label for="languageDesc">{{l('Languages.Texts.Text.Language')}}</label>
-                    <div name="languageDesc" class="p-mb-3 p-text-bold">{{model.languageDesc}}</div>
+            <p-fluid>
+                <div class="formgrid grid">
+                    <div class="field col-12">
+                        <label for="languageDesc">{{l('Languages.Texts.Text.Language')}}</label>
+                        <div name="languageDesc" class="p-mb-3 p-text-bold">{{model.languageDesc}}</div>
+                    </div>
+                    <div class="field col-12">
+                        <label for="key">{{fieldLabels["key"]}}</label>
+                        <div name="key" class="p-mb-3 p-text-bold">{{model.key}}</div>
+                    </div>
+                    <div class="field col-12">
+                        <label for="value">{{fieldLabels["value"]}}</label>
+                        <textarea pInputTextarea formControlName="value" [rows]="1"></textarea>
+                    </div>
                 </div>
-                <div class="field col-12">
-                    <label for="key">{{fieldLabels["key"]}}</label>
-                    <div name="key" class="p-mb-3 p-text-bold">{{model.key}}</div>
-                </div>
-                <div class="field col-12">
-                    <label for="value">{{fieldLabels["value"]}}</label>
-                    <textarea pInputTextarea formControlName="value" [rows]="1"></textarea>
-                </div>
-            </div>
+            </p-fluid>
         </div>
 
         <div class="col-12 form-title-section">

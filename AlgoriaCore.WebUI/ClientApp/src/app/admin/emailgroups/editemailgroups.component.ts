@@ -14,7 +14,8 @@ import { AppComponent } from '../../app.component';
 import { ChangeLogService } from '../../_services/changelog.service';
 
 @Component({
-    templateUrl: './editemailgroups.component.html'
+    templateUrl: './editemailgroups.component.html',
+    standalone: false
 })
 export class EditEmailGroupsComponent extends AppComponentBase implements OnInit {
     @ViewChild('name', { static: false }) inputFocus: ElementRef;

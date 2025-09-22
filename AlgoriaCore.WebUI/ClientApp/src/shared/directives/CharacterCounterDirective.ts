@@ -1,7 +1,8 @@
 import { AfterContentChecked, Directive, ElementRef } from '@angular/core';
 
 @Directive({
-    selector: '[appCharacterCounter]'
+    selector: '[appCharacterCounter]',
+    standalone: false
 })
 export class CharacterCounterDirective implements AfterContentChecked {
     textElement: HTMLFormElement;

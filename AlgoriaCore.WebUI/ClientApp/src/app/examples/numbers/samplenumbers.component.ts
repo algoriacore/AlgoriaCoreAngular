@@ -5,7 +5,8 @@ import 'moment-timezone';
 import { AppComponentBase } from 'src/app/app-component-base';
 
 @Component({
-    templateUrl: './samplenumbers.component.html'
+    templateUrl: './samplenumbers.component.html',
+    standalone: false
 })
 export class SampleNumbersComponent extends AppComponentBase implements OnInit {
 

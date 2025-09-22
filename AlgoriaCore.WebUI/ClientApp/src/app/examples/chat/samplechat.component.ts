@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { MenuItem } from 'primeng/api';
 import { Menu } from 'primeng/menu';
-import { VirtualScroller } from 'primeng/virtualscroller';
 import { finalize } from 'rxjs/operators';
 import { AppComponentBase } from 'src/app/app-component-base';
 import {
@@ -25,13 +24,15 @@ import { AppComponent } from '../../app.component';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { ChatFriendDto } from './ChatFriendDto';
 import { SampleChatFindUsersComponent } from './samplechat.findusers.component';
+import { Scroller } from 'primeng/scroller';
 
 @Component({
-    templateUrl: './samplechat.component.html'
+    templateUrl: './samplechat.component.html',
+    standalone: false
 })
 export class SampleChatComponent extends AppComponentBase implements OnInit {
 
-    @ViewChild('virtualScroller', { static: false }) virtualScroller: VirtualScroller;
+    @ViewChild('virtualScroller', { static: false }) virtualScroller: Scroller;
     @ViewChild('menu', { static: false }) btnMenu: Menu;
 
     form: FormGroup;

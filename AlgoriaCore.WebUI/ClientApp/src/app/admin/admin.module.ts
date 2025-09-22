@@ -7,38 +7,35 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { AvatarModule } from 'primeng/avatar';
 import { BlockUIModule } from 'primeng/blockui';
 import { ButtonModule } from 'primeng/button';
-import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { DataViewModule } from 'primeng/dataview';
+import { DatePickerModule } from 'primeng/datepicker';
 import { DividerModule } from 'primeng/divider';
-import { DropdownModule } from 'primeng/dropdown';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { EditorModule } from 'primeng/editor';
 import { FileUploadModule } from 'primeng/fileupload';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
 import { MenuModule } from 'primeng/menu';
 import { MessageModule } from 'primeng/message';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { PanelModule } from 'primeng/panel';
 import { PasswordModule } from 'primeng/password';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { SelectModule } from 'primeng/select';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { SpeedDialModule } from 'primeng/speeddial';
-import { SpinnerModule } from 'primeng/spinner';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { TableModule } from 'primeng/table';
-import { TabViewModule } from 'primeng/tabview';
+import { TabsModule } from 'primeng/tabs';
 import { TagModule } from 'primeng/tag';
+import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import { TreeModule } from 'primeng/tree';
 import { TreeTableModule } from 'primeng/treetable';
-import { SelectUsersComponent } from 'src/shared/components/selectusers.component';
-import { AppEditorComponent } from '../../shared/components/app.editor.component';
-import { AppPreloaderComponent } from '../../shared/components/app.preloader.component';
 import { DialogCustomService } from '../../shared/services/dialog.custom.service';
 import { SharedModule } from '../../shared/shared.module';
 import { UtilsModule } from '../../shared/utils/utils.module';
@@ -72,7 +69,12 @@ import { TenantComponent } from './tenants/tenant.component';
 import { EditUsersComponent } from './users/editusers.component';
 import { UsersComponent } from './users/user.component';
 import { UserProfileComponent } from './users/userprofile.component';
-import { MultiSelectModule } from 'primeng/multiselect';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { FluidModule } from 'primeng/fluid';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
 @NgModule({
     imports: [
@@ -83,16 +85,16 @@ import { MultiSelectModule } from 'primeng/multiselect';
         UtilsModule,
         BlockUIModule,
         ButtonModule,
-        CalendarModule,
+        DatePickerModule,
         CheckboxModule,
         ContextMenuModule,
-        DropdownModule,
+        SelectModule,
         EditorModule,
         InputTextModule,
         InputNumberModule,
         MenuModule,
         TableModule,
-        TabViewModule,
+        TabsModule,
         FileUploadModule,
         ToastModule,
         TreeModule,
@@ -100,8 +102,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
         ConfirmDialogModule,
         AutoCompleteModule,
         DynamicDialogModule,
-        InputTextareaModule,
-        SpinnerModule,
+        TextareaModule,
         MessageModule,
         RadioButtonModule,
         SelectButtonModule,
@@ -116,7 +117,14 @@ import { MultiSelectModule } from 'primeng/multiselect';
         SpeedDialModule,
         TooltipModule,
         AvatarModule,
-        MultiSelectModule
+        MultiSelectModule,
+        ToggleSwitchModule,
+        CheckboxModule,
+        FluidModule,
+        IconFieldModule,
+        InputIconModule,
+        InputGroupModule,
+        InputGroupAddonModule
     ],
     declarations: [
         RolesComponent,
@@ -155,16 +163,6 @@ import { MultiSelectModule } from 'primeng/multiselect';
         ConfirmationService,
         DialogService,
         DialogCustomService
-    ],
-    entryComponents: [
-        EditLanguageTextsComponent,
-        CopyEmailGroupsComponent,
-        SendTestEmailTemplatesComponent,
-        AuditLogsDetailComponent,
-        SelectUsersComponent,
-        AppEditorComponent,
-        EditOrgUnitPersonsComponent,
-        AppPreloaderComponent
     ]
 })
 export class AdminModule { }

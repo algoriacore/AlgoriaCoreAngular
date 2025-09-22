@@ -9,7 +9,8 @@ import { StringsHelper } from '../../shared/helpers/StringsHelper';
 
 @Component({
     templateUrl: 'changelog.component.html',
-    styleUrls: ['../../assets/css-custom/p-datatable-general.scss']
+    styleUrls: ['../../assets/css-custom/p-datatable-general.scss'],
+    standalone: false
 })
 export class ChangeLogComponent extends AppComponentBase implements OnInit {
 

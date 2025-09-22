@@ -4,7 +4,8 @@ import { AppComponentBase } from '../../app/app-component-base';
 
 @Component({
     selector: 'app-datagridview',
-    templateUrl: 'app.datagridview.component.html'
+    templateUrl: 'app.datagridview.component.html',
+    standalone: false
 })
 
 export class AppDataGridViewComponent extends AppComponentBase implements OnInit, AfterContentInit {

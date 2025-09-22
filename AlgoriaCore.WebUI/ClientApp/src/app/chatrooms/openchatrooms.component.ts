@@ -6,7 +6,8 @@ import { ChatRoomForEditResponse, ChatRoomServiceProxy } from '../../shared/serv
 import { AppComponent } from '../app.component';
 
 @Component({
-    templateUrl: './openchatrooms.component.html'
+    templateUrl: './openchatrooms.component.html',
+    standalone: false
 })
 export class OpenChatRoomsComponent extends AppComponentBase implements OnInit {
 

@@ -10,19 +10,20 @@
 
 
         <div class="col-12">
-            <div class="p-fluid formgrid grid">
-                <div class="field col-12">
-                    <label for="{{fieldLabels['direccion']}}">{{fieldLabels['direccion']}}</label>
-                    <app-google-address #gAddress formControlName="direccion" (change)="updateMap(gAddress)" style="z-index:9999;"></app-google-address>
-                </div>
+            <p-fluid>
+                <div class="formgrid grid">
+                    <div class="field col-12">
+                        <label for="{{fieldLabels['direccion']}}">{{fieldLabels['direccion']}}</label>
+                        <app-google-address #gAddress formControlName="direccion" (change)="updateMap(gAddress)" style="z-index:9999;"></app-google-address>
+                    </div>
 
-                <div class="col-12">
-                    <google-map *ngIf="center" width="100%" height="320px" [zoom]="zoom" [center]="center" [options]="mapOptions" (mapClick)="handleMapClick($event)">
-                        <map-marker *ngIf="marker" [position]="marker.position" [draggable]="marker.draggable"></map-marker>
-                    </google-map>
+                    <div class="col-12">
+                        <google-map *ngIf="center" width="100%" height="320px" [zoom]="zoom" [center]="center" [options]="mapOptions" (mapClick)="handleMapClick($event)">
+                            <map-marker *ngIf="marker" [position]="marker.position" [draggable]="marker.draggable"></map-marker>
+                        </google-map>
+                    </div>
                 </div>
-            </div>
-
+            </p-fluid>
         </div>
 
     </div>

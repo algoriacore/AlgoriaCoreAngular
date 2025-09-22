@@ -8,7 +8,8 @@ import { AppComponentBase } from '../../app-component-base';
 import { AppComponent } from '../../app.component';
 
 @Component({
-    templateUrl: './createtenant.component.html'
+    templateUrl: './createtenant.component.html',
+    standalone: false
 })
 export class CreateTenantComponent extends AppComponentBase implements OnInit {
 

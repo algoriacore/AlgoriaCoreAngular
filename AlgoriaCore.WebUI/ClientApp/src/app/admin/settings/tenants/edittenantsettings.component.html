@@ -24,20 +24,20 @@
                         <div class="p-fluid formgrid grid">
                             <div class="field col-12">
                                 <div class="field-checkbox">
-                                    <p-checkbox id="passwordUseDefaultConfiguration"
+                                    <p-checkbox inputId="passwordUseDefaultConfiguration" id="passwordUseDefaultConfiguration"
                                                 name="passwordUseDefaultConfiguration"
                                                 [formControl]="form.controls['passwordUseDefaultConfiguration']"
-                                                value="true" binary="true"
-                                                label="{{l('Tenant.Settings.Security.PasswordUseDefaultConfiguration')}}">
+                                                value="true" binary="true">
                                     </p-checkbox>
+                                    <label for="passwordUseDefaultConfiguration" class="ml-2">{{l('Tenant.Settings.Security.PasswordUseDefaultConfiguration')}}</label>
                                 </div>
                                 <div class="field-checkbox">
-                                    <p-checkbox id="enablePasswordReuseValidation"
+                                    <p-checkbox inputId="enablePasswordReuseValidation" id="enablePasswordReuseValidation"
                                                 name="enablePasswordReuseValidation"
                                                 [formControl]="form.controls['enablePasswordReuseValidation']"
-                                                value="true" binary="true"
-                                                label="{{l('Tenant.Settings.Security.EnablePasswordReuseValidation')}}">
+                                                value="true" binary="true">
                                     </p-checkbox>
+                                    <label for="enablePasswordReuseValidation" class="ml-2">{{l('Tenant.Settings.Security.EnablePasswordReuseValidation')}}</label>
                                 </div>
                             </div>
                         </div>
@@ -63,36 +63,36 @@
                             </div>
                             <div class="field col-12">
                                 <div class="field-checkbox">
-                                    <p-checkbox id="passwordUseNumbersDefault"
+                                    <p-checkbox inputId="passwordUseNumbersDefault" id="passwordUseNumbersDefault"
                                                 name="passwordUseNumbersDefault"
                                                 [formControl]="form.controls['passwordUseNumbersDefault']"
-                                                value="true" binary="true"
-                                                label="{{l('Tenant.Settings.Security.PasswordUseNumbers')}}">
+                                                value="true" binary="true">
                                     </p-checkbox>
+                                    <label for="passwordUseNumbersDefault" class="ml-2">{{l('Tenant.Settings.Security.PasswordUseNumbers')}}</label>
                                 </div>
                                 <div class="field-checkbox">
-                                    <p-checkbox id="passwordUseUppercaseDefault"
+                                    <p-checkbox inputId="passwordUseUppercaseDefault" id="passwordUseUppercaseDefault"
                                                 name="passwordUseUppercaseDefault"
                                                 [formControl]="form.controls['passwordUseUppercaseDefault']"
-                                                value="true" binary="true"
-                                                label="{{l('Tenant.Settings.Security.PasswordUseUppercase')}}">
+                                                value="true" binary="true">
                                     </p-checkbox>
+                                    <label for="passwordUseUppercaseDefault" class="ml-2">{{l('Tenant.Settings.Security.PasswordUseUppercase')}}</label>
                                 </div>
                                 <div class="field-checkbox">
-                                    <p-checkbox id="passwordUseLowercaseDefault"
+                                    <p-checkbox inputId="passwordUseLowercaseDefault" id="passwordUseLowercaseDefault"
                                                 name="passwordUseLowercaseDefault"
                                                 [formControl]="form.controls['passwordUseLowercaseDefault']"
-                                                value="true" binary="true"
-                                                label="{{l('Tenant.Settings.Security.PasswordUseLowercase')}}">
+                                                value="true" binary="true">
                                     </p-checkbox>
+                                    <label for="passwordUseLowercaseDefault" class="ml-2">{{l('Tenant.Settings.Security.PasswordUseLowercase')}}</label>
                                 </div>
                                 <div class="field-checkbox">
-                                    <p-checkbox id="passwordUsePunctuationSymbolsDefault"
+                                    <p-checkbox inputId="passwordUsePunctuationSymbolsDefault" id="passwordUsePunctuationSymbolsDefault"
                                                 name="passwordUsePunctuationSymbolsDefault"
                                                 [formControl]="form.controls['passwordUsePunctuationSymbolsDefault']"
-                                                value="true" binary="true"
-                                                label="{{l('Tenant.Settings.Security.PasswordUsePunctuationSymbols')}}">
+                                                value="true" binary="true">
                                     </p-checkbox>
+                                    <label for="passwordUsePunctuationSymbolsDefault" class="ml-2">{{l('Tenant.Settings.Security.PasswordUsePunctuationSymbols')}}</label>
                                 </div>
                             </div>
                         </div>
@@ -116,33 +116,33 @@
                             </div>
                             <div class="field col-12">
                                 <div class="field-checkbox">
-                                    <p-checkbox id="passwordUseNumbers" name="passwordUseNumbers"
+                                    <p-checkbox inputId="passwordUseNumbers" id="passwordUseNumbers" name="passwordUseNumbers"
                                                 [formControl]="form.controls['passwordUseNumbers']" value="true"
-                                                binary="true"
-                                                label="{{l('Tenant.Settings.Security.PasswordUseNumbers')}}">
+                                                binary="true">
                                     </p-checkbox>
+                                    <label for="passwordUseNumbers" class="ml-2">{{l('Tenant.Settings.Security.PasswordUseNumbers')}}</label>
                                 </div>
                                 <div class="field-checkbox">
-                                    <p-checkbox id="passwordUseUppercase" name="passwordUseUppercase"
+                                    <p-checkbox inputId="passwordUseUppercase" id="passwordUseUppercase" name="passwordUseUppercase"
                                                 [formControl]="form.controls['passwordUseUppercase']" value="true"
-                                                binary="true"
-                                                label="{{l('Tenant.Settings.Security.PasswordUseUppercase')}}">
+                                                binary="true">
                                     </p-checkbox>
+                                    <label for="passwordUseUppercase" class="ml-2">{{l('Tenant.Settings.Security.PasswordUseUppercase')}}</label>
                                 </div>
                                 <div class="field-checkbox">
-                                    <p-checkbox id="passwordUseLowercase" name="passwordUseLowercase"
+                                    <p-checkbox inputId="passwordUseLowercase" id="passwordUseLowercase" name="passwordUseLowercase"
                                                 [formControl]="form.controls['passwordUseLowercase']" value="true"
-                                                binary="true"
-                                                label="{{l('Tenant.Settings.Security.PasswordUseLowercase')}}">
+                                                binary="true">
                                     </p-checkbox>
+                                    <label for="passwordUseLowercase" class="ml-2">{{l('Tenant.Settings.Security.PasswordUseLowercase')}}</label>
                                 </div>
                                 <div class="field-checkbox">
-                                    <p-checkbox id="passwordUsePunctuationSymbols"
+                                    <p-checkbox inputId="passwordUsePunctuationSymbols" id="passwordUsePunctuationSymbols"
                                                 name="passwordUsePunctuationSymbols"
                                                 [formControl]="form.controls['passwordUsePunctuationSymbols']"
-                                                value="true" binary="true"
-                                                label="{{l('Tenant.Settings.Security.PasswordUsePunctuationSymbols')}}">
+                                                value="true" binary="true">
                                     </p-checkbox>
+                                    <label for="passwordUsePunctuationSymbols" class="ml-2">{{l('Tenant.Settings.Security.PasswordUsePunctuationSymbols')}}</label>
                                 </div>
                             </div>
                         </div>
@@ -151,11 +151,11 @@
 
                         <div class="p-fluid formgrid grid">
                             <div class="field col-12">
-                                <p-checkbox id="enablePasswordPeriod" name="enablePasswordPeriod"
+                                <p-checkbox inputId="enablePasswordPeriod" id="enablePasswordPeriod" name="enablePasswordPeriod"
                                             [formControl]="form.controls['enablePasswordPeriod']" value="true"
                                             binary="true"
-                                            label="{{l('Tenant.Settings.Security.EnablePasswordPeriod')}}"
                                             (click)="onClickEnablePasswordPeriod()"></p-checkbox>
+                                <label for="enablePasswordPeriod" class="ml-2">{{l('Tenant.Settings.Security.EnablePasswordPeriod')}}</label>
                             </div>
                             <div class="field col-12">
                                 <label for="passwordValidDays">
@@ -173,11 +173,11 @@
 
                         <div class="p-fluid formgrid grid">
                             <div class="field col-12">
-                                <p-checkbox id="enableUserBlocking" name="enableUserBlocking"
+                                <p-checkbox inputId="enableUserBlocking" name="enableUserBlocking"
                                             [formControl]="form.controls['enableUserBlocking']" value="true"
                                             binary="true"
-                                            label="{{l('Tenant.Settings.Security.EnableUserBlocking')}}"
                                             (click)="onClickEnableUserBlocking()"></p-checkbox>
+                                <label for="enableUserBlocking" class="ml-2">{{l('Tenant.Settings.Security.EnableUserBlocking')}}</label>
                             </div>
                             <div class="field col-12 md:col-6">
                                 <label for="failedAttemptsToBlockUser">
@@ -229,10 +229,11 @@
                                 </p-inputNumber>
                             </div>
                             <div class="field col-12">
-                                <p-checkbox id="mailEnableSSL" name="mailEnableSSL"
+                                <p-checkbox inputId="mailEnableSSL" id="mailEnableSSL" name="mailEnableSSL"
                                             [formControl]="form.controls['mailEnableSSL']" value="true"
-                                            binary="true" label="{{l('Tenant.Settings.Mail.EnableSSL')}}">
+                                            binary="true">
                                 </p-checkbox>
+                                <label for="mailEnableSSL" class="ml-2">{{l('Tenant.Settings.Mail.EnableSSL')}}</label>
                             </div>
                         </div>
 
@@ -240,11 +241,10 @@
 
                         <div class="p-fluid formgrid grid">
                             <div class="field col-12">
-                                <p-checkbox id="mailUseDefaultCredentials" name="mailUseDefaultCredentials"
+                                <p-checkbox inputId="mailUseDefaultCredentials" id="mailUseDefaultCredentials" name="mailUseDefaultCredentials"
                                             [formControl]="form.controls['mailUseDefaultCredentials']" value="true"
-                                            binary="true"
-                                            label="{{l('Tenant.Settings.Mail.UseDefaultCredentials')}}"
-                                            (click)="onClickMailUseDefaultCredentials()"></p-checkbox>
+                                            binary="true" (click)="onClickMailUseDefaultCredentials()"></p-checkbox>
+                                <label for="mailUseDefaultCredentials" class="ml-2">{{l('Tenant.Settings.Mail.UseDefaultCredentials')}}</label>
                             </div>
                             <div class="field col-12 md:col-6" *ngIf="!f.mailUseDefaultCredentials.value">
                                 <label for="mailDomainName">{{fieldLabels["mailDomainName"]}}</label>

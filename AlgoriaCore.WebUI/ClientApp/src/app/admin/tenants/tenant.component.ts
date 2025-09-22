@@ -23,7 +23,8 @@ import { AuthenticationService } from '../../_services/authentication.service';
 
 @Component({
     templateUrl: './tenant.component.html',
-    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss']
+    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss'],
+    standalone: false
 })
 export class TenantComponent extends AppComponentBase implements OnInit {
 
@@ -190,6 +191,7 @@ export class TenantComponent extends AppComponentBase implements OnInit {
             width: '70%',
             header: self.l('Impersonalize'),
             showHeader: true,
+            modal: true,
             closeOnEscape: true,
             dismissableMask: false,
             data: {
@@ -209,20 +211,22 @@ export class TenantComponent extends AppComponentBase implements OnInit {
 
         self.alertService.confirmDelete(
             self.l('ConfirmationDeleteRecordWithNameMessage', rowData.name), self.l('Confirmation'),
-            function () {
-                const cmd = new TenantDeleteCommand();
-                cmd.id = rowData.id;
+            function (resp) {
+                if (resp) {
+                    const cmd = new TenantDeleteCommand();
+                    cmd.id = rowData.id;
 
-                self.app.blocked = true;
+                    self.app.blocked = true;
 
-                self.tenantService.deleteTenant(cmd)
-                    .pipe(finalize(() => {
-                        self.app.blocked = false;
-                    }))
-                    .subscribe(data => {
-                        self.notify.success(self.l('RecordSoftDeleted'), self.l('Success'));
-                        self.getTenants();
-                    });
+                    self.tenantService.deleteTenant(cmd)
+                        .pipe(finalize(() => {
+                            self.app.blocked = false;
+                        }))
+                        .subscribe(data => {
+                            self.notify.success(self.l('RecordSoftDeleted'), self.l('Success'));
+                            self.getTenants();
+                        });
+                }
             }
         );
     }

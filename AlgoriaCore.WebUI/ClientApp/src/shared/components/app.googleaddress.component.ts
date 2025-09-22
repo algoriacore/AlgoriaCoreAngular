@@ -16,12 +16,14 @@ import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
                 [value]=""
                 (change)="onChange($event)"
                 class="form-control"
-                pInputText />`,
+                pInputText
+                fluid />`,
     providers: [{
         provide: NG_VALUE_ACCESSOR,
         useExisting: forwardRef(() => GoogleAddressComponent),
         multi: true,
-    }]
+    }],
+    standalone: false
 })
 
 export class GoogleAddressComponent implements ControlValueAccessor, AfterViewInit, OnChanges {

@@ -5,7 +5,8 @@ import { AppComponentBase } from '../app-component-base';
 
 @Component({
     selector: 'app-message',
-    templateUrl: 'app.message.component.html'
+    templateUrl: 'app.message.component.html',
+    standalone: false
 })
 
 export class AppMessageComponent extends AppComponentBase implements OnInit, OnDestroy {

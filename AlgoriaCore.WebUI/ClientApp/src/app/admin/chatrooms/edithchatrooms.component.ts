@@ -17,7 +17,8 @@ import { DateTimeService } from '../../../shared/services/datetime.service';
 import { AppComponent } from '../../app.component';
 
 @Component({
-    templateUrl: './editchatrooms.component.html'
+    templateUrl: './editchatrooms.component.html',
+    standalone: false
 })
 export class EditChatRoomsComponent extends AppComponentBase implements OnInit {
 

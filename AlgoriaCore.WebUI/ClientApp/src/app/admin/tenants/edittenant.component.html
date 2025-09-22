@@ -21,21 +21,24 @@
 
                 <h5>{{l('GeneralData')}}</h5>
 
-                <div class="p-fluid formgrid grid">
-                    <div class="col-12 md:col-9 lg:col-4">
-                        <div class="field">
-                            <label for="name">{{l('Tenants.NameForm')}}<span class="required"> *</span></label>
-                            <input type="text" formControlName="name" id="name" autocomplete="off" maxlength="150" pInputText />
-                        </div>
-                        <div class="field">
-                            <label for="displayName">{{l('Tenants.TenancyNameForm')}}<span class="required"> *</span></label>
-                            <input type="text" formControlName="tenancyName" id="tenancyName" autocomplete="off" maxlength="50" pInputText />
-                        </div>
-                        <div class="field">
-                            <p-checkbox id="isActive" name="isActive" [formControl]="form.controls['isActive']" value="true" binary="true" label="{{l('IsActive')}}"></p-checkbox>
+                <p-fluid>
+                    <div class="formgrid grid">
+                        <div class="col-12 md:col-9 lg:col-4">
+                            <div class="field">
+                                <label for="name">{{l('Tenants.NameForm')}}<span class="required"> *</span></label>
+                                <input type="text" formControlName="name" id="name" autocomplete="off" maxlength="150" pInputText />
+                            </div>
+                            <div class="field">
+                                <label for="displayName">{{l('Tenants.TenancyNameForm')}}<span class="required"> *</span></label>
+                                <input type="text" formControlName="tenancyName" id="tenancyName" autocomplete="off" maxlength="50" pInputText />
+                            </div>
+                            <div class="field-checkbox">
+                                <p-checkbox inputId="isActive" name="isActive" [formControl]="form.controls['isActive']" value="true" binary="true"></p-checkbox>
+                                <label for="isActive">{{l('IsActive')}}</label>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </p-fluid>
 
             </div>
         </div>

@@ -11,7 +11,8 @@ import { SettingsService } from '../services/settings.service';
         provide: NG_VALUE_ACCESSOR,
         useExisting: forwardRef(() => PasswordFieldComponent),
         multi: true,
-    }]
+    }],
+    standalone: false
 })
 export class PasswordFieldComponent implements ControlValueAccessor {
     @Input() feedback = true;

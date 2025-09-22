@@ -20,7 +20,8 @@ import { AppComponent } from '../../app.component';
 
 @Component({
     templateUrl: './languages.component.html',
-    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss']
+    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss'],
+    standalone: false
 })
 export class LanguagesComponent extends AppComponentBase implements OnInit {
 
@@ -183,17 +184,19 @@ export class LanguagesComponent extends AppComponentBase implements OnInit {
         const self = this;
 
         self.alertService.confirmDelete(self.l('ConfirmationDeleteRecordWithNameMessage', rowData.displayName), self.l('Confirmation'),
-            function () {
-                self.app.blocked = true;
+            function (resp) {
+                if (resp) {
+                    self.app.blocked = true;
 
-                self.service.deleteLanguage(rowData.id)
-                    .pipe(finalize(() => {
-                        self.app.blocked = false;
-                    }))
-                    .subscribe(data => {
-                        self.notify.success(self.l('SavedSuccessfully'), self.l('Confirmation'));
-                        self.getList();
-                    });
+                    self.service.deleteLanguage(rowData.id)
+                        .pipe(finalize(() => {
+                            self.app.blocked = false;
+                        }))
+                        .subscribe(data => {
+                            self.notify.success(self.l('SavedSuccessfully'), self.l('Confirmation'));
+                            self.getList();
+                        });
+                }
             });
     }
 
@@ -208,21 +211,23 @@ export class LanguagesComponent extends AppComponentBase implements OnInit {
             type: 'confirm',
             message: self.l('Languages.ConfirmationDefaultLanguageMessage', rowData.displayName),
             header: self.l('Confirmation'),
-            accept: function () {
-                self.app.blocked = true;
+            accept: function (resp) {
+                if (resp) {
+                    self.app.blocked = true;
 
-                self.service.setLanguageDefault(rowData.id)
-                    .pipe(finalize(() => {
-                        self.app.blocked = false;
-                    }))
-                    .subscribe(data => {
-                        self.notify.success(self.l('SavedSuccessfully'), self.l('Success'));
-                        self.localization.defaultLanguage = new LanguageInfoResponse({
-                            name: rowData.name, displayName: rowData.displayName
+                    self.service.setLanguageDefault(rowData.id)
+                        .pipe(finalize(() => {
+                            self.app.blocked = false;
+                        }))
+                        .subscribe(data => {
+                            self.notify.success(self.l('SavedSuccessfully'), self.l('Success'));
+                            self.localization.defaultLanguage = new LanguageInfoResponse({
+                                name: rowData.name, displayName: rowData.displayName
+                            });
+                            self.defaultLanguage = self.localization.defaultLanguage;
+                            self.getList();
                         });
-                        self.defaultLanguage = self.localization.defaultLanguage;
-                        self.getList();
-                    });
+                }
             },
             cancelTitle: this.localization.l('Cancel'),
             acceptTitle: this.localization.l('Accept'),

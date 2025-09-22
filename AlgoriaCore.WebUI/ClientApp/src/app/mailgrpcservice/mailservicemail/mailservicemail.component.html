@@ -12,60 +12,63 @@
         <div class="col-12">
             <div class="card">
 
-                <div class="grid p-fluid">
+                <p-fluid>
+                    <div class="grid">
 
-                    <div class="col-6">
-                        <div class="field grid">
-                            <label for="rangeDates" class="col-12 md:col-4 lg:col-4"
-                                   *ngIf="advancedFiltersAreShown">
-                                {{l("MailServiceMails.MailServiceMail.DateRange")}}
-                            </label>
+                        <div class="col-6">
+                            <div class="field grid">
+                                <label for="rangeDates" class="col-12 md:col-4 lg:col-4"
+                                       *ngIf="advancedFiltersAreShown">
+                                    {{l("MailServiceMails.MailServiceMail.DateRange")}}
+                                </label>
 
-                            <div class="col-12 md:col-8 lg:col-8" *ngIf="advancedFiltersAreShown">
-                                <p-calendar formControlName="rangeDates" id="rangeDates" selectionMode="range"
-                                            [readonlyInput]="true" dateFormat="dd/mm/yy" [locale]="appDatetimeControlsLocale">
-                                </p-calendar>
+                                <div class="col-12 md:col-8 lg:col-8" *ngIf="advancedFiltersAreShown">
+                                    <p-datepicker formControlName="rangeDates" id="rangeDates" selectionMode="range"
+                                                  [readonlyInput]="true" dateFormat="dd/mm/yy">
+                                    </p-datepicker>
+                                </div>
                             </div>
                         </div>
+
+                        <div class="col-6">
+                            <div class="field grid">
+                                <label for="input6" class="col-12 md:col-4 lg:col-4"
+                                       *ngIf="advancedFiltersAreShown && isHost">
+                                    {{l("MailServiceMails.MailServiceMail.Tenant")}}
+                                </label>
+
+                                <div class="col-12 md:col-8 lg:col-8" *ngIf="advancedFiltersAreShown && isHost">
+                                    <p-autoComplete id="acTenant" formControlName="filteredTenant"
+                                                    [suggestions]="filteredTenants" (completeMethod)="filterTenant($event)"
+                                                    [forceSelection]="true" field="largeName" [size]="30" [minLength]="3"
+                                                    [style]="{'margin-bottom':'10px'}" emptyMessage="{{l('RecordsNotFound')}}">
+                                    </p-autoComplete>
+
+
+                                </div>
+                            </div>
+                            <div class="field grid">
+                                <label for="input6" class="col-12 md:col-4 lg:col-4"
+                                       *ngIf="advancedFiltersAreShown && isHost">
+                                </label>
+
+                                <div class="col-12 md:col-8 lg:col-8" *ngIf="advancedFiltersAreShown && isHost">
+                                    <p-checkbox inputId="onlyHost" id="onlyHost" name="onlyHost" formControlName="onlyHost" value="true"
+                                                binary="true"
+                                                (click)="onClickOnlyHost()">
+                                    </p-checkbox>
+                                    <label for="onlyHost" class="ml-2">{{l('MailServiceMails.MailServiceMail.OnlyHost')}}</label>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-
-                    <div class="col-6">
-                        <div class="field grid">
-                            <label for="input6" class="col-12 md:col-4 lg:col-4"
-                                   *ngIf="advancedFiltersAreShown && isHost">
-                                {{l("MailServiceMails.MailServiceMail.Tenant")}}
-                            </label>
-
-                            <div class="col-12 md:col-8 lg:col-8" *ngIf="advancedFiltersAreShown && isHost">
-                                <p-autoComplete id="acTenant" formControlName="filteredTenant"
-                                                [suggestions]="filteredTenants" (completeMethod)="filterTenant($event)"
-                                                [forceSelection]="true" field="largeName" [size]="30" [minLength]="3"
-                                                [style]="{'margin-bottom':'10px'}" emptyMessage="{{l('RecordsNotFound')}}">
-                                </p-autoComplete>
-
-
-                            </div>
-                        </div>
-                        <div class="field grid">
-                            <label for="input6" class="col-12 md:col-4 lg:col-4"
-                                   *ngIf="advancedFiltersAreShown && isHost">
-                            </label>
-
-                            <div class="col-12 md:col-8 lg:col-8" *ngIf="advancedFiltersAreShown && isHost">
-                                <p-checkbox id="onlyHost" name="onlyHost" formControlName="onlyHost" value="true"
-                                            binary="true" label="{{l('MailServiceMails.MailServiceMail.OnlyHost')}}"
-                                            (click)="onClickOnlyHost()">
-                                </p-checkbox>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
+                </p-fluid>
 
                 <div class="grid">
                     <div class="col-12 form-title-section">
                         <div>
-                            <a>
+                            <a class="p-link-text">
                                 <span *ngIf="!advancedFiltersAreShown"
                                       (click)="advancedFiltersAreShown=!advancedFiltersAreShown">
                                     <em class="fa fa-angle-down"></em> {{l("ShowAdvancedFilters")}}
@@ -95,21 +98,23 @@
                                 <h5>{{l('MailServiceMails.MailServiceMail')}}</h5>
                             </div>
                             <div class="col-12 sm:col-6 md:col-6 lg:col-5">
+
                                 <div class="flex">
-                                    <div class="flex-grow-1 flex align-items-right justify-content-right mt-2 mb-2 mr-2">
-                                        <span class="p-input-icon-left">
-                                            <i class="pi pi-search" aria-hidden="true"></i>
-                                            <input type="text" pInputText placeholder="{{l('SearchDots')}}" formControlName="filterText" (keydown.enter)="filterSearch($event)" />
-                                        </span>
+                                    <div class="flex-grow-1 flex align-self-center">
+                                        <p-iconfield class="w-full">
+                                            <p-inputicon class="pi pi-search" />
+                                            <input type="text" fluid pInputText placeholder="{{l('SearchDots')}}" formControlName="filterText" (keydown.enter)="filterSearch($event)" />
+                                        </p-iconfield>
                                     </div>
-                                    <div class="flex-none flex align-items-right justify-content-right">
-                                        <p-splitButton icon="pi pi-file" class="p-button-sm mt-2 mb-2 mr-2" (onClick)="exportViewToCSV()" [model]="exportMenuItems"
-                                                       pTooltip="{{l('Views.Export')}}" tooltipPosition="top"></p-splitButton>
+                                    <div class="flex-none flex align-self-center">
+                                        <p-splitbutton icon="pi pi-file" class="ml-2" (onClick)="exportViewToCSV()" [model]="exportMenuItems"
+                                                       pTooltip="{{l('Views.Export')}}" tooltipPosition="top"></p-splitbutton>
                                     </div>
-                                    <div class="flex-none flex align-items-right justify-content-right">
-                                        <button pButton pRipple icon="pi pi-cog" class="p-button-sm mt-2 mb-2" (click)="configurateView(AppSettingsClient.ViewLogMailServicEmailConfig)" pTooltip="{{l('Views.Configurate')}}" tooltipPosition="top"></button>
+                                    <div class="flex-none flex align-self-center">
+                                        <p-button icon="pi pi-cog" class="ml-2" (click)="configurateView(AppSettingsClient.ViewLogMailServicEmailConfig)" pTooltip="{{l('Views.Configurate')}}" tooltipPosition="top" />
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </ng-template>
@@ -131,7 +136,7 @@
                         <tr [pSelectableRow]="rowData">
                             <td>
                                 <div>
-                                    <button pButton pRipple [disabled]="!permissions.consult" icon="pi pi-pencil" class="p-button-sm p-button-warning mr-2" (click)="consult(rowData.id)" pTooltip="{{l('Consult')}}" tooltipPosition="top"></button>
+                                    <p-button size="small" severity="warn" [disabled]="!permissions.consult" icon="pi pi-pencil" class="mr-2" (click)="consult(rowData.id)" pTooltip="{{l('Consult')}}" tooltipPosition="top"></p-button>
                                 </div>
                             </td>
                             <ng-template ngFor let-col [ngForOf]="columns">

@@ -18,7 +18,8 @@ import { ChangeLogService } from '../../_services/changelog.service';
 import { SendTestEmailTemplatesComponent } from './testemailtemplates.component';
 
 @Component({
-    templateUrl: './editemailtemplates.component.html'
+    templateUrl: './editemailtemplates.component.html',
+    standalone: false
 })
 export class EditEmailTemplatesComponent extends AppComponentBase implements OnInit {
 
@@ -182,6 +183,7 @@ export class EditEmailTemplatesComponent extends AppComponentBase implements OnI
         self.dialogService.open(SendTestEmailTemplatesComponent, {
             width: '50%',
             showHeader: false,
+            modal: true,
             dismissableMask: false,
             data: new MailTemplateForEditResponse({
                 id: 0,

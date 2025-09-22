@@ -10,7 +10,8 @@ import { AccountComponent } from '../account.component';
 
 @Component({
     templateUrl: 'registerconfirm.component.html',
-    providers: [MessageService]
+    providers: [MessageService],
+    standalone: false
 })
 export class TenantConfirmRegistrationComponent extends AppComponentBase implements OnInit {
     form: FormGroup;

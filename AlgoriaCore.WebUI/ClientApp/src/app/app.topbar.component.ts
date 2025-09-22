@@ -11,7 +11,8 @@ import * as moment from 'moment';
 @Component({
     selector: 'app-topbar',
     templateUrl: './app.topbar.component.html',
-    providers: [MessageService]
+    providers: [MessageService],
+    standalone: false
 })
 export class AppTopBarComponent extends AppComponentBase {
 

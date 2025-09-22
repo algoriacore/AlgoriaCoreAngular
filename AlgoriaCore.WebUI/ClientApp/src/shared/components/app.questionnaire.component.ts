@@ -22,7 +22,8 @@ import { Utils } from '../utils/utils';
 
 @Component({
     selector: 'app-questionnaire',
-    templateUrl: './app.questionnaire.component.html'
+    templateUrl: './app.questionnaire.component.html',
+    standalone: false
 })
 export class AppQuestionnaireComponent implements OnInit {
     @Input() questionnaire: QuestionnaireResponse;

@@ -15,7 +15,8 @@ import { LazyLoadEvent } from 'primeng/api';
 
 @Component({
     templateUrl: './editorgunitpersons.component.html',
-    styleUrls: ['../../../../assets/css-custom/p-datatable-general.scss']
+    styleUrls: ['../../../../assets/css-custom/p-datatable-general.scss'],
+    standalone: false
 })
 export class EditOrgUnitPersonsComponent extends AppComponentBase implements OnInit {
 

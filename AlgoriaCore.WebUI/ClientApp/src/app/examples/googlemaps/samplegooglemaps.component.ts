@@ -5,7 +5,8 @@ import 'moment-timezone';
 import { AppComponentBase } from 'src/app/app-component-base';
 
 @Component({
-    templateUrl: './samplegooglemaps.component.html'
+    templateUrl: './samplegooglemaps.component.html',
+    standalone: false
 })
 export class SampleGoogleMapsComponent extends AppComponentBase implements OnInit {
 

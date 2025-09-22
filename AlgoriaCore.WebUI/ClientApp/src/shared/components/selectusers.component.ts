@@ -8,7 +8,8 @@ import { UserGetListQuery, UserListResponse, UserServiceProxy } from 'src/shared
 
 @Component({
     templateUrl: './selectusers.component.html',
-    styleUrls: ['../../assets/css-custom/p-datatable-general.scss']
+    styleUrls: ['../../assets/css-custom/p-datatable-general.scss'],
+    standalone: false
 })
 export class SelectUsersComponent extends AppComponentBase implements OnInit {
 

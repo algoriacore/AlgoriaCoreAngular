@@ -14,7 +14,8 @@ import { AppComponent } from '../../app.component';
 
 @Component({
     templateUrl: './questionnaires.component.html',
-    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss']
+    styleUrls: ['../../../assets/css-custom/p-datatable-general.scss'],
+    standalone: false
 })
 export class QuestionnairesComponent extends AppComponentBase implements OnInit {
 

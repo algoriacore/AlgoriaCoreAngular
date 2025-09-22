@@ -7,7 +7,8 @@ import { TenantResponse, TenantServiceProxy, UpdateTenantCommand } from '../../.
 import { AppComponent } from '../../app.component';
 
 @Component({
-    templateUrl: './edittenant.component.html'
+    templateUrl: './edittenant.component.html',
+    standalone: false
 })
 export class EditTenantComponent extends AppComponentBase implements OnInit {
 

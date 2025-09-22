@@ -11,7 +11,8 @@ import {
 import { FormService } from '../../../../shared/services/form.service';
 
 @Component({
-    templateUrl: './editlanguagetexts.component.html'
+    templateUrl: './editlanguagetexts.component.html',
+    standalone: false
 })
 export class EditLanguageTextsComponent extends AppComponentBase implements OnInit {
 

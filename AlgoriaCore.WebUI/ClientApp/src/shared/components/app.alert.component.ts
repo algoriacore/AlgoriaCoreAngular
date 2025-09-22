@@ -5,7 +5,8 @@ import { StringsHelper } from '../helpers/StringsHelper';
 
 @Component({
     selector: 'app-alert',
-    templateUrl: 'app.alert.component.html'
+    templateUrl: 'app.alert.component.html',
+    standalone: false
 })
 
 export class AppAlertComponent extends AppComponentBase implements OnInit, OnDestroy {
@@ -70,7 +71,6 @@ export class AppAlertComponent extends AppComponentBase implements OnInit, OnDes
     }
 
     onConfirmReject(): void {
-
         if (this.message.accept) {
             this.acceptEvent = new EventEmitter<any>();
             this.acceptEvent.subscribe(this.message.accept);

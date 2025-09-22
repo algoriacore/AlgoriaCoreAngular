@@ -13,45 +13,46 @@
         <div class="col-12">
             <div class="card">
 
-                <div class="p-fluid formgrid grid">
-                    <div class="field col-12 md:col-4">
-                        <label for="name">{{fieldLabels['simple']}}</label>
-                        <p-autoComplete formControlName="simpleValue"
-                                        [suggestions]="lista"
-                                        [forceSelection]="true"
-                                        field="fullName"
-                                        (completeMethod)="search($event)">
-                        </p-autoComplete>
+                <p-fluid>
+                    <div class="formgrid grid">
+                        <div class="field col-12 md:col-4">
+                            <label for="name">{{fieldLabels['simple']}}</label>
+                            <p-autocomplete formControlName="simpleValue"
+                                            [suggestions]="lista"
+                                            [forceSelection]="true"
+                                            optionLabel="fullName"
+                                            (completeMethod)="search($event)">
+                            </p-autocomplete>
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label for="displayName">{{fieldLabels['itemTemplate']}}</label>
+                            <p-autocomplete formControlName="itemTemplateValue"
+                                            [suggestions]="lista"
+                                            [dropdown]="true"
+                                            [forceSelection]="true"
+                                            optionLabel="fullName"
+                                            (completeMethod)="search($event)">
+                                <ng-template let-value pTemplate="item">
+                                    <label style="font-weight:bold;">Nombre: </label>{{value.fullName}}
+                                </ng-template>
+                            </p-autocomplete>
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label for="selectedValue">{{fieldLabels['multipleWithChecks']}}</label>
+                            <p-autocomplete formControlName="selectedValue"
+                                            [suggestions]="lista"
+                                            [dropdown]="true"
+                                            [multiple]="true"
+                                            [forceSelection]="true"
+                                            optionLabel="fullName"
+                                            (completeMethod)="search($event)">
+                                <ng-template let-value pTemplate="item">
+                                    <label><input type="checkbox" (click)="checkSelect($event,value)" [checked]="verifyCheck(value)" />{{value.fullName}}</label>
+                                </ng-template>
+                            </p-autocomplete>
+                        </div>
                     </div>
-                    <div class="field col-12 md:col-4">
-                        <label for="displayName">{{fieldLabels['itemTemplate']}}</label>
-                        <p-autoComplete formControlName="itemTemplateValue"
-                                        [suggestions]="lista"
-                                        [dropdown]="true"
-                                        [forceSelection]="true"
-                                        field="fullName"
-                                        (completeMethod)="search($event)">
-                            <ng-template let-value pTemplate="item">
-                                <label style="font-weight:bold;">Nombre: </label>{{value.fullName}}
-                            </ng-template>
-                        </p-autoComplete>
-                    </div>
-                    <div class="field col-12 md:col-4">
-                        <label for="selectedValue">{{fieldLabels['multipleWithChecks']}}</label>
-                        <p-autoComplete formControlName="selectedValue"
-                                        [suggestions]="lista"
-                                        [dropdown]="true"
-                                        [multiple]="true"
-                                        [forceSelection]="true"
-                                        field="fullName"
-                                        (completeMethod)="search($event)">
-                            <ng-template let-value pTemplate="item">
-                                <label><input type="checkbox" (click)="checkSelect($event,value)" [checked]="verifyCheck(value)" />{{value.fullName}}</label>
-                            </ng-template>
-                        </p-autoComplete>
-                    </div>
-                </div>
-
+                </p-fluid>
             </div>
         </div>
 

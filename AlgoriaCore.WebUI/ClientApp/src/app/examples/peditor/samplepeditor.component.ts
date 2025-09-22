@@ -7,11 +7,12 @@ import { AppComponentBase } from 'src/app/app-component-base';
 import { UserServiceProxy } from 'src/shared/service-proxies/service-proxies';
 import { AppComponent } from '../../app.component';
 
-import Mention from 'quill-mention';
+import { Mention } from 'quill-mention';
 import { Editor } from 'primeng/editor';
 
 @Component({
-    templateUrl: './samplepeditor.component.html'
+    templateUrl: './samplepeditor.component.html',
+    standalone: false
 })
 export class SamplePEditorComponent extends AppComponentBase implements OnInit {
 

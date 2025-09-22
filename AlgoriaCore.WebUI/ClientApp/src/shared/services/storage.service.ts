@@ -1,5 +1,7 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { AppConsts } from '../AppConsts';
+import { JsonPipe } from '@angular/common';
+import { Utils } from '../utils/utils';
 
 export const BROWSER_STORAGE = new InjectionToken<Storage>('Browser Storage', {
     providedIn: 'root',
@@ -42,7 +44,10 @@ export class BrowserStorageService {
             const actualKey = this.storage.key(i);
             const actual = new StorageKeys();
             actual.key = actualKey;
-            actual.value = JSON.parse(this.storage.getItem(actualKey));
+            
+            const currentValue = this.storage.getItem(actualKey);
+
+            actual.value = Utils.isJSON(currentValue) ? JSON.parse(currentValue) : currentValue;
 
             lista.push(actual);
         }
