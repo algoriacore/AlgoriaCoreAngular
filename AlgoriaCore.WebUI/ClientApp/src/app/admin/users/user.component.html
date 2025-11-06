@@ -22,7 +22,7 @@
                          styleClass="p-datatable-striped p-datatable-sm" class="p-datatable-responsive">
 
                     <ng-template pTemplate="caption">
-                        <div class="grid p-fluid">
+                        <div class="grid">
                             <div class="col-12 sm:col-6 md:col-6 lg:col-7">
                                 <h5>{{l('Users')}}</h5>
                             </div>
@@ -65,7 +65,7 @@
                             <td style="width:140px;">
                                 <p-button size="small" [disabled]="!permissions.edit" icon="pi pi-pencil" class="mr-2" (click)="edit(rowData.id)" pTooltip="{{l('Edit')}}" tooltipPosition="top"></p-button>
                                 <p-button size="small" severity="danger" [disabled]="!permissions.delete" icon="pi pi-trash" class="mr-2" (click)="delete(rowData)" pTooltip="{{l('Delete')}}" tooltipPosition="top"></p-button>
-                                <p-speeddial [disabled]="!(createMenuItems(rowData).length > 0)" [model]="createMenuItems(rowData)" direction="right" className="inline normal" buttonClassName="p-button-warn p-button-sm p-button-normal"></p-speeddial>
+                                <p-speeddial [disabled]="!(createMenuItems(rowData).length > 0)" [model]="createMenuItems(rowData)" direction="right" className="inline normal" buttonClassName="p-button-sm p-button-normal p-button-warn"></p-speeddial>
                             </td>
                             <ng-template ngFor let-col [ngForOf]="columns">
                                 <td *ngIf="col.isActive !== false">

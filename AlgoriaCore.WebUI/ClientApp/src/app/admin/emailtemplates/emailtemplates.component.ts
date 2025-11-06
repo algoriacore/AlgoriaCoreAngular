@@ -20,7 +20,6 @@ export class EmailTemplatesComponent extends AppComponentBase implements OnInit 
 
     @ViewChild('dt1', { static: false }) table;
     @ViewChild('fileUpload', { static: false }) fileUpload: FileUpload;
-    @ViewChild('fileDiv', { static: false }) fileDiv: ElementRef;
 
     form: FormGroup;
     model: MailTemplateForEditResponse;
@@ -205,7 +204,10 @@ export class EmailTemplatesComponent extends AppComponentBase implements OnInit 
 
         self.idTemplate = id;
         self.getForEdit(self.idTemplate);
-        self.fileDiv.nativeElement.children[0].children[0].children[1].children[2].click();
+
+        const inputFile = self.fileUpload.el.nativeElement.querySelector('input[type="file"]');
+
+        inputFile.click();
     }
 
     return() {

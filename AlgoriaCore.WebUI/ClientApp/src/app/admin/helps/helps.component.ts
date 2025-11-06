@@ -190,7 +190,7 @@ export class HelpsComponent extends AppComponentBase implements OnInit {
     delete(id: number): void {
         const self = this;
 
-        self.alertService.confirm(self.l('ConfirmationSoftDeleteRecordMessage'), self.l('Confirmation'),
+        self.alertService.confirmDelete(self.l('ConfirmationSoftDeleteRecordMessage'), self.l('Confirmation'),
             function (res) {
                 if (res === true) {
                     self.app.blocked = true;

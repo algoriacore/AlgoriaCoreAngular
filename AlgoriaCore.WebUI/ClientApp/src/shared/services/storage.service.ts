@@ -44,7 +44,7 @@ export class BrowserStorageService {
             const actualKey = this.storage.key(i);
             const actual = new StorageKeys();
             actual.key = actualKey;
-            
+
             const currentValue = this.storage.getItem(actualKey);
 
             actual.value = Utils.isJSON(currentValue) ? JSON.parse(currentValue) : currentValue;

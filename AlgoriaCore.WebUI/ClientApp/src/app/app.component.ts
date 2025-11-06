@@ -1,13 +1,13 @@
 import { AfterContentChecked, AfterViewInit, ChangeDetectorRef, Component, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppSettings } from '../shared/AppSettings';
+import { AppViewConfigComponent } from '../shared/components/app.viewconfig.component';
 import { SessionLoginResponseController } from '../shared/service-proxies/service-proxies';
 import { ChatSignalrService } from '../shared/services/chatsignalr.service';
 import { SettingsClientService } from '../shared/services/settingsclient.service';
 import { VersionCheckService } from '../shared/services/version.check.service';
-import { AppComponentBase } from './app-component-base';
 import { AuthenticationService } from './_services/authentication.service';
-import { AppViewConfigComponent } from '../shared/components/app.viewconfig.component';
+import { AppComponentBase } from './app-component-base';
 
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import {
@@ -15,9 +15,8 @@ import {
     EventType,
     InteractionStatus
 } from '@azure/msal-browser';
-import { filter } from 'rxjs/operators';
 import { PrimeNG } from 'primeng/config';
-import { Footer } from 'primeng/api';
+import { filter } from 'rxjs/operators';
 
 @Component({
     templateUrl: './app.component.html',
@@ -240,8 +239,8 @@ export class AppComponent extends AppComponentBase implements AfterViewInit, Aft
     changeTheme(theme: string) {
         const layoutLink: HTMLLinkElement = <HTMLLinkElement>document.getElementById('layout-css');
         layoutLink.href = 'assets/layout/css/layout-' + theme.split('-')[0] + '.css';
-        //const themeLink: HTMLLinkElement = <HTMLLinkElement>document.getElementById('theme-css');
-        //themeLink.href = 'assets/theme/' + 'theme-' + theme + '.css';
+        // const themeLink: HTMLLinkElement = <HTMLLinkElement>document.getElementById('theme-css');
+        // themeLink.href = 'assets/theme/' + 'theme-' + theme + '.css';
     }
 
     logoutImpersonalization(event) {

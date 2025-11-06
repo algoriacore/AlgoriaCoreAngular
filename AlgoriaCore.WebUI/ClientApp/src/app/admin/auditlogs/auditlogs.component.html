@@ -143,9 +143,9 @@
 
                     <ng-template pTemplate="header" let-columns>
                         <tr>
-                            <th scope="col" style="width:70px;"></th>
+                            <th scope="col" style="width:100px;"></th>
                             <ng-template ngFor let-col [ngForOf]="columns">
-                                <th *ngIf="col.isActive !== false" scope="col" [pSortableColumn]="col.field"
+                                <th *ngIf="col.isActive !== false && (col.field !== 'tenantName' || isHost)" scope="col" [pSortableColumn]="col.field"
                                     [style.width]="col.width">
                                     {{col.header}}
                                     <p-sortIcon [field]="col.field" *ngIf="col.sorting"></p-sortIcon>
@@ -155,7 +155,7 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-rowData let-columns="columns">
                         <tr [pSelectableRow]="rowData">
-                            <td style="width:70px;">
+                            <td style="width:100px;">
                                 <div>
                                     <button type="button" pButton pRipple icon="pi pi-eye" class="p-button-sm mr-2" (click)="showDetails(rowData)" pTooltip="{{l('AuditLogDetail')}}" tooltipPosition="top"></button>
                                     <div style="display: inline-block;">

@@ -47,7 +47,8 @@
                         <p id="creationDateTime">{{dateTimeService.getDateTimeToDisplay(model.creationDateTime)}}</p>
                     </div>
                     <div class="field col-12">
-                        <p-checkbox name="isActive" [formControl]="form.controls['isActive']" label="{{l('IsActive')}}" value="true" binary="true"></p-checkbox>
+                        <p-checkbox name="isActive" [formControl]="form.controls['isActive']" value="true" binary="true"></p-checkbox>
+                        <label for="isActive" class="ml-2">{{l('IsActive')}}</label>
                     </div>
                 </div>
             </div>

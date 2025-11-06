@@ -21,11 +21,9 @@ export class AppEditorComponent extends AppComponentBase implements AfterViewIni
     @ViewChild('quillEditorContainer', { read: ElementRef, static: false }) quillEditorContainer: ElementRef;
     @ViewChild('quillEditorToolbarContainer', { read: ElementRef, static: false }) quillEditorToolbarContainer: ElementRef;
 
-    @Input()
-        _editorValue: any;
+    @Input() _editorValue: any;
 
-    @Input()
-        style: any;
+    @Input() style: any;
 
     quillEditor: Quill;
 

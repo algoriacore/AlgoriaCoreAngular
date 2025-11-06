@@ -24,6 +24,7 @@ module.exports = {
         "extraFileExtensions": ["html"]
     },
     "plugins": [
+        "@stylistic",
         "@angular-eslint/eslint-plugin",
         "eslint-plugin-import",
         "@typescript-eslint",
@@ -62,8 +63,8 @@ module.exports = {
                 "accessibility": "explicit"
             }
         ],
-        "@typescript-eslint/indent": ["error", 4],
-        "@typescript-eslint/member-delimiter-style": [
+        "@stylistic/indent": ["error", 4],
+        "@stylistic/member-delimiter-style": [
             "error",
             {
                 "multiline": {
@@ -104,15 +105,15 @@ module.exports = {
         ],
         "@typescript-eslint/no-unused-expressions": "error",
         "@typescript-eslint/prefer-function-type": "error",
-        "@typescript-eslint/quotes": [
+        "@stylistic/quotes": [
             "error",
             "single"
         ],
-        "@typescript-eslint/semi": [
+        "@stylistic/semi": [
             "error",
             "always"
         ],
-        "@typescript-eslint/type-annotation-spacing": "error",
+        "@stylistic/type-annotation-spacing": "error",
         "@typescript-eslint/unified-signatures": "error",
         "arrow-body-style": "error",
         "brace-style": [

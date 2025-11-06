@@ -67,16 +67,20 @@
                          styleClass="p-datatable-striped p-datatable-sm" class="p-datatable-responsive">
 
                     <ng-template pTemplate="caption">
-                        <div class="grid p-fluid">
+                        <div class="grid">
                             <div class="col-12 sm:col-7 md:col-8 lg:col-9">
                                 <h5>{{l('OrgUnits.OrgUnit.Users')}}</h5>
                             </div>
                             <div class="col-12 sm:col-5 md:col-4 lg:col-3">
-                                <span class="p-input-icon-left">
-                                    <i class="pi pi-search" aria-hidden="true"></i>
-                                    <input type="text" pInputText placeholder="{{l('SearchDots')}}" [(ngModel)]="filterTextUser"
-                                        [ngModelOptions]="{standalone: true}" (keydown.enter)="filterSearchUser($event)" id="filterTextUser" />
-                                </span>
+                                <div class="flex">
+                                    <div class="flex-grow-1 flex align-self-center">
+                                        <p-iconfield class="w-full">
+                                            <p-inputicon class="pi pi-search" />
+                                            <input type="text" fluid pInputText placeholder="{{l('SearchDots')}}" [(ngModel)]="filterTextUser"
+                                                   [ngModelOptions]="{standalone: true}" (keydown.enter)="filterSearchUser($event)" id="filterTextUser" />
+                                        </p-iconfield>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </ng-template>
@@ -95,7 +99,7 @@
                         <tr [pSelectableRow]="rowData">
                             <td>
                                 <div>
-                                    <button pButton pRipple icon="pi pi-trash" class="p-button-danger mr-2" (click)="deleteUser(rowData.id)" pTooltip="{{l('Delete')}}" tooltipPosition="top"></button>
+                                    <p-button size="small" severity="danger" icon="pi pi-trash" class="mr-2" (click)="deleteUser(rowData)" pTooltip="{{l('Delete')}}" tooltipPosition="top"></p-button>
                                 </div>
                             </td>
                             <td>

@@ -11,32 +11,35 @@
 
         <div class="col-12">
             <div class="card">
-                <p-tabView>
-                    <p-tabPanel header="{{l('Maintenance.WebSiteLogs')}}">
-
-                        <div class="grid">
-                            <div class="col-12 form-title-section">
-                                <p>{{l('Maintenance.WebSiteLogsHeaderInfo')}}</p>
-                                <div class="form-toolbar">
-                                    <p-button type="button" label="{{l('DownloadAll')}}" (onClick)="downloadWebLogs()"
-                                              icon="pi pi-download"></p-button>
-                                    <p-button type="button" label="{{l('Refresh')}}" (onClick)="getWebLogs()"
-                                              icon="pi pi-refresh"></p-button>
+                <p-tabs value="0">
+                    <p-tablist>
+                        <p-tab value="0">{{l('Maintenance.WebSiteLogs')}}</p-tab>
+                    </p-tablist>
+                    <p-tabpanels>
+                        <p-tabpanel value="0">
+                            <div class="grid">
+                                <div class="col-12 form-title-section">
+                                    <p>{{l('Maintenance.WebSiteLogsHeaderInfo')}}</p>
+                                    <div class="form-toolbar">
+                                        <p-button type="button" label="{{l('DownloadAll')}}" (onClick)="downloadWebLogs()"
+                                                  icon="pi pi-download"></p-button>
+                                        <p-button type="button" label="{{l('Refresh')}}" (onClick)="getWebLogs()"
+                                                  icon="pi pi-refresh"></p-button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-12">
-                            <div class="web-log-view full-height">
-                                <span class="log-line" *ngFor="let log of logs">
-                                    <span [class]="getLogClass(log)">{{getLogType(log)}}</span>
-                                    {{getRawLogContent(log)}}
-                                </span>
+                            <div class="col-12">
+                                <div class="web-log-view full-height">
+                                    <span class="log-line" *ngFor="let log of logs">
+                                        <span [class]="getLogClass(log)">{{getLogType(log)}}</span>
+                                        {{getRawLogContent(log)}}
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-
-                    </p-tabPanel>
-                </p-tabView>
+                        </p-tabpanel>
+                    </p-tabpanels>
+                </p-tabs>
             </div>
         </div>
 

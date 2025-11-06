@@ -176,7 +176,7 @@ export class EditOrgUnitsComponent extends AppComponentBase implements OnInit {
     deleteUser(id: number): void {
         const self = this;
 
-        self.alertService.confirm(self.l('ConfirmationSoftDeleteRecordMessage'), self.l('Confirmation'),
+        self.alertService.confirmDelete(self.l('ConfirmationSoftDeleteRecordMessage'), self.l('Confirmation'),
             function (res) {
                 if (res === true) {
                     self.app.blocked = true;

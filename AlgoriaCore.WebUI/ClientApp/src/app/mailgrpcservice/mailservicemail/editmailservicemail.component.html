@@ -9,93 +9,96 @@
    </div>
    <div class="col-12">
       <form [formGroup]="form">
-         <div class="card">
-            <p-tabView>
-               <p-tabPanel header="{{l('GeneralData')}}">
+          <div class="card">
 
-                  <div class="p-fluid">
-                     <div class="field grid">
+              <p-tabs value="0">
+                  <p-tablist>
+                      <p-tab value="0">{{l('GeneralData')}}</p-tab>
+                      <p-tab value="1">{{l('MailServiceMailAttachs.MailServiceMailAttach')}}</p-tab>
+                      <p-tab value="2">{{l('MailServiceMailConfigs.MailServiceMailConfig')}}</p-tab>
+                  </p-tablist>
+                  <p-tabpanels>
+                      <p-tabpanel value="0">
+                          <div class="p-fluid">
+                              <div class="field grid">
 
-                        <label class="col-12 md:col-4 lg:col-2"
-                           for="isLocalConfig">{{fieldLabels["isLocalConfig"]}}</label>
+                                  <label class="col-12 md:col-4 lg:col-2"
+                                         for="isLocalConfig">{{fieldLabels["isLocalConfig"]}}</label>
 
-                        <div class="col-12 md:col-8 lg:col-10">
-                           <p-checkbox disabled="true" id="isLocalConfig" name="isLocalConfig"
-                              [formControl]="form.controls['isLocalConfig']" value="true" binary="true"></p-checkbox>
-                        </div>
-                     </div>
-                     <div class="field grid">
+                                  <div class="col-12 md:col-8 lg:col-10">
+                                      <p-checkbox disabled="true" id="isLocalConfig" name="isLocalConfig"
+                                                  [formControl]="form.controls['isLocalConfig']" value="true" binary="true"></p-checkbox>
+                                  </div>
+                              </div>
+                              <div class="field grid">
 
-                        <label class="col-12 md:col-4 lg:col-2" for="sendto">{{fieldLabels["sendto"]}}</label>
+                                  <label class="col-12 md:col-4 lg:col-2" for="sendto">{{fieldLabels["sendto"]}}</label>
 
-                        <div class="col-12 md:col-8 lg:col-10">
-                           <input type="text" formControlName="sendto" id="sendto" autocomplete="off" maxlength="0"
-                              pInputText />
-                        </div>
-                     </div>
-                     <div class="field grid">
+                                  <div class="col-12 md:col-8 lg:col-10">
+                                      <input type="text" formControlName="sendto" id="sendto" autocomplete="off" maxlength="0"
+                                             pInputText />
+                                  </div>
+                              </div>
+                              <div class="field grid">
 
-                        <label class="col-12 md:col-4 lg:col-2" for="copyTo">{{fieldLabels["copyTo"]}}</label>
+                                  <label class="col-12 md:col-4 lg:col-2" for="copyTo">{{fieldLabels["copyTo"]}}</label>
 
-                        <div class="col-12 md:col-8 lg:col-10">
-                           <input type="text" formControlName="copyTo" id="copyTo" autocomplete="off" maxlength="0"
-                              pInputText />
-                        </div>
-                     </div>
-                     <div class="field grid">
+                                  <div class="col-12 md:col-8 lg:col-10">
+                                      <input type="text" formControlName="copyTo" id="copyTo" autocomplete="off" maxlength="0"
+                                             pInputText />
+                                  </div>
+                              </div>
+                              <div class="field grid">
 
-                        <label class="col-12 md:col-4 lg:col-2" for="blindCopyTo">{{fieldLabels["blindCopyTo"]}}</label>
+                                  <label class="col-12 md:col-4 lg:col-2" for="blindCopyTo">{{fieldLabels["blindCopyTo"]}}</label>
 
-                        <div class="col-12 md:col-8 lg:col-10">
-                           <input type="text" formControlName="blindCopyTo" id="blindCopyTo" autocomplete="off"
-                              maxlength="0" pInputText />
-                        </div>
-                     </div>
-                     <div class="field grid">
+                                  <div class="col-12 md:col-8 lg:col-10">
+                                      <input type="text" formControlName="blindCopyTo" id="blindCopyTo" autocomplete="off"
+                                             maxlength="0" pInputText />
+                                  </div>
+                              </div>
+                              <div class="field grid">
 
-                        <label class="col-12 md:col-4 lg:col-2" for="subject">{{fieldLabels["subject"]}}</label>
+                                  <label class="col-12 md:col-4 lg:col-2" for="subject">{{fieldLabels["subject"]}}</label>
 
-                        <div class="col-12 md:col-8 lg:col-10">
-                           <input type="text" formControlName="subject" id="subject" autocomplete="off" maxlength="0"
-                              pInputText />
-                        </div>
-                     </div>
+                                  <div class="col-12 md:col-8 lg:col-10">
+                                      <input type="text" formControlName="subject" id="subject" autocomplete="off" maxlength="0"
+                                             pInputText />
+                                  </div>
+                              </div>
 
-                     <br>
+                              <br>
 
-                     <div class="field grid">
+                              <div class="field grid">
 
-                        <label class="col-12 md:col-4 lg:col-2" for="status">{{fieldLabels["status"]}}</label>
-                        <div class="col-12 md:col-8 lg:col-10" *ngIf="model">
+                                  <label class="col-12 md:col-4 lg:col-2" for="status">{{fieldLabels["status"]}}</label>
+                                  <div class="col-12 md:col-8 lg:col-10" *ngIf="model">
 
-                           <p-message *ngIf="isPending" severity="warning" text="{{statusDesc}}"></p-message>
-                           <p-message *ngIf="isSuccess" severity="success" text="{{statusDesc}}"></p-message>
-                           <p-message *ngIf="isError" severity="error" text="{{statusDesc}}"></p-message>
-                           <p-message *ngIf="isCanceled" severity="info" text="{{statusDesc}}"></p-message>
+                                      <p-message *ngIf="isPending" severity="warning" text="{{statusDesc}}"></p-message>
+                                      <p-message *ngIf="isSuccess" severity="success" text="{{statusDesc}}"></p-message>
+                                      <p-message *ngIf="isError" severity="error" text="{{statusDesc}}"></p-message>
+                                      <p-message *ngIf="isCanceled" severity="info" text="{{statusDesc}}"></p-message>
 
-                        </div>
-                     </div>
-                     <br>
-
-
-                     <p-panel header="{{l('MailServiceMailBodys.MailServiceMailBody')}}">
-                        <div [innerHTML]="htmlMessage"></div>
-                     </p-panel>
-
-                  </div>
-               </p-tabPanel>
-
-               <p-tabPanel *ngIf="bodyId" header="{{l('MailServiceMailAttachs.MailServiceMailAttach')}}">
-                  <app-mailservicemailattach-grid [mailServiceMailBodyId]="bodyId"></app-mailservicemailattach-grid>
-               </p-tabPanel>
-
-               <p-tabPanel *ngIf="!hasLocalConfig" header="{{l('MailServiceMailConfigs.MailServiceMailConfig')}}">
-                  <app-editmailservicemailconfig-form [mailServiceMailId]="id"></app-editmailservicemailconfig-form>
-               </p-tabPanel>
+                                  </div>
+                              </div>
+                              <br>
 
 
-            </p-tabView>
-         </div>
+                              <p-panel header="{{l('MailServiceMailBodys.MailServiceMailBody')}}">
+                                  <div [innerHTML]="htmlMessage"></div>
+                              </p-panel>
+
+                          </div>
+                      </p-tabpanel>
+                      <p-tabpanel value="1">
+                          <app-mailservicemailattach-grid [mailServiceMailBodyId]="bodyId"></app-mailservicemailattach-grid>
+                      </p-tabpanel>
+                      <p-tabpanel value="2">
+                          <app-editmailservicemailconfig-form [mailServiceMailId]="id"></app-editmailservicemailconfig-form>
+                      </p-tabpanel>
+                  </p-tabpanels>
+              </p-tabs>
+          </div>
       </form>
    </div>
 </div>

@@ -136,7 +136,7 @@ export class SamplesDateDataComponent extends AppComponentBase implements OnInit
     delete(id: number): void {
         const self = this;
 
-        self.alertService.confirm(
+        self.alertService.confirmDelete(
             self.l('ConfirmationSoftDeleteRecordMessage'), self.l('Confirmation'),
             function (res) {
                 if (res === true) {
