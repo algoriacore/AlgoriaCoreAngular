@@ -3,8 +3,6 @@ import { AfterViewInit, Component, Injector, Input, OnInit, ViewChild } from '@a
 import { Router } from '@angular/router';
 import { ScrollPanel } from 'primeng/scrollpanel';
 import { AppConsts } from 'src/shared/AppConsts';
-import { AppPermissions } from '../shared/AppPermissions';
-import { CatalogsCustomService } from '../shared/services/catalogscustom.service';
 import { AppComponentBase } from './app-component-base';
 import { AppComponent } from './app.component';
 import { MenuItem } from 'primeng/api';
@@ -24,8 +22,7 @@ export class AppMenuComponent extends AppComponentBase implements OnInit, AfterV
 
     constructor(
         injector: Injector,
-        public app: AppComponent,
-        private catalogsCustomService: CatalogsCustomService) {
+        public app: AppComponent) {
         super(injector);
     }
 
@@ -133,56 +130,8 @@ export class AppMenuComponent extends AppComponentBase implements OnInit, AfterV
                     { label: this.l('Examples.Charts'), icon: 'pi pi-chart-bar', routerLink: ['/app/examples/charts'] },
                     { label: this.l('Examples.PEditor'), icon: 'pi pi-tag', routerLink: ['/app/examples/peditor'] }
                 ]
-            },
-            this.getQuestionnairesSectionMenu(),
-            this.getCatalogsCustomSectionMenu()
+            }
         ];
-    }
-
-    getQuestionnairesSectionMenu(): any {
-        const self = this;
-        const items = [];
-
-        items.push({
-            label: self.l('Questionnaires'),
-            icon: 'pi pi-list',
-            routerLink: ['/app/questionnaires/questionnaires'],
-            permissionName: 'Pages.Questionnaires'
-        });
-
-        return {
-            label: self.l('Questionnaires'),
-            icon: 'pi pi-list',
-            items: items
-        };
-    }
-
-    getCatalogsCustomSectionMenu(): any {
-        const self = this;
-        const items = [];
-
-        items.push({
-            label: self.l('CatalogsCustom.Configuration'),
-            icon: 'pi pi-table',
-            routerLink: ['/app/questionnaires/catalogscustom'],
-            permissionName: 'Pages.CatalogsCustom'
-        });
-
-        for (const catalog of self.catalogsCustomService.catalogs) {
-            items.push({
-                label: catalog.namePlural,
-                routerLink: ['/app/catalogscustomimpl', catalog.id],
-                permissionName: AppPermissions.calculatePermissionNameForCatalogCustom(
-                    AppPermissions.catalogsCustom, catalog.id, self.app.currentUser.tenantId),
-                reloadAlways: true
-            });
-        }
-
-        return {
-            label: self.l('CatalogsCustom'),
-            icon: 'pi pi-list',
-            items: items
-        };
     }
 
     ngAfterViewInit() {

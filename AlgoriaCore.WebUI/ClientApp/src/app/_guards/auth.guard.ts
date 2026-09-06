@@ -34,9 +34,6 @@ export class AuthGuard implements CanActivate {
             if (AppPermissions.isPermissionNameForProcess(route.data['permission'])) {
                 permission = AppPermissions.calculatePermissionNameForProcess(
                     AppPermissions.processes, route.params['template'], currentUser.tenantId);
-            } else if (AppPermissions.isPermissionNameForCatalogCustom(route.data['permission'])) {
-                permission = AppPermissions.calculatePermissionNameForCatalogCustom(
-                    AppPermissions.catalogsCustom, route.params['catalog'], currentUser.tenantId);
             }
 
             if (this._permissionChecker.isGranted(permission)) {

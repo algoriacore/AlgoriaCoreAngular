@@ -36,14 +36,6 @@ export const AppRoutes: ModuleWithProviders<any> = RouterModule.forRoot([{
         {
             path: 'mailgrpcservice',
             loadChildren: () => import('../app/mailgrpcservice/mailgrpcservice.module').then(m => m.MailGrpcServiceModule)
-        },
-        {
-            path: 'questionnaires',
-            loadChildren: () => import('../app/questionnaires/questionnaires.module').then(m => m.QuestionnairesModule)
-        },
-        {
-            path: 'catalogscustomimpl',
-            loadChildren: () => import('../app/catalogscustomimpl/catalogscustomimpl.module').then(m => m.CatalogsCustomImplModule)
         }
     ]
 // }], { relativeLinkResolution: 'legacy' });

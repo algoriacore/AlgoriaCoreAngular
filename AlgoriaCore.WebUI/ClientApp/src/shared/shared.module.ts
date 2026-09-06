@@ -43,7 +43,6 @@ import { AppHelpOnScreenComponent } from './components/app.help.onscreen.compone
 import { PasswordFieldComponent } from './components/app.passwordfield.component';
 import { AppPreloaderComponent } from './components/app.preloader.component';
 import { AppPromptComponent } from './components/app.prompt.component';
-import { AppQuestionnaireComponent } from './components/app.questionnaire.component';
 import { AppViewConfigComponent } from './components/app.viewconfig.component';
 import { GoogleMapAddressModalComponent } from './components/googlemapaddressmodal.component';
 import { SelectUsersComponent } from './components/selectusers.component';
@@ -112,7 +111,6 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
         BlockableDivComponent,
         PasswordFieldComponent,
         AppPreloaderComponent,
-        AppQuestionnaireComponent,
         AppCustomCodeComponent,
         NativeElementInjectorDirective,
         AppViewConfigComponent,
@@ -132,7 +130,6 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
         BlockableDivComponent,
         PasswordFieldComponent,
         AppPreloaderComponent,
-        AppQuestionnaireComponent,
         AppCustomCodeComponent,
         NativeElementInjectorDirective,
         AppViewConfigComponent,

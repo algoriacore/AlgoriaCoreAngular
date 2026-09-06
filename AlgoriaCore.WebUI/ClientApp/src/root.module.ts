@@ -17,7 +17,6 @@ import {
     API_BASE_URL, UserConfigurationGetAllQuery, UserConfigurationResponse, UserConfigurationServiceProxy
 } from './shared/service-proxies/service-proxies';
 import { ServiceProxyModule } from './shared/service-proxies/service-proxy.module';
-import { CatalogsCustomService } from './shared/services/catalogscustom.service';
 import { DateTimeService } from './shared/services/datetime.service';
 import { LocalizationService } from './shared/services/localization.service';
 import { SettingsService } from './shared/services/settings.service';
@@ -223,7 +222,6 @@ export class RootModule {
         const localizationService: LocalizationService = injector.get(LocalizationService);
         const permissionService: PermissionCheckerService = injector.get(PermissionCheckerService);
         const settingsClientService: SettingsClientService = injector.get(SettingsClientService);
-        const catalogsCustomService: CatalogsCustomService = injector.get(CatalogsCustomService);
         const dateTimeService: DateTimeService = injector.get(DateTimeService);
         const settingsService: SettingsService = injector.get(SettingsService);
         const config: PrimeNG = injector.get(PrimeNG);
@@ -251,7 +249,6 @@ export class RootModule {
         localizationService.localization = result2.localization;
         permissionService.permission = result2.permission;
         settingsClientService.settings = result2.settingsClient;
-        catalogsCustomService.catalogs = result2.catalogsCustom;
         settingsService.passwordComplexity = result2.passwordComplexity;
 
         moment.locale(result2.localization.currentLanguage.name);

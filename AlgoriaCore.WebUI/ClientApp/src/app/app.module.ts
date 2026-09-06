@@ -78,7 +78,6 @@ import { AppFooterComponent } from './app.footer.component';
 import { AppMenuComponent, AppSubMenuComponent } from './app.menu.component';
 import { AppRoutes } from './app.routes';
 import { AppTopBarComponent } from './app.topbar.component';
-import { CatalogsCustomImplModule } from './catalogscustomimpl/catalogscustomimpl.module';
 import { FluidModule } from 'primeng/fluid';
 
 
@@ -151,7 +150,6 @@ import { FluidModule } from 'primeng/fluid';
         ReactiveFormsModule,
         DynamicDialogModule,
         SharedModule,
-        CatalogsCustomImplModule,
         TagModule,
         PasswordModule,
         DividerModule,
